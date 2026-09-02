@@ -1,0 +1,3583 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="auto">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+  <title>Rawell Química — Catálogo Oficial 2026</title>
+  <meta name="description" content="Catálogo oficial de produtos da Rawell Química 2026. Defensivos, desinfestantes, fungicidas, inseticidas e raticidas. Orçamento rápido pelo WhatsApp.">
+  <meta name="theme-color" content="#0f4531" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0a2318" media="(prefers-color-scheme: dark)">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Rawell 2026">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/png" sizes="192x192" href="img/icon-192.png">
+  <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Rawell Química">
+  <meta property="og:title" content="Rawell Química — Catálogo Oficial 2026">
+  <meta property="og:description" content="Linha completa de soluções para gramados, jardinagem, saúde pública e pragas. Faça sua cotação rápida.">
+  <meta property="og:image" content="img/produtos/p01-kapina-plus-60ml.webp">
+
+  <!-- Google Fonts: Inter & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   RAWELL QUÍMICA v3.0 — MOBILE-FIRST & DESKTOP MASTER UX/UI
+═══════════════════════════════════════════════════════════════ */
+
+:root {
+  --brand:          #0f4531;
+  --brand-dark:     #09261b;
+  --brand-mid:      #176043;
+  --brand-light:    #10b981;
+  --brand-pale:     #eaf7f0;
+  --wa:             #25D366;
+  --wa-dark:        #1da851;
+  --wa-glow:        rgba(37, 211, 102, 0.35);
+  --accent:         #f59e0b;
+  --danger:         #ef4444;
+
+  /* Theme Light */
+  --bg:             #f4f7f5;
+  --bg-card:        #ffffff;
+  --bg-card-sub:    #f8faf9;
+  --bg-glass:       rgba(255, 255, 255, 0.88);
+  --bg-sheet:       #ffffff;
+  --text:           #0f1f17;
+  --text-2:         #334e40;
+  --text-3:         #64748b;
+  --border:         rgba(15, 69, 49, 0.12);
+  --border-subtle:  rgba(0, 0, 0, 0.06);
+  --shadow-xs:      0 1px 3px rgba(0,0,0,.04);
+  --shadow-sm:      0 3px 10px rgba(15,69,49,.06);
+  --shadow-md:      0 6px 20px rgba(15,69,49,.08);
+  --shadow-lg:      0 12px 36px rgba(15,69,49,.14);
+  --shadow-sheet:   0 -8px 40px rgba(0, 0, 0, 0.18);
+
+  --radius-xs:      8px;
+  --radius-sm:      12px;
+  --radius-md:      16px;
+  --radius-lg:      22px;
+  --radius-xl:      30px;
+  --radius-full:    9999px;
+
+  --transition:     0.22s cubic-bezier(0.33, 1, 0.68, 1);
+  --header-h:       68px;
+  --bottom-h:       68px;
+  --safe-top:       env(safe-area-inset-top, 0px);
+  --safe-bottom:    env(safe-area-inset-bottom, 0px);
+}
+
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg:             #090d0b;
+    --bg-card:        #121915;
+    --bg-card-sub:    #16201b;
+    --bg-glass:       rgba(18, 25, 21, 0.90);
+    --bg-sheet:       #121915;
+    --text:           #f1f5f3;
+    --text-2:         #9ab0a3;
+    --text-3:         #657b6e;
+    --border:         rgba(255, 255, 255, 0.10);
+    --border-subtle:  rgba(255, 255, 255, 0.05);
+    --shadow-xs:      0 1px 3px rgba(0,0,0,.3);
+    --shadow-sm:      0 3px 10px rgba(0,0,0,.4);
+    --shadow-md:      0 6px 20px rgba(0,0,0,.5);
+    --shadow-lg:      0 12px 36px rgba(0,0,0,.6);
+    --shadow-sheet:   0 -8px 40px rgba(0, 0, 0, 0.6);
+    --brand-pale:     rgba(16, 185, 129, 0.16);
+  }
+}
+
+html[data-theme="light"] {
+  --bg:             #f4f7f5;
+  --bg-card:        #ffffff;
+  --bg-card-sub:    #f8faf9;
+  --bg-glass:       rgba(255, 255, 255, 0.88);
+  --bg-sheet:       #ffffff;
+  --text:           #0f1f17;
+  --text-2:         #334e40;
+  --text-3:         #64748b;
+  --border:         rgba(15, 69, 49, 0.12);
+  --border-subtle:  rgba(0, 0, 0, 0.06);
+  --brand-pale:     #eaf7f0;
+}
+
+html[data-theme="dark"] {
+  --bg:             #090d0b;
+  --bg-card:        #121915;
+  --bg-card-sub:    #16201b;
+  --bg-glass:       rgba(18, 25, 21, 0.90);
+  --bg-sheet:       #121915;
+  --text:           #f1f5f3;
+  --text-2:         #9ab0a3;
+  --text-3:         #657b6e;
+  --border:         rgba(255, 255, 255, 0.10);
+  --border-subtle:  rgba(255, 255, 255, 0.05);
+  --brand-pale:     rgba(16, 185, 129, 0.16);
+}
+
+/* ── Reset & Core ─────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  font-size: 15px;
+  scroll-behavior: smooth;
+  overscroll-behavior-y: contain;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+  touch-action: manipulation;
+  padding-top: calc(var(--header-h) + var(--safe-top));
+  padding-bottom: calc(var(--bottom-h) + var(--safe-bottom) + 16px);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+img { max-width: 100%; height: auto; display: block; }
+a { text-decoration: none; color: inherit; }
+button {
+  font-family: inherit;
+  border: none;
+  background: none;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+input, select, textarea {
+  font-family: inherit;
+  font-size: 16px; /* Previne auto-zoom no iOS */
+}
+
+.container {
+  width: 100%;
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   HEADER RESPONSIVO (COMPACTO MOBILE / COMPLETO DESKTOP)
+═══════════════════════════════════════════════════════════════ */
+.app-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 900;
+  height: calc(var(--header-h) + var(--safe-top));
+  padding-top: var(--safe-top);
+  background: var(--bg-glass);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border-bottom: 1px solid var(--border);
+  transition: background var(--transition), border-color var(--transition);
+}
+
+.header-row {
+  height: var(--header-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.brand-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, var(--brand-light), var(--brand));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.35rem;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35);
+}
+
+.brand-titles {
+  display: flex;
+  flex-direction: column;
+}
+
+.brand-name {
+  font-weight: 800;
+  font-size: 1.15rem;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  line-height: 1.1;
+}
+
+.brand-badge {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--brand-light);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* Barra de Busca do Header Desktop */
+.header-search-desktop {
+  display: none; /* Ativado no desktop via media query */
+  flex: 1;
+  max-width: 520px;
+  position: relative;
+}
+
+.desktop-search-input {
+  width: 100%;
+  height: 44px;
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-full);
+  padding: 0 44px 0 44px;
+  color: var(--text);
+  font-size: 0.92rem;
+  font-weight: 500;
+  outline: none;
+  box-shadow: var(--shadow-xs);
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.desktop-search-input:focus {
+  border-color: var(--brand-light);
+  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.15);
+}
+
+.desktop-search-icon {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-3);
+  pointer-events: none;
+}
+
+.desktop-search-shortcut {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--text-3);
+  background: var(--bg-card-sub);
+  padding: 2px 7px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  pointer-events: none;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-header-pdf {
+  display: none;
+  align-items: center;
+  gap: 6px;
+  height: 40px;
+  padding: 0 14px;
+  border-radius: var(--radius-sm);
+  background: var(--brand-pale);
+  color: var(--brand);
+  font-size: 0.82rem;
+  font-weight: 700;
+  transition: all var(--transition);
+}
+.btn-header-pdf:hover {
+  background: var(--brand);
+  color: #fff;
+}
+
+.btn-header-cart {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  height: 42px;
+  padding: 0 16px;
+  border-radius: var(--radius-sm);
+  background: var(--brand);
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 700;
+  box-shadow: 0 4px 14px rgba(15, 69, 49, 0.25);
+  transition: all var(--transition);
+}
+.btn-header-cart:hover {
+  background: var(--brand-mid);
+  transform: translateY(-1px);
+}
+
+.cart-pill-count {
+  background: var(--brand-light);
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+}
+
+.btn-header-install {
+  height: 38px;
+  padding: 0 14px;
+  border-radius: var(--radius-full);
+  background: var(--brand-pale);
+  color: var(--brand);
+  border: 1.5px solid var(--brand-light);
+  font-size: 0.78rem;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all var(--transition);
+  animation: pulseInstall 2.8s infinite;
+  white-space: nowrap;
+}
+.btn-header-install:hover {
+  background: var(--brand);
+  color: #fff;
+}
+@keyframes pulseInstall {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.04); }
+}
+
+/* Banner Flutuante de Instalação Mobile PWA */
+.pwa-install-banner {
+  position: fixed;
+  bottom: calc(var(--bottom-nav-h) + var(--safe-bottom) + 12px);
+  left: 14px;
+  right: 14px;
+  max-width: 460px;
+  margin: 0 auto;
+  background: var(--brand);
+  color: #fff;
+  border-radius: var(--radius-lg);
+  padding: 12px 14px;
+  box-shadow: 0 12px 36px rgba(15, 69, 49, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  z-index: 950;
+  transform: translateY(160%);
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  border: 1px solid rgba(255,255,255,0.15);
+}
+.pwa-install-banner.show {
+  transform: translateY(0);
+}
+.pwa-banner-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.pwa-banner-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+.pwa-banner-text h4 {
+  font-size: 0.85rem;
+  font-weight: 800;
+  margin-bottom: 2px;
+}
+.pwa-banner-text p {
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.85);
+  line-height: 1.2;
+}
+.pwa-banner-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.pwa-btn-confirm {
+  background: #fff;
+  color: var(--brand);
+  font-size: 0.78rem;
+  font-weight: 800;
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.1s ease;
+}
+.pwa-btn-confirm:active {
+  transform: scale(0.95);
+}
+.pwa-btn-dismiss {
+  background: transparent;
+  color: rgba(255,255,255,0.7);
+  font-size: 1.1rem;
+  padding: 4px;
+  border: none;
+  cursor: pointer;
+}
+
+.icon-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-full);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text);
+  font-size: 1.15rem;
+  box-shadow: var(--shadow-xs);
+  transition: transform 0.15s ease, background 0.15s ease;
+  position: relative;
+}
+
+.icon-btn:active {
+  transform: scale(0.92);
+}
+
+.icon-btn-badge {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  border-radius: var(--radius-full);
+  background: var(--brand-light);
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 800;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--bg-card);
+  box-shadow: 0 2px 6px rgba(0,0,0,.2);
+}
+.icon-btn-badge.show { display: flex; }
+
+/* ═══════════════════════════════════════════════════════════════
+   SEARCH SECTION (Mobile Hero Search)
+═══════════════════════════════════════════════════════════════ */
+.search-section {
+  padding: 14px 16px 8px;
+}
+
+.search-bar-wrap {
+  position: relative;
+  width: 100%;
+}
+
+.search-bar {
+  width: 100%;
+  height: 48px;
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-full);
+  padding: 0 46px 0 44px;
+  display: flex;
+  align-items: center;
+  box-shadow: var(--shadow-sm);
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.search-bar:focus-within {
+  border-color: var(--brand-light);
+  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.15);
+}
+
+.search-icon {
+  position: absolute;
+  left: 16px;
+  color: var(--text-3);
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+}
+
+.search-input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text);
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.search-input::placeholder {
+  color: var(--text-3);
+  font-weight: 400;
+}
+
+.search-clear-btn {
+  position: absolute;
+  right: 12px;
+  width: 26px;
+  height: 26px;
+  border-radius: var(--radius-full);
+  background: var(--border);
+  color: var(--text-2);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+.search-clear-btn.show { display: flex; }
+
+/* Quick Keywords Slider */
+.quick-tags-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding: 10px 0 4px;
+  -webkit-overflow-scrolling: touch;
+}
+.quick-tags-wrap::-webkit-scrollbar { display: none; }
+
+.quick-tag-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-3);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.quick-tag {
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-2);
+  white-space: nowrap;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  box-shadow: var(--shadow-xs);
+  transition: all 0.15s ease;
+}
+
+.quick-tag:hover {
+  border-color: var(--brand-light);
+  color: var(--brand);
+  background: var(--brand-pale);
+}
+
+.quick-tag:active {
+  transform: scale(0.95);
+}
+
+.quick-tag.active {
+  background: var(--brand);
+  color: #fff;
+  border-color: var(--brand);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   HERO BANNER (SPLIT VIEW NO DESKTOP)
+═══════════════════════════════════════════════════════════════ */
+.hero-compact {
+  margin: 6px 0 20px;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, var(--brand-dark) 0%, var(--brand) 60%, #15734d 100%);
+  padding: 24px 22px;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(15, 69, 49, 0.22);
+}
+
+.hero-compact::after {
+  content: '🌿';
+  position: absolute;
+  right: -10px;
+  bottom: -20px;
+  font-size: 9rem;
+  opacity: 0.10;
+  pointer-events: none;
+}
+
+.hero-content-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(8px);
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 10px;
+}
+
+.hero-title-m {
+  font-size: clamp(1.3rem, 2.5vw, 2rem);
+  font-weight: 800;
+  line-height: 1.2;
+  margin-bottom: 8px;
+  letter-spacing: -0.02em;
+}
+.hero-title-m span { color: #6ee7b7; }
+
+.hero-sub-m {
+  font-size: 0.88rem;
+  color: rgba(255, 255, 255, 0.88);
+  line-height: 1.5;
+  margin-bottom: 16px;
+  max-width: 600px;
+}
+
+.hero-btn-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.hero-btn-primary {
+  height: 42px;
+  padding: 0 20px;
+  border-radius: var(--radius-sm);
+  background: #fff;
+  color: var(--brand);
+  font-size: 0.88rem;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+  transition: all var(--transition);
+}
+.hero-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.22);
+}
+
+.hero-btn-sec {
+  height: 42px;
+  padding: 0 16px;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all var(--transition);
+}
+.hero-btn-sec:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* Stats Box (Desktop) */
+.hero-stats-desktop {
+  display: none;
+  gap: 12px;
+  align-items: center;
+}
+
+.stat-bubble {
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: var(--radius-md);
+  padding: 14px 18px;
+  text-align: center;
+  flex: 1;
+}
+
+.stat-bubble-num {
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: #fff;
+  line-height: 1;
+}
+
+.stat-bubble-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.75);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-top: 4px;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   CATEGORIAS STORIES / CARROSSEL
+═══════════════════════════════════════════════════════════════ */
+.categories-slider-section {
+  padding: 0 0 16px;
+}
+
+.section-head-m {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 0 12px;
+}
+
+.section-title-m {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -0.01em;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.section-more-link {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--brand-light);
+  cursor: pointer;
+}
+
+.categories-story-track {
+  display: flex;
+  gap: 14px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding: 4px 0 10px;
+  -webkit-overflow-scrolling: touch;
+}
+.categories-story-track::-webkit-scrollbar { display: none; }
+
+.story-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  width: 80px;
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: transform var(--transition);
+}
+.story-item:hover {
+  transform: translateY(-2px);
+}
+
+.story-avatar-wrap {
+  width: 62px;
+  height: 62px;
+  border-radius: var(--radius-full);
+  padding: 2.5px;
+  background: var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition);
+  position: relative;
+}
+
+.story-badge-count {
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 4px;
+  border-radius: var(--radius-full);
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  color: var(--text-2);
+  font-size: 0.65rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+.story-item.active .story-badge-count {
+  background: var(--brand);
+  color: #fff;
+  border-color: var(--bg);
+}
+
+.filter-active-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--brand-pale);
+  color: var(--brand);
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+.filter-active-pill button {
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: var(--brand);
+  cursor: pointer;
+}
+
+.story-item.active .story-avatar-wrap {
+  background: linear-gradient(135deg, var(--brand-light), var(--brand));
+  box-shadow: 0 0 0 2px var(--bg), 0 3px 12px rgba(16, 185, 129, 0.4);
+  transform: scale(1.05);
+}
+
+.story-avatar-inner {
+  width: 100%;
+  height: 100%;
+  border-radius: var(--radius-full);
+  background: var(--bg-card);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.75rem;
+  transition: background var(--transition);
+}
+
+.story-item.active .story-avatar-inner {
+  background: var(--brand-pale);
+}
+
+.story-name {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-2);
+  text-align: center;
+  line-height: 1.2;
+  max-width: 100%;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.story-item.active .story-name {
+  color: var(--brand);
+  font-weight: 800;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   STICKY FILTER BAR & VIEW TOGGLE
+═══════════════════════════════════════════════════════════════ */
+.view-toggle-btns {
+  display: flex;
+  align-items: center;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 2px;
+  box-shadow: var(--shadow-xs);
+}
+
+.view-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-3);
+  transition: all 0.15s ease;
+}
+
+.view-btn.active {
+  background: var(--brand);
+  color: #fff;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   GRID & LISTA DE PRODUTOS
+═══════════════════════════════════════════════════════════════ */
+.products-container {
+  padding-bottom: 30px;
+}
+
+.products-count-bar {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-3);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.products-count-bar span { color: var(--brand-light); }
+
+/* GRID MODE */
+.products-layout.grid-mode {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+/* LIST MODE */
+.products-layout.list-mode {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--header-h) + 24px);
+}
+
+@keyframes cardFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Card Produto (Base) */
+.prod-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-xs);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  cursor: pointer;
+  animation: cardFadeIn 0.32s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.prod-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--brand-light);
+}
+
+/* Grid Layout styling */
+.grid-mode .prod-thumb-box {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  background: var(--bg-card-sub);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.grid-mode .prod-thumb-box img {
+  width: 88%;
+  height: 88%;
+  object-fit: contain;
+  transition: transform 0.35s ease;
+}
+
+.prod-card:hover .prod-thumb-box img {
+  transform: scale(1.06);
+}
+
+.badge-form-pill {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  background: var(--bg-glass);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  padding: 2px 7px;
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: var(--text-2);
+}
+
+.grid-mode .prod-info-box {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.grid-mode .prod-meta-top {
+    display: flex;
+    gap: 4px;
+    flex-direction: column;
+    align-items: center;
+}
+
+.grid-mode .prod-ref {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--text-3);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.prod-pack-tag {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--brand-mid);
+  background: var(--brand-pale);
+  padding: 1px 6px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.grid-mode .prod-name {
+  font-size: 0.94rem;
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.prod-desc-line {
+  font-size: 0.78rem;
+  color: var(--text-2);
+  line-height: 1.42;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin: 3px 0 2px;
+}
+.prod-desc-line mark {
+  background: rgba(245, 158, 11, 0.3);
+  font-weight: 700;
+}
+
+.prod-targets-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+  margin-top: 2px;
+}
+
+.target-tag-chip {
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--brand-mid);
+  background: var(--brand-pale);
+  padding: 2px 6px;
+  border-radius: var(--radius-full);
+  white-space: nowrap;
+  text-transform: capitalize;
+}
+
+.target-more-chip {
+  font-size: 0.62rem;
+  font-weight: 800;
+  color: var(--text-3);
+  background: var(--bg-card-sub);
+  border: 1px solid var(--border);
+  padding: 1px 5px;
+  border-radius: var(--radius-full);
+}
+
+.grid-mode .prod-action-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.card-stepper-box {
+  display: flex;
+  align-items: center;
+  background: var(--bg-card-sub);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  height: 38px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.card-step-btn {
+  width: 30px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--text);
+  background: transparent;
+  transition: background 0.1s ease;
+  user-select: none;
+  cursor: pointer;
+}
+.card-step-btn:hover {
+  background: var(--border);
+}
+.card-step-btn:active {
+  background: var(--brand-pale);
+  color: var(--brand);
+}
+
+.card-step-input {
+  width: 34px;
+  height: 100%;
+  border: none;
+  background: transparent;
+  text-align: center;
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: var(--text);
+  outline: none;
+  -moz-appearance: textfield;
+  padding: 0;
+}
+.card-step-input::-webkit-outer-spin-button,
+.card-step-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.btn-card-quote {
+  flex: 1;
+  height: 38px;
+  background: var(--brand);
+  color: #fff;
+  border-radius: var(--radius-sm);
+  font-size: 0.82rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  box-shadow: 0 2px 8px rgba(15, 69, 49, 0.22);
+  transition: all var(--transition);
+  white-space: nowrap;
+  cursor: pointer;
+}
+.btn-card-quote:hover {
+  background: var(--brand-mid);
+  transform: translateY(-1px);
+}
+.btn-card-quote:active {
+  transform: scale(0.96);
+}
+.btn-card-quote.in-cart {
+  background: var(--brand-light);
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+}
+
+.btn-card-ficha-link {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--brand-light);
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  cursor: pointer;
+  transition: color var(--transition);
+}
+.btn-card-ficha-link:hover {
+  color: var(--brand);
+  text-decoration: underline;
+}
+
+/* List Layout Styling */
+.list-mode .prod-card {
+  flex-direction: row;
+  min-height: 140px;
+}
+
+.list-mode .prod-thumb-box {
+  width: 140px;
+  background: var(--bg-card-sub);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  padding: 8px;
+  position: relative;
+}
+
+.list-mode .prod-thumb-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.list-mode .prod-info-box {
+  padding: 14px 18px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-width: 0;
+  gap: 6px;
+}
+
+.list-mode .prod-ref {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--text-3);
+  text-transform: uppercase;
+}
+
+.list-mode .prod-name {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1.25;
+}
+
+.list-mode .prod-desc-line {
+  font-size: 0.82rem;
+  color: var(--text-2);
+  line-height: 1.45;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.list-mode .prod-action-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.list-mode .btn-quick-add {
+  height: 36px;
+  padding: 0 16px;
+  background: var(--brand);
+  color: #fff;
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.list-mode .btn-quick-add.in-cart { background: var(--brand-light); }
+
+/* Badges on Thumbs */
+.badge-star {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: linear-gradient(135deg, #f59e0b, #ea580c);
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  box-shadow: 0 2px 6px rgba(245, 158, 11, 0.4);
+}
+
+.badge-cat-emoji {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 26px;
+  height: 26px;
+  border-radius: var(--radius-full);
+  background: var(--bg-glass);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  border: 1px solid var(--border);
+}
+
+/* Empty State */
+.empty-box {
+  display: none;
+  text-align: center;
+  padding: 50px 20px;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+.empty-box.show { display: flex; }
+.empty-icon { font-size: 3.5rem; }
+.empty-title { font-size: 1.2rem; font-weight: 800; color: var(--text); }
+.empty-desc { font-size: 0.9rem; color: var(--text-3); max-width: 320px; }
+
+/* ═══════════════════════════════════════════════════════════════
+   DETALHES DO PRODUTO (Bottom Sheet Mobile / Split Modal Desktop)
+═══════════════════════════════════════════════════════════════ */
+.sheet-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.28s ease;
+}
+.sheet-backdrop.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.bottom-sheet {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1001;
+  max-height: 90vh;
+  height: 90vh;
+  background: var(--bg-sheet);
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  display: flex;
+  flex-direction: column;
+  transform: translateY(105%);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: transform 0.32s cubic-bezier(0.33, 1, 0.68, 1), opacity 0.25s ease, visibility 0.25s ease;
+  box-shadow: var(--shadow-sheet);
+}
+.bottom-sheet.show {
+  transform: translateY(0);
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.sheet-handle-bar {
+  width: 100%;
+  padding: 10px 0 6px;
+  display: flex;
+  justify-content: center;
+  flex-shrink: 0;
+  cursor: grab;
+}
+
+.sheet-handle {
+  width: 44px;
+  height: 5px;
+  border-radius: var(--radius-full);
+  background: var(--border);
+}
+
+.sheet-head {
+  padding: 0 20px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border-subtle);
+  flex-shrink: 0;
+}
+
+.sheet-title-tag {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--brand-light);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.sheet-close-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-full);
+  background: var(--bg-card-sub);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  color: var(--text-2);
+  transition: all var(--transition);
+}
+.sheet-close-btn:hover {
+  background: var(--border);
+  color: var(--danger);
+}
+
+.sheet-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 20px 90px;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Detalhes do Produto */
+.sheet-prod-img-box {
+  width: 100%;
+  height: 240px;
+  background: var(--bg-card-sub);
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  position: relative;
+}
+
+.sheet-prod-img-box img {
+  max-height: 90%;
+  max-width: 90%;
+  object-fit: contain;
+}
+
+.sheet-prod-meta {
+  margin-bottom: 16px;
+}
+
+.sheet-prod-ref {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-3);
+  text-transform: uppercase;
+}
+
+.sheet-prod-name {
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1.25;
+  margin: 4px 0 10px;
+}
+
+.sheet-badges-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.sheet-pill {
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+.sheet-pill.cat { background: var(--brand-pale); color: var(--brand); }
+.sheet-pill.form { background: rgba(59, 130, 246, 0.15); color: #2563eb; }
+.sheet-pill.star { background: rgba(245, 158, 11, 0.15); color: #d97706; }
+
+/* Tabs */
+.sheet-tabs-nav {
+  display: flex;
+  gap: 6px;
+  background: var(--bg-card-sub);
+  padding: 4px;
+  border-radius: var(--radius-sm);
+  margin: 16px 0 14px;
+}
+
+.sheet-tab-btn {
+  flex: 1;
+  padding: 8px 6px;
+  border-radius: var(--radius-xs);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-3);
+  text-align: center;
+  transition: all 0.15s ease;
+}
+
+.sheet-tab-btn.active {
+  background: var(--bg-card);
+  color: var(--text);
+  box-shadow: var(--shadow-xs);
+}
+
+.sheet-tab-content { display: none; }
+.sheet-tab-content.active { display: block; animation: tabFade 0.2s ease; }
+@keyframes tabFade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+
+.sheet-desc-text {
+  font-size: 0.9rem;
+  color: var(--text-2);
+  line-height: 1.7;
+}
+.sheet-desc-text p { margin-bottom: 10px; }
+.sheet-desc-text strong { color: var(--text); }
+
+.sheet-list-items {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sheet-list-item {
+  padding: 10px 14px;
+  background: var(--bg-card-sub);
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  color: var(--text-2);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.sheet-list-item::before {
+  content: '✓';
+  color: var(--brand-light);
+  font-weight: 900;
+}
+
+.sheet-alvos-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.alvo-chip {
+  padding: 6px 12px;
+  border-radius: var(--radius-full);
+  background: var(--brand-pale);
+  color: var(--brand);
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+/* Floating Action Footer */
+.sheet-floating-footer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--bg-sheet);
+  border-top: 1px solid var(--border);
+  padding: 12px 20px calc(12px + var(--safe-bottom));
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+}
+
+.stepper-box {
+  display: flex;
+  align-items: center;
+  background: var(--bg-card-sub);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  height: 48px;
+  overflow: hidden;
+}
+
+.stepper-btn {
+  width: 42px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--text);
+}
+.stepper-btn:hover { background: var(--border); }
+
+.stepper-val {
+  width: 48px;
+  text-align: center;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.btn-sheet-cta {
+  flex: 1;
+  height: 48px;
+  border-radius: var(--radius-sm);
+  background: var(--brand);
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 4px 16px rgba(15, 69, 49, 0.3);
+  transition: all var(--transition);
+}
+.btn-sheet-cta:hover {
+  background: var(--brand-mid);
+  transform: translateY(-1px);
+}
+
+.btn-share-prod {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-card-sub);
+  border: 1.5px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text);
+  font-size: 1.15rem;
+  transition: all var(--transition);
+}
+.btn-share-prod:hover {
+  background: var(--border);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   CARRINHO / ORÇAMENTO DRAWER (Slide Right no Desktop)
+═══════════════════════════════════════════════════════════════ */
+.cart-sheet-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 20px 120px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.cart-items-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.cart-item-card {
+  background: var(--bg-card-sub);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.cart-item-pic {
+  width: 64px;
+  height: 64px;
+  background: var(--bg-card);
+  border-radius: var(--radius-sm);
+  padding: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.cart-item-pic img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.cart-item-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.cart-item-title {
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cart-item-subtitle {
+  font-size: 0.72rem;
+  color: var(--text-3);
+  margin-bottom: 6px;
+}
+
+.cart-item-stepper {
+  display: inline-flex;
+  align-items: center;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xs);
+  height: 30px;
+}
+
+.cart-step-btn {
+  width: 30px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--text);
+}
+.cart-step-btn:hover { background: var(--border); }
+
+.cart-step-num {
+  padding: 0 10px;
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.cart-del-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-3);
+  font-size: 1rem;
+  transition: all var(--transition);
+}
+.cart-del-btn:hover {
+  background: rgba(239, 68, 68, 0.15);
+  color: var(--danger);
+}
+
+/* Formulário de Dados */
+.client-form-card {
+  background: var(--bg-card-sub);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 16px;
+}
+
+.form-head-title {
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.form-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 12px;
+}
+
+.form-field-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-2);
+}
+.form-field-label .req { color: var(--danger); }
+
+.form-field-input {
+  height: 44px;
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0 14px;
+  color: var(--text);
+  outline: none;
+  transition: border-color var(--transition);
+}
+
+.form-field-input.has-error {
+  border-color: var(--danger);
+}
+
+.vendedor-select-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.vendedor-select-wrap select {
+  width: 100%;
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  padding-right: 36px;
+}
+.vendedor-select-arrow {
+  position: absolute;
+  right: 14px;
+  pointer-events: none;
+  font-size: 0.8rem;
+  color: var(--text-3);
+}
+
+.btn-clear-vendedor {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--danger);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  margin-top: 4px;
+  align-self: flex-start;
+  display: none;
+  align-items: center;
+  gap: 3px;
+  padding: 0;
+}
+.btn-clear-vendedor.show {
+  display: inline-flex;
+}
+
+.cart-footer-bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--bg-sheet);
+  border-top: 1px solid var(--border);
+  padding: 14px 20px calc(14px + var(--safe-bottom));
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-shadow: 0 -6px 24px rgba(0,0,0,0.1);
+}
+
+.cart-summary-line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-2);
+}
+.cart-summary-line strong {
+  font-size: 1.1rem;
+  color: var(--brand-light);
+}
+
+.btn-send-whatsapp {
+  width: 100%;
+  height: 50px;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, #25D366, #1da851);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 4px 16px var(--wa-glow);
+  transition: transform 0.15s ease;
+}
+.btn-send-whatsapp:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(37, 211, 102, 0.45);
+}
+
+.btn-share-link {
+  width: 100%;
+  height: 42px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-card-sub);
+  color: var(--text-2);
+  border: 1px dashed var(--border);
+  font-size: 0.88rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all var(--transition);
+  margin-top: 8px;
+}
+.btn-share-link:hover {
+  background: var(--brand-pale);
+  color: var(--brand-mid);
+  border-color: var(--brand-light);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   BOTTOM NAVIGATION BAR MOBILE
+═══════════════════════════════════════════════════════════════ */
+.app-bottom-nav {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 850;
+  height: calc(var(--bottom-h) + var(--safe-bottom));
+  padding-bottom: var(--safe-bottom);
+  background: var(--bg-glass);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.nav-tab-btn {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  color: var(--text-3);
+  font-size: 0.68rem;
+  font-weight: 700;
+  position: relative;
+  transition: color 0.15s ease, transform 0.15s ease;
+}
+.nav-tab-btn.active {
+  color: var(--brand-light);
+}
+
+.nav-tab-icon {
+  font-size: 1.35rem;
+  line-height: 1;
+}
+
+.nav-cart-badge {
+  position: absolute;
+  top: 6px;
+  right: 50%;
+  margin-right: -16px;
+  min-width: 17px;
+  height: 17px;
+  padding: 0 4px;
+  border-radius: var(--radius-full);
+  background: var(--brand-light);
+  color: #fff;
+  font-size: 0.62rem;
+  font-weight: 900;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+.nav-cart-badge.show { display: flex; }
+
+/* ═══════════════════════════════════════════════════════════════
+   FOOTER DESKTOP COMPLETO
+═══════════════════════════════════════════════════════════════ */
+.site-desktop-footer {
+  background: var(--brand-dark);
+  color: rgba(255,255,255,0.85);
+  border-top: 1px solid var(--border);
+  padding: 40px 0 24px;
+  margin-top: 30px;
+}
+
+.footer-main-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 30px;
+  margin-bottom: 30px;
+}
+
+.footer-col-brand h3 {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.footer-col-brand p {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.7);
+  line-height: 1.6;
+}
+
+.footer-col h4 {
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 12px;
+}
+
+.footer-links-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.footer-links-list a {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.7);
+  transition: color var(--transition);
+}
+.footer-links-list a:hover {
+  color: var(--brand-light);
+}
+
+.footer-bottom-bar {
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding-top: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.5);
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   TOAST FEEDBACK
+═══════════════════════════════════════════════════════════════ */
+.app-toast-box {
+  position: fixed;
+  top: calc(var(--header-h) + var(--safe-top) + 12px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  pointer-events: none;
+  width: 90%;
+  max-width: 380px;
+}
+
+.app-toast {
+  background: var(--text);
+  color: var(--bg);
+  padding: 10px 18px;
+  border-radius: var(--radius-full);
+  font-size: 0.85rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+  animation: toastSlideDown 0.25s ease forwards;
+}
+.app-toast.out { animation: toastSlideUp 0.25s ease forwards; }
+@keyframes toastSlideDown { from { opacity: 0; transform: translateY(-16px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes toastSlideUp { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-16px); } }
+
+/* ═══════════════════════════════════════════════════════════════
+   DESKTOP ADAPTATION RULES (> 768px & > 1024px)
+═══════════════════════════════════════════════════════════════ */
+@media (min-width: 768px) {
+  body {
+    padding-bottom: 0px; /* Sem bottom nav no desktop */
+  }
+
+  .app-bottom-nav {
+    display: none;
+  }
+
+  /* Header Desktop */
+  .header-search-desktop {
+    display: block;
+  }
+  .search-section {
+    display: none; /* A busca já fica no header */
+  }
+  .btn-header-pdf, .btn-header-cart {
+    display: inline-flex;
+  }
+
+  /* Hero Split View */
+  .hero-content-grid {
+    grid-template-columns: 1.6fr 1fr;
+    align-items: center;
+  }
+  .hero-stats-desktop {
+    display: flex;
+  }
+
+  /* Grid de Produtos 3 e 4 Colunas */
+  .products-layout.grid-mode {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+
+  /* Split Modal de Produto no Desktop (Centralizado perfeitamente com scale + opacity) */
+  #product-bottom-sheet {
+    max-width: 860px;
+    width: 90vw;
+    left: 50%;
+    right: auto;
+    bottom: auto;
+    top: 50%;
+    margin-top: 0;
+    height: auto;
+    max-height: 85vh;
+    border-radius: var(--radius-xl);
+    transform: translate(-50%, -50%) scale(0.95);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: transform 0.25s cubic-bezier(0.33, 1, 0.68, 1), opacity 0.25s ease, visibility 0.25s ease;
+  }
+  #product-bottom-sheet.show {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  #product-sheet-body {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 24px;
+    padding: 20px 24px 80px;
+  }
+  .sheet-prod-img-box {
+    height: 100%;
+    max-height: 380px;
+    margin-bottom: 0;
+  }
+
+  /* Carrinho como Drawer Lateral Direito no Desktop */
+  #cart-bottom-sheet {
+    width: 440px;
+    left: auto;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    height: 100vh;
+    max-height: 100vh;
+    border-radius: 0;
+    transform: translateX(105%);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: transform 0.3s cubic-bezier(0.33, 1, 0.68, 1), opacity 0.25s ease, visibility 0.25s ease;
+  }
+  #cart-bottom-sheet.show {
+    transform: translateX(0);
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+  .cart-sheet-body {
+    padding: 20px 20px 130px;
+  }
+}
+
+@media (min-width: 1080px) {
+  .products-layout.grid-mode {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+  }
+}
+
+mark {
+  background: rgba(245, 158, 11, 0.3);
+  color: inherit;
+  border-radius: 3px;
+  padding: 0 2px;
+}
+</style>
+</head>
+<body>
+
+<!-- ══ APP HEADER (RESPONSIVO) ═════════════════════════════════ -->
+<header class="app-header">
+  <div class="header-row container">
+    <!-- Logo -->
+    <div class="header-brand" onclick="scrollToTop()">
+      <div class="brand-icon">🌿</div>
+      <div class="brand-titles">
+        <span class="brand-name">Rawell Química</span>
+        <span class="brand-badge">Catálogo Oficial 2026</span>
+      </div>
+    </div>
+
+    <!-- Barra de Pesquisa Integrada no Desktop -->
+    <div class="header-search-desktop">
+      <span class="desktop-search-icon">
+        <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2.5" fill="none"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <input type="search" id="desktop-search-input" class="desktop-search-input" placeholder="Buscar por produto, praga ou princípio ativo..." autocomplete="off">
+      <span class="desktop-search-shortcut">/</span>
+    </div>
+
+    <!-- Ações do Topo -->
+    <div class="header-actions">
+      <button class="btn-header-install" id="btn-install-app" onclick="triggerPWAInstall()" style="display:none;" title="Instalar aplicativo no celular ou computador">
+        📲 Instalar App
+      </button>
+      <a href="Cátalogo 2026.pdf" download class="btn-header-pdf">
+        📥 Baixar PDF
+      </a>
+      <button class="icon-btn" id="theme-toggle-btn" onclick="toggleTheme()" title="Alternar Tema Claro/Escuro">
+        🌙
+      </button>
+      <button class="btn-header-cart" onclick="openCartSheet()">
+        🛒 Orçamento
+        <span class="cart-pill-count" id="header-cart-pill">0</span>
+      </button>
+      <button class="icon-btn" onclick="openCartSheet()" id="btn-mobile-cart-icon" style="display:none;" title="Abrir Orçamento">
+        🛒
+        <span class="icon-btn-badge" id="header-cart-badge">0</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ══ SEARCH BAR MOBILE (Visível apenas em telas pequenas) ════ -->
+<section class="search-section container">
+  <div class="search-bar-wrap">
+    <div class="search-bar">
+      <span class="search-icon">
+        <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2.5" fill="none"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <input type="search" id="main-search-input" class="search-input" placeholder="Buscar praga, produto ou princípio..." autocomplete="off">
+      <button class="search-clear-btn" id="search-clear-btn" onclick="clearSearch()">✕</button>
+    </div>
+  </div>
+
+  <div class="quick-tags-wrap">
+    <span class="quick-tag-label">🔥 Mais Buscados:</span>
+    <button class="quick-tag" onclick="quickSearch('Tiririca')">🌱 Tiririca</button>
+    <button class="quick-tag" onclick="quickSearch('Roseta')">🌾 Roseta</button>
+    <button class="quick-tag" onclick="quickSearch('Baratas')">🪳 Baratas</button>
+    <button class="quick-tag" onclick="quickSearch('Moscas')">🪰 Moscas</button>
+    <button class="quick-tag" onclick="quickSearch('Cupim')">🪵 Cupins</button>
+    <button class="quick-tag" onclick="quickSearch('Orquídeas')">🌸 Fungos</button>
+    <button class="quick-tag" onclick="quickSearch('Formigas')">🐜 Formigas</button>
+  </div>
+</section>
+
+<!-- ══ HERO BANNER COM SPLIT VIEW DESKTOP ═════════════════════ -->
+<section class="container">
+  <div class="hero-compact">
+    <div class="hero-content-grid">
+      <div>
+        <div class="hero-pill">✨ Orçamento Direto &amp; Rápido</div>
+        <h1 class="hero-title-m">Monte seu pedido online.<br><span>Receba a melhor proposta no WhatsApp.</span></h1>
+        <p class="hero-sub-m" style="margin-bottom:0;">Selecione os produtos desejados, ajuste as quantidades e envie sua lista com 1 clique para nossa equipe comercial.</p>
+      </div>
+
+      <!-- Estatísticas Visuais no Desktop -->
+      <div class="hero-stats-desktop">
+        <div class="stat-bubble">
+          <div class="stat-bubble-num">32</div>
+          <div class="stat-bubble-label">Produtos Oficiais</div>
+        </div>
+        <div class="stat-bubble">
+          <div class="stat-bubble-num">10</div>
+          <div class="stat-bubble-label">Linhas Especiais</div>
+        </div>
+        <div class="stat-bubble">
+          <div class="stat-bubble-num">100%</div>
+          <div class="stat-bubble-label">Garantia Técnica</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CARROSSEL DE CATEGORIAS ════════════════════════════════ -->
+<section class="categories-slider-section container">
+  <div class="section-head-m">
+    <h2 class="section-title-m">Navegar por Linhas e Categorias <span>🌿</span></h2>
+    <span class="section-more-link" onclick="setCategory('todos')">Exibir Todos os Produtos</span>
+  </div>
+  <div class="categories-story-track" id="categories-story-track">
+    <!-- Inserido dinamicamente pelo JS -->
+  </div>
+</section>
+
+<!-- ══ CATÁLOGO DE PRODUTOS ═══════════════════════════════════ -->
+<main class="products-container container" id="products-section">
+  <div class="products-count-bar">
+    <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+      <div id="products-count-label">Carregando catálogo de produtos...</div>
+      <div id="filter-active-indicator"></div>
+    </div>
+
+    <div class="view-toggle-btns">
+      <button class="view-btn active" id="btn-view-grid" onclick="setViewMode('grid')" title="Visualização em Grade">
+        <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      </button>
+      <button class="view-btn" id="btn-view-list" onclick="setViewMode('list')" title="Visualização em Lista">
+        <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="products-layout grid-mode" id="products-layout">
+    <!-- Renderizado dinamicamente pelo JS -->
+  </div>
+
+  <div class="empty-box" id="empty-state-box">
+    <div class="empty-icon">🔍</div>
+    <h3 class="empty-title">Nenhum produto correspondente</h3>
+    <p class="empty-desc">Não encontramos produtos com os termos ou filtros selecionados. Tente limpar os filtros para ver todo o catálogo.</p>
+    <button class="hero-btn-primary" style="margin-top:12px; padding:0 24px; height:42px;" onclick="resetAllFilters()">
+      Ver Todos os 32 Produtos
+    </button>
+  </div>
+</main>
+
+<!-- ══ FOOTER DESKTOP COMPLETO ═════════════════════════════════ -->
+<footer class="site-desktop-footer">
+  <div class="container">
+    <div class="footer-main-grid">
+      <div class="footer-col-brand">
+        <h3>🌿 Rawell Química</h3>
+        <p>Referência nacional em defensivos seletivos, saneantes domissanitários e soluções de alta eficiência para jardinagem e saúde pública.</p>
+      </div>
+      <div class="footer-col" style="grid-column: span 2;">
+        <h4>Categorias Oficiais 2026</h4>
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+          <div class="footer-links-list">
+            <a href="javascript:void(0)" onclick="setCategory('gramados')">🌱 Gramados &amp; Seletivos (5)</a>
+            <a href="javascript:void(0)" onclick="setCategory('nao-seletivos')">🌾 Não Seletivos - Capina (3)</a>
+            <a href="javascript:void(0)" onclick="setCategory('fungicidas')">🌸 Fungicidas &amp; Flores (4)</a>
+            <a href="javascript:void(0)" onclick="setCategory('inseticidas')">🪳 Inseticidas &amp; Pragas (6)</a>
+            <a href="javascript:void(0)" onclick="setCategory('mosquicidas')">🪰 Controle de Moscas (3)</a>
+          </div>
+          <div class="footer-links-list">
+            <a href="javascript:void(0)" onclick="setCategory('formicidas-baratas')">🐜 Formigas &amp; Baratas (3)</a>
+            <a href="javascript:void(0)" onclick="setCategory('raticidas')">🐀 Raticidas &amp; Roedores (2)</a>
+            <a href="javascript:void(0)" onclick="setCategory('lesmicidas')">🐌 Caramujos &amp; Lesmas (2)</a>
+            <a href="javascript:void(0)" onclick="setCategory('carrapatos-pulgas')">🐕 Carrapatos &amp; Pulgas (2)</a>
+            <a href="javascript:void(0)" onclick="setCategory('adjuvantes')">🧪 Adjuvantes &amp; pH (2)</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Atendimento Comercial</h4>
+        <div class="footer-links-list">
+          <a href="https://api.whatsapp.com/send?phone=5545999332563" target="_blank">📱 WhatsApp: (45) 99933-2563</a>
+          <a href="javascript:void(0)">🏢 Paraná — Brasil</a>
+          <a href="Cátalogo 2026.pdf" download style="color:var(--brand-light); font-weight:700;">📥 Baixar Catálogo em PDF</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom-bar">
+      <span>© 2026 Rawell Química. Todos os direitos reservados.</span>
+      <span>Catálogo restrito para clientes, distribuidores e parceiros autorizados.</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ══ MODAL DE DETALHES DO PRODUTO (ADAPTATIVO) ═══════════════ -->
+<div class="sheet-backdrop" id="product-sheet-backdrop" onclick="closeProductSheet()"></div>
+<div class="bottom-sheet" id="product-bottom-sheet" role="dialog" aria-modal="true">
+  <div class="sheet-handle-bar" onclick="closeProductSheet()">
+    <div class="sheet-handle"></div>
+  </div>
+  <div class="sheet-head">
+    <span class="sheet-title-tag" id="sheet-head-tag">ESPECIFICAÇÕES DO PRODUTO</span>
+    <button class="sheet-close-btn" onclick="closeProductSheet()">✕</button>
+  </div>
+
+  <div class="sheet-body" id="product-sheet-body">
+    <!-- Renderizado dinamicamente pelo JS -->
+  </div>
+
+  <div class="sheet-floating-footer">
+    <div class="stepper-box">
+      <button class="stepper-btn" onclick="adjustSheetQty(-1)">−</button>
+      <span class="stepper-val" id="sheet-qty-val">1</span>
+      <button class="stepper-btn" onclick="adjustSheetQty(1)">+</button>
+    </div>
+    <button class="btn-sheet-cta" id="btn-sheet-add" onclick="addSheetProductToCart()">
+      <span>🛒</span> Adicionar ao Orçamento
+    </button>
+    <button class="btn-share-prod" onclick="shareCurrentProduct()" title="Compartilhar no WhatsApp">
+      📤
+    </button>
+  </div>
+</div>
+
+<!-- ══ DRAWER DE ORÇAMENTO (LATERAL NO DESKTOP) ════════════════ -->
+<div class="sheet-backdrop" id="cart-sheet-backdrop" onclick="closeCartSheet()"></div>
+<div class="bottom-sheet" id="cart-bottom-sheet" role="dialog" aria-modal="true">
+  <div class="sheet-handle-bar" onclick="closeCartSheet()">
+    <div class="sheet-handle"></div>
+  </div>
+  <div class="sheet-head">
+    <span class="sheet-title-tag">MEU ORÇAMENTO — RAWELL QUÍMICA</span>
+    <button class="sheet-close-btn" onclick="closeCartSheet()">✕</button>
+  </div>
+
+  <div class="cart-sheet-body" id="cart-sheet-body">
+    <div id="cart-content-area"></div>
+  </div>
+
+  <div class="cart-footer-bar" id="cart-footer-bar" style="display:none;">
+    <div class="cart-summary-line">
+      <span>Total Selecionado:</span>
+      <strong id="cart-summary-qty">0 itens</strong>
+    </div>
+    <button class="btn-send-whatsapp" onclick="sendQuoteToWhatsApp()">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+      Enviar Cotação pelo WhatsApp
+    </button>
+    <button class="btn-share-link" onclick="copyCartShareLink()">
+      <span>🔗</span> Copiar Link do Orçamento
+    </button>
+  </div>
+</div>
+
+<!-- ══ BOTTOM NAV (Apenas Mobile) ══════════════════════════════ -->
+<nav class="app-bottom-nav">
+  <button class="nav-tab-btn active" id="tab-nav-catalog" onclick="scrollToTop()">
+    <span class="nav-tab-icon">🌿</span>
+    <span>Catálogo</span>
+  </button>
+  <button class="nav-tab-btn" id="tab-nav-search" onclick="focusMainSearch()">
+    <span class="nav-tab-icon">🔍</span>
+    <span>Buscar</span>
+  </button>
+  <button class="nav-tab-btn" id="tab-nav-cats" onclick="scrollToCategories()">
+    <span class="nav-tab-icon">📑</span>
+    <span>Categorias</span>
+  </button>
+  <button class="nav-tab-btn" id="tab-nav-cart" onclick="openCartSheet()">
+    <span class="nav-tab-icon">🛒</span>
+    <span>Orçamento</span>
+    <span class="nav-cart-badge" id="bottom-cart-badge">0</span>
+  </button>
+</nav>
+
+<!-- ══ TOAST FEEDBACK ══════════════════════════════════════════ -->
+<div class="app-toast-box" id="app-toast-box"></div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+//  DADOS & BANCO DE PRODUTOS OFICIAIS
+// ═══════════════════════════════════════════════════════════════
+const CONFIG = {
+  whatsapp: '5545999332563',
+  empresa: 'Rawell Química — Catálogo 2026',
+  mensagem_intro: 'Olá! Gostaria de solicitar uma cotação dos seguintes produtos da Rawell Química:',
+  mensagem_fim: '✅ Aguardo retorno sobre disponibilidade e condições de fornecimento. Obrigado!'
+};
+
+const VENDEDORES = [
+  { id: '', nome: 'Atendimento Geral / Central', whatsapp: '5545999332563' },
+  { id: 'vendedor-1', nome: 'Vendedor 1', whatsapp: '5545999332563' },
+  { id: 'vendedor-2', nome: 'Vendedor 2', whatsapp: '5545999332563' }
+];
+
+const CATEGORIAS = [
+  { id:'todos',              nome:'Todos os Produtos',      icone:'🌿' },
+  { id:'gramados',           nome:'Gramados & Seletivos',   icone:'🌱' },
+  { id:'nao-seletivos',      nome:'Não Seletivos (Capina)', icone:'🌾' },
+  { id:'fungicidas',         nome:'Fungicidas & Flores',    icone:'🌸' },
+  { id:'inseticidas',        nome:'Inseticidas & Pragas',   icone:'🪳' },
+  { id:'mosquicidas',        nome:'Controle de Moscas',     icone:'🪰' },
+  { id:'formicidas-baratas', nome:'Formigas & Baratas',     icone:'🐜' },
+  { id:'raticidas',          nome:'Raticidas & Roedores',   icone:'🐀' },
+  { id:'lesmicidas',         nome:'Caramujos & Lesmas',     icone:'🐌' },
+  { id:'carrapatos-pulgas',  nome:'Carrapatos & Pulgas',    icone:'🐕' },
+  { id:'adjuvantes',         nome:'Adjuvantes & pH',        icone:'🧪' }
+];
+
+const FORMULACOES = [
+  { id:'todos',       nome:'Todas as Formas',    icone:'⚡' },
+  { id:'concentrado', nome:'Concentrados',       icone:'💧' },
+  { id:'pronto-uso',  nome:'Pronto Uso (Spray)', icone:'🚿' },
+  { id:'gel-isca',    nome:'Géis & Iscas',       icone:'🎯' },
+  { id:'po',          nome:'Pós Solúveis',       icone:'🧪' },
+  { id:'adjuvante',   nome:'Adjuvantes / Óleo',  icone:'🔬' }
+];
+
+const PRODUTOS = [
+  { id:1, nome:'Kapina Plus (60ml)', categoria:'gramados', tipo_formulacao:'concentrado', alvos:['amendoim bravo','avencas','quebra pedra rasteiro','trapoeraba','buva','desmodium','ciperaceas','erva de santa luzia','folhas largas','grama esmeralda'], descricao:'Desinfestante seletivo sistêmico para controle de ervas de folhas largas em gramados de grama esmeralda.', descricao_longa:'<p>O <strong>Kapina Plus</strong> é o mais completo do mercado para controle de ervas de folhas largas em gramados de grama esmeralda.</p><p><strong>Ervas controladas:</strong> Amendoim Bravo, Avencas, Quebra Pedra Rasteiro, Trapoeraba, Buva, Desmodium, Ciperáceas e Erva de Santa Luzia.</p><p><strong>Ação:</strong> Sistêmica. Não utilizar em gramados de folhas largas ou plantas do gênero Arachis.</p><p><strong>Embalagem:</strong> Frasco de 60ml (Caixa com 60 frascos).</p>', caracteristicas:['Ação sistêmica profunda','Exclusivo para grama esmeralda','Elimina folhas largas e tiriricas','Frasco 60ml (Caixa c/ 60 frascos)','Líder de mercado em gramados'], imagens:['img/produtos/p01-kapina-plus-60ml.webp'], unidade:'frasco', referencia:'KP-PLUS-60', destaque:true },
+  { id:2, nome:'Kapina Tradicional (60ml)', categoria:'gramados', tipo_formulacao:'concentrado', alvos:['tiririca','cyperaceas','rizomas','batatinhas','cebolinhas','folhas estreitas','grama esmeralda','gramados'], descricao:'Desinfestante seletivo para controle de Cyperáceas (tiririca) eliminando rizomas (batatinhas/cebolinhas).', descricao_longa:'<p>O <strong>Kapina</strong> é o desinfestante seletivo consagrado para controle de Cyperáceas (Tiririca) em gramados de folhas estreitas.</p><p>Elimina os rizomas subterrâneos (batatinhas ou cebolinhas), impedindo a rebrota sem provocar fitotoxicidade no gramado.</p><p><strong>Embalagem:</strong> Frasco de 60ml (Caixa com 60 frascos).</p>', caracteristicas:['Elimina rizomas e bulbos','Não provoca fito no gramado','Específico para folhas estreitas','Frasco 60ml (Caixa c/ 60 frascos)'], imagens:['img/produtos/p02-kapina-tradicional-60ml.webp'], unidade:'frasco', referencia:'KP-TRAD-60', destaque:true },
+  { id:3, nome:'Korsário (60ml)', categoria:'gramados', tipo_formulacao:'concentrado', alvos:['roseta','espinho de roseta','ervas daninhas','partes aereas','raiz','gramados'], descricao:'Controle TOTAL da Roseta em todos os tipos de gramados. Ação 200%: elimina 100% raiz e 100% partes aéreas.', descricao_longa:'<p>O <strong>Korsário</strong> promove o controle total e definitivo da Roseta em gramados residenciais e urbanos.</p><p><strong>Ação 200%:</strong> Elimina 100% da raiz e 100% das partes aéreas da praga.</p><p>Seletivo para todos os tipos de gramados convencionais.</p><p><strong>Embalagem:</strong> Frasco de 60ml (Caixa com 60 frascos).</p>', caracteristicas:['Controle TOTAL da Roseta','Seletivo para todos os gramados','Elimina raiz e folhas','Frasco 60ml (Caixa c/ 60 frascos)'], imagens:['img/produtos/p03-korsario-60ml.webp'], unidade:'frasco', referencia:'KOR-60', destaque:false },
+  { id:4, nome:'Katana (30ml)', categoria:'gramados', tipo_formulacao:'concentrado', alvos:['brachiaria','braquiaria','capim pe de galinha','capim colchao','folhas finas','grama esmeralda','grama bermuda'], descricao:'Único no Brasil para controle de folhas finas em gramados: Brachiaria, Capim pé de galinha e Capim colchão.', descricao_longa:'<p>O <strong>Katana</strong> é o único desinfestante no Brasil para controle seletivo de folhas finas invasoras no gramado.</p><p><strong>Controla:</strong> Capim Brachiaria, Capim Pé de Galinha e Capim Colchão.</p><p><strong>Indicação:</strong> Seletivo para Grama Esmeralda e Bermuda. Recomenda-se aplicar após as 16h.</p><p><strong>Embalagem:</strong> Frasco de 30ml (Caixa com 60 frascos).</p>', caracteristicas:['Único para folhas finas no Brasil','Controla Brachiaria e Pé de Galinha','Grama Esmeralda e Bermuda','Frasco 30ml (Caixa c/ 60 frascos)'], imagens:['img/produtos/p04-katana-30ml.webp'], unidade:'frasco', referencia:'KAT-30', destaque:true },
+  { id:5, nome:'Kcura Fungicida (100ml)', categoria:'gramados', tipo_formulacao:'concentrado', alvos:['fungos','mancha foliar','antracnose','podridao de raiz','doencas fungicas','gramado','jardim'], descricao:'Fungicida de amplo espectro para controle preventivo e curativo de doenças aéreas e de solo em gramados.', descricao_longa:'<p>O <strong>Kcura Fungicida</strong> é formulado especialmente para manter jardins e gramados protegidos contra ataques fúngicos.</p><p>Ação eficiente em fungos de parte aérea e do sistema radicular/solo.</p><p><strong>Embalagem:</strong> Frasco de 100ml (Caixa com 60 frascos).</p>', caracteristicas:['Amplo espectro de ação','Ação aérea e de solo','Curativo e preventivo','Frasco 100ml (Caixa c/ 60 frascos)'], imagens:['img/produtos/p05-kcura-fungicida-100ml.webp'], unidade:'frasco', referencia:'KCURA-100', destaque:false },
+  { id:6, nome:'Roçada (100ml)', categoria:'nao-seletivos', tipo_formulacao:'concentrado', alvos:['capina total','limpeza de terreno','mato','folhas largas','folhas estreitas','terrenos baldios','pos emergente','pre emergente'], descricao:'Desinfestante completo pós e pré-emergente com óleo mineral, sulfato de amônia e espalhante. Rende 300m².', descricao_longa:'<p>O <strong>Roçada</strong> oferece limpeza completa e duradoura de terrenos e áreas não cultivadas.</p><p>Formulação com Óleo Mineral, Sulfato de Amônia e Espalhante Adesivo de alta fixação. Garante até 90 dias de área limpa. Não contém POEA.</p><p><strong>Rendimento:</strong> Médio de 300m². Resultado completo em até 25 dias pós aplicação.</p><p><strong>Embalagem:</strong> Frasco 100ml (Caixa com 60 frascos).</p>', caracteristicas:['Pós e Pré Emergente','Até 90 dias de área limpa','Rende 300m² por frasco','Sem POEA (mais seguro)','Frasco 100ml (Caixa c/ 60 frascos)'], imagens:['img/produtos/p06-rocada-100ml.webp'], unidade:'frasco', referencia:'ROC-100', destaque:true },
+  { id:7, nome:'ArranKa EW (100ml)', categoria:'nao-seletivos', tipo_formulacao:'concentrado', alvos:['desinfestacao urbana','mato','folhas estreitas','folhas largas','calcadas','canteiros','muralhas','capina'], descricao:'Desinfestante não seletivo com Sulfato de Potássio e espalhante adesivo para desinfestação urbana.', descricao_longa:'<p>O <strong>ArranKa EW</strong> é ideal para desinfestação urbana completa contra folhas estreitas e largas.</p><p>Contém Sulfato de Potássio e espalhante adesivo integrado. Rende até 300m² de área. Não contém POEA.</p><p><strong>Embalagem:</strong> Frasco 100ml (Caixa com 60 frascos).</p>', caracteristicas:['Com espalhante adesivo','Sulfato de Potássio','Rendimento de 300m²','Frasco 100ml (Caixa c/ 60 frascos)'], imagens:['img/produtos/p07-arranka-ew-100ml.webp'], unidade:'frasco', referencia:'ARR-EW-100', destaque:false },
+  { id:8, nome:'ArranKa Pronto Uso (1 Litro)', categoria:'nao-seletivos', tipo_formulacao:'pronto-uso', alvos:['mato','ervas invasoras','capina','folhas largas','folhas estreitas','calcadas','jardins','pronto uso'], descricao:'Desinfestante sistêmico pronto para uso. Elimina plantas de folhas largas e estreitas sem precisar diluir.', descricao_longa:'<p>O <strong>ArranKa 1 Litro Pronto Uso</strong> é o desinfestante mais prático do mercado. Basta aplicar diretamente com o pulverizador.</p><p>Atua de modo sistêmico eliminando plantas de folhas largas e estreitas em pós-emergência.</p><p><strong>Rendimento:</strong> 300m² de área.</p><p><strong>Embalagem:</strong> Frasco de 1 Litro (Caixa com 12 frascos).</p>', caracteristicas:['Pronto para uso (sem diluição)','Frasco econômico de 1 Litro','Rendimento de 300m²','Caixa com 12 frascos'], imagens:['img/produtos/p08-arranka-pronto-uso-1l.webp'], unidade:'frasco', referencia:'ARR-PU-1L', destaque:true },
+  { id:9, nome:'Bravick Fungicida Concentrado (10ml)', categoria:'fungicidas', tipo_formulacao:'concentrado', alvos:['fungos','orquideas','manchas foliares','oidio','ferrugem','podridao negra','plantas ornamentais','flores','rosas'], descricao:'N° 1 do mercado no combate e controle completo de fungos e doenças em plantas ornamentais e orquídeas.', descricao_longa:'<p>O <strong>Bravick Fungicida</strong> é a solução de alta tecnologia para manter suas plantas ornamentais livres de fungos.</p><p>Fungicida sistêmico de amplo espectro para controle preventivo e curativo de manchas foliares, oídios e podridões.</p><p><strong>Embalagem:</strong> Frasco 10ml (Caixa com 60 frascos).</p>', caracteristicas:['Fungicida sistêmico de amplo espectro','Ideal para plantas ornamentais e flores','Preventivo e curativo','Frasco 10ml (Caixa c/ 60 frascos)'], imagens:['img/produtos/p09-bravick-fungicida-10ml.webp'], unidade:'frasco', referencia:'BRAV-10', destaque:true },
+  { id:10, nome:'Bravick Pronto Uso (240ml Spray)', categoria:'fungicidas', tipo_formulacao:'pronto-uso', alvos:['fungos','manchas foliares','oidio','plantas ornamentais','folhagens','flores','orquideas','rosas','samambaias'], descricao:'Fungicida sistêmico pronto para uso com aplicador spray para plantas ornamentais.', descricao_longa:'<p>Versão <strong>Pronto Uso do Bravick</strong> com gatilho spray ergonômico. Basta borrifar sobre as folhas infectadas ou preventivamente.</p><p><strong>Embalagem:</strong> Frasco 240ml com gatilho spray (Caixa com 24 frascos).</p>', caracteristicas:['Gatilho spray pronto uso','Não precisa diluir','Frasco 240ml (Caixa c/ 24 frascos)'], imagens:['img/produtos/p10-bravick-pronto-uso-240ml.webp'], unidade:'frasco', referencia:'BRAV-PU-240', destaque:false },
+  { id:11, nome:'Ka-Bio Fitoterápico Natural (60ml)', categoria:'fungicidas', tipo_formulacao:'concentrado', alvos:['pulgoes','cochonilhas','tripes','lagartas','insetos sugadores','mastigadores','horta','organico','natural','fitoterapico','mosca branca'], descricao:'Produto tradicional fitoterápico 100% natural para prevenção e controle de insetos mastigadores, raspadores e sugadores.', descricao_longa:'<p>O <strong>Ka-Bio</strong> é um produto tradicional fitoterápico natural, seguro e eficiente.</p><p>Eficaz para prevenção e controle de pragas como pulgões, cochonilhas, tripes e lagartas mastigadoras em hortas e jardins. Venda livre.</p><p><strong>Embalagem:</strong> Frasco de 60ml (Caixa com 60 frascos).</p>', caracteristicas:['100% Natural Fitoterápico','Controle de mastigadores e sugadores','Venda livre e ecológico','Frasco 60ml (Caixa c/ 60 frascos)'], imagens:['img/produtos/p11-ka-bio-fitoterapico-60ml.webp'], unidade:'frasco', referencia:'KABIO-60', destaque:false },
+  { id:12, nome:'Ka-Bio Pronto Uso (240ml Spray)', categoria:'fungicidas', tipo_formulacao:'pronto-uso', alvos:['pulgoes','cochonilhas','tripes','lagartas','hortas caseiras','pomar','plantas em vasos','organico','natural'], descricao:'Solução fitoterápica natural pronta para aplicação em spray para hortas, jardins e frutíferas.', descricao_longa:'<p>O <strong>Ka-Bio Pronto Uso 240ml</strong> combina a eficácia natural com a máxima praticidade de um frasco pulverizador.</p><p><strong>Embalagem:</strong> Frasco 240ml (Caixa com 24 frascos).</p>', caracteristicas:['Pronto uso com gatilho spray','Fitoterápico natural','Frasco 240ml (Caixa c/ 24 frascos)'], imagens:['img/produtos/p12-ka-bio-pronto-uso-240ml.webp'], unidade:'frasco', referencia:'KABIO-PU-240', destaque:false },
+  { id:13, nome:'Impakto Inseticida (250ml e 500ml)', categoria:'inseticidas', tipo_formulacao:'pronto-uso', alvos:['aranhas','baratas','cupins','formigas','cascudinho','pragas urbanas','sem cheiro','nao mancha'], descricao:'Inseticida de ação deletéria pronto uso para ambientes domésticos. Elimina aranhas, baratas, cupins e formigas.', descricao_longa:'<p>O <strong>Impakto</strong> é o inseticida definitivo para ambientes residenciais e comerciais.</p><p><strong>Pragas controladas:</strong> Aranhas, Baratas, Cupins e Formigas.</p><p>Não mancha pisos ou paredes, não tem cheiro e possui efeito residual prolongado.</p><p><strong>Embalagens:</strong> Frasco 250ml (Caixa c/ 24) e Frasco 500ml (Caixa c/ 16).</p>', caracteristicas:['Ação deletéria rápida','Não mancha e não tem cheiro','Residual prolongado','Frascos 250ml e 500ml'], imagens:['img/produtos/p13-impakto-inseticida.webp'], unidade:'frasco', referencia:'IMP-250-500', destaque:true },
+  { id:14, nome:'Fimo Combina Spray (40ml e 120ml)', categoria:'inseticidas', tipo_formulacao:'pronto-uso', alvos:['baratas','formigas','mosquitos','moscas','aranhas','escorpioes','pragas domesticas','com atrativo'], descricao:'Spray pronto uso de fácil aplicação com atrativo. Residual de até 6 meses contra pragas urbanas.', descricao_longa:'<p>O <strong>Fimo Combina</strong> proporciona ambientes livres de insetos e pragas urbanas sem necessidade de atingir o inseto diretamente.</p><p>Contém atrativo especial, não mancha, sem cheiro e com efeito residual de até 6 meses.</p><p><strong>Embalagens:</strong> Frasco 40ml (Caixa c/ 60) e Frasco 120ml (Caixa c/ 30).</p>', caracteristicas:['Residual de até 6 meses','Com atrativo especial','Não precisa atingir o inseto','Frascos de 40ml e 120ml'], imagens:['img/produtos/p14-fimo-combina-spray.webp'], unidade:'frasco', referencia:'FIMO-40-120', destaque:false },
+  { id:15, nome:'Pankada Multi-Insetos (30ml, 60ml, 250ml)', categoria:'inseticidas', tipo_formulacao:'concentrado', alvos:['acaros','barata germanica','baratinha','bicudo','cascudinho','mosca branca','larva mineradora','pulgoes','trips','desalojante'], descricao:'Inseticida desalojante de alta performance e baixa dosagem. Residual de até 180 dias contra múltiplos insetos.', descricao_longa:'<p>O <strong>Pankada</strong> é um potente agente desalojante para controle abrangente de pragas.</p><p><strong>Controla:</strong> Ácaros, Barata Germânica, Bicudo, Cascudinho, Mosca Branca, Larva Mineradora, Pulgões, Tribola e Trips.</p><p>Residual de até 180 dias. Não mancha e não tem cheiro.</p><p><strong>Embalagens:</strong> 30ml (Caixa c/ 120), 60ml (Caixa c/ 60) e 250ml (Caixa c/ 20).</p>', caracteristicas:['Poderoso agente desalojante','Residual de até 180 dias','Baixa dosagem e alta eficiência','Frascos 30ml, 60ml e 250ml'], imagens:['img/produtos/p15-pankada-multi-insetos.webp'], unidade:'frasco', referencia:'PANK-30-60-250', destaque:true },
+  { id:16, nome:'UNIX Repik (30ml)', categoria:'inseticidas', tipo_formulacao:'concentrado', alvos:['cupins de madeira','cupins subterraneos','baratas','formigas','fipronil','lambda cialotrina'], descricao:'Associação de Fipronil + Lambda-Cialotrina para controle eficiente de baratas, cupins e formigas.', descricao_longa:'<p>O <strong>UNIX Repik</strong> reúne dois princípios ativos de ponta (Fipronil e Lambda Cialotrina) para controle definitivo de pragas urbanas e domésticas.</p><p><strong>Embalagem:</strong> Frasco 30ml (Display com 30 frascos).</p>', caracteristicas:['Fipronil + Lambda Cialotrina','Eficaz contra Cupins e Baratas','Frasco 30ml (Display c/ 30 frascos)'], imagens:['img/produtos/p16-unix-repik-30ml.webp'], unidade:'frasco', referencia:'UNIX-REP-30', destaque:false },
+  { id:17, nome:'ArranKa SPM Saúde (Sachês 10g)', categoria:'inseticidas', tipo_formulacao:'po', alvos:['aranhas','baratas','formiga lava-pes','tracas','escorpioes','sache hidrossoluvel','desalojante'], descricao:'Sachê hidrossolúvel com umectante e desalojante para aranhas, baratas, formigas lava-pés e traças.', descricao_longa:'<p>O <strong>ArranKa SPM Saúde</strong> é prático e limpo: sachê que se dissolve 100% em água na calda de pulverização.</p><p>Possui agente desalojante e umectante. Elimina aranhas, baratas, formigas lava-pés e traças.</p><p><strong>Embalagens:</strong> Envelope com 3 sachês de 10g (Display c/ 34) e Caixa de 1kg (100 sachês de 10g).</p>', caracteristicas:['100% Hidrossolúvel','Com umectante e desalojante','Envelopes 3x10g e Caixa 1kg'], imagens:['img/produtos/p17-arranka-spm-saude.webp'], unidade:'envelope', referencia:'ARR-SPM-10', destaque:false },
+  { id:18, nome:'ArranKa PM (Lambda-Cialotrina 10%)', categoria:'inseticidas', tipo_formulacao:'po', alvos:['formiga lava-pes','pulgoes','aranhas','lagartas','lambda-cialotrina','po soluvel','desalojante'], descricao:'Pó solúvel hidrossolúvel de alto rendimento para controle de formiga lava-pés, pulgões e aranhas.', descricao_longa:'<p>O <strong>ArranKa PM</strong> contém Lambda-Cialotrina a 10% com agente desalojante integrado.</p><p><strong>Embalagem:</strong> Envelope com 2 sachês de 10g (Display com 34 envelopes / Caixa com 4 displays).</p>', caracteristicas:['Lambda-Cialotrina 10%','Sachê hidrossolúvel prático','Envelope 2x10g'], imagens:['img/produtos/p18-arranka-pm-lambda.webp'], unidade:'envelope', referencia:'ARR-PM-10', destaque:false },
+  { id:19, nome:'NaMosca GB (Sachê 20g)', categoria:'mosquicidas', tipo_formulacao:'gel-isca', alvos:['mosca domestica','moscas de estabulo','mosca de esterqueira','larvas de mosca','atrativo sexual','composteira'], descricao:'Mosquicida completo granulado com Thiametoxam 1% e atrativo sexual. Elimina adultos, pupas e larvas.', descricao_longa:'<p>O <strong>NaMosca GB</strong> é a isca mosquicida granulada com potente atrativo sexual e Thiametoxam 1%.</p><p>Longa vida residual e fácil reativação com água. Pode ser utilizado em esterqueiras, composteiras, depósitos e áreas residenciais. Venda livre.</p><p><strong>Embalagem:</strong> Sachê 20g (Display com 30 sachês / Caixa com 8 displays).</p>', caracteristicas:['Com atrativo sexual','Elimina adultos, pupas e larvas','Uso em esterqueiras e composteiras','Sachê 20g (Display c/ 30)'], imagens:['img/produtos/p19-namosca-gb-20g.webp'], unidade:'sachê', referencia:'NAMOSCA-20', destaque:true },
+  { id:20, nome:'BleKalt 25 (Thiamethoxam - 90g e 1kg)', categoria:'mosquicidas', tipo_formulacao:'po', alvos:['moscas','granjas','laticinios','frigorificos','ovos de mosca','larvas','pupas','mosca de chifre'], descricao:'Inseticida mosquicida profissional para granjas, laticínios e frigoríficos. Quebra o ciclo de desenvolvimento.', descricao_longa:'<p>O <strong>BleKalt 25</strong> age em todas as fases das moscas (ovo, larva, pupa e adulto), quebrando o ciclo reprodutivo.</p><p><strong>Modos de aplicação:</strong> Pulverização, pincelamento e/ou embebição em barbante.</p><p><strong>Embalagens:</strong> Frasco 90g (Display com 12) e Sachê de 1kg (Caixa com 10 sachês).</p>', caracteristicas:['Uso profissional em granjas e laticínios','Pulverização, pincel ou barbante','Elimina ovo, larva, pupa e adulto','Frasco 90g e Sachê 1kg'], imagens:['img/produtos/p20-blekalt-25.webp'], unidade:'un', referencia:'BLEK-90-1KG', destaque:true },
+  { id:21, nome:'Koral Moscas (60ml)', categoria:'mosquicidas', tipo_formulacao:'concentrado', alvos:['mosca domestica','moscas em padarias','restaurantes','cozinhas','acougues','sem cheiro','nao mancha'], descricao:'Inseticida para combate a moscas em residências, restaurantes e padarias. Sem cheiro e sem manchas.', descricao_longa:'<p>O <strong>Koral Moscas</strong> é desenvolvido para ambientes urbanos sensíveis (padarias, restaurantes, açougues e residências).</p><p>Ação deletéria, sem cheiro e sem deixar resíduos ou manchas.</p><p><strong>Embalagem:</strong> Frasco 60ml (Caixa com 60 frascos).</p>', caracteristicas:['Ideal para restaurantes e padarias','Não mancha e não tem cheiro','Longo período residual','Frasco 60ml (Caixa c/ 60 frascos)'], imagens:['img/produtos/p21-koral-moscas-60ml.webp'], unidade:'frasco', referencia:'KORAL-MOSC-60', destaque:false },
+  { id:22, nome:'Mata-Formiga Gel Indoxacarbe (Seringa 10g)', categoria:'formicidas-baratas', tipo_formulacao:'gel-isca', alvos:['formigas doceiras','formiga fantasma','formiga louca','ninho de formiga','rainha','efeito domino','formiga em cozinha'], descricao:'Gel formicida de alta atratividade com efeito dominó: elimina toda a colônia e formigueiro em até 72h.', descricao_longa:'<p>O <strong>Mata-Formiga Gel</strong> com Indoxacarbe atrai as formigas operárias que carregam o gel para dentro do ninho.</p><p><strong>Efeito Dominó:</strong> Elimina o formigueiro completo (inclusive a rainha) em até 72 horas.</p><p><strong>Embalagem:</strong> Seringa aplicadora de 10g (Caixa com 80 seringas).</p>', caracteristicas:['Efeito dominó (elimina rainha)','Ação em até 72h','Fácil aplicação em frestas','Seringa 10g (Caixa c/ 80 seringas)'], imagens:['img/produtos/p22-mata-formiga-gel-10g.webp'], unidade:'seringa', referencia:'GEL-FORM-10G', destaque:true },
+  { id:23, nome:'Mata-Barata Gel Imidacloprid (Seringa 10g)', categoria:'formicidas-baratas', tipo_formulacao:'gel-isca', alvos:['baratas de esgoto','periplaneta','baratinhas de cozinha','blattella germanica','ninho de baratas','efeito cascata'], descricao:'Gel baraticida com Imidacloprid de alta atratividade e efeito dominó para eliminação completa de ninhos.', descricao_longa:'<p>O <strong>Mata-Barata Gel</strong> é a solução profissional definitiva contra baratas de esgoto e baratinhas germânicas.</p><p>As baratas ingerem o gel, retornam ao esconderijo e contaminam toda a população pelo efeito cascata.</p><p><strong>Embalagem:</strong> Seringa aplicadora de 10g (Caixa com 80 seringas).</p>', caracteristicas:['Eficaz contra todas as baratas','Efeito dominó comprovado','Não mancha e não tem cheiro','Seringa 10g (Caixa c/ 80 seringas)'], imagens:['img/produtos/p23-mata-barata-gel-10g.webp'], unidade:'seringa', referencia:'GEL-BAR-10G', destaque:true },
+  { id:24, nome:'Mata-Formiga Isca Granulada Etiprole (50g)', categoria:'formicidas-baratas', tipo_formulacao:'gel-isca', alvos:['formigas cortadeiras','sauvas','quen-quem','cortadeiras de folhas','pastagens','jardins','pomares','etiprole'], descricao:'1ª isca formicida do mercado com Etiprole. Alta eficiência e baixa dosagem contra formigas Quen-Quém e Saúvas.', descricao_longa:'<p>A <strong>Isca Mata-Formiga Granulada</strong> é pioneira no mercado nacional com o princípio ativo Etiprole.</p><p>Desenvolvida especialmente para corte e eliminação de formigas cortadeiras Saúvas e Quen-Quéns em jardins, pomares e pastagens.</p><p><strong>Embalagem:</strong> Sachê 50g (Pacote com 10 sachês).</p>', caracteristicas:['1ª Isca com Etiprole do Brasil','Eficaz para Saúvas e Quen-Quéns','Maior rendimento e atratividade','Sachê 50g (Pacote c/ 10 sachês)'], imagens:['img/produtos/p24-mata-formiga-isca-50g.webp'], unidade:'sachê', referencia:'ISCA-ETIP-50', destaque:true },
+  { id:25, nome:'K-Rato Soft-Bait Isca Macia (150g e 2kg)', categoria:'raticidas', tipo_formulacao:'gel-isca', alvos:['ratos','camundongos','ratazanas','roedores','gordura de queijo','isca macia','galpoes','fazendas','depositos'], descricao:'Isca raticida macia com gordura de queijo de alta atratividade. Elimina ratos, camundongos e ratazanas.', descricao_longa:'<p>O <strong>K-Rato Soft-Bait</strong> é único no mercado por conter aroma e gordura de queijo de altíssima palatabilidade.</p><p>Ação rápida e segura para controle definitivo de roedores em residências, galpões, fazendas e depósitos. Venda livre.</p><p><strong>Embalagens:</strong> Sachê 150g (Display c/ 16) e Balde de 2kg (10 pacotes de 200g / Caixa c/ 4 baldes).</p>', caracteristicas:['Único com gordura de queijo','Elimina ratos e ratazanas','Isca macia de alta palatabilidade','Sachê 150g e Balde 2kg'], imagens:['img/produtos/p25-k-rato-soft-bait.webp'], unidade:'un', referencia:'KRATO-SOFT-150-2K', destaque:true },
+  { id:26, nome:'K-Rato Raticida Pó de Contato (100g, 250g, 1kg)', categoria:'raticidas', tipo_formulacao:'po', alvos:['ratos','ratazanas','camundongos','colonia de roedores','po de contato','ninhos','roedor seca'], descricao:'Pó fino aderente de contato para controle de colônias de roedores. Roedor seca totalmente após a morte.', descricao_longa:'<p>O <strong>K-Rato Pó</strong> é apresentado na forma de pó ultrafino dispersante que adere aos pelos e patas dos roedores.</p><p>Ao se lamberem nos ninhos, os animais ingerem o produto. O efeito ocorre a partir de 48h. O roedor seca após a morte sem exalar odores fortes.</p><p><strong>Embalagens:</strong> Frascos de 100g (Caixa c/ 40), 250g (Caixa c/ 40) e 1kg (Caixa c/ 10).</p>', caracteristicas:['Aderente aos pelos dos roedores','Contamina toda a colônia','Roedor seca após a morte','Frascos 100g, 250g e 1kg'], imagens:['img/produtos/p26-k-rato-po-contato.webp'], unidade:'frasco', referencia:'KRATO-PO-100-250-1K', destaque:false },
+  { id:27, nome:'Karamujo Garden (Sachê 30g)', categoria:'lesmicidas', tipo_formulacao:'gel-isca', alvos:['caramujos','lesmas','caramujo de jardim','hortas','jardinagem amadora','borax','resistente a chuva'], descricao:'Isca lesmicida registrada para uso em jardinagem amadora. Resistente à umidade e único com Borax.', descricao_longa:'<p>O <strong>Karamujo Garden</strong> é a 1ª isca lesmicida registrada para uso em jardinagem amadora e hortas caseiras.</p><p>Pronto uso, alta atratividade, resistente à chuva/umidade e único enriquecido com Borax. Venda livre.</p><p><strong>Embalagem:</strong> Display com 30 sachês de 30g (Caixa com 8 displays).</p>', caracteristicas:['Registrado p/ Jardinagem Amadora','Resistente à umidade e chuva','Único com Borax','Display c/ 30 sachês de 30g'], imagens:['img/produtos/p27-karamujo-garden-30g.webp'], unidade:'sachê', referencia:'KARM-GARD-30', destaque:true },
+  { id:28, nome:'Karamujo Metaldeído Pellets (200g e 1kg)', categoria:'lesmicidas', tipo_formulacao:'gel-isca', alvos:['caramujo africano','lesmas gigantes','grandes infestacoes','chacaras','fazendas','metaldeido pellets'], descricao:'Pellets de alta tecnologia para controle de Caramujo Africano e lesmas em grandes ambientes.', descricao_longa:'<p>O <strong>Karamujo Metaldeído Pellets</strong> foi desenvolvido para controle severo de infestações de Caramujo Africano e lesmas em chácaras, fazendas e grandes áreas verdes.</p><p>Alta durabilidade no solo com máxima atratividade e Borax integrado.</p><p><strong>Embalagens:</strong> Sachê 200g (Caixa c/ 30) e Sachê 1kg (Caixa c/ 10).</p>', caracteristicas:['Específico para Caramujo Africano','Pellets de alta durabilidade','Resistente a intempéries','Sachês 200g e 1kg'], imagens:['img/produtos/p28-karamujo-metaldeido-pellets.webp'], unidade:'sachê', referencia:'KARM-MET-200-1K', destaque:false },
+  { id:29, nome:'Koral Carrapatos e Pulgas (60ml)', categoria:'carrapatos-pulgas', tipo_formulacao:'concentrado', alvos:['carrapatos','pulgas','canis','patios','larvas de pulga','ovos de carrapato','ovicida','larvicida'], descricao:'Inseticida ovicida e larvicida de alta eficiência e baixa dosagem para controle em pátios e residências.', descricao_longa:'<p>O <strong>Koral Carrapatos e Pulgas</strong> quebra o ciclo reprodutivo dos parasitas atuando como ovicida e larvicida.</p><p><strong>Dosagem:</strong> Diluir apenas 3ml por litro de água limpa. Indicado para ambientes internos e externos.</p><p><strong>Embalagem:</strong> Frasco 60ml (Caixa com 60 frascos).</p>', caracteristicas:['Ovicida e Larvicida','Diluição de apenas 3ml/Litro','Quebra o ciclo de reprodução','Frasco 60ml (Caixa c/ 60 frascos)'], imagens:['img/produtos/p29-koral-carrapatos-pulgas-60ml.webp'], unidade:'frasco', referencia:'KOR-CARR-60', destaque:true },
+  { id:30, nome:'Koral Pronto Uso Spray (240ml)', categoria:'carrapatos-pulgas', tipo_formulacao:'pronto-uso', alvos:['carrapatos','pulgas','camas de pet','canis','pisos','pronto uso spray','casinhas de cachorro'], descricao:'Spray pronto para aplicação direta em pisos, canis e locais frequentados por animais.', descricao_longa:'<p>Versão <strong>Pronto Uso do Koral</strong> com pulverizador spray para aplicação direta nos locais de descanso e trânsito dos animais.</p><p><strong>Embalagem:</strong> Frasco 240ml com gatilho spray (Caixa com 24 frascos).</p>', caracteristicas:['Gatilho spray pronto para aplicar','Ovicida e Larvicida','Frasco 240ml (Caixa c/ 24 frascos)'], imagens:['img/produtos/p30-koral-pronto-uso-240ml.webp'], unidade:'frasco', referencia:'KOR-PU-240', destaque:false },
+  { id:31, nome:'Redutor de pH para Águas Duras (100ml)', categoria:'adjuvantes', tipo_formulacao:'adjuvante', alvos:['correcao de agua dura','regulador de ph','calda de pulverizacao','potencializador','carbonatos','cations livres'], descricao:'Nivelador e corretor de pH para águas duras. Neutraliza carbonatos e cátions livres na calda de aplicação.', descricao_longa:'<p>O <strong>Redutor de pH Rawell</strong> é fundamental para garantir a máxima eficácia dos defensivos e desinfestantes.</p><p>Neutraliza a dureza da água, cátions livres e carbonatos, ajustando o pH para a faixa ideal de absorção. Dosagem média de 2ml por litro de água.</p><p><strong>Embalagem:</strong> Frasco 100ml (Caixa com 60 frascos).</p>', caracteristicas:['Corrige dureza da água','Neutraliza cátions e carbonatos','Potencializa defensivos','Frasco 100ml (Caixa c/ 60 frascos)'], imagens:['img/produtos/p31-redutor-de-ph-100ml.webp'], unidade:'frasco', referencia:'RED-PH-100', destaque:false },
+  { id:32, nome:'Óleo Mineral Parafinado (100ml)', categoria:'adjuvantes', tipo_formulacao:'adjuvante', alvos:['aderencia','fixador de calda','anti-evaporante','adjuvante','emulsificante','gotas de pulverizacao'], descricao:'Adjuvante, emulsificante, fixador e potencializador de caldas de pulverização para múltiplas funções.', descricao_longa:'<p>O <strong>Óleo Mineral Parafinado Rawell</strong> atua como adjuvante de alta pureza.</p><p>Aumenta a aderência das gotas, reduz a evaporação, funciona como emulsificante e potencializa o efeito dos produtos aplicados. Dosagem recomendada: 1ml por litro de água.</p><p><strong>Embalagem:</strong> Frasco 100ml (Caixa com 60 frascos).</p>', caracteristicas:['Adjuvante e Fixador','Reduz evaporação da gota','Dosagem econômica: 1ml/Litro','Frasco 100ml (Caixa c/ 60 frascos)'], imagens:['img/produtos/p32-oleo-mineral-parafinado-100ml.webp'], unidade:'frasco', referencia:'OLEO-MIN-100', destaque:true }
+];
+
+// ═══════════════════════════════════════════════════════════════
+//  ESTADO DA APLICAÇÃO
+// ═══════════════════════════════════════════════════════════════
+let appState = {
+  cat: 'todos',
+  form: 'todos',
+  sort: 'destaque',
+  search: '',
+  viewMode: 'grid',
+  currentSheetProdId: null,
+  sheetQty: 1
+};
+
+let cartItems = [];
+const CART_STORAGE_KEY = 'rawell_cart_v2';
+const CLIENT_STORAGE_KEY = 'rawell_client_profile_v2';
+
+// ═══════════════════════════════════════════════════════════════
+//  UTILITÁRIOS
+// ═══════════════════════════════════════════════════════════════
+function normText(str) {
+  return (str || '').toString().normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();
+}
+
+function hapticFeedback(ms = 15) {
+  if ('vibrate' in navigator) {
+    try { navigator.vibrate(ms); } catch (e) {}
+  }
+}
+
+function highlightSearch(text, term) {
+  if (!term) return text;
+  const escaped = normText(term).replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+  const regex = new RegExp(`(${escaped})`, 'gi');
+  return text.replace(regex, '<mark>$1</mark>');
+}
+
+function smoothScrollTo(element, offset = 80, duration = 650) {
+  if (!element) return;
+  const start = window.pageYOffset || document.documentElement.scrollTop;
+  const target = Math.max(0, element.getBoundingClientRect().top + start - offset);
+  const distance = target - start;
+  
+  if (Math.abs(distance) < 15) return;
+
+  let startTime = null;
+  function step(currentTime) {
+    if (!startTime) startTime = currentTime;
+    const timeElapsed = currentTime - startTime;
+    const progress = Math.min(timeElapsed / duration, 1);
+    
+    // Curva de aceleração e desaceleração orgânica (easeInOutCubic)
+    const ease = progress < 0.5 
+      ? 4 * progress * progress * progress 
+      : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+    
+    window.scrollTo(0, start + (distance * ease));
+    
+    if (timeElapsed < duration) {
+      window.requestAnimationFrame(step);
+    }
+  }
+  window.requestAnimationFrame(step);
+}
+
+function scrollToTop() {
+  const start = window.pageYOffset || document.documentElement.scrollTop;
+  if (start <= 0) return;
+  hapticFeedback(10);
+  smoothScrollTo(document.body, 0, 500);
+}
+
+function scrollToProducts() {
+  const section = document.getElementById('products-section');
+  if (section) {
+    const headerHeight = window.innerWidth >= 768 ? 76 : 64;
+    smoothScrollTo(section, headerHeight + 14, 650);
+  }
+}
+
+function scrollToCategories() {
+  const sec = document.querySelector('.categories-slider-section');
+  if (sec) {
+    const headerHeight = window.innerWidth >= 768 ? 76 : 64;
+    smoothScrollTo(sec, headerHeight + 10, 600);
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  TEMA DARK / LIGHT
+// ═══════════════════════════════════════════════════════════════
+function initTheme() {
+  const saved = localStorage.getItem('rawell_theme') || 'auto';
+  applyTheme(saved);
+}
+
+function applyTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  localStorage.setItem('rawell_theme', theme);
+  const btn = document.getElementById('theme-toggle-btn');
+  if (btn) {
+    btn.textContent = theme === 'dark' ? '☀️' : '🌙';
+  }
+}
+
+function toggleTheme() {
+  hapticFeedback(20);
+  const current = document.documentElement.getAttribute('data-theme') || 'auto';
+  const next = current === 'dark' ? 'light' : 'dark';
+  applyTheme(next);
+  showToast(next === 'dark' ? '🌙 Modo Escuro ativado' : '☀️ Modo Claro ativado');
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  RENDERIZAÇÃO: CATEGORIAS STORIES
+// ═══════════════════════════════════════════════════════════════
+function renderStoriesCategories() {
+  const track = document.getElementById('categories-story-track');
+  if (!track) return;
+
+  track.innerHTML = CATEGORIAS.map(cat => {
+    const isActive = appState.cat === cat.id;
+    const count = cat.id === 'todos' ? PRODUTOS.length : PRODUTOS.filter(p => p.categoria === cat.id).length;
+    return `
+      <div class="story-item ${isActive ? 'active' : ''}" onclick="setCategory('${cat.id}')">
+        <div class="story-avatar-wrap">
+          <div class="story-avatar-inner">${cat.icone}</div>
+          <span class="story-badge-count">${count}</span>
+        </div>
+        <span class="story-name">${cat.nome}</span>
+      </div>
+    `;
+  }).join('');
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  RENDERIZAÇÃO: PRODUTOS & MODOS (GRID / LIST)
+// ═══════════════════════════════════════════════════════════════
+function getFilteredProducts() {
+  let list = [...PRODUTOS];
+
+  if (appState.cat !== 'todos') {
+    list = list.filter(p => p.categoria === appState.cat);
+  }
+
+  if (appState.form !== 'todos') {
+    list = list.filter(p => p.tipo_formulacao === appState.form);
+  }
+
+  if (appState.search) {
+    const term = normText(appState.search);
+    list = list.filter(p =>
+      normText(p.nome).includes(term) ||
+      normText(p.descricao).includes(term) ||
+      normText(p.referencia).includes(term) ||
+      p.alvos.some(alvo => normText(alvo).includes(term))
+    );
+  }
+
+  // Ordenação
+  if (appState.sort === 'nome-az') list.sort((a,b) => a.nome.localeCompare(b.nome));
+  else if (appState.sort === 'nome-za') list.sort((a,b) => b.nome.localeCompare(a.nome));
+  else if (appState.sort === 'ref') list.sort((a,b) => a.referencia.localeCompare(b.referencia));
+  else list.sort((a,b) => (b.destaque ? 1 : 0) - (a.destaque ? 1 : 0));
+
+  return list;
+}
+
+function renderProductList() {
+  const list = getFilteredProducts();
+  const container = document.getElementById('products-layout');
+  const emptyBox = document.getElementById('empty-state-box');
+  const countLabel = document.getElementById('products-count-label');
+  const filterIndicator = document.getElementById('filter-active-indicator');
+
+  if (!list.length) {
+    container.innerHTML = '';
+    emptyBox.classList.add('show');
+    countLabel.innerHTML = 'Nenhum resultado encontrado';
+    if (filterIndicator) filterIndicator.innerHTML = '';
+    return;
+  }
+
+  emptyBox.classList.remove('show');
+  countLabel.innerHTML = `Exibindo <span>${list.length}</span> de ${PRODUTOS.length} produtos`;
+
+  // Indicador de Filtro Ativo
+  if (filterIndicator) {
+    let pills = [];
+    if (appState.cat !== 'todos') {
+      const catObj = CATEGORIAS.find(c => c.id === appState.cat);
+      pills.push(`
+        <span class="filter-active-pill">
+          ${catObj ? catObj.icone + ' ' + catObj.nome : appState.cat}
+          <button onclick="setCategory('todos')" title="Remover filtro de categoria">✕</button>
+        </span>
+      `);
+    }
+    if (appState.search) {
+      pills.push(`
+        <span class="filter-active-pill">
+          🔍 "${appState.search}"
+          <button onclick="clearSearch()" title="Limpar busca">✕</button>
+        </span>
+      `);
+    }
+    filterIndicator.innerHTML = pills.join(' ');
+  }
+
+  const isGrid = appState.viewMode === 'grid';
+  container.className = `products-layout ${isGrid ? 'grid-mode' : 'list-mode'}`;
+
+  const term = appState.search;
+
+  container.innerHTML = list.map(p => {
+    const cartItem = cartItems.find(i => i.id === p.id);
+    const inCart = !!cartItem;
+    const catObj = CATEGORIAS.find(c => c.id === p.categoria);
+    const formObj = FORMULACOES.find(f => f.id === p.tipo_formulacao);
+    
+    // Identifica embalagem
+    const packFeature = p.caracteristicas.find(c => c.toLowerCase().includes('frasco') || c.toLowerCase().includes('caixa') || c.toLowerCase().includes('sachê') || c.toLowerCase().includes('display') || c.toLowerCase().includes('seringa') || c.toLowerCase().includes('balde') || c.toLowerCase().includes('envelope'));
+    const packTag = packFeature ? packFeature.split('(')[0].trim() : (p.unidade ? p.unidade.toUpperCase() : 'UN');
+
+    // Alvos principais (até 2 no grid, até 3 no list)
+    const targetsGrid = p.alvos.slice(0, 2);
+    const moreGridCount = p.alvos.length - targetsGrid.length;
+
+    const targetsList = p.alvos.slice(0, 4);
+    const moreListCount = p.alvos.length - targetsList.length;
+
+    // Benefício Chave
+    const keyBenefit = p.caracteristicas[0] || p.descricao;
+
+    if (isGrid) {
+      return `
+        <div class="prod-card" onclick="openProductSheet(${p.id})">
+          <div class="prod-thumb-box">
+            <img src="${p.imagens[0]}" alt="${p.nome}" loading="lazy">
+            ${p.destaque ? '<span class="badge-star">⭐ Top Vendas</span>' : ''}
+            <span class="badge-cat-emoji" title="${catObj ? catObj.nome : ''}">${catObj ? catObj.icone : '🌿'}</span>
+            <span class="badge-form-pill">${formObj ? formObj.icone + ' ' + formObj.nome.split(' ')[0] : '⚡'}</span>
+          </div>
+          <div class="prod-info-box">
+            <div>
+              <div class="prod-meta-top">
+                
+                <span class="prod-pack-tag">📦 ${packTag}</span>
+              </div>
+	      <span class="prod-ref">Ref: ${p.referencia}</span>
+              <h3 class="prod-name">${highlightSearch(p.nome, term)}</h3>
+              <p class="prod-desc-line">${highlightSearch(p.descricao, term)}</p>
+            </div>
+
+            <div>
+              <div class="prod-targets-row">
+                ${targetsGrid.map(a => `<span class="target-tag-chip">🎯 ${a}</span>`).join('')}
+                ${moreGridCount > 0 ? `<span class="target-more-chip">+${moreGridCount}</span>` : ''}
+              </div>
+              
+              <div class="prod-action-row" onclick="event.stopPropagation();">
+                <div class="card-stepper-box">
+                  <button class="card-step-btn" onclick="adjustCardQty(${p.id}, -1)" title="Diminuir">−</button>
+                  <input type="number" id="card-qty-${p.id}" class="card-step-input" value="1" min="1" max="999" onclick="this.select()" onchange="validateCardInput(this)">
+                  <button class="card-step-btn" onclick="adjustCardQty(${p.id}, 1)" title="Aumentar">+</button>
+                </div>
+                <button class="btn-card-quote ${inCart ? 'in-cart' : ''}" onclick="addFromCard(${p.id})" title="Adicionar à cotação">
+                  ${inCart ? `✓ Cotar (${cartItem.quantidade})` : '+ Cotar'}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    } else {
+      return `
+        <div class="prod-card" onclick="openProductSheet(${p.id})">
+          <div class="prod-thumb-box">
+            <img src="${p.imagens[0]}" alt="${p.nome}" loading="lazy">
+            ${p.destaque ? '<span class="badge-star">⭐ Top Vendas</span>' : ''}
+            <span class="badge-form-pill">${formObj ? formObj.icone + ' ' + formObj.nome : '⚡'}</span>
+          </div>
+          <div class="prod-info-box">
+            <div>
+              <div class="prod-meta-top" style="margin-bottom:2px;">
+                <span class="prod-ref">CÓDIGO: ${p.referencia}</span>
+                <span class="prod-pack-tag">📦 ${packTag}</span>
+              </div>
+              <h3 class="prod-name">${highlightSearch(p.nome, term)}</h3>
+              <p class="prod-desc-line">${highlightSearch(p.descricao, term)}</p>
+            </div>
+
+            <div class="prod-targets-row">
+              ${targetsList.map(a => `<span class="target-tag-chip">🎯 ${a}</span>`).join('')}
+              ${moreListCount > 0 ? `<span class="target-more-chip">+${moreListCount} alvos</span>` : ''}
+            </div>
+
+            <div class="prod-action-row" onclick="event.stopPropagation();">
+              <span class="btn-card-ficha-link" onclick="openProductSheet(${p.id})">
+                <span>📄</span> Ver Especificações
+              </span>
+              <div style="display:flex; align-items:center; gap:8px;">
+                <div class="card-stepper-box">
+                  <button class="card-step-btn" onclick="adjustCardQty(${p.id}, -1)" title="Diminuir">−</button>
+                  <input type="number" id="card-qty-list-${p.id}" class="card-step-input" value="1" min="1" max="999" onclick="this.select()" onchange="validateCardInput(this)">
+                  <button class="card-step-btn" onclick="adjustCardQty(${p.id}, 1, 'card-qty-list-')" title="Aumentar">+</button>
+                </div>
+                <button class="btn-card-quote ${inCart ? 'in-cart' : ''}" onclick="addFromCard(${p.id}, 'card-qty-list-')" style="padding: 0 16px;">
+                  ${inCart ? `✓ Cotar (${cartItem.quantidade})` : '+ Cotar'}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+  }).join('');
+}
+
+function setViewMode(mode) {
+  hapticFeedback(15);
+  appState.viewMode = mode;
+  document.getElementById('btn-view-grid')?.classList.toggle('active', mode === 'grid');
+  document.getElementById('btn-view-list')?.classList.toggle('active', mode === 'list');
+  renderProductList();
+}
+
+function setCategory(id) {
+  hapticFeedback(15);
+  
+  // Limpa busca ativa ao selecionar categoria para evitar conflito de filtros
+  appState.search = '';
+  if (mSearchInput) mSearchInput.value = '';
+  if (dSearchInput) dSearchInput.value = '';
+  searchClearBtn?.classList.remove('show');
+
+  appState.cat = id;
+  renderStoriesCategories();
+  renderProductList();
+  setTimeout(() => {
+    scrollToProducts();
+  }, 30);
+}
+
+function changeSorting(val) {
+  appState.sort = val;
+  renderProductList();
+}
+
+function resetAllFilters() {
+  hapticFeedback(20);
+  appState.cat = 'todos';
+  appState.form = 'todos';
+  appState.search = '';
+  if (mSearchInput) mSearchInput.value = '';
+  if (dSearchInput) dSearchInput.value = '';
+  searchClearBtn?.classList.remove('show');
+  renderStoriesCategories();
+  renderProductList();
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  BUSCA SINCRONIZADA (MOBILE E DESKTOP)
+// ═══════════════════════════════════════════════════════════════
+const mSearchInput = document.getElementById('main-search-input');
+const dSearchInput = document.getElementById('desktop-search-input');
+const searchClearBtn = document.getElementById('search-clear-btn');
+let searchDebounce;
+
+function handleSearchChange(val) {
+  appState.search = val;
+  if (mSearchInput) mSearchInput.value = val;
+  if (dSearchInput) dSearchInput.value = val;
+  searchClearBtn?.classList.toggle('show', val.length > 0);
+
+  // Ao buscar termo, reseta a categoria para 'todos' para pesquisar no catálogo geral
+  if (val.trim().length > 0 && appState.cat !== 'todos') {
+    appState.cat = 'todos';
+    renderStoriesCategories();
+  }
+
+  clearTimeout(searchDebounce);
+  searchDebounce = setTimeout(() => {
+    renderProductList();
+  }, 150);
+}
+
+mSearchInput?.addEventListener('input', (e) => handleSearchChange(e.target.value));
+dSearchInput?.addEventListener('input', (e) => handleSearchChange(e.target.value));
+
+function clearSearch() {
+  hapticFeedback(15);
+  appState.search = '';
+  if (mSearchInput) mSearchInput.value = '';
+  if (dSearchInput) dSearchInput.value = '';
+  searchClearBtn?.classList.remove('show');
+  renderProductList();
+}
+
+function focusMainSearch() {
+  hapticFeedback(15);
+  mSearchInput?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  setTimeout(() => mSearchInput?.focus(), 300);
+}
+
+function quickSearch(term) {
+  hapticFeedback(15);
+  // Garante pesquisa global nos 32 produtos ao clicar em tag
+  appState.cat = 'todos';
+  renderStoriesCategories();
+  handleSearchChange(term);
+  setTimeout(() => {
+    scrollToProducts();
+  }, 40);
+}
+
+// Atalho '/' para buscar no desktop
+document.addEventListener('keydown', (e) => {
+  if (e.key === '/' && document.activeElement !== dSearchInput && document.activeElement !== mSearchInput) {
+    e.preventDefault();
+    dSearchInput?.focus();
+    mSearchInput?.focus();
+  }
+});
+
+// ═══════════════════════════════════════════════════════════════
+//  MODAL / BOTTOM SHEET DE DETALHES DO PRODUTO
+// ═══════════════════════════════════════════════════════════════
+function openProductSheet(id) {
+  hapticFeedback(20);
+  const p = PRODUTOS.find(item => item.id === id);
+  if (!p) return;
+
+  appState.currentSheetProdId = id;
+  appState.sheetQty = 1;
+  document.getElementById('sheet-qty-val').textContent = '1';
+
+  const catObj = CATEGORIAS.find(c => c.id === p.categoria);
+  const formObj = FORMULACOES.find(f => f.id === p.tipo_formulacao);
+
+  const body = document.getElementById('product-sheet-body');
+  body.innerHTML = `
+    <div class="sheet-prod-img-box">
+      <img src="${p.imagens[0]}" alt="${p.nome}">
+    </div>
+
+    <div>
+      <div class="sheet-prod-meta">
+        <div class="sheet-prod-ref">CÓDIGO: ${p.referencia}</div>
+        <h2 class="sheet-prod-name">${p.nome}</h2>
+        <div class="sheet-badges-row">
+          ${p.destaque ? '<span class="sheet-pill star">⭐ Mais Vendido</span>' : ''}
+          <span class="sheet-pill cat">${catObj ? catObj.icone + ' ' + catObj.nome : 'Geral'}</span>
+          <span class="sheet-pill form">${formObj ? formObj.icone + ' ' + formObj.nome : 'Formulação'}</span>
+        </div>
+      </div>
+
+      <!-- Tabs Nav -->
+      <div class="sheet-tabs-nav">
+        <button class="sheet-tab-btn active" onclick="switchSheetTab(this, 'st-desc')">Descrição</button>
+        <button class="sheet-tab-btn" onclick="switchSheetTab(this, 'st-chars')">Vantagens</button>
+        <button class="sheet-tab-btn" onclick="switchSheetTab(this, 'st-alvos')">Alvos (${p.alvos.length})</button>
+      </div>
+
+      <!-- Tabs Content -->
+      <div class="sheet-tab-content active" id="st-desc">
+        <div class="sheet-desc-text">${p.descricao_longa}</div>
+      </div>
+
+      <div class="sheet-tab-content" id="st-chars">
+        <div class="sheet-list-items">
+          ${p.caracteristicas.map(c => `<div class="sheet-list-item">${c}</div>`).join('')}
+        </div>
+      </div>
+
+      <div class="sheet-tab-content" id="st-alvos">
+        <div class="sheet-alvos-cloud">
+          ${p.alvos.map(a => `<span class="alvo-chip">🎯 ${a}</span>`).join('')}
+        </div>
+      </div>
+    </div>
+  `;
+
+  document.getElementById('product-sheet-backdrop').classList.add('show');
+  document.getElementById('product-bottom-sheet').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeProductSheet() {
+  document.getElementById('product-sheet-backdrop').classList.remove('show');
+  document.getElementById('product-bottom-sheet').classList.remove('show');
+  document.body.style.overflow = '';
+  appState.currentSheetProdId = null;
+}
+
+function switchSheetTab(btn, targetId) {
+  hapticFeedback(10);
+  const parent = btn.parentElement;
+  parent.querySelectorAll('.sheet-tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+
+  const body = document.getElementById('product-sheet-body');
+  body.querySelectorAll('.sheet-tab-content').forEach(c => c.classList.remove('active'));
+  document.getElementById(targetId)?.classList.add('active');
+}
+
+function adjustSheetQty(delta) {
+  hapticFeedback(15);
+  appState.sheetQty = Math.max(1, appState.sheetQty + delta);
+  document.getElementById('sheet-qty-val').textContent = appState.sheetQty;
+}
+
+function addSheetProductToCart() {
+  if (!appState.currentSheetProdId) return;
+  hapticFeedback(30);
+  addToCart(appState.currentSheetProdId, appState.sheetQty);
+  closeProductSheet();
+}
+
+function shareCurrentProduct() {
+  hapticFeedback(20);
+  const p = PRODUTOS.find(item => item.id === appState.currentSheetProdId);
+  if (!p) return;
+
+  const text = `🌿 *Rawell Química — ${p.nome}*\n\nRef: ${p.referencia}\n${p.descricao}\n\n📱 Solicite cotação: WhatsApp (45) 99933-2563`;
+
+  if (navigator.share) {
+    navigator.share({
+      title: p.nome,
+      text: text,
+      url: window.location.href
+    }).catch(() => {});
+  } else {
+    const waUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`;
+    window.open(waUrl, '_blank');
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  CARRINHO & ORÇAMENTO (DRAWER)
+// ═══════════════════════════════════════════════════════════════
+function loadCart() {
+  try {
+    cartItems = JSON.parse(localStorage.getItem(CART_STORAGE_KEY)) || [];
+  } catch {
+    cartItems = [];
+  }
+  updateBadges();
+}
+
+function saveCart() {
+  localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cartItems));
+  updateBadges();
+}
+
+function addToCart(id, qty = 1) {
+  const p = PRODUTOS.find(item => item.id === id);
+  if (!p) return;
+
+  const existing = cartItems.find(i => i.id === id);
+  if (existing) {
+    existing.quantidade += qty;
+  } else {
+    cartItems.push({
+      id: p.id,
+      nome: p.nome,
+      referencia: p.referencia,
+      unidade: p.unidade,
+      imagem: p.imagens[0],
+      quantidade: qty
+    });
+  }
+
+  saveCart();
+  renderProductList();
+  showToast(`✅ ${p.nome} adicionado ao orçamento!`);
+}
+
+function adjustCardQty(id, delta, prefix = 'card-qty-') {
+  hapticFeedback(12);
+  const input = document.getElementById(`${prefix}${id}`);
+  if (!input) return;
+  let val = parseInt(input.value, 10) || 1;
+  val = Math.max(1, Math.min(999, val + delta));
+  input.value = val;
+}
+
+function validateCardInput(input) {
+  let val = parseInt(input.value, 10);
+  if (isNaN(val) || val < 1) val = 1;
+  if (val > 999) val = 999;
+  input.value = val;
+}
+
+function addFromCard(id, prefix = 'card-qty-') {
+  hapticFeedback(30);
+  const input = document.getElementById(`${prefix}${id}`);
+  const qty = input ? parseInt(input.value, 10) || 1 : 1;
+  addToCart(id, qty);
+  if (input) input.value = 1;
+}
+
+function quickAdd(id) {
+  hapticFeedback(25);
+  const p = PRODUTOS.find(item => item.id === id);
+  if (!p) return;
+  addToCart(id, 1);
+}
+
+function updateCartQty(id, delta) {
+  hapticFeedback(15);
+  const item = cartItems.find(i => i.id === id);
+  if (!item) return;
+
+  item.quantidade += delta;
+  if (item.quantidade <= 0) {
+    cartItems = cartItems.filter(i => i.id !== id);
+  }
+  saveCart();
+  renderCartSheet();
+  renderProductList();
+}
+
+function removeCartItem(id) {
+  hapticFeedback(20);
+  cartItems = cartItems.filter(i => i.id !== id);
+  saveCart();
+  renderCartSheet();
+  renderProductList();
+  showToast('🗑️ Item removido do orçamento');
+}
+
+function updateBadges() {
+  const total = cartItems.reduce((acc, item) => acc + item.quantidade, 0);
+  const headBadge = document.getElementById('header-cart-badge');
+  const btmBadge = document.getElementById('bottom-cart-badge');
+  const headPill = document.getElementById('header-cart-pill');
+
+  if (headPill) headPill.textContent = total;
+  [headBadge, btmBadge].forEach(b => {
+    if (!b) return;
+    b.textContent = total;
+    b.classList.toggle('show', total > 0);
+  });
+}
+
+function openCartSheet() {
+  hapticFeedback(25);
+  renderCartSheet();
+  document.getElementById('cart-sheet-backdrop').classList.add('show');
+  document.getElementById('cart-bottom-sheet').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeCartSheet() {
+  document.getElementById('cart-sheet-backdrop').classList.remove('show');
+  document.getElementById('cart-bottom-sheet').classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+function renderCartSheet() {
+  const area = document.getElementById('cart-content-area');
+  const footerBar = document.getElementById('cart-footer-bar');
+  const summaryQty = document.getElementById('cart-summary-qty');
+
+  if (!cartItems.length) {
+    area.innerHTML = `
+      <div style="text-align:center; padding:50px 10px;">
+        <div style="font-size:3.8rem; margin-bottom:12px;">🛒</div>
+        <h3 style="font-size:1.15rem; font-weight:800; color:var(--text); margin-bottom:6px;">Seu orçamento está vazio</h3>
+        <p style="font-size:0.88rem; color:var(--text-3); margin-bottom:20px;">Navegue pelo catálogo e clique em "+ Adicionar" nos produtos.</p>
+        <button class="hero-btn-primary" style="margin:0 auto; padding:0 24px; height:42px;" onclick="closeCartSheet(); scrollToProducts();">
+          Ver Catálogo de Produtos
+        </button>
+      </div>
+    `;
+    footerBar.style.display = 'none';
+    return;
+  }
+
+  footerBar.style.display = 'flex';
+  const totalQty = cartItems.reduce((acc, i) => acc + i.quantidade, 0);
+  summaryQty.textContent = `${totalQty} ite${totalQty === 1 ? 'm' : 'ns'} selecionado${totalQty === 1 ? '' : 's'}`;
+
+  let savedClient = {};
+  try {
+    savedClient = JSON.parse(localStorage.getItem(CLIENT_STORAGE_KEY)) || {};
+  } catch (e) {}
+
+  area.innerHTML = `
+    <!-- Lista de Itens -->
+    <div class="cart-items-wrap">
+      ${cartItems.map(item => `
+        <div class="cart-item-card">
+          <div class="cart-item-pic">
+            <img src="${item.imagem}" alt="${item.nome}">
+          </div>
+          <div class="cart-item-details">
+            <h4 class="cart-item-title">${item.nome}</h4>
+            <div class="cart-item-subtitle">Ref: ${item.referencia}</div>
+            <div class="cart-item-stepper">
+              <button class="cart-step-btn" onclick="updateCartQty(${item.id}, -1)">−</button>
+              <span class="cart-step-num">${item.quantidade}</span>
+              <button class="cart-step-btn" onclick="updateCartQty(${item.id}, 1)">+</button>
+            </div>
+          </div>
+          <button class="cart-del-btn" onclick="removeCartItem(${item.id})" title="Remover produto">🗑️</button>
+        </div>
+      `).join('')}
+    </div>
+
+    <!-- Formulário Rápido com Autocomplete do localStorage -->
+    <div class="client-form-card">
+      <div class="form-head-title">
+        <span>👤</span> Dados para Contato Comercial
+      </div>
+      <div class="form-field-group">
+        <label class="form-field-label">Nome Completo / Empresa <span class="req">*</span></label>
+        <input type="text" id="client-name" class="form-field-input" placeholder="Ex: João da Silva ou Fazenda Primavera" value="${savedClient.nome || ''}">
+      </div>
+      <div class="form-field-group">
+        <label class="form-field-label">Vendedor Responsável (opcional)</label>
+        <div class="vendedor-select-wrap">
+          <select id="client-vendedor" class="form-field-input" onchange="handleVendedorChange(this.value)">
+            <option value="">Nenhum vendedor selecionado (Geral)</option>
+            <option value="vendedor-1" ${savedClient.vendedor === 'vendedor-1' ? 'selected' : ''}>Vendedor 1</option>
+            <option value="vendedor-2" ${savedClient.vendedor === 'vendedor-2' ? 'selected' : ''}>Vendedor 2</option>
+          </select>
+          <span class="vendedor-select-arrow">▼</span>
+        </div>
+        <button type="button" class="btn-clear-vendedor ${savedClient.vendedor ? 'show' : ''}" id="btn-clear-vendedor" onclick="clearVendedorSelection()">
+          ✕ Desmarcar vendedor
+        </button>
+      </div>
+      <div class="form-field-group">
+        <label class="form-field-label">CNPJ / Cidade / Estado (opcional)</label>
+        <input type="text" id="client-doc" class="form-field-input" placeholder="00.000.000/0001-00 ou Cascavel - PR" value="${savedClient.doc || ''}">
+      </div>
+    </div>
+  `;
+}
+
+function handleVendedorChange(val) {
+  const clearBtn = document.getElementById('btn-clear-vendedor');
+  if (clearBtn) {
+    clearBtn.classList.toggle('show', !!val);
+  }
+}
+
+function clearVendedorSelection() {
+  hapticFeedback(10);
+  const sel = document.getElementById('client-vendedor');
+  if (sel) sel.value = '';
+  document.getElementById('btn-clear-vendedor')?.classList.remove('show');
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  COMPARTILHAMENTO DE ORÇAMENTO (LINK MÁGICO)
+// ═══════════════════════════════════════════════════════════════
+function generateCartShareUrl() {
+  if (!cartItems || !cartItems.length) return window.location.href.split('?')[0];
+  const itemsParam = cartItems.map(i => `${i.id}:${i.quantidade}`).join(',');
+  const cleanBase = window.location.href.split('?')[0].split('#')[0];
+  const url = new URL(cleanBase);
+  url.searchParams.set('orcamento', itemsParam);
+  return url.toString();
+}
+
+function copyCartShareLink() {
+  hapticFeedback(25);
+  if (!cartItems.length) {
+    showToast('⚠️ Seu orçamento está vazio.');
+    return;
+  }
+  const shareUrl = generateCartShareUrl();
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(shareUrl).then(() => {
+      showToast('🔗 Link do orçamento copiado com sucesso!');
+    }).catch(() => {
+      prompt('Copie o link do orçamento:', shareUrl);
+    });
+  } else {
+    prompt('Copie o link do orçamento:', shareUrl);
+  }
+}
+
+function loadCartFromUrl() {
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const orcamentoParam = params.get('orcamento') || params.get('pedido') || params.get('cart');
+    if (!orcamentoParam) return false;
+
+    // Formato esperado: 1:2,4:1,32:1
+    const entries = orcamentoParam.split(',');
+    const newItems = [];
+
+    entries.forEach(entry => {
+      const parts = entry.trim().split(':');
+      const prodId = parseInt(parts[0], 10);
+      const qty = parseInt(parts[1], 10) || 1;
+
+      if (!isNaN(prodId)) {
+        const p = PRODUTOS.find(item => item.id === prodId);
+        if (p) {
+          newItems.push({
+            id: p.id,
+            nome: p.nome,
+            referencia: p.referencia,
+            unidade: p.unidade,
+            imagem: p.imagens[0],
+            quantidade: Math.max(1, Math.min(999, qty))
+          });
+        }
+      }
+    });
+
+    if (newItems.length > 0) {
+      cartItems = newItems;
+      saveCart();
+      renderProductList();
+      updateBadges();
+
+      // Limpa os parâmetros da barra de endereço sem recarregar
+      const cleanUrl = window.location.origin + window.location.pathname;
+      window.history.replaceState({}, document.title, cleanUrl);
+
+      setTimeout(() => {
+        showToast(`🎉 Orçamento com ${newItems.length} ite${newItems.length === 1 ? 'm' : 'ns'} carregado!`);
+        openCartSheet();
+      }, 400);
+
+      return true;
+    }
+  } catch (err) {
+    console.warn('Erro ao carregar orçamento da URL:', err);
+  }
+  return false;
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  ENVIO DO ORÇAMENTO PARA O WHATSAPP
+// ═══════════════════════════════════════════════════════════════
+function sendQuoteToWhatsApp() {
+  hapticFeedback(35);
+  const nameInput = document.getElementById('client-name');
+  const vendedorSelect = document.getElementById('client-vendedor');
+  const docInput = document.getElementById('client-doc');
+
+  const nome = nameInput ? nameInput.value.trim() : '';
+  const vendedorId = vendedorSelect ? vendedorSelect.value : '';
+  const doc = docInput ? docInput.value.trim() : '';
+
+  if (!nome) {
+    nameInput?.classList.add('has-error');
+    showToast('⚠️ Por favor, informe seu Nome ou Empresa');
+    nameInput?.focus();
+    return;
+  }
+  nameInput?.classList.remove('has-error');
+
+  // Roteamento inteligente de WhatsApp por vendedor
+  const vendedorObj = VENDEDORES.find(v => v.id === vendedorId) || VENDEDORES[0];
+  const destWhatsapp = (vendedorObj && vendedorObj.whatsapp) ? vendedorObj.whatsapp : CONFIG.whatsapp;
+
+  // Salva no perfil local para agilizar próximos orçamentos
+  localStorage.setItem(CLIENT_STORAGE_KEY, JSON.stringify({ nome, vendedor: vendedorId, doc }));
+
+  // Link mágico para edição/recompra
+  const shareUrl = generateCartShareUrl();
+
+  // Formata Mensagem
+  let msg = `🌿 *${CONFIG.empresa}*\n`;
+  msg += `━━━━━━━━━━━━━━━━━━━━━\n`;
+  msg += `📋 *SOLICITAÇÃO DE ORÇAMENTO*\n\n`;
+
+  cartItems.forEach((item, index) => {
+    msg += `*${index + 1}. ${item.nome}*\n`;
+    msg += `   • Ref: \`${item.referencia}\`\n`;
+    msg += `   • Quantidade: *${item.quantidade} ${item.unidade || 'unidade'}(s)*\n\n`;
+  });
+
+  msg += `━━━━━━━━━━━━━━━━━━━━━\n`;
+  msg += `👤 *Cliente:* ${nome}\n`;
+  if (vendedorObj && vendedorObj.id) {
+    msg += `👔 *Vendedor:* ${vendedorObj.nome}\n`;
+  }
+  if (doc) msg += `🏢 *Documento/Local:* ${doc}\n`;
+  msg += `━━━━━━━━━━━━━━━━━━━━━\n\n`;
+  msg += `🔗 *Abrir / Recomprar este pedido no Catálogo:*\n${shareUrl}\n\n`;
+  msg += `${CONFIG.mensagem_fim}`;
+
+  const waUrl = `https://api.whatsapp.com/send?phone=${destWhatsapp}&text=${encodeURIComponent(msg)}`;
+  window.open(waUrl, '_blank');
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  NOTIFICAÇÕES TOAST
+// ═══════════════════════════════════════════════════════════════
+function showToast(msg) {
+  const box = document.getElementById('app-toast-box');
+  if (!box) return;
+
+  const toast = document.createElement('div');
+  toast.className = 'app-toast';
+  toast.innerHTML = msg;
+  box.appendChild(toast);
+
+  setTimeout(() => {
+    toast.classList.add('out');
+    setTimeout(() => toast.remove(), 250);
+  }, 2200);
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  PWA INSTALLATION LOGIC
+// ═══════════════════════════════════════════════════════════════
+let deferredPrompt = null;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+
+  // Exibe botão de instalar no Header
+  const installBtn = document.getElementById('btn-install-app');
+  if (installBtn) installBtn.style.display = 'inline-flex';
+
+  // Exibe banner inferior se não foi dispensado anteriormente
+  if (!localStorage.getItem('rawell_pwa_dismissed')) {
+    setTimeout(() => {
+      document.getElementById('pwa-install-banner')?.classList.add('show');
+    }, 2000);
+  }
+});
+
+function triggerPWAInstall() {
+  hapticFeedback(25);
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then((choiceResult) => {
+      if (choiceResult.outcome === 'accepted') {
+        showToast('🎉 Aplicativo instalado com sucesso!');
+      }
+      deferredPrompt = null;
+      document.getElementById('btn-install-app')?.style.setProperty('display', 'none');
+      document.getElementById('pwa-install-banner')?.classList.remove('show');
+    });
+  } else {
+    showToast('💡 No menu do navegador (⋮ ou Compartilhar), selecione "Adicionar à Tela Inicial"');
+  }
+}
+
+function dismissPWABanner() {
+  hapticFeedback(10);
+  document.getElementById('pwa-install-banner')?.classList.remove('show');
+  localStorage.setItem('rawell_pwa_dismissed', 'true');
+}
+
+window.addEventListener('appinstalled', () => {
+  showToast('✅ App Rawell instalado na sua tela inicial!');
+  document.getElementById('btn-install-app')?.style.setProperty('display', 'none');
+  document.getElementById('pwa-install-banner')?.classList.remove('show');
+});
+
+// ═══════════════════════════════════════════════════════════════
+//  INICIALIZAÇÃO
+// ═══════════════════════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => {
+  initTheme();
+  loadCart();
+  loadCartFromUrl();
+  renderStoriesCategories();
+  renderProductList();
+
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js').then(reg => {
+      // Atualizações silenciosas
+      reg.onupdatefound = () => {
+        const installingWorker = reg.installing;
+        installingWorker.onstatechange = () => {
+          if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
+            console.log('Nova versão do catálogo disponível.');
+          }
+        };
+      };
+    }).catch(() => {});
+  }
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    closeProductSheet();
+    closeCartSheet();
+  }
+});
+</script>
+
+<!-- Banner Flutuante de Instalação Mobile PWA -->
+<div class="pwa-install-banner" id="pwa-install-banner">
+  <div class="pwa-banner-left">
+    <div class="pwa-banner-icon">🌿</div>
+    <div class="pwa-banner-text">
+      <h4>Instalar App Rawell</h4>
+      <p>Acesse o catálogo rápido direto da sua tela inicial.</p>
+    </div>
+  </div>
+  <div class="pwa-banner-actions">
+    <button class="pwa-btn-confirm" onclick="triggerPWAInstall()">Instalar</button>
+    <button class="pwa-btn-dismiss" onclick="dismissPWABanner()" title="Fechar">✕</button>
+  </div>
+</div>
+</body>
+</html>
