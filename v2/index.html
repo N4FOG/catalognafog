@@ -1054,10 +1054,10 @@ html {
 }
 
 .grid-mode .prod-meta-top {
-  display: flex;
-  gap: 4px;
-  flex-direction: column;
-  align-items: center;
+    display: flex;
+    gap: 4px;
+    flex-direction: column;
+    align-items: center;
 }
 
 .grid-mode .prod-ref {
@@ -1826,12 +1826,46 @@ html {
   transition: border-color var(--transition);
 }
 
-.form-field-input:focus {
-  border-color: var(--brand-light);
-}
-
 .form-field-input.has-error {
   border-color: var(--danger);
+}
+
+.vendedor-select-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.vendedor-select-wrap select {
+  width: 100%;
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  padding-right: 36px;
+}
+.vendedor-select-arrow {
+  position: absolute;
+  right: 14px;
+  pointer-events: none;
+  font-size: 0.8rem;
+  color: var(--text-3);
+}
+
+.btn-clear-vendedor {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--danger);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  margin-top: 4px;
+  align-self: flex-start;
+  display: none;
+  align-items: center;
+  gap: 3px;
+  padding: 0;
+}
+.btn-clear-vendedor.show {
+  display: inline-flex;
 }
 
 .cart-footer-bar {
@@ -2196,7 +2230,7 @@ mark {
       <button class="btn-header-install" id="btn-install-app" onclick="triggerPWAInstall()" style="display:none;" title="Instalar aplicativo no celular ou computador">
         📲 Instalar App
       </button>
-      <a href="Cátalogo 2026.pdf" download class="btn-header-pdf">
+      <a href="../Cátalogo 2026.pdf" download class="btn-header-pdf">
         📥 Baixar PDF
       </a>
       <button class="icon-btn" id="theme-toggle-btn" onclick="toggleTheme()" title="Alternar Tema Claro/Escuro">
@@ -2342,7 +2376,7 @@ mark {
         <div class="footer-links-list">
           <a href="https://api.whatsapp.com/send?phone=5545999332563" target="_blank">📱 WhatsApp: (45) 99933-2563</a>
           <a href="javascript:void(0)">🏢 Paraná — Brasil</a>
-          <a href="Cátalogo 2026.pdf" download style="color:var(--brand-light); font-weight:700;">📥 Baixar Catálogo em PDF</a>
+          <a href="../Cátalogo 2026.pdf" download style="color:var(--brand-light); font-weight:700;">📥 Baixar Catálogo em PDF</a>
         </div>
       </div>
     </div>
@@ -2444,6 +2478,12 @@ const CONFIG = {
   mensagem_intro: 'Olá! Gostaria de solicitar uma cotação dos seguintes produtos da Rawell Química:',
   mensagem_fim: '✅ Aguardo retorno sobre disponibilidade e condições de fornecimento. Obrigado!'
 };
+
+const VENDEDORES = [
+  { id: '', nome: 'Atendimento Geral / Central', whatsapp: '5545999332563' },
+  { id: 'vendedor-1', nome: 'Vendedor 1', whatsapp: '5545999332563' },
+  { id: 'vendedor-2', nome: 'Vendedor 2', whatsapp: '5545999332563' }
+];
 
 const CATEGORIAS = [
   { id:'todos',              nome:'Todos os Produtos',      icone:'🌿' },
@@ -2749,9 +2789,10 @@ function renderProductList() {
           <div class="prod-info-box">
             <div>
               <div class="prod-meta-top">
-                <span class="prod-ref">Ref: ${p.referencia}</span>
+                
                 <span class="prod-pack-tag">📦 ${packTag}</span>
               </div>
+	      <span class="prod-ref">Ref: ${p.referencia}</span>
               <h3 class="prod-name">${highlightSearch(p.nome, term)}</h3>
               <p class="prod-desc-line">${highlightSearch(p.descricao, term)}</p>
             </div>
@@ -3223,8 +3264,18 @@ function renderCartSheet() {
         <input type="text" id="client-name" class="form-field-input" placeholder="Ex: João da Silva ou Fazenda Primavera" value="${savedClient.nome || ''}">
       </div>
       <div class="form-field-group">
-        <label class="form-field-label">WhatsApp / Telefone <span class="req">*</span></label>
-        <input type="tel" id="client-phone" class="form-field-input" placeholder="(00) 00000-0000" value="${savedClient.tel || ''}">
+        <label class="form-field-label">Vendedor Responsável (opcional)</label>
+        <div class="vendedor-select-wrap">
+          <select id="client-vendedor" class="form-field-input" onchange="handleVendedorChange(this.value)">
+            <option value="">Nenhum vendedor selecionado (Geral)</option>
+            <option value="vendedor-1" ${savedClient.vendedor === 'vendedor-1' ? 'selected' : ''}>Vendedor 1</option>
+            <option value="vendedor-2" ${savedClient.vendedor === 'vendedor-2' ? 'selected' : ''}>Vendedor 2</option>
+          </select>
+          <span class="vendedor-select-arrow">▼</span>
+        </div>
+        <button type="button" class="btn-clear-vendedor ${savedClient.vendedor ? 'show' : ''}" id="btn-clear-vendedor" onclick="clearVendedorSelection()">
+          ✕ Desmarcar vendedor
+        </button>
       </div>
       <div class="form-field-group">
         <label class="form-field-label">CNPJ / Cidade / Estado (opcional)</label>
@@ -3232,22 +3283,20 @@ function renderCartSheet() {
       </div>
     </div>
   `;
+}
 
-  // Aplica máscara simples no WhatsApp
-  const phoneInput = document.getElementById('client-phone');
-  if (phoneInput) {
-    phoneInput.addEventListener('input', (e) => {
-      let v = e.target.value.replace(/\D/g, '');
-      if (v.length > 11) v = v.slice(0, 11);
-      if (v.length > 6) {
-        e.target.value = `(${v.slice(0,2)}) ${v.slice(2,7)}-${v.slice(7)}`;
-      } else if (v.length > 2) {
-        e.target.value = `(${v.slice(0,2)}) ${v.slice(2)}`;
-      } else if (v.length > 0) {
-        e.target.value = `(${v}`;
-      }
-    });
+function handleVendedorChange(val) {
+  const clearBtn = document.getElementById('btn-clear-vendedor');
+  if (clearBtn) {
+    clearBtn.classList.toggle('show', !!val);
   }
+}
+
+function clearVendedorSelection() {
+  hapticFeedback(10);
+  const sel = document.getElementById('client-vendedor');
+  if (sel) sel.value = '';
+  document.getElementById('btn-clear-vendedor')?.classList.remove('show');
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -3256,35 +3305,27 @@ function renderCartSheet() {
 function sendQuoteToWhatsApp() {
   hapticFeedback(35);
   const nameInput = document.getElementById('client-name');
-  const phoneInput = document.getElementById('client-phone');
+  const vendedorSelect = document.getElementById('client-vendedor');
   const docInput = document.getElementById('client-doc');
 
   const nome = nameInput ? nameInput.value.trim() : '';
-  const tel = phoneInput ? phoneInput.value.trim() : '';
+  const vendedorId = vendedorSelect ? vendedorSelect.value : '';
   const doc = docInput ? docInput.value.trim() : '';
 
-  let valid = true;
   if (!nome) {
     nameInput?.classList.add('has-error');
-    valid = false;
-  } else {
-    nameInput?.classList.remove('has-error');
-  }
-
-  if (!tel || tel.length < 8) {
-    phoneInput?.classList.add('has-error');
-    valid = false;
-  } else {
-    phoneInput?.classList.remove('has-error');
-  }
-
-  if (!valid) {
-    showToast('⚠️ Preencha Nome e WhatsApp');
+    showToast('⚠️ Por favor, informe seu Nome ou Empresa');
+    nameInput?.focus();
     return;
   }
+  nameInput?.classList.remove('has-error');
+
+  // Roteamento inteligente de WhatsApp por vendedor
+  const vendedorObj = VENDEDORES.find(v => v.id === vendedorId) || VENDEDORES[0];
+  const destWhatsapp = (vendedorObj && vendedorObj.whatsapp) ? vendedorObj.whatsapp : CONFIG.whatsapp;
 
   // Salva no perfil local para agilizar próximos orçamentos
-  localStorage.setItem(CLIENT_STORAGE_KEY, JSON.stringify({ nome, tel, doc }));
+  localStorage.setItem(CLIENT_STORAGE_KEY, JSON.stringify({ nome, vendedor: vendedorId, doc }));
 
   // Formata Mensagem
   let msg = `🌿 *${CONFIG.empresa}*\n`;
@@ -3299,12 +3340,14 @@ function sendQuoteToWhatsApp() {
 
   msg += `━━━━━━━━━━━━━━━━━━━━━\n`;
   msg += `👤 *Cliente:* ${nome}\n`;
-  msg += `📱 *WhatsApp:* ${tel}\n`;
+  if (vendedorObj && vendedorObj.id) {
+    msg += `👔 *Vendedor:* ${vendedorObj.nome}\n`;
+  }
   if (doc) msg += `🏢 *Documento/Local:* ${doc}\n`;
   msg += `━━━━━━━━━━━━━━━━━━━━━\n\n`;
   msg += `${CONFIG.mensagem_fim}`;
 
-  const waUrl = `https://api.whatsapp.com/send?phone=${CONFIG.whatsapp}&text=${encodeURIComponent(msg)}`;
+  const waUrl = `https://api.whatsapp.com/send?phone=${destWhatsapp}&text=${encodeURIComponent(msg)}`;
   window.open(waUrl, '_blank');
 }
 
