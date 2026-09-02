@@ -861,6 +861,22 @@ input, select, textarea {
   gap: 12px;
 }
 
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--header-h) + 24px);
+}
+
+@keyframes cardFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* Card Produto (Base) */
 .prod-card {
   background: var(--bg-card);
@@ -873,6 +889,7 @@ input, select, textarea {
   position: relative;
   transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
   cursor: pointer;
+  animation: cardFadeIn 0.32s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .prod-card:hover {
@@ -2411,17 +2428,55 @@ function highlightSearch(text, term) {
   return text.replace(regex, '<mark>$1</mark>');
 }
 
+function smoothScrollTo(element, offset = 80, duration = 650) {
+  if (!element) return;
+  const start = window.pageYOffset || document.documentElement.scrollTop;
+  const target = Math.max(0, element.getBoundingClientRect().top + start - offset);
+  const distance = target - start;
+  
+  if (Math.abs(distance) < 15) return;
+
+  let startTime = null;
+  function step(currentTime) {
+    if (!startTime) startTime = currentTime;
+    const timeElapsed = currentTime - startTime;
+    const progress = Math.min(timeElapsed / duration, 1);
+    
+    // Curva de aceleração e desaceleração orgânica (easeInOutCubic)
+    const ease = progress < 0.5 
+      ? 4 * progress * progress * progress 
+      : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+    
+    window.scrollTo(0, start + (distance * ease));
+    
+    if (timeElapsed < duration) {
+      window.requestAnimationFrame(step);
+    }
+  }
+  window.requestAnimationFrame(step);
+}
+
 function scrollToTop() {
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  const start = window.pageYOffset || document.documentElement.scrollTop;
+  if (start <= 0) return;
   hapticFeedback(10);
+  smoothScrollTo(document.body, 0, 500);
 }
 
 function scrollToProducts() {
-  document.getElementById('products-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  const section = document.getElementById('products-section');
+  if (section) {
+    const headerHeight = window.innerWidth >= 768 ? 76 : 64;
+    smoothScrollTo(section, headerHeight + 14, 650);
+  }
 }
 
 function scrollToCategories() {
-  document.querySelector('.categories-slider-section')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  const sec = document.querySelector('.categories-slider-section');
+  if (sec) {
+    const headerHeight = window.innerWidth >= 768 ? 76 : 64;
+    smoothScrollTo(sec, headerHeight + 10, 600);
+  }
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -2668,7 +2723,9 @@ function setCategory(id) {
   appState.cat = id;
   renderStoriesCategories();
   renderProductList();
-  scrollToProducts();
+  setTimeout(() => {
+    scrollToProducts();
+  }, 30);
 }
 
 function setFormulation(id) {
