@@ -11,6 +11,7 @@ const STATIC_ASSETS = [
   './produto.html',
   './manifest.json',
   './css/style.css',
+  './css/template30-app-mobile-first.css',
   './js/produtos.js',
   './js/carrinho.js',
   './js/home.js',

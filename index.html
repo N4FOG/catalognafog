@@ -5,6 +5,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Rawell Química — Catálogo Mobile App</title>
   <meta name="theme-color" content="#059669">
+    <!-- ══ BLOQUEIO TOTAL DE MOTORES DE BUSCA (NO-INDEX) ═════ -->
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+
+  <!-- ══ PWA & MOBILE APP MANIFEST ════════════════════════════ -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#059669">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Rawell Catálogo">
+  <link rel="apple-touch-icon" href="img/icon-192.png">
+  <link rel="icon" type="image/svg+xml" href="img/icon.svg">
+  <link rel="icon" type="image/png" href="img/icon-192.png">
+
+  <!-- ══ OPEN GRAPH (PRÉ-VISUALIZAÇÃO NO WHATSAPP) ════════════ -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Rawell Química">
+  <meta property="og:title" content="Rawell Química — Catálogo Oficial de Produtos 2026">
+  <meta property="og:description" content="Linha completa de defensivos seletivos, desinfestantes e saneantes. Solicite orçamento via WhatsApp.">
+  <meta property="og:image" content="img/produtos/p01-kapina-plus-60ml.webp">
   <link rel="stylesheet" href="css/template30-app-mobile-first.css">
 </head>
 <body>
@@ -24,7 +44,12 @@
         <input type="search" id="search-input" placeholder="Buscar defensivos, desinfestantes..." autocomplete="off">
       </div>
 
-      <button class="mob-header-cart-btn cart-toggle" aria-label="Abrir Orçamento">
+      
+      <button class="btn-pwa-install" aria-label="Instalar App" title="Instalar aplicativo no dispositivo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        <span>Instalar</span>
+      </button>
+    <button class="mob-header-cart-btn cart-toggle" aria-label="Abrir Orçamento">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
         <span class="mob-header-cart-badge cart-badge">0</span>
       </button>
@@ -284,5 +309,22 @@
       updateDock();
     });
   </script>
+
+  <!-- ══ PWA INSTALL BANNER ═════════════════════════════════ -->
+  <div id="pwa-install-banner" class="pwa-install-banner">
+    <div class="pwa-banner-info">
+      <img src="img/icon-192.png" alt="Rawell Catálogo" class="pwa-banner-icon">
+      <div class="pwa-banner-text">
+        <strong>Rawell Catálogo 2026</strong>
+        <span>Instale para consultar e orçar offline</span>
+      </div>
+    </div>
+    <div class="pwa-banner-actions">
+      <button class="pwa-btn-confirm" onclick="instalarAppPWA()">Instalar</button>
+      <button class="pwa-btn-close" id="pwa-banner-close" aria-label="Fechar">✕</button>
+    </div>
+  </div>
+
+  <script src="js/pwa.js"></script>
 </body>
 </html>
