@@ -1678,10 +1678,12 @@ html {
    CARRINHO / ORÇAMENTO DRAWER (Slide Right no Desktop)
 ═══════════════════════════════════════════════════════════════ */
 .cart-sheet-body {
-  flex: 1;
+  flex: 1 1 auto;
+  min-height: 0;
   overflow-y: auto;
-  padding: 16px 20px 120px;
+  padding: 16px 20px 24px;
   -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain;
 }
 
 .cart-items-wrap {
@@ -1783,6 +1785,39 @@ html {
   color: var(--danger);
 }
 
+/* Botões Rápidos de Desconto no Carrinho */
+.cart-quick-discount-btns {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex-wrap: wrap;
+  margin-top: 6px;
+  padding-top: 6px;
+  border-top: 1px dashed var(--border);
+}
+.btn-quick-disc {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-2);
+  border-radius: var(--radius-xs);
+  padding: 3px 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+.btn-quick-disc:hover {
+  background: var(--brand-pale);
+  border-color: var(--brand-light);
+  color: var(--brand-mid);
+}
+.btn-quick-disc.active {
+  background: #059669;
+  border-color: #059669;
+  color: #fff;
+  box-shadow: 0 2px 6px rgba(5, 150, 105, 0.3);
+}
+
 /* Formulário de Dados */
 .client-form-card {
   background: var(--bg-card-sub);
@@ -1864,78 +1899,145 @@ html {
   gap: 3px;
   padding: 0;
 }
+.btn-clear-payment {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--danger);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: none;
+  align-items: center;
+  gap: 3px;
+  padding: 0;
+}
+.btn-clear-payment.show {
+  display: inline-flex;
+}
+
 .btn-clear-vendedor.show {
   display: inline-flex;
 }
 
+/* ═══════════════════════════════════════════════════════════════
+   RODAPÉ DO CARRINHO (CART FOOTER BAR - DESIGN PREMIUM UNIFICADO)
+═══════════════════════════════════════════════════════════════ */
 .cart-footer-bar {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  position: relative;
+  flex-shrink: 0;
+  width: 100%;
   background: var(--bg-sheet);
   border-top: 1px solid var(--border);
-  padding: 14px 20px calc(14px + var(--safe-bottom));
+  padding: 10px 16px calc(12px + var(--safe-bottom));
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  box-shadow: 0 -6px 24px rgba(0,0,0,0.1);
+  gap: 7px;
+  box-shadow: 0 -8px 20px rgba(0, 0, 0, 0.06);
+  z-index: 10;
 }
 
 .cart-summary-line {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   font-weight: 700;
   color: var(--text-2);
+  padding: 0 2px 2px;
 }
+
 .cart-summary-line strong {
-  font-size: 1.1rem;
+  font-size: 1.05rem;
+  color: var(--brand);
+}
+
+[data-theme="dark"] .cart-summary-line strong {
   color: var(--brand-light);
 }
 
 .btn-send-whatsapp {
   width: 100%;
-  height: 50px;
+  height: 46px;
   border-radius: var(--radius-sm);
-  background: linear-gradient(135deg, #25D366, #1da851);
-  color: #fff;
-  font-size: 1rem;
+  background: linear-gradient(135deg, #25D366, #128C7E);
+  color: #ffffff;
+  font-size: 0.95rem;
   font-weight: 800;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  box-shadow: 0 4px 16px var(--wa-glow);
-  transition: transform 0.15s ease;
-}
-.btn-send-whatsapp:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(37, 211, 102, 0.45);
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(37, 211, 102, 0.35);
+  transition: all 0.15s ease;
 }
 
-.btn-share-link {
+.btn-send-whatsapp:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(37, 211, 102, 0.45);
+}
+
+.btn-send-whatsapp:active {
+  transform: translateY(0);
+}
+
+/* Grade de Ações Secundárias */
+.cart-secondary-actions-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
   width: 100%;
-  height: 42px;
+}
+
+.btn-cart-secondary {
+  height: 38px;
   border-radius: var(--radius-sm);
-  background: var(--bg-card-sub);
+  background: var(--bg-card);
   color: var(--text-2);
-  border: 1px dashed var(--border);
-  font-size: 0.88rem;
+  border: 1px solid var(--border);
+  font-size: 0.78rem;
   font-weight: 700;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 5px;
   cursor: pointer;
   transition: all var(--transition);
-  margin-top: 8px;
+  text-align: center;
+  white-space: nowrap;
 }
-.btn-share-link:hover {
+
+.btn-cart-secondary:hover {
   background: var(--brand-pale);
   color: var(--brand-mid);
   border-color: var(--brand-light);
+}
+
+.btn-cart-secondary.btn-pdf-style {
+  background: rgba(15, 69, 49, 0.08);
+  border-color: rgba(15, 69, 49, 0.25);
+  color: var(--brand);
+}
+
+[data-theme="dark"] .btn-cart-secondary.btn-pdf-style {
+  background: rgba(52, 211, 153, 0.12);
+  border-color: rgba(52, 211, 153, 0.3);
+  color: #34d399;
+}
+
+.btn-cart-secondary.btn-price-share-style {
+  background: rgba(16, 185, 129, 0.08);
+  border-color: rgba(16, 185, 129, 0.3);
+  color: #059669;
+}
+
+[data-theme="dark"] .btn-cart-secondary.btn-price-share-style {
+  color: #34d399;
+}
+
+.btn-cart-secondary.btn-full-width {
+  width: 100%;
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -2193,6 +2295,9 @@ html {
     height: 100vh;
     max-height: 100vh;
     border-radius: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
     transform: translateX(105%);
     opacity: 0;
     visibility: hidden;
@@ -2206,7 +2311,7 @@ html {
     pointer-events: auto;
   }
   .cart-sheet-body {
-    padding: 20px 20px 130px;
+    padding: 20px 20px 24px;
   }
 }
 
@@ -2639,88 +2744,6 @@ mark {
   font-weight: 800;
 }
 
-/* Total Geral da Proposta no Rodapé do Carrinho */
-.cart-total-proposal-card {
-  background: linear-gradient(135deg, rgba(15, 69, 49, 0.08), rgba(9, 38, 27, 0.12));
-  border: 1.5px solid var(--brand-light);
-  border-radius: var(--radius-sm);
-  padding: 10px 14px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 10px;
-}
-.cart-total-proposal-label {
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: var(--text-2);
-}
-.cart-total-proposal-num {
-  font-size: 1.15rem;
-  font-weight: 800;
-  color: var(--brand-mid);
-}
-
-/* Botões Duplos de Compartilhamento no Carrinho */
-.cart-share-btns-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  margin-top: 8px;
-}
-.btn-share-link {
-  height: 42px;
-  border-radius: var(--radius-sm);
-  background: var(--bg-card-sub);
-  color: var(--text-2);
-  border: 1px dashed var(--border);
-  font-size: 0.84rem;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  cursor: pointer;
-  transition: all var(--transition);
-}
-.btn-share-link:hover {
-  background: var(--brand-pale);
-  color: var(--brand-mid);
-  border-color: var(--brand-light);
-}
-.btn-share-price {
-  background: rgba(16, 185, 129, 0.1);
-  border: 1px solid rgba(16, 185, 129, 0.4);
-  color: var(--brand-mid);
-}
-.btn-share-price:hover {
-  background: var(--brand);
-  color: #fff;
-  border-color: var(--brand);
-}
-
-.btn-gen-pdf {
-  width: 100%;
-  height: 44px;
-  border-radius: var(--radius-sm);
-  background: var(--brand-dark);
-  color: #fff;
-  font-size: 0.9rem;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  cursor: pointer;
-  margin-top: 8px;
-  border: 1px solid var(--border);
-  transition: all var(--transition);
-}
-.btn-gen-pdf:hover {
-  background: var(--brand-mid);
-  transform: translateY(-1px);
-}
-
 /* Botão de Histórico no Header */
 .btn-header-history {
   height: 38px;
@@ -3100,6 +3123,8 @@ mark {
     padding: 20px;
     border: none;
   }
+}
+
 /* ── Estilos de Desconto por Item e Desconto no Pedido ── */
 .cart-item-price-section {
   margin-top: 8px;
@@ -3189,41 +3214,201 @@ mark {
   color: var(--brand-light);
 }
 
-/* Card Totalizador da Proposta com Desconto Global */
-.cart-total-proposal-card {
-  background: var(--bg-card-sub);
-  border: 1.5px solid var(--border);
+/* ═══════════════════════════════════════════════════════════════
+   TOTALIZADOR MODO VENDEDOR (Clean, Compacto e Responsivo)
+═══════════════════════════════════════════════════════════════ */
+.cart-total-proposal-card,
+#cart-seller-total-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
   border-radius: var(--radius-md);
-  padding: 12px 14px;
-  margin-bottom: 12px;
+  padding: 10px 12px;
   display: flex;
   flex-direction: column;
   gap: 8px;
   box-shadow: var(--shadow-sm);
+  margin-bottom: 4px;
 }
-.cart-proposal-breakdown-row {
+
+[data-theme="dark"] #cart-seller-total-box,
+[data-theme="dark"] .cart-total-proposal-card {
+  background: var(--bg-card-sub);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.seller-total-top-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 0.82rem;
-  color: var(--text-2);
+  flex-wrap: wrap;
+  gap: 6px;
+  padding-bottom: 6px;
+  border-bottom: 1px dashed var(--border);
 }
-.cart-proposal-divider {
-  height: 1px;
-  background: var(--border);
-  margin: 2px 0;
-}
-.cart-proposal-final-row {
+
+.seller-subtotal-info {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding-top: 2px;
+  gap: 4px;
+  font-size: 0.78rem;
+  color: var(--text-3);
 }
-.cart-total-proposal-label {
-  font-size: 0.88rem;
+
+.seller-subtotal-val {
   font-weight: 700;
+  color: var(--text-2);
+  font-size: 0.82rem;
+}
+
+.seller-discount-strip {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.seller-disc-tag {
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #059669;
+  text-transform: uppercase;
+}
+
+[data-theme="dark"] .seller-disc-tag {
+  color: #34d399;
+}
+
+.seller-quick-pills {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.btn-disc-pill {
+  background: var(--bg-card-sub);
+  border: 1px solid var(--border);
+  color: var(--text-2);
+  border-radius: var(--radius-xs);
+  padding: 2px 6px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  line-height: 1.2;
+}
+
+.btn-disc-pill:hover {
+  border-color: #059669;
+  color: #059669;
+}
+
+.btn-disc-pill.active {
+  background: #059669;
+  border-color: #059669;
+  color: #ffffff;
+  font-weight: 800;
+  box-shadow: 0 1px 4px rgba(5, 150, 105, 0.3);
+}
+
+[data-theme="dark"] .btn-disc-pill.active {
+  background: #10b981;
+  border-color: #10b981;
+  color: #064e3b;
+}
+
+.seller-disc-input-wrap {
+  display: inline-flex;
+  align-items: center;
+  background: var(--bg-card-sub);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xs);
+  height: 22px;
+  width: 38px;
+  padding: 0 2px;
+}
+
+.seller-disc-input {
+  width: 100%;
+  border: none;
+  background: transparent;
+  color: var(--text);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-align: center;
+  outline: none;
+  padding: 0;
+}
+
+.seller-total-main-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.seller-total-title {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.seller-total-title > span:first-child {
+  font-size: 0.82rem;
+  font-weight: 800;
   color: var(--text);
 }
+
+.seller-disc-badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #059669;
+  background: rgba(5, 150, 105, 0.1);
+  padding: 1px 5px;
+  border-radius: 4px;
+  align-self: flex-start;
+}
+
+[data-theme="dark"] .seller-disc-badge {
+  color: #34d399;
+  background: rgba(52, 211, 153, 0.15);
+}
+
+.seller-total-price {
+  font-size: 1.25rem;
+  font-weight: 900;
+  color: #059669;
+  letter-spacing: -0.02em;
+}
+
+[data-theme="dark"] .seller-total-price {
+  color: #34d399;
+}
+
+.seller-breakdown-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.78rem;
+  color: var(--text-2);
+}
+.seller-savings-banner {
+  background: rgba(5, 150, 105, 0.1);
+  border: 1px dashed rgba(5, 150, 105, 0.3);
+  border-radius: var(--radius-xs);
+  padding: 4px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.76rem;
+  color: #059669;
+  font-weight: 700;
+  margin-top: 2px;
+}
+[data-theme="dark"] .seller-savings-banner {
+  background: rgba(52, 211, 153, 0.12);
+  border-color: rgba(52, 211, 153, 0.35);
+  color: #34d399;
+}
+
 .cart-total-proposal-num {
   font-size: 1.28rem;
   font-weight: 800;
@@ -3474,17 +3659,10 @@ mark {
       <strong id="cart-summary-qty">0 itens</strong>
     </div>
     <button class="btn-send-whatsapp" onclick="sendQuoteToWhatsApp()">
-      <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
       Enviar Cotação pelo WhatsApp
     </button>
-    <div id="cart-share-btns-container">
-      <button class="btn-share-link" onclick="copyCartShareLink(false)">
-        <span>🔗</span> Copiar Link do Orçamento
-      </button>
-    </div>
-    <button class="btn-gen-pdf" onclick="openPdfProposalModal()">
-      <span>📄</span> Gerar Proposta Comercial (PDF)
-    </button>
+    <div class="cart-secondary-actions-container" id="cart-actions-dynamic-container"></div>
   </div>
 </div>
 
@@ -3498,7 +3676,11 @@ mark {
     <span class="nav-tab-icon">🔍</span>
     <span>Buscar</span>
   </button>
-  <button class="nav-tab-btn" id="tab-nav-history" onclick="openQuoteHistoryModal()">
+  <button class="nav-tab-btn" id="tab-nav-cats" onclick="scrollToCategories()">
+    <span class="nav-tab-icon">📑</span>
+    <span>Categorias</span>
+  </button>
+  <button class="nav-tab-btn" id="tab-nav-history" onclick="openQuoteHistoryModal()" style="display:none;">
     <span class="nav-tab-icon">📋</span>
     <span>Histórico</span>
     <span class="nav-cart-badge" id="bottom-history-badge" style="display:none;">0</span>
@@ -5064,17 +5246,20 @@ function renderProductList() {
   const emptyBox = document.getElementById('empty-state-box');
   const countLabel = document.getElementById('products-count-label');
   const filterIndicator = document.getElementById('filter-active-indicator');
+  const isSeller = isSellerLoggedIn();
+
+  if (!container) return;
 
   if (!list.length) {
     container.innerHTML = '';
-    emptyBox.classList.add('show');
-    countLabel.innerHTML = 'Nenhum resultado encontrado';
+    if (emptyBox) emptyBox.classList.add('show');
+    if (countLabel) countLabel.innerHTML = 'Nenhum resultado encontrado';
     if (filterIndicator) filterIndicator.innerHTML = '';
     return;
   }
 
-  emptyBox.classList.remove('show');
-  countLabel.innerHTML = `Exibindo <span>${list.length}</span> de ${PRODUTOS.length} produtos`;
+  if (emptyBox) emptyBox.classList.remove('show');
+  if (countLabel) countLabel.innerHTML = `Exibindo <span>${list.length}</span> de ${PRODUTOS.length} produtos`;
 
   // Indicador de Filtro Ativo
   if (filterIndicator) {
@@ -5102,7 +5287,7 @@ function renderProductList() {
   const isGrid = appState.viewMode === 'grid';
   container.className = `products-layout ${isGrid ? 'grid-mode' : 'list-mode'}`;
 
-  const term = appState.search;
+  const term = (appState.search || appState.searchTerm || '').trim();
 
   container.innerHTML = list.map(p => {
     const cartItem = cartItems.find(i => i.id === p.id);
@@ -5111,18 +5296,24 @@ function renderProductList() {
     const formObj = FORMULACOES.find(f => f.id === p.tipo_formulacao);
     
     // Identifica embalagem
-    const packFeature = p.caracteristicas.find(c => c.toLowerCase().includes('frasco') || c.toLowerCase().includes('caixa') || c.toLowerCase().includes('sachê') || c.toLowerCase().includes('display') || c.toLowerCase().includes('seringa') || c.toLowerCase().includes('balde') || c.toLowerCase().includes('envelope'));
+    const packFeature = p.caracteristicas ? p.caracteristicas.find(c => c.toLowerCase().includes('frasco') || c.toLowerCase().includes('caixa') || c.toLowerCase().includes('sachê') || c.toLowerCase().includes('display') || c.toLowerCase().includes('seringa') || c.toLowerCase().includes('balde') || c.toLowerCase().includes('envelope')) : null;
     const packTag = packFeature ? packFeature.split('(')[0].trim() : (p.unidade ? p.unidade.toUpperCase() : 'UN');
 
     // Alvos principais (até 2 no grid, até 3 no list)
-    const targetsGrid = p.alvos.slice(0, 2);
-    const moreGridCount = p.alvos.length - targetsGrid.length;
+    const targetsGrid = (p.alvos || []).slice(0, 2);
+    const moreGridCount = (p.alvos || []).length - targetsGrid.length;
 
-    const targetsList = p.alvos.slice(0, 4);
-    const moreListCount = p.alvos.length - targetsList.length;
+    const targetsList = (p.alvos || []).slice(0, 4);
+    const moreListCount = (p.alvos || []).length - targetsList.length;
 
-    // Benefício Chave
-    const keyBenefit = p.caracteristicas[0] || p.descricao;
+    // Preço do vendedor (se logado)
+    const precoBase = p.preco_base || 0;
+    const sellerPriceHtml = (isSeller && precoBase > 0) ? `
+      <div style="display:inline-flex; align-items:center; gap:5px; background:rgba(16, 185, 129, 0.1); border:1px solid rgba(16, 185, 129, 0.35); border-radius:var(--radius-xs); padding:2px 8px; margin:4px 0 2px; font-size:0.75rem;">
+        <span style="color:#059669; font-weight:800;">💰 Tabela:</span>
+        <strong style="color:var(--text); font-weight:800;">R$ ${precoBase.toFixed(2).replace('.', ',')}</strong>
+      </div>
+    ` : '';
 
     if (isGrid) {
       return `
@@ -5136,12 +5327,12 @@ function renderProductList() {
           <div class="prod-info-box">
             <div>
               <div class="prod-meta-top">
-                
                 <span class="prod-pack-tag">📦 ${packTag}</span>
               </div>
-	      <span class="prod-ref">Ref: ${p.referencia}</span>
+	            <span class="prod-ref">Ref: ${p.referencia}</span>
               <h3 class="prod-name">${highlightSearch(p.nome, term)}</h3>
               <p class="prod-desc-line">${highlightSearch(p.descricao, term)}</p>
+              ${sellerPriceHtml}
             </div>
 
             <div>
@@ -5153,7 +5344,7 @@ function renderProductList() {
               <div class="prod-action-row" onclick="event.stopPropagation();">
                 <div class="card-stepper-box">
                   <button class="card-step-btn" onclick="adjustCardQty(${p.id}, -1)" title="Diminuir">−</button>
-                  <input type="number" id="card-qty-${p.id}" class="card-step-input" value="1" min="1" max="999" onclick="this.select()" onchange="validateCardInput(this)">
+                  <input type="number" id="card-qty-${p.id}" class="card-step-input" value="${inCart ? cartItem.quantidade : 1}" min="1" max="999" onclick="this.select()" onchange="validateCardInput(this)">
                   <button class="card-step-btn" onclick="adjustCardQty(${p.id}, 1)" title="Aumentar">+</button>
                 </div>
                 <button class="btn-card-quote ${inCart ? 'in-cart' : ''}" onclick="addFromCard(${p.id})" title="Adicionar à cotação">
@@ -5180,6 +5371,7 @@ function renderProductList() {
               </div>
               <h3 class="prod-name">${highlightSearch(p.nome, term)}</h3>
               <p class="prod-desc-line">${highlightSearch(p.descricao, term)}</p>
+              ${sellerPriceHtml}
             </div>
 
             <div class="prod-targets-row">
@@ -5194,7 +5386,7 @@ function renderProductList() {
               <div style="display:flex; align-items:center; gap:8px;">
                 <div class="card-stepper-box">
                   <button class="card-step-btn" onclick="adjustCardQty(${p.id}, -1)" title="Diminuir">−</button>
-                  <input type="number" id="card-qty-list-${p.id}" class="card-step-input" value="1" min="1" max="999" onclick="this.select()" onchange="validateCardInput(this)">
+                  <input type="number" id="card-qty-list-${p.id}" class="card-step-input" value="${inCart ? cartItem.quantidade : 1}" min="1" max="999" onclick="this.select()" onchange="validateCardInput(this)">
                   <button class="card-step-btn" onclick="adjustCardQty(${p.id}, 1, 'card-qty-list-')" title="Aumentar">+</button>
                 </div>
                 <button class="btn-card-quote ${inCart ? 'in-cart' : ''}" onclick="addFromCard(${p.id}, 'card-qty-list-')" style="padding: 0 16px;">
@@ -5480,6 +5672,11 @@ function addToCart(id, qty = 1) {
   saveCart();
   renderProductList();
   showToast(`✅ ${p.nome} adicionado ao orçamento!`);
+  logSellerActivity('Adicionou ao Orçamento', {
+    total_itens: qty,
+    resumo_itens: `${qty}x ${p.nome} (Ref: ${p.referencia})`,
+    detalhes_extras: `Produto: ${p.nome} | Qtd: ${qty}`
+  });
 }
 
 function adjustCardQty(id, delta, prefix = 'card-qty-') {
@@ -5534,6 +5731,9 @@ function removeCartItem(id) {
   renderCartSheet();
   renderProductList();
   showToast('🗑️ Item removido do orçamento');
+  logSellerActivity('Removeu do Orçamento', {
+    detalhes_extras: `Item ID removido: ${id}`
+  });
 }
 
 function updateBadges() {
@@ -5758,7 +5958,9 @@ function handleSellerLogin(event) {
   showToast(`🎉 Bem-vindo(a), ${vendedorNome}! Modo Vendedor ativado com preços e propostas.`);
   
   logSellerActivity('Login no Modo Vendedor', {
-    vendedorNome: vendedorNome,
+    origem_canal: `🟢👔 Vendedor Entrou (${vendedorNome})`,
+    vendedor: vendedorNome,
+    vendedor_nome: vendedorNome,
     detalhes_extras: 'Representante autenticou-se via PIN'
   });
 }
@@ -5766,8 +5968,11 @@ function handleSellerLogin(event) {
 function handleSellerLogout() {
   hapticFeedback(20);
   const session = getSellerSession();
+  const vNome = (session && session.vendedorNome) ? session.vendedorNome : 'Representante';
   logSellerActivity('Logout do Modo Vendedor', {
-    vendedorNome: session?.vendedorNome || 'Representante',
+    origem_canal: `🔴👔 Vendedor Saiu (${vNome})`,
+    vendedor: vNome,
+    vendedor_nome: vNome,
     detalhes_extras: 'Modo vendedor desconectado'
   });
   localStorage.removeItem(SELLER_STORAGE_KEY);
@@ -5857,17 +6062,14 @@ function updateSellerUI() {
     }
   }
 
-  // 4. Bottom Nav Mobile: Mostra aba Histórico se vendedor logado
+  // 4. Bottom Nav Mobile: Mostra aba Histórico se vendedor logado, senão mostra Categorias
   const tabHistory = document.getElementById('tab-nav-history');
   const tabCats = document.getElementById('tab-nav-cats');
-  if (tabHistory && tabCats) {
-    if (isLogged) {
-      tabHistory.style.display = 'inline-flex';
-      tabCats.style.display = 'none';
-    } else {
-      tabHistory.style.display = 'none';
-      tabCats.style.display = 'inline-flex';
-    }
+  if (tabHistory) {
+    tabHistory.style.display = isLogged ? 'inline-flex' : 'none';
+  }
+  if (tabCats) {
+    tabCats.style.display = isLogged ? 'none' : 'inline-flex';
   }
 
   updateHistoryBadges();
@@ -5901,9 +6103,9 @@ function logSellerActivity(tipoEvento, dadosExtras = {}) {
     const sellerObj = getActiveSellerObj();
     const isAttributed = !!(clientAttributedSeller && !isSeller);
 
-    const origemCanal = isSeller 
+    const origemCanal = dadosExtras.origem_canal || (isSeller 
       ? `👔 Vendedor Logado (${session.vendedorNome})`
-      : (isAttributed ? `🟢 Vendedor (${sellerObj.nome})` : '🔵 Base / Central (Orgânico)');
+      : (isAttributed ? `🟢 Vendedor (${sellerObj.nome})` : '🔵 Base / Central (Orgânico)'));
 
     let resumoItens = dadosExtras.resumo_itens || '-';
     let totalQtd = dadosExtras.total_itens || 0;
@@ -5927,8 +6129,8 @@ function logSellerActivity(tipoEvento, dadosExtras = {}) {
     const payload = {
       timestamp: new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' }) + ' ' + new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', second: '2-digit' }),
       origem_canal: origemCanal,
-      vendedor: isSeller ? session.vendedorNome : (sellerObj ? sellerObj.nome : 'Atendimento Geral'),
-      vendedor_nome: isSeller ? session.vendedorNome : (sellerObj ? sellerObj.nome : 'Atendimento Geral'),
+      vendedor: dadosExtras.vendedor || dadosExtras.vendedor_nome || (isSeller ? session.vendedorNome : (sellerObj ? sellerObj.nome : 'Atendimento Geral')),
+      vendedor_nome: dadosExtras.vendedor || dadosExtras.vendedor_nome || (isSeller ? session.vendedorNome : (sellerObj ? sellerObj.nome : 'Atendimento Geral')),
       evento: tipoEvento,
       num_proposta: dadosExtras.num_proposta || dadosExtras.numProposta || '-',
       cliente_nome: dadosExtras.cliente_nome || dadosExtras.clienteNome || document.getElementById('client-name')?.value?.trim() || '-',
@@ -5970,177 +6172,115 @@ function trackInitialSession() {
 }
 
 // ═══════════════════════════════════════════════════════════════
-//  RENDERIZAÇÃO DOS PRODUTOS COM PREÇO NO MODO VENDEDOR
-// ═══════════════════════════════════════════════════════════════
-function renderProductList() {
-  const container = document.getElementById('products-layout');
-  const countLabel = document.getElementById('products-count-label');
-  const emptyBox = document.getElementById('empty-state-box');
-  const isSeller = isSellerLoggedIn();
-
-  if (!container) return;
-
-  const filtered = getFilteredProducts();
-
-  if (countLabel) {
-    countLabel.textContent = `Exibindo ${filtered.length} de ${PRODUTOS.length} produtos`;
-  }
-
-  if (filtered.length === 0) {
-    container.innerHTML = '';
-    emptyBox.style.display = 'block';
-    return;
-  }
-  emptyBox.style.display = 'none';
-
-  const isGrid = appState.viewMode === 'grid';
-  const term = (appState.searchTerm || appState.search || '').trim();
-
-  container.innerHTML = filtered.map(p => {
-    const catObj = CATEGORIAS.find(c => c.id === p.categoria);
-    const formObj = FORMULACOES.find(f => f.id === p.tipo_formulacao);
-    const inCart = cartItems.find(i => i.id === p.id);
-    const qty = inCart ? inCart.quantidade : 0;
-    const precoBase = p.preco_base || 0;
-
-    const sellerPriceHtml = (isSeller && precoBase > 0) ? `
-      <div class="card-seller-price-tag" title="Preço de tabela de fábrica">
-        <span>💰 Tabela:</span> <strong>R$ ${precoBase.toFixed(2).replace('.', ',')}</strong>
-      </div>
-    ` : '';
-
-    if (isGrid) {
-      return `
-        <article class="prod-card ${qty > 0 ? 'in-cart' : ''}" id="prod-card-${p.id}">
-          <div class="prod-card-top" onclick="openProductSheet(${p.id})">
-            <div class="prod-pic-wrap">
-              <img src="${p.imagens[0]}" alt="${p.nome}" loading="lazy">
-              ${p.destaque ? '<span class="prod-pill-star">⭐ Destaque</span>' : ''}
-            </div>
-            <div class="prod-info-block">
-              <div class="prod-ref-line">CÓD: ${p.referencia}</div>
-              <h3 class="prod-name">${highlightSearch(p.nome, term)}</h3>
-              <div class="prod-action-headline">
-                <span class="action-bolt">⚡</span>
-                <span>${p.o_que_faz || p.descricao}</span>
-              </div>
-              <p class="prod-desc-line">${highlightSearch(p.descricao, term)}</p>
-              ${sellerPriceHtml}
-              <div class="prod-tags-row">
-                <span class="prod-tag">${catObj ? catObj.icone + ' ' + catObj.nome : 'Geral'}</span>
-                <span class="prod-tag">${formObj ? formObj.icone + ' ' + formObj.nome : 'Forma'}</span>
-              </div>
-            </div>
-          </div>
-          <div class="prod-card-actions">
-            ${qty === 0 ? `
-              <button class="btn-card-add" onclick="addToCart(${p.id})">
-                <span>+ Adicionar ao Orçamento</span>
-              </button>
-            ` : `
-              <div class="card-stepper-wrap">
-                <button class="card-step-btn" onclick="updateCartQty(${p.id}, -1)">−</button>
-                <input type="number" class="card-step-input" value="${qty}" min="1" max="999" onchange="setCartQty(${p.id}, this.value)">
-                <button class="card-step-btn" onclick="updateCartQty(${p.id}, 1)">+</button>
-              </div>
-            `}
-            <button class="btn-card-more" onclick="openProductSheet(${p.id})" title="Ver bula e guia prático">
-              <span>Bula</span> ℹ️
-            </button>
-          </div>
-        </article>
-      `;
-    } else {
-      return `
-        <article class="prod-card-list ${qty > 0 ? 'in-cart' : ''}" id="prod-card-${p.id}">
-          <div class="list-pic-col" onclick="openProductSheet(${p.id})">
-            <img src="${p.imagens[0]}" alt="${p.nome}" loading="lazy">
-          </div>
-          <div class="list-info-col" onclick="openProductSheet(${p.id})">
-            <div class="prod-ref-line">CÓD: ${p.referencia}</div>
-            <h3 class="prod-name">${highlightSearch(p.nome, term)}</h3>
-            <div class="prod-action-headline">
-              <span class="action-bolt">⚡</span>
-              <span>${p.o_que_faz || p.descricao}</span>
-            </div>
-            <p class="prod-desc-line">${highlightSearch(p.descricao, term)}</p>
-            ${sellerPriceHtml}
-            <div class="prod-tags-row">
-              <span class="prod-tag">${catObj ? catObj.icone + ' ' + catObj.nome : 'Geral'}</span>
-              <span class="prod-tag">${formObj ? formObj.icone + ' ' + formObj.nome : 'Forma'}</span>
-            </div>
-          </div>
-          <div class="list-actions-col">
-            ${qty === 0 ? `
-              <button class="btn-card-add" onclick="addToCart(${p.id})">
-                <span>+ Orçamento</span>
-              </button>
-            ` : `
-              <div class="card-stepper-wrap">
-                <button class="card-step-btn" onclick="updateCartQty(${p.id}, -1)">−</button>
-                <span class="card-step-input">${qty}</span>
-                <button class="card-step-btn" onclick="updateCartQty(${p.id}, 1)">+</button>
-              </div>
-            `}
-            <button class="btn-card-more" onclick="openProductSheet(${p.id})">
-              <span>Bula</span> ℹ️
-            </button>
-          </div>
-        </article>
-      `;
-    }
-  }).join('');
-}
-
-// ═══════════════════════════════════════════════════════════════
 //  CARRINHO & CONTROLE DE PREÇOS UNITÁRIOS E DESCONTOS
 // ═══════════════════════════════════════════════════════════════
+
 function calculateCartTotals() {
+  let subtotalTabelaBruto = 0;
   let subtotalItensSemDesconto = 0;
   let subtotalItensComDesconto = 0;
   let totalQtd = 0;
 
   cartItems.forEach(item => {
     const pUnit = (item.preco_unitario !== undefined) ? item.preco_unitario : (item.preco_base || 0);
+    const pBase = (item.preco_base !== undefined) ? item.preco_base : pUnit;
     const discPercent = Math.max(0, Math.min(100, item.desconto_percent || 0));
     const pUnitDesc = pUnit * (1 - (discPercent / 100));
 
+    subtotalTabelaBruto += (item.quantidade * pBase);
     subtotalItensSemDesconto += (item.quantidade * pUnit);
     subtotalItensComDesconto += (item.quantidade * pUnitDesc);
     totalQtd += item.quantidade;
   });
 
+  const descontoTotalItens = Math.max(0, subtotalItensSemDesconto - subtotalItensComDesconto);
   const discGlobalPercent = Math.max(0, Math.min(100, cartGlobalDiscountPercent || 0));
   const valorDescontoGlobal = (subtotalItensComDesconto * discGlobalPercent) / 100;
   const totalFinalLiquido = Math.max(0, subtotalItensComDesconto - valorDescontoGlobal);
+  const economiaTotalReal = descontoTotalItens + valorDescontoGlobal;
+  const percentualEconomiaTotal = subtotalItensSemDesconto > 0 ? ((economiaTotalReal / subtotalItensSemDesconto) * 100) : 0;
 
   return {
+    subtotalTabelaBruto,
     subtotalItensSemDesconto,
     subtotalItensComDesconto,
+    descontoTotalItens,
     discGlobalPercent,
     valorDescontoGlobal,
     totalFinalLiquido,
+    economiaTotalReal,
+    percentualEconomiaTotal,
     totalQtd
   };
 }
 
 function updateCartTotalsUI() {
-  const { subtotalItensComDesconto, discGlobalPercent, valorDescontoGlobal, totalFinalLiquido } = calculateCartTotals();
+  const {
+    subtotalItensSemDesconto,
+    subtotalItensComDesconto,
+    descontoTotalItens,
+    discGlobalPercent,
+    valorDescontoGlobal,
+    totalFinalLiquido,
+    economiaTotalReal,
+    percentualEconomiaTotal
+  } = calculateCartTotals();
+
+  const subtotalSemDescEl = document.getElementById('cart-seller-subtotal-sem-desc');
+  if (subtotalSemDescEl) {
+    subtotalSemDescEl.textContent = `R$ ${subtotalItensSemDesconto.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  }
+
+  const itemsDescRow = document.getElementById('cart-seller-items-desc-row');
+  const itemsDescVal = document.getElementById('cart-seller-items-desc-val');
+  if (itemsDescRow && itemsDescVal) {
+    if (descontoTotalItens > 0.01) {
+      itemsDescRow.style.display = 'flex';
+      itemsDescVal.textContent = `-R$ ${descontoTotalItens.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    } else {
+      itemsDescRow.style.display = 'none';
+    }
+  }
 
   const subtotalEl = document.getElementById('cart-seller-subtotal-num');
   if (subtotalEl) {
     subtotalEl.textContent = `R$ ${subtotalItensComDesconto.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
   }
 
-  const discountValEl = document.getElementById('cart-seller-discount-num');
-  if (discountValEl) {
-    discountValEl.textContent = discGlobalPercent > 0 ? `-R$ ${valorDescontoGlobal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : '-';
+  const globalDescValEl = document.getElementById('cart-seller-global-disc-val');
+  if (globalDescValEl) {
+    globalDescValEl.textContent = discGlobalPercent > 0 ? `-R$ ${valorDescontoGlobal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : '-';
   }
 
-  const totalNum = document.getElementById('cart-seller-total-num');
-  if (totalNum) {
-    totalNum.textContent = `R$ ${totalFinalLiquido.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  const savingsBanner = document.getElementById('cart-seller-savings-banner');
+  const savingsVal = document.getElementById('cart-seller-savings-val');
+  if (savingsBanner && savingsVal) {
+    if (economiaTotalReal > 0.01) {
+      savingsBanner.style.display = 'flex';
+      savingsVal.innerHTML = `R$ ${economiaTotalReal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} <span style="font-size:0.75rem; font-weight:600;">(${percentualEconomiaTotal.toFixed(1)}% OFF)</span>`;
+    } else {
+      savingsBanner.style.display = 'none';
+    }
   }
+
+  const badgeEl = document.getElementById('cart-seller-discount-badge');
+  if (badgeEl) {
+    if (economiaTotalReal > 0.01) {
+      badgeEl.style.display = 'inline-flex';
+      badgeEl.textContent = `Economia Total: R$ ${economiaTotalReal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    } else {
+      badgeEl.style.display = 'none';
+    }
+  }
+
+  const totalEl = document.getElementById('cart-seller-total-num');
+  if (totalEl) {
+    totalEl.textContent = `R$ ${totalFinalLiquido.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  }
+
+  document.querySelectorAll('.btn-disc-pill').forEach(btn => {
+    btn.classList.toggle('active', parseFloat(btn.dataset.percent) === discGlobalPercent);
+  });
 }
 
 function updateCartItemCardUI(itemId) {
@@ -6223,10 +6363,63 @@ function updateGlobalDiscountPercent(rawPercent) {
   updateCartTotalsUI();
 }
 
+function applyQuickGlobalDiscount(percentage) {
+  hapticFeedback(20);
+  const p = Math.max(0, Math.min(100, parseFloat(percentage) || 0));
+  updateGlobalDiscountPercent(p);
+  const input = document.getElementById('cart-input-global-discount');
+  if (input) {
+    input.value = p > 0 ? p.toFixed(1) : '';
+  }
+  document.querySelectorAll('.btn-disc-pill').forEach(btn => {
+    btn.classList.toggle('active', parseFloat(btn.dataset.percent) === p);
+  });
+}
+
+function getCommercialTerms() {
+  try {
+    const saved = JSON.parse(localStorage.getItem('rawell_commercial_terms')) || {};
+    const paymentEl = document.getElementById('client-payment-terms');
+    const payment = paymentEl ? paymentEl.value : (saved.pagamento !== undefined ? saved.pagamento : '');
+    const validityEl = document.getElementById('client-proposal-validity');
+    const validity = validityEl ? validityEl.value : (saved.validade || '10 dias');
+    return { pagamento: payment, validade: validity };
+  } catch (e) {
+    return { pagamento: '', validade: '10 dias' };
+  }
+}
+
+function saveCommercialTerms() {
+  const terms = getCommercialTerms();
+  localStorage.setItem('rawell_commercial_terms', JSON.stringify(terms));
+}
+
+function handlePaymentTermsChange(val) {
+  saveCommercialTerms();
+  const clearBtn = document.getElementById('btn-clear-payment');
+  if (clearBtn) {
+    clearBtn.classList.toggle('show', !!val);
+  }
+}
+
+function clearPaymentSelection() {
+  hapticFeedback(10);
+  const sel = document.getElementById('client-payment-terms');
+  if (sel) {
+    sel.value = '';
+    handlePaymentTermsChange('');
+  }
+}
+
 function renderCartSheet() {
+  const isSeller = isSellerLoggedIn();
   const area = document.getElementById('cart-content-area');
   const footerBar = document.getElementById('cart-footer-bar');
   const summaryQty = document.getElementById('cart-summary-qty');
+  const summaryLine = document.querySelector('.cart-summary-line');
+  if (summaryLine) {
+    summaryLine.style.display = isSeller ? 'none' : 'flex';
+  }
 
   if (!cartItems.length) {
     area.innerHTML = `
@@ -6247,12 +6440,23 @@ function renderCartSheet() {
   const totalQty = cartItems.reduce((acc, i) => acc + i.quantidade, 0);
   summaryQty.textContent = `${totalQty} ite${totalQty === 1 ? 'm' : 'ns'} selecionado${totalQty === 1 ? '' : 's'}`;
 
-  const isSeller = isSellerLoggedIn();
-  const { subtotalItensComDesconto, discGlobalPercent, valorDescontoGlobal, totalFinalLiquido } = calculateCartTotals();
+  const {
+    subtotalTabelaBruto,
+    subtotalItensSemDesconto,
+    subtotalItensComDesconto,
+    descontoTotalItens,
+    discGlobalPercent,
+    valorDescontoGlobal,
+    totalFinalLiquido,
+    economiaTotalReal,
+    percentualEconomiaTotal
+  } = calculateCartTotals();
 
   let savedClient = {};
+  let savedTerms = {};
   try {
     savedClient = JSON.parse(localStorage.getItem(CLIENT_STORAGE_KEY)) || {};
+    savedTerms = JSON.parse(localStorage.getItem('rawell_commercial_terms')) || {};
   } catch (e) {}
 
   area.innerHTML = `
@@ -6295,12 +6499,10 @@ function renderCartSheet() {
                       </div>
                     </div>
                     <span class="cart-base-price-ref" title="Valor base da tabela">Tabela: R$ ${pBase.toFixed(2).replace('.', ',')}</span>
-                  </div>
-
-                  <!-- Linha 2: Subtotal Normal do Item -->
-                  <div class="cart-item-subtotal-line">
-                    <span style="font-size:0.78rem; color:var(--text-3);">Subtotal (${item.quantidade}x):</span>
-                    <span style="font-size:0.85rem; font-weight:600; color:var(--text-2);" id="cart-subtotal-base-${item.id}">R$ ${subtotalSemDesconto.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                    <div style="display:flex; align-items:center; gap:6px;">
+                      <span style="font-size:0.78rem; color:var(--text-3);">Subtotal (${item.quantidade}x):</span>
+                      <span style="font-size:0.85rem; font-weight:600; color:var(--text-2);" id="cart-subtotal-base-${item.id}">R$ ${subtotalSemDesconto.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                    </div>
                   </div>
 
                   <!-- Linha 3 (Abaixo do Subtotal): Desconto % -->
@@ -6315,7 +6517,7 @@ function renderCartSheet() {
                     <span style="font-size:0.75rem; color:#059669; font-weight:700;" id="cart-item-desc-val-${item.id}">${discItemPercent > 0 ? `-R$ ${valorDescUnit.toFixed(2).replace('.', ',')}/un` : ''}</span>
                   </div>
 
-                  <!-- Linha 4 (Abaixo do Desconto %): Valor Unit. c/ Desconto e Total Com Desconto -->
+                  <!-- Linha 4: Total Com Desconto -->
                   <div class="cart-item-discounted-total-line" style="flex-direction:column; align-items:stretch; gap:2px;">
                     <div style="display:${discItemPercent > 0 ? 'flex' : 'none'}; justify-content:space-between; font-size:0.78rem; color:#059669;" id="cart-unit-desc-row-${item.id}">
                       <span>Valor Unit. c/ Desconto:</span>
@@ -6359,6 +6561,36 @@ function renderCartSheet() {
         <label class="form-field-label">CNPJ / Cidade / Estado (opcional)</label>
         <input type="text" id="client-doc" class="form-field-input" placeholder="00.000.000/0001-00 ou Cascavel - PR" value="${savedClient.doc || ''}">
       </div>
+
+      ${isSeller ? `
+        <!-- Condições Comerciais Exclusivas do Vendedor -->
+        <div class="form-field-group">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+            <label class="form-field-label" style="margin-bottom:0;">Condição de Pagamento</label>
+            <button type="button" class="btn-clear-payment ${savedTerms.pagamento ? 'show' : ''}" id="btn-clear-payment" onclick="clearPaymentSelection()">
+              ✕ Limpar
+            </button>
+          </div>
+          <div class="vendedor-select-wrap">
+            <select id="client-payment-terms" class="form-field-input" onchange="handlePaymentTermsChange(this.value)">
+              <option value="" ${!savedTerms.pagamento ? 'selected' : ''}>Nenhuma / A Combinar (Não definir)</option>
+              <option value="PIX / À Vista (À vista c/ desconto)" ${savedTerms.pagamento === 'PIX / À Vista (À vista c/ desconto)' ? 'selected' : ''}>⚡ PIX / À Vista (À vista c/ desconto)</option>
+              <option value="Boleto 30 Dias" ${savedTerms.pagamento === 'Boleto 30 Dias' ? 'selected' : ''}>📄 Boleto 30 Dias</option>
+              <option value="Boleto 30 / 60 Dias" ${savedTerms.pagamento === 'Boleto 30 / 60 Dias' ? 'selected' : ''}>📄 Boleto 30 / 60 Dias</option>
+              <option value="Boleto 30 / 60 / 90 Dias" ${savedTerms.pagamento === 'Boleto 30 / 60 / 90 Dias' ? 'selected' : ''}>📄 Boleto 30 / 60 / 90 Dias</option>
+              <option value="Cartão em até 3x" ${savedTerms.pagamento === 'Cartão em até 3x' ? 'selected' : ''}>💳 Cartão em até 3x</option>
+              <option value="A Combinar com Vendedor" ${savedTerms.pagamento === 'A Combinar com Vendedor' ? 'selected' : ''}>🤝 A Combinar c/ Representante</option>
+            </select>
+            <span class="vendedor-select-arrow">▼</span>
+          </div>
+        </div>
+
+        <div class="form-field-group">
+          <label class="form-field-label">Validade da Proposta</label>
+          <input type="text" id="client-proposal-validity" class="form-field-input" value="${savedTerms.validade || '10 dias'}" placeholder="10 dias" oninput="saveCommercialTerms()">
+        </div>
+      ` : ''}
+
       ${!isSeller ? `
         <div style="text-align:center; padding:10px 4px 2px; font-size:0.78rem; color:var(--text-3);">
           💼 É representante comercial? <button type="button" onclick="openSellerLoginModal()" style="color:var(--brand-light); font-weight:700; text-decoration:underline; cursor:pointer;">Acessar Modo Vendedor 🔒</button>
@@ -6371,24 +6603,57 @@ function renderCartSheet() {
   let totalBox = document.getElementById('cart-seller-total-box');
   if (isSeller) {
     const totalBoxHtml = `
-      <div class="cart-proposal-breakdown-row">
-        <span style="font-size:0.85rem; color:var(--text-2);">Subtotal dos Produtos:</span>
-        <strong id="cart-seller-subtotal-num" style="font-size:0.95rem;">R$ ${subtotalItensComDesconto.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong>
-      </div>
-      <div class="cart-proposal-breakdown-row" style="display:flex; align-items:center; justify-content:space-between; margin-top:4px;">
-        <div style="display:flex; align-items:center; gap:6px;">
-          <span style="font-size:0.85rem; font-weight:700; color:#059669;">Desconto no Pedido %:</span>
-          <div class="cart-discount-input-wrap" title="Aplicar desconto percentual sobre todo o pedido">
-            <input type="number" step="0.1" min="0" max="100" class="cart-discount-input-field" id="cart-input-global-discount" value="${discGlobalPercent > 0 ? discGlobalPercent.toFixed(1) : ''}" placeholder="0" oninput="updateGlobalDiscountPercent(this.value)" onclick="this.select()">
-            <span class="cart-discount-symbol">%</span>
-          </div>
+      <!-- Detalhamento de Subtotais e Descontos Concedidos -->
+      <div style="display:flex; flex-direction:column; gap:4px; margin-bottom:6px;">
+        <!-- Linha 1: Subtotal dos Produtos -->
+        <div class="seller-breakdown-row">
+          <span style="font-size:0.8rem; font-weight:600; color:var(--text-2);">Subtotal dos Produtos: ( Sem Desconto )</span>
+          <strong id="cart-seller-subtotal-sem-desc" style="font-size:0.88rem; color:var(--text);">R$ ${subtotalItensSemDesconto.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong>
         </div>
-        <span id="cart-seller-discount-num" style="color:#059669; font-weight:700; font-size:0.85rem;">${discGlobalPercent > 0 ? `-R$ ${valorDescontoGlobal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : '-'}</span>
+
+        <!-- Linha 2: Desconto nos Produtos (se houver) -->
+        <div class="seller-breakdown-row" id="cart-seller-items-desc-row" style="display:${descontoTotalItens > 0.01 ? 'flex' : 'none'}; color:#059669;">
+          <span style="font-size:0.78rem; font-weight:700;">🏷️ Desconto nos Produtos:(Aplicados nos Produtos)</span>
+          <strong id="cart-seller-items-desc-val" style="font-size:0.82rem;">-R$ ${descontoTotalItens.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong>
+        </div>
+
+        <!-- Linha 3: Desconto no Pedido / Fechamento com Atalhos -->
+        <div class="seller-breakdown-row" style="margin-top:2px; flex-wrap:wrap; gap:4px;">
+          <div style="display:flex; align-items:center; gap:6px;">
+            <span style="font-size:0.8rem; font-weight:700; color:#059669;">Desconto no Pedido:</span>
+            <div class="seller-quick-pills">
+              <button type="button" class="btn-disc-pill ${discGlobalPercent === 0 ? 'active' : ''}" data-percent="0" onclick="applyQuickGlobalDiscount(0)">0%</button>
+              <button type="button" class="btn-disc-pill ${discGlobalPercent === 5 ? 'active' : ''}" data-percent="5" onclick="applyQuickGlobalDiscount(5)">-5%</button>
+              <button type="button" class="btn-disc-pill ${discGlobalPercent === 10 ? 'active' : ''}" data-percent="10" onclick="applyQuickGlobalDiscount(10)">-10%</button>
+              <button type="button" class="btn-disc-pill ${discGlobalPercent === 15 ? 'active' : ''}" data-percent="15" onclick="applyQuickGlobalDiscount(15)">-15%</button>
+            </div>
+            <div class="seller-disc-input-wrap" title="Desconto personalizado %">
+              <input type="number" step="0.1" min="0" max="100" class="seller-disc-input" id="cart-input-global-discount" value="${discGlobalPercent > 0 ? discGlobalPercent.toFixed(1) : ''}" placeholder="%" oninput="updateGlobalDiscountPercent(this.value)" onclick="this.select()">
+            </div>
+          </div>
+          <span id="cart-seller-global-disc-val" style="color:#059669; font-weight:700; font-size:0.82rem;">${discGlobalPercent > 0 ? `-R$ ${valorDescontoGlobal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : '-'}</span>
+        </div>
+
+        <!-- Linha 4: Banner de Economia Total Real do Cliente -->
+        <div class="seller-savings-banner" id="cart-seller-savings-banner" style="display:${economiaTotalReal > 0.01 ? 'flex' : 'none'};">
+          <span>🎉 Economia Total do Cliente:</span>
+          <strong id="cart-seller-savings-val">R$ ${economiaTotalReal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} <span style="font-size:0.75rem; font-weight:600;">(${percentualEconomiaTotal.toFixed(1)}% OFF)</span></strong>
+        </div>
       </div>
-      <div class="cart-proposal-divider" style="height:1px; background:var(--border); margin:6px 0;"></div>
-      <div class="cart-proposal-final-row">
-        <span class="cart-total-proposal-label" style="font-weight:800; font-size:0.92rem;">Total Com Desconto:</span>
-        <strong class="cart-total-proposal-num" id="cart-seller-total-num" style="font-size:1.35rem; color:#0f4531; font-weight:800;">R$ ${totalFinalLiquido.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong>
+
+      <div style="height:1px; background:var(--border); margin:4px 0 6px;"></div>
+
+      <!-- Linha Principal: Total Líquido da Proposta -->
+      <div class="seller-total-main-row">
+        <div class="seller-total-title">
+          <span>Total Líquido da Proposta:</span>
+          <span class="seller-disc-badge" id="cart-seller-discount-badge" style="display:${economiaTotalReal > 0.01 ? 'inline-flex' : 'none'};">
+            Economia Total: R$ ${economiaTotalReal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+          </span>
+        </div>
+        <div class="seller-total-price" id="cart-seller-total-num">
+          R$ ${totalFinalLiquido.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+        </div>
       </div>
     `;
 
@@ -6407,23 +6672,26 @@ function renderCartSheet() {
     totalBox.style.display = 'none';
   }
 
-  // Botões de compartilhamento
-  const shareContainer = document.getElementById('cart-share-btns-container');
-  if (shareContainer) {
+  // Ações secundárias no rodapé
+  const actionsContainer = document.getElementById('cart-actions-dynamic-container');
+  if (actionsContainer) {
     if (isSeller) {
-      shareContainer.innerHTML = `
-        <div class="cart-share-btns-row">
-          <button class="btn-share-link" onclick="copyCartShareLink(false)" title="Copiar link sem preços">
-            <span>🔗</span> Link s/ Preço
+      actionsContainer.innerHTML = `
+        <div class="cart-secondary-actions-grid">
+          <button type="button" class="btn-cart-secondary btn-pdf-style" onclick="openPdfProposalModal()" title="Gerar Proposta Comercial PDF">
+            <span>📄</span> Proposta PDF
           </button>
-          <button class="btn-share-link btn-share-price" onclick="copyCartShareLink(true)" title="Copiar link com valores travados">
-            <span>💰</span> Link Com Preço
+          <button type="button" class="btn-cart-secondary btn-price-share-style" onclick="copyCartShareLink(true)" title="Copiar link com valores fixados">
+            <span>💰</span> Link c/ Preço
           </button>
         </div>
+        <button type="button" class="btn-cart-secondary btn-full-width" style="margin-top:6px; font-size:0.75rem;" onclick="copyCartShareLink(false)" title="Copiar link sem preços para o cliente">
+          <span>🔗</span> Copiar Link s/ Preço
+        </button>
       `;
     } else {
-      shareContainer.innerHTML = `
-        <button class="btn-share-link" onclick="copyCartShareLink(false)" title="Copiar link do orçamento">
+      actionsContainer.innerHTML = `
+        <button type="button" class="btn-cart-secondary btn-full-width" onclick="copyCartShareLink(false)" title="Copiar link do orçamento">
           <span>🔗</span> Copiar Link do Orçamento
         </button>
       `;
@@ -6431,9 +6699,6 @@ function renderCartSheet() {
   }
 }
 
-// ═══════════════════════════════════════════════════════════════
-//  COMPARTILHAMENTO DE ORÇAMENTO (LINK MÁGICO COM / SEM PREÇO)
-// ═══════════════════════════════════════════════════════════════
 function generateCartShareUrl(includePrices = false) {
   if (!cartItems || !cartItems.length) return window.location.href.split('?')[0];
 
@@ -6473,19 +6738,31 @@ function copyCartShareLink(includePrices = false) {
     return;
   }
   const shareUrl = generateCartShareUrl(includePrices);
-  const toastMsg = includePrices 
-    ? '💰 Link com PREÇOS NEGOCIADOS copiado com sucesso!' 
-    : '🔗 Link do orçamento copiado com sucesso!';
+  const {
+    subtotalItensSemDesconto,
+    subtotalItensComDesconto,
+    descontoTotalItens,
+    discGlobalPercent,
+    valorDescontoGlobal,
+    totalFinalLiquido,
+    economiaTotalReal,
+    percentualEconomiaTotal,
+    totalQtd
+  } = calculateCartTotals();
 
-  const { subtotalItensComDesconto, discGlobalPercent, valorDescontoGlobal, totalFinalLiquido, totalQtd } = calculateCartTotals();
   const totalFormatado = totalFinalLiquido > 0 ? `R$ ${totalFinalLiquido.toFixed(2).replace('.', ',')}` : 'Tabela Padrão';
+  const economiaStr = economiaTotalReal > 0.01 ? ` | Economia: R$ ${economiaTotalReal.toFixed(2).replace('.', ',')} (${percentualEconomiaTotal.toFixed(0)}% OFF)` : '';
+
+  const toastMsg = includePrices 
+    ? `💰 Link copiado! (${totalFormatado}${economiaStr})` 
+    : '🔗 Link do orçamento copiado com sucesso!';
 
   logSellerActivity(includePrices ? `💰 Copiou Link COM PREÇO (Total: ${totalFormatado})` : '🔗 Copiou Link do Orçamento', {
     link_proposta: shareUrl,
     link_com_preco: shareUrl,
     total_itens: totalQtd,
     valor_total: totalFormatado,
-    detalhes_extras: includePrices ? `Link com preços negociados e desconto global de ${discGlobalPercent.toFixed(1)}%` : 'Link padrão'
+    detalhes_extras: includePrices ? `Total Líquido: ${totalFormatado} | Economia: R$ ${economiaTotalReal.toFixed(2)} (Itens: -R$ ${descontoTotalItens.toFixed(2)}, Pedido: -R$ ${valorDescontoGlobal.toFixed(2)})` : 'Link padrão'
   });
 
   if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -6820,9 +7097,12 @@ function openPdfProposalFromHistory(quoteId) {
     const disc = (i.desconto_percent || 0);
     return acc + (i.quantidade * pUnit * (1 - disc / 100));
   }, 0) : subtotalItensSemDesconto);
+  const descontoTotalItens = q.descontoTotalItens !== undefined ? q.descontoTotalItens : Math.max(0, subtotalItensSemDesconto - subtotalItensComDesconto);
   const discGlobalPercent = q.discGlobalPercent || q.discPercent || 0;
   const valorDescontoGlobal = q.valorDescontoGlobal || ((subtotalItensComDesconto * discGlobalPercent) / 100);
   const totalFinalLiquido = q.totalFinalLiquido || Math.max(0, subtotalItensComDesconto - valorDescontoGlobal);
+  const economiaTotalReal = q.economiaTotalReal !== undefined ? q.economiaTotalReal : (descontoTotalItens + valorDescontoGlobal);
+  const percentualEconomiaTotal = subtotalItensSemDesconto > 0 ? ((economiaTotalReal / subtotalItensSemDesconto) * 100) : 0;
 
   renderPdfPaperContent({
     orcNum: q.id,
@@ -6836,9 +7116,12 @@ function openPdfProposalFromHistory(quoteId) {
     isSeller: isSellerLoggedIn(),
     subtotalItensSemDesconto,
     subtotalItensComDesconto,
+    descontoTotalItens,
     discGlobalPercent,
     valorDescontoGlobal,
-    totalFinalLiquido
+    totalFinalLiquido,
+    economiaTotalReal,
+    percentualEconomiaTotal
   });
 
   document.getElementById('pdf-modal-backdrop')?.classList.add('show');
@@ -6852,14 +7135,18 @@ function renderPdfPaperContent(data) {
   if (!paper) return;
 
   const showPrices = data.isSeller;
+  const subtotalItensSemDesconto = data.subtotalItensSemDesconto !== undefined ? data.subtotalItensSemDesconto : data.itemsList.reduce((acc, i) => acc + (i.quantidade * (i.preco_unitario !== undefined ? i.preco_unitario : (i.preco_base || 0))), 0);
   const subtotalItensComDesconto = data.subtotalItensComDesconto !== undefined ? data.subtotalItensComDesconto : data.itemsList.reduce((acc, i) => {
     const pUnit = (i.preco_unitario !== undefined) ? i.preco_unitario : (i.preco_base || 0);
     const disc = (i.desconto_percent || 0);
     return acc + (i.quantidade * pUnit * (1 - disc / 100));
   }, 0);
+  const descontoTotalItens = data.descontoTotalItens !== undefined ? data.descontoTotalItens : Math.max(0, subtotalItensSemDesconto - subtotalItensComDesconto);
   const discGlobalPercent = data.discGlobalPercent || 0;
   const valorDescontoGlobal = data.valorDescontoGlobal !== undefined ? data.valorDescontoGlobal : ((subtotalItensComDesconto * discGlobalPercent) / 100);
   const totalFinalLiquido = data.totalFinalLiquido !== undefined ? data.totalFinalLiquido : Math.max(0, subtotalItensComDesconto - valorDescontoGlobal);
+  const economiaTotalReal = data.economiaTotalReal !== undefined ? data.economiaTotalReal : (descontoTotalItens + valorDescontoGlobal);
+  const percentualEconomiaTotal = subtotalItensSemDesconto > 0 ? ((economiaTotalReal / subtotalItensSemDesconto) * 100) : 0;
 
   paper.innerHTML = `
     <div class="pdf-doc-head">
@@ -6945,39 +7232,71 @@ function renderPdfPaperContent(data) {
 
     <!-- Resumo & Observações -->
     <div class="pdf-footer-terms">
-      <div style="background:#f8fafc; padding:10px 14px; border-radius:6px; border:1px solid #e2e8f0; margin-bottom:12px;">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: ${showPrices && discGlobalPercent > 0 ? '6px' : '0'}; flex-wrap:wrap; gap:8px;">
+      <div style="background:#f8fafc; padding:12px 16px; border-radius:8px; border:1px solid #e2e8f0; margin-bottom:12px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: ${showPrices && economiaTotalReal > 0.01 ? '8px' : '0'}; flex-wrap:wrap; gap:8px;">
           <span style="font-weight:700; color:#0f1f17;">Total de Itens: <strong>${data.itemsList.reduce((acc, i) => acc + i.quantidade, 0)} unidades</strong></span>
-          ${showPrices && discGlobalPercent === 0 ? `
-            <div style="font-size:15px; font-weight:800; color:#0f4531;">
+          ${showPrices && economiaTotalReal <= 0.01 ? `
+            <div style="font-size:16px; font-weight:800; color:#0f4531;">
               VALOR TOTAL DA PROPOSTA: R$ ${totalFinalLiquido.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </div>
           ` : ''}
         </div>
 
-        ${showPrices && discGlobalPercent > 0 ? `
-          <div style="border-top:1px dashed #cbd5e1; padding-top:6px; display:flex; flex-direction:column; gap:4px;">
+        ${showPrices && economiaTotalReal > 0.01 ? `
+          <div style="border-top:1px dashed #cbd5e1; padding-top:8px; display:flex; flex-direction:column; gap:4px;">
             <div style="display:flex; justify-content:space-between; font-size:12px; color:#475569;">
               <span>Subtotal dos Produtos:</span>
-              <strong>R$ ${subtotalItensComDesconto.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong>
+              <strong>R$ ${subtotalItensSemDesconto.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong>
             </div>
-            <div style="display:flex; justify-content:space-between; font-size:12px; color:#059669; font-weight:700;">
-              <span>Desconto Comercial no Pedido (${discGlobalPercent.toFixed(1)}%):</span>
-              <span>-R$ ${valorDescontoGlobal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+            ${descontoTotalItens > 0.01 ? `
+              <div style="display:flex; justify-content:space-between; font-size:12px; color:#059669; font-weight:600;">
+                <span>Desconto Aplicado nos Produtos:</span>
+                <span>-R$ ${descontoTotalItens.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+              </div>
+              <div style="display:flex; justify-content:space-between; font-size:12px; color:#475569;">
+                <span>Subtotal c/ Desconto dos Itens:</span>
+                <strong>R$ ${subtotalItensComDesconto.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong>
+              </div>
+            ` : ''}
+            ${discGlobalPercent > 0 ? `
+              <div style="display:flex; justify-content:space-between; font-size:12px; color:#059669; font-weight:700;">
+                <span>Desconto Comercial no Fechamento (${discGlobalPercent.toFixed(1)}%):</span>
+                <span>-R$ ${valorDescontoGlobal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+              </div>
+            ` : ''}
+            <div style="display:flex; justify-content:space-between; font-size:12.5px; color:#0f4531; font-weight:800; background:#dcfce7; padding:5px 10px; border-radius:6px; margin:4px 0;">
+              <span>🎉 ECONOMIA TOTAL DO CLIENTE:</span>
+              <span>R$ ${economiaTotalReal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} (${percentualEconomiaTotal.toFixed(1)}% OFF)</span>
             </div>
-            <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid #cbd5e1; padding-top:4px; margin-top:2px;">
-              <span style="font-size:12.5px; font-weight:700; color:#0f1f17;">TOTAL COM DESCONTO (LÍQUIDO):</span>
-              <strong style="font-size:16px; color:#0f4531; font-weight:800;">R$ ${totalFinalLiquido.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong>
+            <div style="display:flex; justify-content:space-between; align-items:center; border-top:1.5px solid #0f4531; padding-top:6px; margin-top:3px;">
+              <span style="font-size:13px; font-weight:800; color:#0f1f17;">VALOR TOTAL LÍQUIDO DA PROPOSTA:</span>
+              <strong style="font-size:18px; color:#0f4531; font-weight:800;">R$ ${totalFinalLiquido.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong>
             </div>
           </div>
         ` : ''}
       </div>
 
+      ${showPrices ? `
+        <!-- Caixa de Destaque das Condições Comerciais -->
+        <div style="background:#ecfdf5; border:1px solid #a7f3d0; border-radius:6px; padding:10px 14px; margin-bottom:12px; display:grid; grid-template-columns: ${data.pagamento ? '1.5fr 1fr' : '1fr'}; gap:10px; font-size:12px;">
+          ${data.pagamento ? `
+            <div>
+              <span style="color:#065f46; font-weight:700; font-size:11px; text-transform:uppercase;">Condição de Pagamento</span>
+              <div style="font-weight:800; color:#0f4531; margin-top:1px;">💳 ${data.pagamento}</div>
+            </div>
+          ` : ''}
+          <div>
+            <span style="color:#065f46; font-weight:700; font-size:11px; text-transform:uppercase;">Validade da Proposta</span>
+            <div style="font-weight:800; color:#0f4531; margin-top:1px;">📅 ${data.validade || '10 dias'}</div>
+          </div>
+        </div>
+      ` : ''}
+
       <div style="background:#f1f5f9; padding:10px 14px; border-radius:6px; margin-bottom:12px; font-size:11.5px; color:#334155;">
-        <strong>📌 Termos &amp; Condições da Proposta:</strong><br>
-        1. Validade desta proposta: <strong>7 (sete) dias úteis</strong> a partir da data de emissão.<br>
-        2. Valores, condições de pagamento, frete e faturamento sujeitos a confirmação comercial conforme o volume do pedido.<br>
-        3. Para pedidos de caixas fechadas, consulte descontos por volume com o representante.
+        <strong>📌 Termos &amp; Condições Gerais:</strong><br>
+        1. Proposta comercial gerada eletronicamente pelo Catálogo Oficial Rawell Química.<br>
+        2. Faturamento direto ou via distribuidor autorizado conforme disponibilidade logística regional.<br>
+        3. Para pedidos de caixas fechadas ou cargas completas, consulte bonificações por volume.
       </div>
       <div style="font-size:11px; color:#64748b; word-break:break-all;">
         🔗 <strong>Link Direto deste Orçamento:</strong> <a href="${data.shareUrl}" target="_blank" style="color:#2563eb;">${data.shareUrl}</a>
@@ -7008,7 +7327,17 @@ function openPdfProposalModal() {
   const isSeller = isSellerLoggedIn();
   const shareUrl = generateCartShareUrl(isSeller);
 
-  const { subtotalItensSemDesconto, subtotalItensComDesconto, discGlobalPercent, valorDescontoGlobal, totalFinalLiquido, totalQtd } = calculateCartTotals();
+  const {
+    subtotalItensSemDesconto,
+    subtotalItensComDesconto,
+    descontoTotalItens,
+    discGlobalPercent,
+    valorDescontoGlobal,
+    totalFinalLiquido,
+    economiaTotalReal,
+    percentualEconomiaTotal,
+    totalQtd
+  } = calculateCartTotals();
 
   saveQuoteToHistory({
     id: orcNum,
@@ -7033,9 +7362,12 @@ function openPdfProposalModal() {
     valorTotal: isSeller ? `R$ ${totalFinalLiquido.toFixed(2).replace('.', ',')}` : '',
     subtotalItensSemDesconto,
     subtotalItensComDesconto,
+    descontoTotalItens,
     discGlobalPercent,
     valorDescontoGlobal,
     totalFinalLiquido,
+    economiaTotalReal,
+    percentualEconomiaTotal,
     status: 'aguardando',
     shareUrl: shareUrl
   });
@@ -7047,9 +7379,11 @@ function openPdfProposalModal() {
     total_itens: totalQtd,
     valor_total: isSeller ? `R$ ${totalFinalLiquido.toFixed(2).replace('.', ',')}` : '-',
     resumo_itens: cartItems.map(i => `${i.quantidade}x ${i.nome}`).join(', '),
-    link_proposta: shareUrl
+    link_proposta: shareUrl,
+    detalhes_extras: `Total Líquido: R$ ${totalFinalLiquido.toFixed(2)} | Economia: R$ ${economiaTotalReal.toFixed(2)}`
   });
 
+  const { pagamento, validade } = isSeller ? getCommercialTerms() : {};
   renderPdfPaperContent({
     orcNum,
     dataAtual,
@@ -7060,11 +7394,16 @@ function openPdfProposalModal() {
     itemsList: cartItems,
     shareUrl,
     isSeller,
+    pagamento,
+    validade,
     subtotalItensSemDesconto,
     subtotalItensComDesconto,
+    descontoTotalItens,
     discGlobalPercent,
     valorDescontoGlobal,
-    totalFinalLiquido
+    totalFinalLiquido,
+    economiaTotalReal,
+    percentualEconomiaTotal
   });
 
   document.getElementById('pdf-modal-backdrop')?.classList.add('show');
@@ -7108,7 +7447,17 @@ function sendQuoteToWhatsApp() {
   const horaAtual = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
   const orcNum = 'RQ-2026-' + Math.floor(1000 + Math.random() * 9000);
 
-  const { subtotalItensSemDesconto, subtotalItensComDesconto, discGlobalPercent, valorDescontoGlobal, totalFinalLiquido, totalQtd } = calculateCartTotals();
+  const {
+    subtotalItensSemDesconto,
+    subtotalItensComDesconto,
+    descontoTotalItens,
+    discGlobalPercent,
+    valorDescontoGlobal,
+    totalFinalLiquido,
+    economiaTotalReal,
+    percentualEconomiaTotal,
+    totalQtd
+  } = calculateCartTotals();
 
   saveQuoteToHistory({
     id: orcNum,
@@ -7133,9 +7482,12 @@ function sendQuoteToWhatsApp() {
     valorTotal: isSeller ? `R$ ${totalFinalLiquido.toFixed(2).replace('.', ',')}` : '',
     subtotalItensSemDesconto,
     subtotalItensComDesconto,
+    descontoTotalItens,
     discGlobalPercent,
     valorDescontoGlobal,
     totalFinalLiquido,
+    economiaTotalReal,
+    percentualEconomiaTotal,
     status: 'aguardando',
     shareUrl: shareUrl
   });
@@ -7148,7 +7500,7 @@ function sendQuoteToWhatsApp() {
     valor_total: isSeller ? `R$ ${totalFinalLiquido.toFixed(2).replace('.', ',')}` : '-',
     resumo_itens: cartItems.map(i => `${i.quantidade}x ${i.nome}`).join(', '),
     link_proposta: shareUrl,
-    detalhes_extras: `Destino WhatsApp: ${destWhatsapp}`
+    detalhes_extras: `Destino WhatsApp: ${destWhatsapp} | Total Líquido: R$ ${totalFinalLiquido.toFixed(2)} | Economia Total: R$ ${economiaTotalReal.toFixed(2)}`
   });
 
   let msg = `🌿 *${CONFIG.empresa}*\n`;
@@ -7179,10 +7531,17 @@ function sendQuoteToWhatsApp() {
 
   msg += `━━━━━━━━━━━━━━━━━━━━━\n`;
   if (isSeller) {
-    if (discGlobalPercent > 0) {
-      msg += `💰 *Subtotal dos Produtos:* R$ ${subtotalItensComDesconto.toFixed(2).replace('.', ',')}\n`;
-      msg += `🏷️ *Desconto no Pedido (${discGlobalPercent.toFixed(1)}%):* -R$ ${valorDescontoGlobal.toFixed(2).replace('.', ',')}\n`;
-      msg += `💳 *TOTAL COM DESCONTO:* *R$ ${totalFinalLiquido.toFixed(2).replace('.', ',')}*\n`;
+    if (economiaTotalReal > 0.01) {
+      msg += `💰 *Subtotal dos Produtos:* R$ ${subtotalItensSemDesconto.toFixed(2).replace('.', ',')}\n`;
+      if (descontoTotalItens > 0.01) {
+        msg += `🏷️ *Descontos nos Produtos:* -R$ ${descontoTotalItens.toFixed(2).replace('.', ',')}\n`;
+        msg += `📦 *Subtotal c/ Desc. dos Itens:* R$ ${subtotalItensComDesconto.toFixed(2).replace('.', ',')}\n`;
+      }
+      if (discGlobalPercent > 0) {
+        msg += `🏷️ *Desconto no Pedido (${discGlobalPercent.toFixed(1)}%):* -R$ ${valorDescontoGlobal.toFixed(2).replace('.', ',')}\n`;
+      }
+      msg += `🎉 *ECONOMIA TOTAL DO CLIENTE:* *R$ ${economiaTotalReal.toFixed(2).replace('.', ',')} (${percentualEconomiaTotal.toFixed(1)}% OFF)*\n`;
+      msg += `💳 *TOTAL FINAL DA PROPOSTA:* *R$ ${totalFinalLiquido.toFixed(2).replace('.', ',')}*\n`;
     } else {
       msg += `💳 *TOTAL DA PROPOSTA:* *R$ ${totalFinalLiquido.toFixed(2).replace('.', ',')}*\n`;
     }
@@ -7194,6 +7553,17 @@ function sendQuoteToWhatsApp() {
     msg += `👔 *Vendedor:* ${vendedorObj.nome}\n`;
   }
   if (doc) msg += `🏢 *Documento/Local:* ${doc}\n`;
+
+  if (isSeller) {
+    const { pagamento, validade } = getCommercialTerms();
+    msg += `━━━━━━━━━━━━━━━━━━━━━\n`;
+    if (pagamento) {
+      msg += `💳 *Condição de Pagamento:* ${pagamento}\n`;
+    }
+    if (validade) {
+      msg += `📅 *Validade da Proposta:* ${validade}\n`;
+    }
+  }
   msg += `━━━━━━━━━━━━━━━━━━━━━\n\n`;
   msg += `🔗 *Abrir / Recomprar este pedido no Catálogo:*\n${shareUrl}\n\n`;
   msg += `${CONFIG.mensagem_fim}`;
