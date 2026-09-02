@@ -1461,23 +1461,36 @@ html {
   -webkit-overflow-scrolling: touch;
 }
 
-/* Detalhes do Produto */
-.sheet-prod-img-box {
+/* Detalhes do Produto & Galeria Estável */
+.sheet-gallery-wrap {
   width: 100%;
-  height: 240px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.sheet-main-img-viewport {
+  width: 100%;
+  height: 250px;
   background: var(--bg-card-sub);
+  border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 16px;
   position: relative;
+  overflow: hidden;
+  padding: 12px;
 }
 
-.sheet-prod-img-box img {
-  max-height: 90%;
-  max-width: 90%;
+.sheet-main-img-viewport img {
+  width: 100%;
+  height: 100%;
+  max-height: 100%;
+  max-width: 100%;
   object-fit: contain;
+  transition: opacity 0.18s cubic-bezier(0.33, 1, 0.68, 1), transform 0.18s cubic-bezier(0.33, 1, 0.68, 1);
 }
 
 .sheet-prod-meta {
@@ -2177,10 +2190,11 @@ html {
     gap: 24px;
     padding: 20px 24px 80px;
   }
-  .sheet-prod-img-box {
-    height: 100%;
-    max-height: 380px;
+  .sheet-gallery-wrap {
     margin-bottom: 0;
+  }
+  .sheet-main-img-viewport {
+    height: 310px;
   }
 
   /* Carrinho como Drawer Lateral Direito no Desktop */
@@ -4569,7 +4583,13 @@ function changeSheetMainImg(src, thumbEl) {
   hapticFeedback(12);
   const mainImg = document.getElementById('sheet-main-img');
   if (mainImg) {
-    mainImg.src = src;
+    mainImg.style.opacity = '0.25';
+    mainImg.style.transform = 'scale(0.97)';
+    setTimeout(() => {
+      mainImg.src = src;
+      mainImg.style.opacity = '1';
+      mainImg.style.transform = 'scale(1)';
+    }, 120);
   }
   if (thumbEl) {
     const parent = thumbEl.parentElement;
@@ -4592,8 +4612,10 @@ function openProductSheet(id) {
 
   const body = document.getElementById('product-sheet-body');
   body.innerHTML = `
-    <div class="sheet-prod-img-box">
-      <img id="sheet-main-img" src="${p.imagens[0]}" alt="${p.nome}">
+    <div class="sheet-gallery-wrap">
+      <div class="sheet-main-img-viewport">
+        <img id="sheet-main-img" src="${p.imagens[0]}" alt="${p.nome}">
+      </div>
       ${p.imagens.length > 1 ? `
         <div class="sheet-thumbs-row">
           ${p.imagens.map((imgSrc, idx) => `
