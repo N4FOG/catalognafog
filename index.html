@@ -6179,6 +6179,9 @@ function calculateCartTotals() {
   let subtotalTabelaBruto = 0;
   let subtotalItensSemDesconto = 0;
   let subtotalItensComDesconto = 0;
+  let baseItensSemDesconto = 0;
+  let qtdItensSemDesconto = 0;
+  let qtdTiposSemDesconto = 0;
   let totalQtd = 0;
 
   cartItems.forEach(item => {
@@ -6191,11 +6194,20 @@ function calculateCartTotals() {
     subtotalItensSemDesconto += (item.quantidade * pUnit);
     subtotalItensComDesconto += (item.quantidade * pUnitDesc);
     totalQtd += item.quantidade;
+
+    // Itens que NÃO possuem desconto individual (base elegível para desconto no pedido)
+    if (discPercent <= 0) {
+      baseItensSemDesconto += (item.quantidade * pUnit);
+      qtdItensSemDesconto += item.quantidade;
+      qtdTiposSemDesconto += 1;
+    }
   });
 
   const descontoTotalItens = Math.max(0, subtotalItensSemDesconto - subtotalItensComDesconto);
   const discGlobalPercent = Math.max(0, Math.min(100, cartGlobalDiscountPercent || 0));
-  const valorDescontoGlobal = (subtotalItensComDesconto * discGlobalPercent) / 100;
+
+  // REGRA OPÇÃO 1: Desconto no pedido incide APENAS sobre a base dos itens sem desconto individual
+  const valorDescontoGlobal = (baseItensSemDesconto * discGlobalPercent) / 100;
   const totalFinalLiquido = Math.max(0, subtotalItensComDesconto - valorDescontoGlobal);
   const economiaTotalReal = descontoTotalItens + valorDescontoGlobal;
   const percentualEconomiaTotal = subtotalItensSemDesconto > 0 ? ((economiaTotalReal / subtotalItensSemDesconto) * 100) : 0;
@@ -6205,6 +6217,9 @@ function calculateCartTotals() {
     subtotalItensSemDesconto,
     subtotalItensComDesconto,
     descontoTotalItens,
+    baseItensSemDesconto,
+    qtdItensSemDesconto,
+    qtdTiposSemDesconto,
     discGlobalPercent,
     valorDescontoGlobal,
     totalFinalLiquido,
@@ -6219,6 +6234,8 @@ function updateCartTotalsUI() {
     subtotalItensSemDesconto,
     subtotalItensComDesconto,
     descontoTotalItens,
+    baseItensSemDesconto,
+    qtdTiposSemDesconto,
     discGlobalPercent,
     valorDescontoGlobal,
     totalFinalLiquido,
@@ -6242,14 +6259,25 @@ function updateCartTotalsUI() {
     }
   }
 
-  const subtotalEl = document.getElementById('cart-seller-subtotal-num');
-  if (subtotalEl) {
-    subtotalEl.textContent = `R$ ${subtotalItensComDesconto.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-  }
-
   const globalDescValEl = document.getElementById('cart-seller-global-disc-val');
   if (globalDescValEl) {
-    globalDescValEl.textContent = discGlobalPercent > 0 ? `-R$ ${valorDescontoGlobal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : '-';
+    if (baseItensSemDesconto > 0) {
+      globalDescValEl.textContent = discGlobalPercent > 0 
+        ? `-R$ ${valorDescontoGlobal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} (s/ ${qtdTiposSemDesconto} item${qtdTiposSemDesconto > 1 ? 's' : ''})` 
+        : '-';
+    } else {
+      globalDescValEl.textContent = '(Itens c/ desc. indiv.)';
+    }
+  }
+
+  const globalDescNoticeEl = document.getElementById('cart-seller-global-desc-notice');
+  if (globalDescNoticeEl) {
+    if (baseItensSemDesconto <= 0 && cartItems.length > 0) {
+      globalDescNoticeEl.style.display = 'block';
+      globalDescNoticeEl.textContent = 'ℹ️ Todos os produtos já possuem desconto individual negociado.';
+    } else {
+      globalDescNoticeEl.style.display = 'none';
+    }
   }
 
   const savingsBanner = document.getElementById('cart-seller-savings-banner');
@@ -6445,6 +6473,8 @@ function renderCartSheet() {
     subtotalItensSemDesconto,
     subtotalItensComDesconto,
     descontoTotalItens,
+    baseItensSemDesconto,
+    qtdTiposSemDesconto,
     discGlobalPercent,
     valorDescontoGlobal,
     totalFinalLiquido,
@@ -6607,13 +6637,13 @@ function renderCartSheet() {
       <div style="display:flex; flex-direction:column; gap:4px; margin-bottom:6px;">
         <!-- Linha 1: Subtotal dos Produtos -->
         <div class="seller-breakdown-row">
-          <span style="font-size:0.8rem; font-weight:600; color:var(--text-2);">Subtotal dos Produtos: ( Sem Desconto )</span>
+          <span style="font-size:0.8rem; font-weight:600; color:var(--text-2);">Subtotal dos Produtos:</span>
           <strong id="cart-seller-subtotal-sem-desc" style="font-size:0.88rem; color:var(--text);">R$ ${subtotalItensSemDesconto.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong>
         </div>
 
         <!-- Linha 2: Desconto nos Produtos (se houver) -->
         <div class="seller-breakdown-row" id="cart-seller-items-desc-row" style="display:${descontoTotalItens > 0.01 ? 'flex' : 'none'}; color:#059669;">
-          <span style="font-size:0.78rem; font-weight:700;">🏷️ Desconto nos Produtos:(Aplicados nos Produtos)</span>
+          <span style="font-size:0.78rem; font-weight:700;">🏷️ Desconto nos Produtos:</span>
           <strong id="cart-seller-items-desc-val" style="font-size:0.82rem;">-R$ ${descontoTotalItens.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong>
         </div>
 
@@ -6627,11 +6657,20 @@ function renderCartSheet() {
               <button type="button" class="btn-disc-pill ${discGlobalPercent === 10 ? 'active' : ''}" data-percent="10" onclick="applyQuickGlobalDiscount(10)">-10%</button>
               <button type="button" class="btn-disc-pill ${discGlobalPercent === 15 ? 'active' : ''}" data-percent="15" onclick="applyQuickGlobalDiscount(15)">-15%</button>
             </div>
-            <div class="seller-disc-input-wrap" title="Desconto personalizado %">
+            <div class="seller-disc-input-wrap" title="Desconto % sobre itens sem desconto individual">
               <input type="number" step="0.1" min="0" max="100" class="seller-disc-input" id="cart-input-global-discount" value="${discGlobalPercent > 0 ? discGlobalPercent.toFixed(1) : ''}" placeholder="%" oninput="updateGlobalDiscountPercent(this.value)" onclick="this.select()">
             </div>
           </div>
-          <span id="cart-seller-global-disc-val" style="color:#059669; font-weight:700; font-size:0.82rem;">${discGlobalPercent > 0 ? `-R$ ${valorDescontoGlobal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : '-'}</span>
+          <span id="cart-seller-global-disc-val" style="color:#059669; font-weight:700; font-size:0.82rem;">
+            ${baseItensSemDesconto > 0 
+              ? (discGlobalPercent > 0 ? `-R$ ${valorDescontoGlobal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} (s/ ${qtdTiposSemDesconto} item${qtdTiposSemDesconto > 1 ? 's' : ''})` : '-')
+              : '(Itens c/ desc. indiv.)'
+            }
+          </span>
+        </div>
+
+        <div id="cart-seller-global-desc-notice" style="display:${(baseItensSemDesconto <= 0 && cartItems.length > 0) ? 'block' : 'none'}; font-size:0.72rem; color:var(--text-3); font-style:italic;">
+          ℹ️ Todos os produtos já possuem desconto individual negociado.
         </div>
 
         <!-- Linha 4: Banner de Economia Total Real do Cliente -->
@@ -7097,9 +7136,12 @@ function openPdfProposalFromHistory(quoteId) {
     const disc = (i.desconto_percent || 0);
     return acc + (i.quantidade * pUnit * (1 - disc / 100));
   }, 0) : subtotalItensSemDesconto);
+  const baseItensSemDesconto = q.baseItensSemDesconto !== undefined ? q.baseItensSemDesconto : (q.itens ? q.itens.reduce((acc, i) => {
+    return (!i.desconto_percent || i.desconto_percent <= 0) ? acc + (i.quantidade * (i.preco_unitario !== undefined ? i.preco_unitario : (i.preco_base || 0))) : acc;
+  }, 0) : 0);
   const descontoTotalItens = q.descontoTotalItens !== undefined ? q.descontoTotalItens : Math.max(0, subtotalItensSemDesconto - subtotalItensComDesconto);
   const discGlobalPercent = q.discGlobalPercent || q.discPercent || 0;
-  const valorDescontoGlobal = q.valorDescontoGlobal || ((subtotalItensComDesconto * discGlobalPercent) / 100);
+  const valorDescontoGlobal = q.valorDescontoGlobal !== undefined ? q.valorDescontoGlobal : ((baseItensSemDesconto * discGlobalPercent) / 100);
   const totalFinalLiquido = q.totalFinalLiquido || Math.max(0, subtotalItensComDesconto - valorDescontoGlobal);
   const economiaTotalReal = q.economiaTotalReal !== undefined ? q.economiaTotalReal : (descontoTotalItens + valorDescontoGlobal);
   const percentualEconomiaTotal = subtotalItensSemDesconto > 0 ? ((economiaTotalReal / subtotalItensSemDesconto) * 100) : 0;
@@ -7117,6 +7159,7 @@ function openPdfProposalFromHistory(quoteId) {
     subtotalItensSemDesconto,
     subtotalItensComDesconto,
     descontoTotalItens,
+    baseItensSemDesconto,
     discGlobalPercent,
     valorDescontoGlobal,
     totalFinalLiquido,
@@ -7141,9 +7184,12 @@ function renderPdfPaperContent(data) {
     const disc = (i.desconto_percent || 0);
     return acc + (i.quantidade * pUnit * (1 - disc / 100));
   }, 0);
+  const baseItensSemDesconto = data.baseItensSemDesconto !== undefined ? data.baseItensSemDesconto : data.itemsList.reduce((acc, i) => {
+    return (!i.desconto_percent || i.desconto_percent <= 0) ? acc + (i.quantidade * (i.preco_unitario !== undefined ? i.preco_unitario : (i.preco_base || 0))) : acc;
+  }, 0);
   const descontoTotalItens = data.descontoTotalItens !== undefined ? data.descontoTotalItens : Math.max(0, subtotalItensSemDesconto - subtotalItensComDesconto);
   const discGlobalPercent = data.discGlobalPercent || 0;
-  const valorDescontoGlobal = data.valorDescontoGlobal !== undefined ? data.valorDescontoGlobal : ((subtotalItensComDesconto * discGlobalPercent) / 100);
+  const valorDescontoGlobal = data.valorDescontoGlobal !== undefined ? data.valorDescontoGlobal : ((baseItensSemDesconto * discGlobalPercent) / 100);
   const totalFinalLiquido = data.totalFinalLiquido !== undefined ? data.totalFinalLiquido : Math.max(0, subtotalItensComDesconto - valorDescontoGlobal);
   const economiaTotalReal = data.economiaTotalReal !== undefined ? data.economiaTotalReal : (descontoTotalItens + valorDescontoGlobal);
   const percentualEconomiaTotal = subtotalItensSemDesconto > 0 ? ((economiaTotalReal / subtotalItensSemDesconto) * 100) : 0;
@@ -7258,9 +7304,9 @@ function renderPdfPaperContent(data) {
                 <strong>R$ ${subtotalItensComDesconto.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong>
               </div>
             ` : ''}
-            ${discGlobalPercent > 0 ? `
+            ${discGlobalPercent > 0 && valorDescontoGlobal > 0 ? `
               <div style="display:flex; justify-content:space-between; font-size:12px; color:#059669; font-weight:700;">
-                <span>Desconto Comercial no Fechamento (${discGlobalPercent.toFixed(1)}%):</span>
+                <span>Desconto Comercial no Fechamento (${discGlobalPercent.toFixed(1)}% sobre itens s/ desc.):</span>
                 <span>-R$ ${valorDescontoGlobal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
               </div>
             ` : ''}
@@ -7331,6 +7377,8 @@ function openPdfProposalModal() {
     subtotalItensSemDesconto,
     subtotalItensComDesconto,
     descontoTotalItens,
+    baseItensSemDesconto,
+    qtdTiposSemDesconto,
     discGlobalPercent,
     valorDescontoGlobal,
     totalFinalLiquido,
@@ -7363,6 +7411,7 @@ function openPdfProposalModal() {
     subtotalItensSemDesconto,
     subtotalItensComDesconto,
     descontoTotalItens,
+    baseItensSemDesconto,
     discGlobalPercent,
     valorDescontoGlobal,
     totalFinalLiquido,
@@ -7399,6 +7448,7 @@ function openPdfProposalModal() {
     subtotalItensSemDesconto,
     subtotalItensComDesconto,
     descontoTotalItens,
+    baseItensSemDesconto,
     discGlobalPercent,
     valorDescontoGlobal,
     totalFinalLiquido,
@@ -7451,6 +7501,7 @@ function sendQuoteToWhatsApp() {
     subtotalItensSemDesconto,
     subtotalItensComDesconto,
     descontoTotalItens,
+    baseItensSemDesconto,
     discGlobalPercent,
     valorDescontoGlobal,
     totalFinalLiquido,
@@ -7483,6 +7534,7 @@ function sendQuoteToWhatsApp() {
     subtotalItensSemDesconto,
     subtotalItensComDesconto,
     descontoTotalItens,
+    baseItensSemDesconto,
     discGlobalPercent,
     valorDescontoGlobal,
     totalFinalLiquido,
@@ -7537,8 +7589,8 @@ function sendQuoteToWhatsApp() {
         msg += `🏷️ *Descontos nos Produtos:* -R$ ${descontoTotalItens.toFixed(2).replace('.', ',')}\n`;
         msg += `📦 *Subtotal c/ Desc. dos Itens:* R$ ${subtotalItensComDesconto.toFixed(2).replace('.', ',')}\n`;
       }
-      if (discGlobalPercent > 0) {
-        msg += `🏷️ *Desconto no Pedido (${discGlobalPercent.toFixed(1)}%):* -R$ ${valorDescontoGlobal.toFixed(2).replace('.', ',')}\n`;
+      if (discGlobalPercent > 0 && valorDescontoGlobal > 0) {
+        msg += `🏷️ *Desconto no Pedido (${discGlobalPercent.toFixed(1)}% s/ itens s/ desc.):* -R$ ${valorDescontoGlobal.toFixed(2).replace('.', ',')}\n`;
       }
       msg += `🎉 *ECONOMIA TOTAL DO CLIENTE:* *R$ ${economiaTotalReal.toFixed(2).replace('.', ',')} (${percentualEconomiaTotal.toFixed(1)}% OFF)*\n`;
       msg += `💳 *TOTAL FINAL DA PROPOSTA:* *R$ ${totalFinalLiquido.toFixed(2).replace('.', ',')}*\n`;
