@@ -101,6 +101,15 @@ document.addEventListener('DOMContentLoaded', () => {
           Cotar apenas este item no WhatsApp
         </button>
 
+        <a href="teste-produto-gerador.html?id=${produto.id}" class="btn-share" style="text-decoration:none; background:rgba(16,185,129,0.12); border-color:#059669; color:#059669; font-weight:700;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+            <circle cx="8.5" cy="8.5" r="1.5"></circle>
+            <polyline points="21 15 16 10 5 21"></polyline>
+          </svg>
+          🖼️ Criar Card p/ Status do WhatsApp
+        </a>
+
         <button class="btn-share" onclick="compartilharProduto(${produto.id})">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
             <circle cx="18" cy="5" r="3"></circle>
