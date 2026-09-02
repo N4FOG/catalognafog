@@ -2811,6 +2811,141 @@ mark {
   color: #fff;
 }
 
+/* ── Estilos de Desconto por Item e Desconto Global no Carrinho ── */
+.cart-item-price-section {
+  margin-top: 8px;
+  background: var(--bg-card-sub);
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.cart-item-price-edit-row,
+.cart-item-discount-edit-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.cart-price-input-wrap,
+.cart-discount-input-wrap {
+  display: inline-flex;
+  align-items: center;
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-xs);
+  padding: 2px 6px;
+  transition: border-color var(--transition);
+}
+.cart-price-input-wrap:focus-within,
+.cart-discount-input-wrap:focus-within {
+  border-color: var(--brand-light);
+  box-shadow: 0 0 0 2px var(--brand-pale);
+}
+.cart-price-symbol,
+.cart-discount-symbol {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-3);
+  margin-right: 2px;
+}
+.cart-discount-symbol {
+  margin-right: 0;
+  margin-left: 2px;
+}
+.cart-price-input-field,
+.cart-discount-input-field {
+  width: 74px;
+  border: none;
+  background: transparent;
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--text);
+  outline: none;
+  text-align: right;
+}
+.cart-discount-input-field {
+  width: 54px;
+  color: #059669;
+}
+.cart-base-price-ref,
+.cart-item-economy-badge {
+  font-size: 0.72rem;
+  color: var(--text-3);
+  white-space: nowrap;
+}
+.cart-item-economy-badge {
+  color: #059669;
+  font-weight: 700;
+}
+.cart-item-subtotal-line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 5px;
+  border-top: 1px solid var(--border-subtle);
+  font-size: 0.82rem;
+}
+.subtotal-label {
+  font-size: 0.78rem;
+  color: var(--text-3);
+  font-weight: 600;
+}
+.subtotal-val {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--brand);
+}
+[data-theme="dark"] .subtotal-val {
+  color: var(--brand-light);
+}
+
+/* Card Totalizador da Proposta com Desconto Global */
+.cart-total-proposal-card {
+  background: var(--bg-card-sub);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  margin-bottom: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  box-shadow: var(--shadow-sm);
+}
+.cart-proposal-breakdown-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.82rem;
+  color: var(--text-2);
+}
+.cart-proposal-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 2px 0;
+}
+.cart-proposal-final-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 2px;
+}
+.cart-total-proposal-label {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--text);
+}
+.cart-total-proposal-num {
+  font-size: 1.28rem;
+  font-weight: 800;
+  color: var(--brand);
+}
+[data-theme="dark"] .cart-total-proposal-num {
+  color: var(--brand-light);
+}
+
 </style>
 </head>
 <body>
@@ -4697,7 +4832,9 @@ let appState = {
 };
 
 let cartItems = [];
+let cartGlobalDiscountPercent = 0;
 const CART_STORAGE_KEY = 'rawell_cart_v2';
+const CART_GLOBAL_DISCOUNT_KEY = 'rawell_cart_global_discount_v2';
 const CLIENT_STORAGE_KEY = 'rawell_client_profile_v2';
 
 // ═══════════════════════════════════════════════════════════════
@@ -5365,15 +5502,60 @@ function loadCart() {
         if (item.preco_unitario === undefined) item.preco_unitario = p.preco_base || 0;
       }
     });
+    cartGlobalDiscountPercent = parseFloat(localStorage.getItem(CART_GLOBAL_DISCOUNT_KEY)) || 0;
   } catch {
     cartItems = [];
+    cartGlobalDiscountPercent = 0;
   }
   updateBadges();
 }
 
 function saveCart() {
   localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cartItems));
+  localStorage.setItem(CART_GLOBAL_DISCOUNT_KEY, cartGlobalDiscountPercent.toString());
   updateBadges();
+}
+
+function calculateCartTotals() {
+  let subtotalBruto = 0;
+  let totalQtd = 0;
+
+  cartItems.forEach(item => {
+    const pUnit = (item.preco_unitario !== undefined) ? item.preco_unitario : (item.preco_base || 0);
+    subtotalBruto += (item.quantidade * pUnit);
+    totalQtd += item.quantidade;
+  });
+
+  const discPercent = Math.max(0, Math.min(100, cartGlobalDiscountPercent || 0));
+  const valorDescontoGeral = (subtotalBruto * discPercent) / 100;
+  const totalFinalLiquido = Math.max(0, subtotalBruto - valorDescontoGeral);
+
+  return {
+    subtotalBruto,
+    discPercent,
+    valorDescontoGeral,
+    totalFinalLiquido,
+    totalQtd
+  };
+}
+
+function updateCartTotalsUI() {
+  const { subtotalBruto, discPercent, valorDescontoGeral, totalFinalLiquido } = calculateCartTotals();
+
+  const subtotalEl = document.getElementById('cart-seller-subtotal-num');
+  if (subtotalEl) {
+    subtotalEl.textContent = `R$ ${subtotalBruto.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  }
+
+  const discountValEl = document.getElementById('cart-seller-discount-num');
+  if (discountValEl) {
+    discountValEl.textContent = discPercent > 0 ? `-R$ ${valorDescontoGeral.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : '-';
+  }
+
+  const totalNum = document.getElementById('cart-seller-total-num');
+  if (totalNum) {
+    totalNum.textContent = `R$ ${totalFinalLiquido.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  }
 }
 
 function addToCart(id, qty = 1) {
@@ -5410,9 +5592,23 @@ function addToCart(id, qty = 1) {
 function updateCartItemPrice(id, newPrice) {
   const item = cartItems.find(i => i.id === id);
   if (!item) return;
+  const prod = PRODUTOS.find(p => p.id === id);
+  const pBase = prod ? (prod.preco_base || 0) : (item.preco_base || 0);
   const parsed = parseFloat(newPrice);
+
   if (!isNaN(parsed) && parsed >= 0) {
     item.preco_unitario = parsed;
+
+    // Atualiza o campo de % de desconto correspondente
+    const discInput = document.getElementById(`cart-input-discount-${id}`);
+    if (discInput && document.activeElement !== discInput) {
+      if (pBase > 0) {
+        const diffPercent = ((pBase - parsed) / pBase) * 100;
+        discInput.value = (diffPercent > 0) ? diffPercent.toFixed(1) : (diffPercent < 0 ? diffPercent.toFixed(1) : '0');
+      } else {
+        discInput.value = '0';
+      }
+    }
   }
   saveCart();
 
@@ -5423,21 +5619,110 @@ function updateCartItemPrice(id, newPrice) {
     subtotalEl.textContent = `R$ ${subtotal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
   }
 
-  // Atualiza valor total da proposta no rodapé
-  const totalNum = document.getElementById('cart-seller-total-num');
-  if (totalNum) {
-    const totalGeral = cartItems.reduce((acc, i) => acc + (i.quantidade * (i.preco_unitario !== undefined ? i.preco_unitario : (i.preco_base || 0))), 0);
-    totalNum.textContent = `R$ ${totalGeral.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  // Atualiza economia do item se houver
+  const ecoBadge = document.getElementById(`cart-item-economy-${id}`);
+  if (ecoBadge) {
+    const diffUnit = pBase - (item.preco_unitario || pBase);
+    const ecoTotal = diffUnit * item.quantidade;
+    if (ecoTotal > 0.01) {
+      ecoBadge.textContent = `(Economia: R$ ${ecoTotal.toFixed(2).replace('.', ',')})`;
+      ecoBadge.style.display = 'inline';
+    } else {
+      ecoBadge.textContent = '';
+      ecoBadge.style.display = 'none';
+    }
   }
+
+  updateCartTotalsUI();
 }
 
-function logCartPriceChange(id, newPrice) {
+function updateCartItemDiscountPercent(id, newPercent) {
   const item = cartItems.find(i => i.id === id);
   if (!item) return;
   const prod = PRODUTOS.find(p => p.id === id);
   const pBase = prod ? (prod.preco_base || 0) : (item.preco_base || 0);
-  const pNovo = parseFloat(newPrice);
-  if (isNaN(pNovo) || pNovo < 0) return;
+  const parsedPercent = parseFloat(newPercent);
+
+  if (!isNaN(parsedPercent)) {
+    const clampedPercent = Math.max(-100, Math.min(100, parsedPercent));
+    const pNovo = pBase * (1 - (clampedPercent / 100));
+    item.preco_unitario = Math.max(0, pNovo);
+
+    // Atualiza o input de preço em R$ correspondente
+    const priceInput = document.getElementById(`cart-input-price-${id}`);
+    if (priceInput && document.activeElement !== priceInput) {
+      priceInput.value = item.preco_unitario.toFixed(2);
+    }
+  } else {
+    item.preco_unitario = pBase;
+    const priceInput = document.getElementById(`cart-input-price-${id}`);
+    if (priceInput && document.activeElement !== priceInput) {
+      priceInput.value = pBase.toFixed(2);
+    }
+  }
+  saveCart();
+
+  // Atualiza subtotal do card específico
+  const subtotalEl = document.getElementById(`cart-subtotal-${id}`);
+  if (subtotalEl) {
+    const subtotal = item.quantidade * (item.preco_unitario || 0);
+    subtotalEl.textContent = `R$ ${subtotal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  }
+
+  // Atualiza economia do item se houver
+  const ecoBadge = document.getElementById(`cart-item-economy-${id}`);
+  if (ecoBadge) {
+    const diffUnit = pBase - (item.preco_unitario || pBase);
+    const ecoTotal = diffUnit * item.quantidade;
+    if (ecoTotal > 0.01) {
+      ecoBadge.textContent = `(Economia: R$ ${ecoTotal.toFixed(2).replace('.', ',')})`;
+      ecoBadge.style.display = 'inline';
+    } else {
+      ecoBadge.textContent = '';
+      ecoBadge.style.display = 'none';
+    }
+  }
+
+  updateCartTotalsUI();
+}
+
+function updateGlobalDiscountPercent(newPercent) {
+  const parsed = parseFloat(newPercent);
+  if (!isNaN(parsed) && parsed >= 0) {
+    cartGlobalDiscountPercent = Math.min(100, parsed);
+  } else {
+    cartGlobalDiscountPercent = 0;
+  }
+  saveCart();
+  updateCartTotalsUI();
+}
+
+function logGlobalDiscountChange(newPercent) {
+  const parsed = parseFloat(newPercent) || 0;
+  const { subtotalBruto, valorDescontoGeral, totalFinalLiquido, totalQtd } = calculateCartTotals();
+
+  if (parsed > 0) {
+    logSellerActivity(`🏷️ Aplicou Desconto Global no Pedido (${parsed.toFixed(1)}%)`, {
+      totalItens: `${totalQtd} un`,
+      valorTotal: `R$ ${totalFinalLiquido.toFixed(2).replace('.', ',')}`,
+      resumoItens: `Subtotal Bruto: R$ ${subtotalBruto.toFixed(2).replace('.', ',')} | Desconto no Pedido: -${parsed.toFixed(1)}% (-R$ ${valorDescontoGeral.toFixed(2).replace('.', ',')}) | Total Líquido: R$ ${totalFinalLiquido.toFixed(2).replace('.', ',')}`,
+      observacao: `Desconto de ${parsed.toFixed(1)}% aplicado sobre o valor total do pedido. Economia no pedido: R$ ${valorDescontoGeral.toFixed(2).replace('.', ',')}. Total líquido: R$ ${totalFinalLiquido.toFixed(2).replace('.', ',')}.`
+    });
+  } else {
+    logSellerActivity(`🏷️ Removeu Desconto Global do Pedido`, {
+      totalItens: `${totalQtd} un`,
+      valorTotal: `R$ ${subtotalBruto.toFixed(2).replace('.', ',')}`,
+      observacao: `Desconto global do pedido zerado. Valor restaurado ao subtotal bruto: R$ ${subtotalBruto.toFixed(2).replace('.', ',')}.`
+    });
+  }
+}
+
+function logCartPriceChange(id, newPrice, source = 'price') {
+  const item = cartItems.find(i => i.id === id);
+  if (!item) return;
+  const prod = PRODUTOS.find(p => p.id === id);
+  const pBase = prod ? (prod.preco_base || 0) : (item.preco_base || 0);
+  const pNovo = item.preco_unitario || 0;
 
   const diffUnitario = pNovo - pBase;
   const diffPercent = pBase > 0 ? ((diffUnitario / pBase) * 100).toFixed(1) : '0';
@@ -5460,7 +5745,7 @@ function logCartPriceChange(id, newPrice) {
 
   const eventoTitulo = `💲 Alterou Preço: [${item.nome}] De R$ ${pBase.toFixed(2).replace('.', ',')} Para R$ ${pNovo.toFixed(2).replace('.', ',')}`;
   const resumoLinha = `${item.nome} (${item.quantidade} un) | Tabela: R$ ${pBase.toFixed(2).replace('.', ',')} ➔ Cobrado: R$ ${pNovo.toFixed(2).replace('.', ',')} | Dif. Unitária: ${diffSinal} | Impacto no Lote: ${impactoTexto}`;
-  const obsLinha = `Alteração individual de preço: ${item.nome} (Ref: ${item.referencia}). ${tipoMovimento}. Preço Tabela: R$ ${pBase.toFixed(2).replace('.', ',')} | Preço Negociado: R$ ${pNovo.toFixed(2).replace('.', ',')} | Margem/Variação: ${diffSinal} | Impacto financeiro no lote (${item.quantidade} un): ${impactoTexto} | Novo Subtotal do Produto: R$ ${subtotalItem.toFixed(2).replace('.', ',')}.`;
+  const obsLinha = `Alteração individual no item ${item.nome} (Ref: ${item.referencia}) [via ${source === 'discount' ? '% de desconto' : 'valor em R$'}]. ${tipoMovimento}. Preço Tabela: R$ ${pBase.toFixed(2).replace('.', ',')} | Preço Negociado: R$ ${pNovo.toFixed(2).replace('.', ',')} | Margem/Variação: ${diffSinal} | Impacto financeiro no lote (${item.quantidade} un): ${impactoTexto} | Novo Subtotal do Produto: R$ ${subtotalItem.toFixed(2).replace('.', ',')}.`;
 
   logSellerActivity(eventoTitulo, {
     totalItens: `${item.quantidade} un`,
@@ -5583,11 +5868,7 @@ function renderCartSheet() {
   summaryQty.textContent = `${totalQty} ite${totalQty === 1 ? 'm' : 'ns'} selecionado${totalQty === 1 ? '' : 's'}`;
 
   const isSeller = isSellerLoggedIn();
-  let totalGeral = 0;
-  cartItems.forEach(i => {
-    const pUnit = (i.preco_unitario !== undefined) ? i.preco_unitario : (i.preco_base || 0);
-    totalGeral += (i.quantidade * pUnit);
-  });
+  const { subtotalBruto, discPercent, valorDescontoGeral, totalFinalLiquido } = calculateCartTotals();
 
   let savedClient = {};
   try {
@@ -5601,6 +5882,9 @@ function renderCartSheet() {
         const pUnit = (item.preco_unitario !== undefined) ? item.preco_unitario : (item.preco_base || 0);
         const pBase = (item.preco_base !== undefined) ? item.preco_base : pUnit;
         const subtotal = item.quantidade * pUnit;
+        const diffUnit = pBase - pUnit;
+        const itemDiscountPercent = pBase > 0 ? ((diffUnit / pBase) * 100) : 0;
+        const itemEconomy = diffUnit * item.quantidade;
 
         return `
           <div class="cart-item-card">
@@ -5621,15 +5905,35 @@ function renderCartSheet() {
 
               ${isSeller ? `
                 <div class="cart-item-price-section">
+                  <!-- Linha 1: Preço Unitário em R$ -->
                   <div class="cart-item-price-edit-row">
-                    <div class="cart-item-price-input-wrap" title="Alterar valor unitário negociado">
-                      <span class="cart-price-symbol">R$</span>
-                      <input type="number" step="0.01" min="0" class="cart-price-input-field" id="cart-input-price-${item.id}" value="${pUnit.toFixed(2)}" oninput="updateCartItemPrice(${item.id}, this.value)" onchange="logCartPriceChange(${item.id}, this.value)" onclick="this.select()">
+                    <div style="display:flex; align-items:center; gap:6px;">
+                      <span style="font-size:0.75rem; font-weight:700; color:var(--text-2);">Valor Unit.:</span>
+                      <div class="cart-price-input-wrap" title="Alterar valor unitário negociado em R$">
+                        <span class="cart-price-symbol">R$</span>
+                        <input type="number" step="0.01" min="0" class="cart-price-input-field" id="cart-input-price-${item.id}" value="${pUnit.toFixed(2)}" oninput="updateCartItemPrice(${item.id}, this.value)" onchange="logCartPriceChange(${item.id}, this.value, 'price')" onclick="this.select()">
+                      </div>
                     </div>
-                    <span class="cart-base-price-ref" title="Valor base da tabela de fábrica">Valor base: R$ ${pBase.toFixed(2).replace('.', ',')}</span>
+                    <span class="cart-base-price-ref" title="Valor base da tabela de fábrica">Tabela: R$ ${pBase.toFixed(2).replace('.', ',')}</span>
                   </div>
+
+                  <!-- Linha 2: Desconto % no Item -->
+                  <div class="cart-item-discount-edit-row">
+                    <div style="display:flex; align-items:center; gap:6px;">
+                      <span style="font-size:0.75rem; font-weight:700; color:#059669;">Desconto:</span>
+                      <div class="cart-discount-input-wrap" title="Aplicar desconto percentual no produto">
+                        <input type="number" step="0.1" min="-100" max="100" class="cart-discount-input-field" id="cart-input-discount-${item.id}" value="${itemDiscountPercent !== 0 ? itemDiscountPercent.toFixed(1) : ''}" placeholder="0" oninput="updateCartItemDiscountPercent(${item.id}, this.value)" onchange="logCartPriceChange(${item.id}, this.value, 'discount')" onclick="this.select()">
+                        <span class="cart-discount-symbol">%</span>
+                      </div>
+                    </div>
+                    <span class="cart-item-economy-badge" id="cart-item-economy-${item.id}" style="${itemEconomy > 0.01 ? 'display:inline;' : 'display:none;'}">
+                      ${itemEconomy > 0.01 ? `(Economia: R$ ${itemEconomy.toFixed(2).replace('.', ',')})` : ''}
+                    </span>
+                  </div>
+
+                  <!-- Linha 3: Subtotal do Item -->
                   <div class="cart-item-subtotal-line">
-                    <span class="subtotal-label">Subtotal:</span>
+                    <span class="subtotal-label">Subtotal do Item:</span>
                     <strong class="subtotal-val" id="cart-subtotal-${item.id}">R$ ${subtotal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong>
                   </div>
                 </div>
@@ -5679,19 +5983,38 @@ function renderCartSheet() {
   // Totalizador de Proposta no rodapé do drawer se logado
   let totalBox = document.getElementById('cart-seller-total-box');
   if (isSeller) {
+    const totalBoxHtml = `
+      <div class="cart-proposal-breakdown-row">
+        <span>Subtotal dos Produtos:</span>
+        <strong id="cart-seller-subtotal-num">R$ ${subtotalBruto.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong>
+      </div>
+      <div class="cart-proposal-breakdown-row" style="display:flex; align-items:center; justify-content:space-between; gap:8px;">
+        <div style="display:flex; align-items:center; gap:6px;">
+          <span style="font-weight:700; color:#059669;">Desconto no Pedido:</span>
+          <div class="cart-discount-input-wrap" title="Aplicar desconto percentual sobre todo o pedido">
+            <input type="number" step="0.1" min="0" max="100" class="cart-discount-input-field" id="cart-input-global-discount" value="${discPercent > 0 ? discPercent.toFixed(1) : ''}" placeholder="0" oninput="updateGlobalDiscountPercent(this.value)" onchange="logGlobalDiscountChange(this.value)" onclick="this.select()">
+            <span class="cart-discount-symbol">%</span>
+          </div>
+        </div>
+        <span id="cart-seller-discount-num" style="color:#059669; font-weight:700;">${discPercent > 0 ? `-R$ ${valorDescontoGeral.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : '-'}</span>
+      </div>
+      <div class="cart-proposal-divider"></div>
+      <div class="cart-proposal-final-row">
+        <span class="cart-total-proposal-label">Total da Proposta:</span>
+        <strong class="cart-total-proposal-num" id="cart-seller-total-num">R$ ${totalFinalLiquido.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong>
+      </div>
+    `;
+
     if (!totalBox) {
       totalBox = document.createElement('div');
       totalBox.id = 'cart-seller-total-box';
       totalBox.className = 'cart-total-proposal-card';
-      totalBox.innerHTML = `
-        <span class="cart-total-proposal-label">Total da Proposta:</span>
-        <strong class="cart-total-proposal-num" id="cart-seller-total-num">R$ ${totalGeral.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong>
-      `;
+      totalBox.innerHTML = totalBoxHtml;
       footerBar.insertBefore(totalBox, footerBar.firstChild);
     } else {
       totalBox.style.display = 'flex';
-      const totalNum = document.getElementById('cart-seller-total-num');
-      if (totalNum) totalNum.textContent = `R$ ${totalGeral.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+      totalBox.className = 'cart-total-proposal-card';
+      totalBox.innerHTML = totalBoxHtml;
     }
   } else if (totalBox) {
     totalBox.style.display = 'none';
@@ -5756,6 +6079,9 @@ function generateCartShareUrl(includePrices = false) {
   url.searchParams.set('orcamento', itemsParam);
   if (includePrices) {
     url.searchParams.set('com_precos', '1');
+    if (cartGlobalDiscountPercent > 0) {
+      url.searchParams.set('desc_global', cartGlobalDiscountPercent.toFixed(1));
+    }
   }
   return url.toString();
 }
@@ -5771,21 +6097,19 @@ function copyCartShareLink(includePrices = false) {
     ? '💰 Link do orçamento COM PREÇOS copiado com sucesso!' 
     : '🔗 Link do orçamento copiado com sucesso!';
 
-  let totalGeralLink = 0;
-  cartItems.forEach(i => {
-    const pUnit = (i.preco_unitario !== undefined) ? i.preco_unitario : (i.preco_base || 0);
-    totalGeralLink += (i.quantidade * pUnit);
-  });
-  const totalFormatado = totalGeralLink > 0 ? `R$ ${totalGeralLink.toFixed(2).replace('.', ',')}` : 'Tabela Padrão';
-  const totalQtdItens = cartItems.reduce((acc, i) => acc + i.quantidade, 0);
+  const { subtotalBruto, discPercent, valorDescontoGeral, totalFinalLiquido, totalQtd } = calculateCartTotals();
+  const totalFormatado = totalFinalLiquido > 0 ? `R$ ${totalFinalLiquido.toFixed(2).replace('.', ',')}` : 'Tabela Padrão';
 
   if (includePrices) {
     logSellerActivity(`💰 Copiou Link COM PREÇOS PERSONALIZADOS (Total: ${totalFormatado})`, {
-      observacao: `Vendedor gerou e copiou o Link Mágico com preços negociados travados para ${totalQtdItens} itens (Total: ${totalFormatado}).`
+      totalItens: `${totalQtd} un`,
+      valorTotal: `R$ ${totalFinalLiquido.toFixed(2).replace('.', ',')}`,
+      observacao: `Vendedor gerou e copiou o Link Mágico travado com preços negociados para ${totalQtd} itens | Subtotal Bruto: R$ ${subtotalBruto.toFixed(2).replace('.', ',')} | Desconto Global: ${discPercent.toFixed(1)}% (-R$ ${valorDescontoGeral.toFixed(2).replace('.', ',')}) | Total Líquido: ${totalFormatado}.`
     });
   } else {
     logSellerActivity(`🔗 Copiou Link do Orçamento (Preço de Tabela Padrão)`, {
-      observacao: `Link padrão do carrinho copiado com ${totalQtdItens} itens (sem parâmetros de preços travados).`
+      totalItens: `${totalQtd} un`,
+      observacao: `Link padrão do carrinho copiado com ${totalQtd} itens (sem parâmetros de preços travados).`
     });
   }
 
@@ -5838,6 +6162,15 @@ function loadCartFromUrl() {
         }
       }
     });
+
+    const descGlobalParam = params.get('desc_global') || params.get('desconto_global');
+    if (descGlobalParam) {
+      const parsedDesc = parseFloat(descGlobalParam);
+      if (!isNaN(parsedDesc) && parsedDesc >= 0) {
+        cartGlobalDiscountPercent = Math.min(100, parsedDesc);
+        hasCustomPrices = true;
+      }
+    }
 
     if (newItems.length > 0) {
       cartItems = newItems;
@@ -5894,8 +6227,11 @@ function sendQuoteToWhatsApp() {
   // Salva no perfil local para agilizar próximos orçamentos
   localStorage.setItem(CLIENT_STORAGE_KEY, JSON.stringify({ nome, vendedor: vendedorId, doc }));
 
+  const isSeller = isSellerLoggedIn();
+  const { subtotalBruto, discPercent, valorDescontoGeral, totalFinalLiquido, totalQtd } = calculateCartTotals();
+
   // Link mágico para edição/recompra
-  const shareUrl = generateCartShareUrl();
+  const shareUrl = generateCartShareUrl(isSeller);
 
   // Formata Mensagem
   let msg = `🌿 *${CONFIG.empresa}*\n`;
@@ -5903,12 +6239,31 @@ function sendQuoteToWhatsApp() {
   msg += `📋 *SOLICITAÇÃO DE ORÇAMENTO*\n\n`;
 
   cartItems.forEach((item, index) => {
+    const prod = PRODUTOS.find(p => p.id === item.id);
+    const pBase = prod ? (prod.preco_base || 0) : (item.preco_base || 0);
+    const pUnit = (item.preco_unitario !== undefined) ? item.preco_unitario : pBase;
+
     msg += `*${index + 1}. ${item.nome}*\n`;
     msg += `   • Ref: \`${item.referencia}\`\n`;
-    msg += `   • Quantidade: *${item.quantidade} ${item.unidade || 'unidade'}(s)*\n\n`;
+    msg += `   • Quantidade: *${item.quantidade} ${item.unidade || 'unidade'}(s)*\n`;
+    if (isSeller) {
+      msg += `   • Valor Unit.: R$ ${pUnit.toFixed(2).replace('.', ',')}\n`;
+      msg += `   • Subtotal: R$ ${(item.quantidade * pUnit).toFixed(2).replace('.', ',')}\n`;
+    }
+    msg += `\n`;
   });
 
   msg += `━━━━━━━━━━━━━━━━━━━━━\n`;
+  if (isSeller) {
+    if (discPercent > 0) {
+      msg += `💰 *Subtotal dos Produtos:* R$ ${subtotalBruto.toFixed(2).replace('.', ',')}\n`;
+      msg += `🏷️ *Desconto no Pedido (${discPercent.toFixed(1)}%):* -R$ ${valorDescontoGeral.toFixed(2).replace('.', ',')}\n`;
+      msg += `💳 *VALOR TOTAL FINAL:* *R$ ${totalFinalLiquido.toFixed(2).replace('.', ',')}*\n`;
+    } else {
+      msg += `💳 *VALOR TOTAL:* *R$ ${totalFinalLiquido.toFixed(2).replace('.', ',')}*\n`;
+    }
+    msg += `━━━━━━━━━━━━━━━━━━━━━\n`;
+  }
   msg += `👤 *Cliente:* ${nome}\n`;
   if (vendedorObj && vendedorObj.id) {
     msg += `👔 *Vendedor:* ${vendedorObj.nome}\n`;
@@ -5920,19 +6275,13 @@ function sendQuoteToWhatsApp() {
 
   const waUrl = `https://api.whatsapp.com/send?phone=${destWhatsapp}&text=${encodeURIComponent(msg)}`;
   
-  let totalGeralWa = 0;
-  cartItems.forEach(i => {
-    const pUnit = (i.preco_unitario !== undefined) ? i.preco_unitario : (i.preco_base || 0);
-    totalGeralWa += (i.quantidade * pUnit);
-  });
-  const totalFormatadoWa = totalGeralWa > 0 ? `R$ ${totalGeralWa.toFixed(2).replace('.', ',')}` : 'Sob Consulta';
-  const totalQtdWa = cartItems.reduce((acc, i) => acc + i.quantidade, 0);
-
-  logSellerActivity(`📲 Enviou Orçamento via WhatsApp (Cliente: ${nome} - Total: ${totalFormatadoWa})`, {
+  logSellerActivity(`📲 Enviou Orçamento via WhatsApp (Cliente: ${nome} - Total: R$ ${totalFinalLiquido.toFixed(2).replace('.', ',')})`, {
     clienteNome: nome,
     clienteDoc: doc,
     vendedorNome: vendedorObj?.nome || '',
-    observacao: `Orçamento com ${totalQtdWa} itens enviado via WhatsApp para: ${destWhatsapp} (Representante: ${vendedorObj?.nome || 'Central Comercial'}).`
+    valorTotal: `R$ ${totalFinalLiquido.toFixed(2).replace('.', ',')}`,
+    totalItens: `${totalQtd} un`,
+    observacao: `Orçamento com ${totalQtd} itens enviado via WhatsApp para: ${destWhatsapp} (Representante: ${vendedorObj?.nome || 'Central Comercial'}).`
   });
 
   window.open(waUrl, '_blank');
@@ -6069,14 +6418,10 @@ function openPdfProposalModal() {
   const dataAtual = new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
   const horaAtual = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
   const orcNum = 'RQ-2026-' + Math.floor(1000 + Math.random() * 9000);
-  const shareUrl = generateCartShareUrl();
-
   const isSeller = isSellerLoggedIn();
-  let totalGeral = 0;
-  cartItems.forEach(i => {
-    const unitPrice = (i.preco_unitario !== undefined) ? i.preco_unitario : (i.preco_base || 0);
-    totalGeral += (i.quantidade * unitPrice);
-  });
+  const shareUrl = generateCartShareUrl(isSeller);
+
+  const { subtotalBruto, discPercent, valorDescontoGeral, totalFinalLiquido, totalQtd } = calculateCartTotals();
 
   const paper = document.getElementById('pdf-paper-content');
   paper.innerHTML = `
@@ -6155,17 +6500,37 @@ function openPdfProposalModal() {
       </tbody>
     </table>
 
-    <!-- Resumo & Observações -->
+    <!-- Resumo & Observações no PDF -->
     <div class="pdf-footer-terms">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; background:#f8fafc; padding:8px 12px; border-radius:6px; border:1px solid #e2e8f0;">
-        <span style="font-weight:700; color:#0f1f17; font-size:12px;">Total de Itens: <strong style="color:#0f4531;">${cartItems.reduce((acc, i) => acc + i.quantidade, 0)} unidades</strong></span>
-        ${isSeller ? `
-          <div style="text-align:right;">
-            <span style="font-size:11px; color:#475569; margin-right:6px;">VALOR TOTAL DA PROPOSTA:</span>
-            <strong style="font-size:15.5px; color:#0f4531; font-weight:800;">R$ ${totalGeral.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong>
+      <div style="background:#f8fafc; padding:10px 14px; border-radius:6px; border:1px solid #e2e8f0; margin-bottom:8px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: ${isSeller && discPercent > 0 ? '6px' : '0'};">
+          <span style="font-weight:700; color:#0f1f17; font-size:12px;">Total de Itens: <strong style="color:#0f4531;">${totalQtd} unidades</strong></span>
+          ${isSeller && discPercent === 0 ? `
+            <div style="text-align:right;">
+              <span style="font-size:11px; color:#475569; margin-right:6px;">VALOR TOTAL DA PROPOSTA:</span>
+              <strong style="font-size:15.5px; color:#0f4531; font-weight:800;">R$ ${totalFinalLiquido.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong>
+            </div>
+          ` : ''}
+        </div>
+
+        ${isSeller && discPercent > 0 ? `
+          <div style="border-top:1px dashed #cbd5e1; padding-top:6px; display:flex; flex-direction:column; gap:4px;">
+            <div style="display:flex; justify-content:space-between; font-size:11px; color:#475569;">
+              <span>Subtotal dos Produtos:</span>
+              <strong>R$ ${subtotalBruto.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong>
+            </div>
+            <div style="display:flex; justify-content:space-between; font-size:11px; color:#059669; font-weight:700;">
+              <span>Desconto Comercial no Pedido (${discPercent.toFixed(1)}%):</span>
+              <span>-R$ ${valorDescontoGeral.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid #cbd5e1; padding-top:4px; margin-top:2px;">
+              <span style="font-size:11.5px; font-weight:700; color:#0f1f17;">VALOR TOTAL LÍQUIDO DA PROPOSTA:</span>
+              <strong style="font-size:15.5px; color:#0f4531; font-weight:800;">R$ ${totalFinalLiquido.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong>
+            </div>
           </div>
         ` : ''}
       </div>
+
       <div style="background:#f1f5f9; padding:7px 10px; border-radius:6px; margin-bottom:8px; font-size:10px; color:#334155; line-height:1.4;">
         <strong>📌 Termos &amp; Condições da Proposta:</strong><br>
         1. Validade desta proposta: <strong>7 (sete) dias úteis</strong> a partir da data de emissão.<br>
@@ -6180,13 +6545,14 @@ function openPdfProposalModal() {
 
   document.getElementById('pdf-modal-backdrop').classList.add('show');
 
-  const totalQtdPdf = cartItems.reduce((acc, i) => acc + i.quantidade, 0);
-  logSellerActivity(`📄 Gerou Proposta Comercial PDF (${orcNum}) - Total: R$ ${totalGeral.toFixed(2).replace('.', ',')}`, {
+  logSellerActivity(`📄 Gerou Proposta Comercial PDF (${orcNum}) - Total: R$ ${totalFinalLiquido.toFixed(2).replace('.', ',')}`, {
     numProposta: orcNum,
     clienteNome: clienteNome,
     clienteDoc: clienteDoc,
     vendedorNome: vendedorNome,
-    observacao: `Proposta oficial Nº ${orcNum} aberta para o cliente "${clienteNome}" (${clienteDoc}) | Total: R$ ${totalGeral.toFixed(2).replace('.', ',')} (${totalQtdPdf} itens).`
+    totalItens: `${totalQtd} un`,
+    valorTotal: `R$ ${totalFinalLiquido.toFixed(2).replace('.', ',')}`,
+    observacao: `Proposta oficial Nº ${orcNum} gerada para "${clienteNome}" (${clienteDoc}) | Subtotal: R$ ${subtotalBruto.toFixed(2).replace('.', ',')} | Desconto: ${discPercent.toFixed(1)}% | Total Líquido: R$ ${totalFinalLiquido.toFixed(2).replace('.', ',')} (${totalQtd} itens).`
   });
 }
 
