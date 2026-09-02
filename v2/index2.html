@@ -6,19 +6,19 @@
   <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
   <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
   <title>Rawell Química — Catálogo Oficial 2026</title>
-  <meta name="description" content="Catálogo oficial de produtos da Rawell Química 2026. Defensivos, desinfestantes, fungicidas, inseticidas e raticidas. Orçamento rápido pelo WhatsApp.">
+  <meta name="description" content="Catálogo de produtos e defensivos NAFOG. Revenda especializada de defensivos, desinfestantes, fungicidas, inseticidas e raticidas. Orçamento rápido pelo WhatsApp.">
   <meta name="theme-color" content="#0f4531" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#0a2318" media="(prefers-color-scheme: dark)">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="Rawell 2026">
+  <meta name="apple-mobile-web-app-title" content="NAFOG 2026">
   <link rel="manifest" href="manifest.json">
   <link rel="icon" type="image/png" sizes="192x192" href="img/icon-192.png">
   <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
 
   <!-- Open Graph -->
   <meta property="og:type" content="website">
-  <meta property="og:site_name" content="Rawell Química">
+  <meta property="og:site_name" content="NAFOG">
   <meta property="og:title" content="Rawell Química — Catálogo Oficial 2026">
   <meta property="og:description" content="Linha completa de soluções para gramados, jardinagem, saúde pública e pragas. Faça sua cotação rápida.">
   <meta property="og:image" content="img/produtos/p01-kapina-plus-60ml.webp">
@@ -1939,9 +1939,157 @@ html {
 .cart-share-actions-wrap {
   display: flex;
   flex-direction: column;
+  gap: 7px;
+  width: 100%;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PARES DE AÇÕES DE COMPARTILHAMENTO (WHATSAPP, PDF, LINK)
+═══════════════════════════════════════════════════════════════ */
+.cart-actions-grid-pairs {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.cart-actions-pair-block {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cart-action-pair-title {
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-3);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 1px;
+}
+
+.cart-actions-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 6px;
   width: 100%;
 }
+
+.btn-cart-action {
+  height: 38px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-card);
+  color: var(--text);
+  border: 1.5px solid var(--border);
+  font-size: 0.78rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  cursor: pointer;
+  transition: all var(--transition);
+  text-align: center;
+  white-space: nowrap;
+}
+
+.btn-cart-action:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-xs);
+}
+
+.btn-cart-action:active {
+  transform: scale(0.98);
+}
+
+/* WhatsApp com Preço */
+.btn-cart-action.btn-wa-price {
+  background: rgba(37, 211, 102, 0.09);
+  border-color: rgba(37, 211, 102, 0.45);
+  color: #0b733a;
+}
+[data-theme="dark"] .btn-cart-action.btn-wa-price {
+  background: rgba(37, 211, 102, 0.16);
+  border-color: rgba(37, 211, 102, 0.5);
+  color: #25d366;
+}
+
+/* WhatsApp sem Preço */
+.btn-cart-action.btn-wa-noprice {
+  background: var(--bg-card-sub);
+  border-color: var(--border);
+  color: var(--text-2);
+}
+.btn-cart-action.btn-wa-noprice:hover {
+  border-color: #25d366;
+  color: var(--text);
+}
+
+/* PDF com Preço */
+.btn-cart-action.btn-pdf-price {
+  background: rgba(15, 69, 49, 0.08);
+  border-color: rgba(15, 69, 49, 0.35);
+  color: var(--brand);
+}
+[data-theme="dark"] .btn-cart-action.btn-pdf-price {
+  background: rgba(52, 211, 153, 0.12);
+  border-color: rgba(52, 211, 153, 0.35);
+  color: #34d399;
+}
+
+/* PDF sem Preço */
+.btn-cart-action.btn-pdf-noprice {
+  background: var(--bg-card-sub);
+  border-color: var(--border);
+  color: var(--text-2);
+}
+.btn-cart-action.btn-pdf-noprice:hover {
+  border-color: var(--brand-light);
+  color: var(--text);
+}
+
+/* Link com Preço */
+.btn-cart-action.btn-link-price {
+  background: rgba(16, 185, 129, 0.08);
+  border-color: rgba(16, 185, 129, 0.35);
+  color: #059669;
+}
+[data-theme="dark"] .btn-cart-action.btn-link-price {
+  background: rgba(16, 185, 129, 0.14);
+  border-color: rgba(16, 185, 129, 0.35);
+  color: #34d399;
+}
+
+/* Link sem Preço */
+.btn-cart-action.btn-link-noprice {
+  background: var(--bg-card-sub);
+  border-color: var(--border);
+  color: var(--text-2);
+}
+.btn-cart-action.btn-link-noprice:hover {
+  border-color: var(--brand-light);
+  color: var(--text);
+}
+
+/* Modal de WhatsApp do Cliente */
+.client-wa-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(8px);
+  z-index: 1250;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+.client-wa-modal-backdrop.show {
+  display: flex;
+}
+
 
 .cart-summary-line {
   display: flex;
@@ -3457,6 +3605,179 @@ mark {
   color: var(--brand-light);
 }
 
+
+/* ═══════════════════════════════════════════════════════════════
+   APP DO VENDEDOR (PAINEL MOBILE MASTER & ORÇAMENTOS)
+═══════════════════════════════════════════════════════════════ */
+.seller-app-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.78);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  z-index: 1200;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 14px;
+}
+.seller-app-modal-backdrop.show {
+  display: flex;
+}
+
+.seller-app-card {
+  background: var(--bg-card);
+  color: var(--text);
+  max-width: 600px;
+  width: 100%;
+  max-height: 90vh;
+  border-radius: 22px;
+  border: 1.5px solid var(--border);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: modalScaleUp 0.22s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.seller-app-header {
+  padding: 14px 18px;
+  background: var(--bg-card-sub);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.seller-app-profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.seller-app-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, #0f4531, #10b981);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3);
+  flex-shrink: 0;
+}
+
+.seller-app-name {
+  font-size: 1.02rem;
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1.2;
+}
+
+.seller-app-status {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #059669;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 2px;
+}
+[data-theme="dark"] .seller-app-status {
+  color: #34d399;
+}
+
+.seller-app-tabs-nav {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-card);
+  padding: 4px 14px 0;
+  gap: 6px;
+  overflow-x: auto;
+}
+
+.seller-app-tab-btn {
+  padding: 9px 12px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-3);
+  background: transparent;
+  border: none;
+  border-bottom: 2.5px solid transparent;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  transition: all var(--transition);
+}
+.seller-app-tab-btn:hover {
+  color: var(--brand-light);
+}
+.seller-app-tab-btn.active {
+  color: var(--brand-light);
+  border-bottom-color: var(--brand-light);
+  font-weight: 800;
+}
+
+.seller-app-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.seller-filter-strip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.seller-filter-pill {
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border);
+  background: var(--bg-card-sub);
+  color: var(--text-2);
+  font-size: 0.72rem;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all var(--transition);
+}
+.seller-filter-pill:hover {
+  border-color: var(--brand-light);
+}
+.seller-filter-pill.active {
+  background: var(--brand-pale);
+  border-color: var(--brand-light);
+  color: var(--brand-mid);
+}
+
+.seller-tool-card {
+  background: var(--bg-card-sub);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  transition: transform 0.15s ease, border-color 0.15s ease;
+  cursor: pointer;
+}
+.seller-tool-card:hover {
+  border-color: var(--brand-light);
+  transform: translateY(-1px);
+}
+
 </style>
 </head>
 <body>
@@ -3468,8 +3789,8 @@ mark {
     <div class="header-brand" onclick="scrollToTop()">
       <div class="brand-icon">🌿</div>
       <div class="brand-titles">
-        <span class="brand-name">Rawell Química</span>
-        <span class="brand-badge">Catálogo Oficial 2026</span>
+        <span class="brand-name">NAFOG</span>
+        <span class="brand-badge">Catálogo & Revenda 2026</span>
       </div>
     </div>
 
@@ -3606,8 +3927,8 @@ mark {
   <div class="container">
     <div class="footer-main-grid">
       <div class="footer-col-brand">
-        <h3>🌿 Rawell Química</h3>
-        <p>Referência nacional em defensivos seletivos, saneantes domissanitários e soluções de alta eficiência para jardinagem e saúde pública.</p>
+        <h3>🌿 NAFOG</h3>
+        <p>Distribuidor e revenda especializada em defensivos, jardinagem, saneantes domissanitários e soluções de alta eficiência.</p>
       </div>
       <div class="footer-col" style="grid-column: span 2;">
         <h4>Categorias Oficiais 2026</h4>
@@ -3638,7 +3959,7 @@ mark {
       </div>
     </div>
     <div class="footer-bottom-bar">
-      <span>© 2026 Rawell Química. Todos os direitos reservados.</span>
+      <span>© 2026 NAFOG. Todos os direitos reservados. Revenda autorizada da linha Rawell Química.</span>
       <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
         <span>Catálogo restrito para parceiros e clientes autorizados.</span>
         <div id="footer-seller-container"></div>
@@ -3684,7 +4005,7 @@ mark {
     <div class="sheet-handle"></div>
   </div>
   <div class="sheet-head">
-    <span class="sheet-title-tag">MEU ORÇAMENTO — RAWELL QUÍMICA</span>
+    <span class="sheet-title-tag">MEU ORÇAMENTO — NAFOG</span>
     <button class="sheet-close-btn" onclick="closeCartSheet()">✕</button>
   </div>
 
@@ -3723,10 +4044,10 @@ mark {
     <span class="nav-tab-icon">📑</span>
     <span>Categorias</span>
   </button>
-  <button class="nav-tab-btn" id="tab-nav-history" onclick="openQuoteHistoryModal()" style="display:none;">
-    <span class="nav-tab-icon">📋</span>
-    <span>Histórico</span>
-    <span class="nav-cart-badge" id="bottom-history-badge" style="display:none;">0</span>
+  <button class="nav-tab-btn" id="tab-nav-seller" onclick="openSellerAppModal()" style="display:none;">
+    <span class="nav-tab-icon">👔</span>
+    <span>Vendedor</span>
+    <span class="nav-cart-badge" id="bottom-seller-badge" style="display:none;">0</span>
   </button>
   <button class="nav-tab-btn" id="tab-nav-cart" onclick="openCartSheet()">
     <span class="nav-tab-icon">🛒</span>
@@ -3744,8 +4065,8 @@ mark {
 // ═══════════════════════════════════════════════════════════════
 const CONFIG = {
   whatsapp: '5545999332563',
-  empresa: 'Rawell Química — Catálogo 2026',
-  mensagem_intro: 'Olá! Gostaria de solicitar uma cotação dos seguintes produtos da Rawell Química:',
+  empresa: 'NAFOG — Catálogo de Produtos 2026',
+  mensagem_intro: 'Olá! Gostaria de solicitar uma cotação dos seguintes produtos através do catálogo NAFOG:',
   mensagem_fim: '✅ Aguardo retorno sobre disponibilidade e condições de fornecimento. Obrigado!',
   auditWebhookUrl: 'https://script.google.com/macros/s/AKfycbx6ZFn14Z0Ro6M2FIFJkoJd_VcPNlk9kl3jfK51A2SYbh4GxO5FBwu2Xbiie2Fi8ScVSQ/exec'
 };
@@ -6105,11 +6426,11 @@ function updateSellerUI() {
     }
   }
 
-  // 4. Bottom Nav Mobile: Mostra aba Histórico se vendedor logado, senão mostra Categorias
-  const tabHistory = document.getElementById('tab-nav-history');
+  // 4. Bottom Nav Mobile: Mostra aba Vendedor se vendedor logado, senão mostra Categorias
+  const tabSeller = document.getElementById('tab-nav-seller');
   const tabCats = document.getElementById('tab-nav-cats');
-  if (tabHistory) {
-    tabHistory.style.display = isLogged ? 'inline-flex' : 'none';
+  if (tabSeller) {
+    tabSeller.style.display = isLogged ? 'inline-flex' : 'none';
   }
   if (tabCats) {
     tabCats.style.display = isLogged ? 'none' : 'inline-flex';
@@ -6754,28 +7075,62 @@ function renderCartSheet() {
     totalBox.style.display = 'none';
   }
 
-  // Ações secundárias no rodapé
+  // Ações secundárias no rodapé organizadas em pares
   const actionsContainer = document.getElementById('cart-actions-dynamic-container');
   if (actionsContainer) {
     if (isSeller) {
       actionsContainer.innerHTML = `
-        <div class="cart-secondary-actions-grid">
-          <button type="button" class="btn-cart-secondary btn-pdf-style" onclick="openPdfProposalModal()" title="Gerar Proposta Comercial PDF">
-            <span>📄</span> Proposta PDF
-          </button>
-          <button type="button" class="btn-cart-secondary btn-price-share-style" onclick="copyCartShareLink(true)" title="Copiar link com valores fixados">
-            <span>💰</span> Link c/ Preço
-          </button>
+        <div class="cart-actions-grid-pairs">
+          <!-- Par 1: WhatsApp Direto p/ Cliente -->
+          <div class="cart-actions-pair-block">
+            <div class="cart-action-pair-title"><span>📱</span> WhatsApp Direto p/ Cliente:</div>
+            <div class="cart-actions-2col">
+              <button type="button" class="btn-cart-action btn-wa-price" onclick="openClientWhatsAppModal(true)" title="Enviar para o WhatsApp do cliente com valores e descontos">
+                <span>💬</span> Whats c/ Preço
+              </button>
+              <button type="button" class="btn-cart-action btn-wa-noprice" onclick="openClientWhatsAppModal(false)" title="Enviar para o WhatsApp do cliente apenas a lista de produtos">
+                <span>💬</span> Whats s/ Preço
+              </button>
+            </div>
+          </div>
+
+          <!-- Par 2: Proposta em PDF -->
+          <div class="cart-actions-pair-block">
+            <div class="cart-action-pair-title"><span>📄</span> Proposta Comercial em PDF:</div>
+            <div class="cart-actions-2col">
+              <button type="button" class="btn-cart-action btn-pdf-price" onclick="openPdfProposalModal(true)" title="Gerar proposta PDF com tabela de preços e condições">
+                <span>📄</span> PDF c/ Preço
+              </button>
+              <button type="button" class="btn-cart-action btn-pdf-noprice" onclick="openPdfProposalModal(false)" title="Gerar espelho do pedido em PDF sem valores">
+                <span>📄</span> PDF s/ Preço
+              </button>
+            </div>
+          </div>
+
+          <!-- Par 3: Links Diretos do Catálogo -->
+          <div class="cart-actions-pair-block">
+            <div class="cart-action-pair-title"><span>🔗</span> Links Diretos do Catálogo:</div>
+            <div class="cart-actions-2col">
+              <button type="button" class="btn-cart-action btn-link-price" onclick="copyCartShareLink(true)" title="Copiar link com preços e descontos fixados">
+                <span>💰</span> Link c/ Preço
+              </button>
+              <button type="button" class="btn-cart-action btn-link-noprice" onclick="copyCartShareLink(false)" title="Copiar link padrão sem preços">
+                <span>🔗</span> Link s/ Preço
+              </button>
+            </div>
+          </div>
         </div>
-        <button type="button" class="btn-cart-secondary btn-full-width" style="margin-top:6px; font-size:0.75rem;" onclick="copyCartShareLink(false)" title="Copiar link sem preços para o cliente">
-          <span>🔗</span> Copiar Link s/ Preço
-        </button>
       `;
     } else {
       actionsContainer.innerHTML = `
-        <button type="button" class="btn-cart-secondary btn-full-width" onclick="copyCartShareLink(false)" title="Copiar link do orçamento">
-          <span>🔗</span> Copiar Link do Orçamento
-        </button>
+        <div class="cart-actions-2col" style="margin-top:2px;">
+          <button type="button" class="btn-cart-action btn-pdf-noprice" onclick="openPdfProposalModal(false)" title="Visualizar e Imprimir Lista em PDF">
+            <span>📄</span> Visualizar PDF
+          </button>
+          <button type="button" class="btn-cart-action btn-link-noprice" onclick="copyCartShareLink(false)" title="Copiar Link do Orçamento">
+            <span>🔗</span> Copiar Link
+          </button>
+        </div>
       `;
     }
   }
@@ -7059,7 +7414,7 @@ function loadQuoteIntoCart(quoteId) {
 function updateHistoryBadges() {
   const count = getQuoteHistory().length;
   const headPill = document.getElementById('header-history-pill');
-  const btmBadge = document.getElementById('bottom-history-badge');
+  const btmBadge = document.getElementById('bottom-seller-badge') || document.getElementById('bottom-history-badge');
 
   if (headPill) headPill.textContent = count;
   if (btmBadge) {
@@ -7213,6 +7568,216 @@ function openPdfProposalFromHistory(quoteId) {
   document.getElementById('pdf-modal-backdrop')?.classList.add('show');
 }
 
+
+// ═══════════════════════════════════════════════════════════════
+//  APP DO VENDEDOR (PAINEL MASTER DO REPRESENTANTE)
+// ═══════════════════════════════════════════════════════════════
+let currentSellerAppTab = 'quotes';
+let currentSellerStatusFilter = 'todos';
+
+function openSellerAppModal(defaultTab = 'quotes') {
+  hapticFeedback(25);
+  if (!isSellerLoggedIn()) {
+    openSellerLoginModal();
+    showToast('🔒 Faça login no Modo Vendedor para acessar o painel.');
+    return;
+  }
+  
+  const session = getSellerSession();
+  const nameEl = document.getElementById('seller-app-profile-name');
+  if (nameEl && session) {
+    nameEl.textContent = session.vendedorNome || 'Representante Comercial';
+  }
+
+  currentSellerAppTab = defaultTab;
+  renderSellerAppContent();
+  document.getElementById('seller-app-modal-backdrop')?.classList.add('show');
+}
+
+function closeSellerAppModal() {
+  document.getElementById('seller-app-modal-backdrop')?.classList.remove('show');
+}
+
+function switchSellerAppTab(tabName) {
+  hapticFeedback(15);
+  currentSellerAppTab = tabName;
+  document.getElementById('tab-btn-seller-quotes')?.classList.toggle('active', tabName === 'quotes');
+  document.getElementById('tab-btn-seller-tools')?.classList.toggle('active', tabName === 'tools');
+  renderSellerAppContent();
+}
+
+function filterSellerQuotes(status) {
+  hapticFeedback(12);
+  currentSellerStatusFilter = status;
+  renderSellerAppContent();
+}
+
+function renderSellerAppContent() {
+  const body = document.getElementById('seller-app-body');
+  const countEl = document.getElementById('seller-app-quote-count');
+  const quotes = getQuoteHistory();
+  if (countEl) countEl.textContent = quotes.length;
+
+  if (!body) return;
+
+  if (currentSellerAppTab === 'quotes') {
+    // ── ABA 1: MEUS ORÇAMENTOS RECENTES ──
+    let filteredList = quotes;
+    if (currentSellerStatusFilter !== 'todos') {
+      filteredList = quotes.filter(q => (q.status || 'aguardando') === currentSellerStatusFilter);
+    }
+
+    let filterStripHtml = `
+      <div class="seller-filter-strip">
+        <button class="seller-filter-pill ${currentSellerStatusFilter === 'todos' ? 'active' : ''}" onclick="filterSellerQuotes('todos')">Todos (${quotes.length})</button>
+        <button class="seller-filter-pill ${currentSellerStatusFilter === 'aguardando' ? 'active' : ''}" onclick="filterSellerQuotes('aguardando')">🟡 Aguardando</button>
+        <button class="seller-filter-pill ${currentSellerStatusFilter === 'negociando' ? 'active' : ''}" onclick="filterSellerQuotes('negociando')">⚪ Negociando</button>
+        <button class="seller-filter-pill ${currentSellerStatusFilter === 'fechado' ? 'active' : ''}" onclick="filterSellerQuotes('fechado')">🟢 Fechados</button>
+        <button class="seller-filter-pill ${currentSellerStatusFilter === 'recusado' ? 'active' : ''}" onclick="filterSellerQuotes('recusado')">🔴 Recusados</button>
+      </div>
+    `;
+
+    if (!quotes.length) {
+      body.innerHTML = `
+        ${filterStripHtml}
+        <div style="text-align:center; padding:36px 12px;">
+          <div style="font-size:3.5rem; margin-bottom:10px;">📋</div>
+          <h3 style="font-size:1.15rem; font-weight:800; color:var(--text); margin-bottom:6px;">Nenhum orçamento salvo ainda</h3>
+          <p style="font-size:0.86rem; color:var(--text-3); max-width:380px; margin:0 auto 18px; line-height:1.45;">
+            Assim que você enviar cotações ou gerar propostas em PDF, seus pedidos ficarão organizados aqui para consulta rápida e reabertura.
+          </p>
+          <button class="hero-btn-primary" style="margin:0 auto; padding:0 22px; height:40px;" onclick="closeSellerAppModal(); scrollToProducts();">
+            <span>🛒</span> Montar Novo Pedido
+          </button>
+        </div>
+      `;
+      return;
+    }
+
+    if (!filteredList.length) {
+      body.innerHTML = `
+        ${filterStripHtml}
+        <div style="text-align:center; padding:30px 10px; color:var(--text-3); font-size:0.9rem;">
+          Nenhum orçamento encontrado com o status "${currentSellerStatusFilter}".
+        </div>
+      `;
+      return;
+    }
+
+    body.innerHTML = `
+      ${filterStripHtml}
+      <div style="display:flex; justify-content:space-between; align-items:center; padding:0 2px;">
+        <span style="font-size:0.75rem; font-weight:700; color:var(--text-3);">Exibindo ${filteredList.length} de ${quotes.length} orçamentos</span>
+        <button class="history-del-btn" onclick="clearAllQuoteHistory()" title="Limpar todos os orçamentos">🗑️ Limpar Histórico</button>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:10px;">
+        ${filteredList.map(q => {
+          const currentStatus = q.status || 'aguardando';
+          const valorStr = q.valorTotal ? `<span style="color:var(--brand-mid); font-weight:800; margin-left:6px;">• ${q.valorTotal}</span>` : '';
+
+          return `
+            <div class="history-item-card">
+              <div class="history-card-top">
+                <div>
+                  <span class="history-quote-num">${q.id}</span>
+                  <span class="history-quote-date"> • ${q.data || 'Data recente'} ${valorStr}</span>
+                </div>
+                <button class="history-del-btn" onclick="deleteQuoteFromHistory('${q.id}')" title="Excluir este orçamento">
+                  🗑️
+                </button>
+              </div>
+
+              <div class="history-client-row">
+                <span>👤 ${q.cliente || 'Cliente não identificado'}</span>
+                ${q.doc ? `<span class="history-client-doc">(${q.doc})</span>` : ''}
+              </div>
+
+              <div class="history-items-summary">
+                <strong>${q.totalQtd || (q.itens ? q.itens.reduce((acc, i) => acc + i.quantidade, 0) : 0)} itens:</strong>
+                ${q.itens ? q.itens.map(i => `${i.quantidade}x ${i.nome}`).join(', ') : '-'}
+              </div>
+
+              <div class="history-card-footer">
+                <div style="display:flex; align-items:center; gap:6px;">
+                  <label style="font-size:0.75rem; font-weight:700; color:var(--text-3);">Status:</label>
+                  <select class="history-status-select" data-status="${currentStatus}" onchange="updateQuoteStatus('${q.id}', this.value); renderSellerAppContent();">
+                    <option value="aguardando" ${currentStatus === 'aguardando' ? 'selected' : ''}>🟡 Aguardando</option>
+                    <option value="negociando" ${currentStatus === 'negociando' ? 'selected' : ''}>⚪ Em Negociação</option>
+                    <option value="fechado" ${currentStatus === 'fechado' ? 'selected' : ''}>🟢 Fechado</option>
+                    <option value="recusado" ${currentStatus === 'recusado' ? 'selected' : ''}>🔴 Recusado</option>
+                  </select>
+                </div>
+
+                <div class="history-actions-row">
+                  <button class="btn-history-pdf" onclick="openPdfProposalFromHistory('${q.id}')" title="Ver proposta formal em PDF">
+                    📄 PDF
+                  </button>
+                  <button class="btn-history-load" onclick="loadQuoteIntoCart('${q.id}'); closeSellerAppModal();" title="Carregar este pedido no carrinho">
+                    🛒 Carregar
+                  </button>
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('')}
+      </div>
+    `;
+  } else {
+    // ── ABA 2: FERRAMENTAS & LINKS ──
+    const session = getSellerSession();
+    const vId = session ? session.vendedorId : 'carlos';
+    const personalUrl = `${window.location.origin}${window.location.pathname}?vendedor=${encodeURIComponent(vId)}`;
+
+    body.innerHTML = `
+      <div style="display:flex; flex-direction:column; gap:12px;">
+        
+        <!-- Ferramenta 1: Link Personalizado com Comissão -->
+        <div class="seller-tool-card" onclick="copySellerPersonalLink('${personalUrl}')">
+          <div>
+            <div style="font-size:0.92rem; font-weight:800; color:var(--text); margin-bottom:2px;">🔗 Meu Link Personalizado de Catálogo</div>
+            <div style="font-size:0.78rem; color:var(--text-3);">Clientes que entrarem por este link terão cotações vinculadas diretamente a você.</div>
+          </div>
+          <button type="button" class="btn-cart-secondary" style="height:32px; font-size:0.75rem; flex-shrink:0;">
+            Copiar Link
+          </button>
+        </div>
+
+        <!-- Ferramenta 2: Ir Direto ao Carrinho -->
+        <div class="seller-tool-card" onclick="closeSellerAppModal(); openCartSheet();">
+          <div>
+            <div style="font-size:0.92rem; font-weight:800; color:var(--text); margin-bottom:2px;">🛒 Abrir Carrinho & Tabela de Preços</div>
+            <div style="font-size:0.78rem; color:var(--text-3);">Acesse os itens selecionados, simule descontos globais ou emita propostas PDF.</div>
+          </div>
+          <button type="button" class="btn-cart-secondary" style="height:32px; font-size:0.75rem; flex-shrink:0;">
+            Abrir Carrinho
+          </button>
+        </div>
+
+      </div>
+    `;
+  }
+}
+
+function copySellerPersonalLink(url) {
+  hapticFeedback(25);
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(url).then(() => {
+      showToast('🔗 Link personalizado do vendedor copiado!');
+    });
+  } else {
+    prompt('Copie o seu link de vendedor:', url);
+  }
+  logSellerActivity('Copiou Link Pessoal do Vendedor', {
+    link_proposta: url,
+    detalhes_extras: 'Link de comissão / atribuição copiado no Painel do Vendedor'
+  });
+}
+
+// Redireciona openQuoteHistoryModal para abrir o App do Vendedor
+function openQuoteHistoryModal() {
+  openSellerAppModal('quotes');
+}
+
 // ═══════════════════════════════════════════════════════════════
 //  GERADOR DE PROPOSTA COMERCIAL (PDF COM / SEM VALORES)
 // ═══════════════════════════════════════════════════════════════
@@ -7220,7 +7785,7 @@ function renderPdfPaperContent(data) {
   const paper = document.getElementById('pdf-paper-content');
   if (!paper) return;
 
-  const showPrices = data.isSeller;
+  const showPrices = (data.showPrices !== undefined) ? data.showPrices : (data.isSeller && (data.showPrices !== false));
   const subtotalItensSemDesconto = data.subtotalItensSemDesconto !== undefined ? data.subtotalItensSemDesconto : data.itemsList.reduce((acc, i) => acc + (i.quantidade * (i.preco_unitario !== undefined ? i.preco_unitario : (i.preco_base || 0))), 0);
   const subtotalItensComDesconto = data.subtotalItensComDesconto !== undefined ? data.subtotalItensComDesconto : data.itemsList.reduce((acc, i) => {
     const pUnit = (i.preco_unitario !== undefined) ? i.preco_unitario : (i.preco_base || 0);
@@ -7241,9 +7806,9 @@ function renderPdfPaperContent(data) {
     <div class="pdf-doc-head">
       <div>
         <div style="font-size:22px; font-weight:800; color:#0f4531; display:flex; align-items:center; gap:8px;">
-          <span>🌿</span> Rawell Química
+          <span>🌿</span> NAFOG
         </div>
-        <div style="font-size:12px; color:#64748b; margin-top:2px;">Catálogo Oficial de Produtos &amp; Soluções Químicas 2026</div>
+        <div style="font-size:12px; color:#64748b; margin-top:2px;">Catálogo de Produtos &amp; Defensivos Especializados (Revenda Rawell)</div>
         <div style="font-size:11px; color:#64748b;">WhatsApp Comercial: (45) 99933-2563 • Paraná — Brasil</div>
       </div>
       <div style="text-align:right;">
@@ -7383,7 +7948,7 @@ function renderPdfPaperContent(data) {
 
       <div style="background:#f1f5f9; padding:10px 14px; border-radius:6px; margin-bottom:12px; font-size:11.5px; color:#334155;">
         <strong>📌 Termos &amp; Condições Gerais:</strong><br>
-        1. Proposta comercial gerada eletronicamente pelo Catálogo Oficial Rawell Química.<br>
+        1. Proposta comercial gerada eletronicamente pelo Catálogo NAFOG (Revenda Autorizada Rawell Química).<br>
         2. Faturamento direto ou via distribuidor autorizado conforme disponibilidade logística regional.<br>
         3. Para pedidos de caixas fechadas ou cargas completas, consulte bonificações por volume.
       </div>
@@ -7394,7 +7959,225 @@ function renderPdfPaperContent(data) {
   `;
 }
 
-function openPdfProposalModal() {
+
+// ═══════════════════════════════════════════════════════════════
+//  ENVIO DIRETO DE WHATSAPP PARA O CLIENTE (COM / SEM PREÇO)
+// ═══════════════════════════════════════════════════════════════
+let currentClientWaMode = true; // true = com preço, false = sem preço
+
+function openClientWhatsAppModal(includePrices = true) {
+  hapticFeedback(25);
+  if (!cartItems.length) {
+    showToast('⚠️ Seu orçamento está vazio.');
+    return;
+  }
+
+  currentClientWaMode = includePrices;
+  const badge = document.getElementById('client-wa-mode-badge');
+  const inputPhone = document.getElementById('input-client-wa-number');
+
+  if (badge) {
+    if (includePrices) {
+      badge.style.background = 'rgba(16, 185, 129, 0.15)';
+      badge.style.border = '1px solid rgba(16, 185, 129, 0.4)';
+      badge.style.color = '#059669';
+      badge.innerHTML = '💰 <span>Mensagem <strong>COM PREÇOS</strong> e Descontos Negociados</span>';
+    } else {
+      badge.style.background = 'var(--bg-card-sub)';
+      badge.style.border = '1px solid var(--border)';
+      badge.style.color = 'var(--text-2)';
+      badge.innerHTML = '📋 <span>Mensagem <strong>SEM PREÇOS</strong> (Apenas Lista de Produtos)</span>';
+    }
+  }
+
+  // Tenta resgatar telefone previamente usado
+  try {
+    const savedPhone = localStorage.getItem('rawell_last_client_phone') || '';
+    if (inputPhone && savedPhone) {
+      inputPhone.value = savedPhone;
+    }
+  } catch(e) {}
+
+  document.getElementById('client-wa-modal-backdrop')?.classList.add('show');
+  setTimeout(() => inputPhone?.focus(), 150);
+}
+
+function closeClientWhatsAppModal() {
+  document.getElementById('client-wa-modal-backdrop')?.classList.remove('show');
+}
+
+function handleDirectClientWhatsAppSubmit(event) {
+  if (event) event.preventDefault();
+  hapticFeedback(35);
+
+  const inputPhone = document.getElementById('input-client-wa-number');
+  const rawPhone = inputPhone ? inputPhone.value.trim() : '';
+
+  if (!rawPhone) {
+    showToast('⚠️ Por favor, informe o número de WhatsApp do cliente.');
+    inputPhone?.focus();
+    return;
+  }
+
+  const cleanDigits = rawPhone.replace(/\D/g, '');
+  if (cleanDigits.length < 10) {
+    showToast('⚠️ Número inválido. Digite o DDD + Número (ex: 45 99999-8888).');
+    inputPhone?.focus();
+    return;
+  }
+
+  try {
+    localStorage.setItem('rawell_last_client_phone', rawPhone);
+  } catch(e) {}
+
+  closeClientWhatsAppModal();
+  sendQuoteToCustomWhatsApp(cleanDigits, currentClientWaMode);
+}
+
+function sendQuoteToCustomWhatsApp(phoneDigits, includePrices = true) {
+  const isSeller = isSellerLoggedIn();
+  const nameInput = document.getElementById('client-name');
+  const docInput = document.getElementById('client-doc');
+  const nome = (nameInput && nameInput.value.trim()) || 'Cliente';
+  const doc = (docInput && docInput.value.trim()) || '';
+
+  const vendedorObj = getActiveSellerObj();
+  const destWhatsapp = phoneDigits.startsWith('55') ? phoneDigits : ('55' + phoneDigits);
+
+  const shareUrl = generateCartShareUrl(includePrices);
+  const dataAtual = new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+  const horaAtual = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+  const orcNum = 'RQ-2026-' + Math.floor(1000 + Math.random() * 9000);
+
+  const {
+    subtotalItensSemDesconto,
+    subtotalItensComDesconto,
+    descontoTotalItens,
+    baseItensSemDesconto,
+    discGlobalPercent,
+    valorDescontoGlobal,
+    totalFinalLiquido,
+    economiaTotalReal,
+    percentualEconomiaTotal,
+    totalQtd
+  } = calculateCartTotals();
+
+  saveQuoteToHistory({
+    id: orcNum,
+    data: `${dataAtual} às ${horaAtual}`,
+    timestamp: Date.now(),
+    cliente: nome,
+    doc: doc,
+    vendedorId: vendedorObj.id,
+    vendedorNome: vendedorObj.nome,
+    itens: cartItems.map(i => ({
+      id: i.id,
+      nome: i.nome,
+      referencia: i.referencia,
+      unidade: i.unidade,
+      imagem: i.imagem,
+      quantidade: i.quantidade,
+      preco_base: i.preco_base || 0,
+      preco_unitario: (i.preco_unitario !== undefined) ? i.preco_unitario : (i.preco_base || 0),
+      desconto_percent: i.desconto_percent || 0
+    })),
+    totalQtd: totalQtd,
+    valorTotal: includePrices ? `R$ ${totalFinalLiquido.toFixed(2).replace('.', ',')}` : '',
+    subtotalItensSemDesconto,
+    subtotalItensComDesconto,
+    descontoTotalItens,
+    baseItensSemDesconto,
+    discGlobalPercent,
+    valorDescontoGlobal,
+    totalFinalLiquido,
+    economiaTotalReal,
+    percentualEconomiaTotal,
+    status: 'aguardando',
+    shareUrl: shareUrl
+  });
+
+  const totalFormatado = includePrices ? `R$ ${totalFinalLiquido.toFixed(2).replace('.', ',')}` : '-';
+  logSellerActivity(includePrices ? `📱 Enviou Whats Cliente COM PREÇO (${destWhatsapp})` : `📱 Enviou Whats Cliente SEM PREÇO (${destWhatsapp})`, {
+    num_proposta: orcNum,
+    cliente_nome: nome,
+    cliente_doc: doc,
+    total_itens: totalQtd,
+    valor_total: totalFormatado,
+    resumo_itens: cartItems.map(i => `${i.quantidade}x ${i.nome}`).join(', '),
+    link_proposta: shareUrl,
+    detalhes_extras: `Destino WhatsApp Cliente: ${destWhatsapp} | Modo: ${includePrices ? 'Com Preço' : 'Sem Preço'}`
+  });
+
+  let msg = `🌿 *${CONFIG.empresa}*\n`;
+  msg += `━━━━━━━━━━━━━━━━━━━━━\n`;
+  msg += `📋 *PROPOSTA / ORÇAMENTO (Nº ${orcNum})*\n\n`;
+
+  cartItems.forEach((item, index) => {
+    const pUnit = (item.preco_unitario !== undefined) ? item.preco_unitario : (item.preco_base || 0);
+    const discItemPercent = Math.max(0, Math.min(100, item.desconto_percent || 0));
+    const pUnitDesc = pUnit * (1 - (discItemPercent / 100));
+    const subtotalItem = item.quantidade * pUnitDesc;
+
+    msg += `*${index + 1}. ${item.nome}*\n`;
+    msg += `   • Ref: \`${item.referencia}\`\n`;
+    msg += `   • Quantidade: *${item.quantidade} ${item.unidade || 'unidade'}(s)*\n`;
+
+    if (includePrices && pUnit > 0) {
+      if (discItemPercent > 0) {
+        msg += `   • Valor Unit.: R$ ${pUnit.toFixed(2).replace('.', ',')}\n`;
+        msg += `   • Desconto no Item: *${discItemPercent.toFixed(1)}%* (-R$ ${(pUnit * (discItemPercent / 100)).toFixed(2).replace('.', ',')}/un)\n`;
+        msg += `   • Valor Unit. c/ Desconto: *R$ ${pUnitDesc.toFixed(2).replace('.', ',')}* (Subtotal: *R$ ${subtotalItem.toFixed(2).replace('.', ',')}*)\n`;
+      } else {
+        msg += `   • Valor Unit.: R$ ${pUnit.toFixed(2).replace('.', ',')} (Subtotal: R$ ${subtotalItem.toFixed(2).replace('.', ',')})\n`;
+      }
+    }
+    msg += `\n`;
+  });
+
+  msg += `━━━━━━━━━━━━━━━━━━━━━\n`;
+  if (includePrices) {
+    if (economiaTotalReal > 0.01) {
+      msg += `💰 *Subtotal dos Produtos:* R$ ${subtotalItensSemDesconto.toFixed(2).replace('.', ',')}\n`;
+      if (descontoTotalItens > 0.01) {
+        msg += `🏷️ *Descontos nos Produtos:* -R$ ${descontoTotalItens.toFixed(2).replace('.', ',')}\n`;
+        msg += `📦 *Subtotal c/ Desc. dos Itens:* R$ ${subtotalItensComDesconto.toFixed(2).replace('.', ',')}\n`;
+      }
+      if (discGlobalPercent > 0 && valorDescontoGlobal > 0) {
+        msg += `🏷️ *Desconto no Pedido (${discGlobalPercent.toFixed(1)}% s/ itens s/ desc.):* -R$ ${valorDescontoGlobal.toFixed(2).replace('.', ',')}\n`;
+      }
+      msg += `🎉 *ECONOMIA TOTAL DO CLIENTE:* *R$ ${economiaTotalReal.toFixed(2).replace('.', ',')} (${percentualEconomiaTotal.toFixed(1)}% OFF)*\n`;
+      msg += `💳 *TOTAL FINAL DA PROPOSTA:* *R$ ${totalFinalLiquido.toFixed(2).replace('.', ',')}*\n`;
+    } else {
+      msg += `💳 *TOTAL DA PROPOSTA:* *R$ ${totalFinalLiquido.toFixed(2).replace('.', ',')}*\n`;
+    }
+    msg += `━━━━━━━━━━━━━━━━━━━━━\n`;
+  }
+
+  msg += `👤 *Cliente:* ${nome}\n`;
+  if (vendedorObj && vendedorObj.id) {
+    msg += `👔 *Vendedor Responsável:* ${vendedorObj.nome}\n`;
+  }
+  if (doc) msg += `🏢 *Documento/Local:* ${doc}\n`;
+
+  if (includePrices && isSeller) {
+    const { pagamento, validade } = getCommercialTerms();
+    msg += `━━━━━━━━━━━━━━━━━━━━━\n`;
+    if (pagamento) {
+      msg += `💳 *Condição de Pagamento:* ${pagamento}\n`;
+    }
+    if (validade) {
+      msg += `📅 *Validade da Proposta:* ${validade}\n`;
+    }
+  }
+
+  msg += `\n🔗 *Acessar Cotação Completa no Catálogo:*\n${shareUrl}\n`;
+
+  const waUrl = `https://api.whatsapp.com/send?phone=${destWhatsapp}&text=${encodeURIComponent(msg)}`;
+  window.open(waUrl, '_blank');
+  showToast(`📲 Abrindo WhatsApp para ${destWhatsapp}...`);
+}
+
+function openPdfProposalModal(includePrices = true) {
   hapticFeedback(30);
   if (!cartItems.length) {
     showToast('⚠️ Adicione itens ao orçamento primeiro.');
@@ -7413,8 +8196,8 @@ function openPdfProposalModal() {
   const dataAtual = new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
   const horaAtual = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
   const orcNum = 'RQ-2026-' + Math.floor(1000 + Math.random() * 9000);
-  const isSeller = isSellerLoggedIn();
-  const shareUrl = generateCartShareUrl(isSeller);
+  const isSeller = isSellerLoggedIn() && includePrices;
+  const shareUrl = generateCartShareUrl(includePrices);
 
   const {
     subtotalItensSemDesconto,
@@ -7464,7 +8247,7 @@ function openPdfProposalModal() {
     shareUrl: shareUrl
   });
 
-  logSellerActivity('Geração de Proposta PDF', {
+  logSellerActivity(includePrices ? 'Geração de Proposta PDF COM PREÇO' : 'Geração de Proposta PDF SEM PREÇO', {
     num_proposta: orcNum,
     cliente_nome: clienteNome,
     cliente_doc: clienteDoc,
@@ -7478,6 +8261,7 @@ function openPdfProposalModal() {
   const { pagamento, validade } = isSeller ? getCommercialTerms() : {};
   renderPdfPaperContent({
     orcNum,
+    showPrices: isSeller,
     dataAtual,
     horaAtual,
     clienteNome,
@@ -7855,7 +8639,7 @@ function openProductSheet(id) {
   <div class="pwa-banner-left">
     <div class="pwa-banner-icon">🌿</div>
     <div class="pwa-banner-text">
-      <h4>Instalar App Rawell</h4>
+      <h4>Instalar App NAFOG</h4>
       <p>Acesse o catálogo rápido direto da sua tela inicial.</p>
     </div>
   </div>
@@ -7931,6 +8715,79 @@ function openProductSheet(id) {
       <div class="pdf-paper" id="pdf-paper-content">
         <!-- Renderizado dinamicamente pelo JS -->
       </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══ MODAL: ENVIAR WHATSAPP DIRETO PARA O CLIENTE ═══════════════ -->
+<div class="client-wa-modal-backdrop" id="client-wa-modal-backdrop" onclick="if(event.target===this) closeClientWhatsAppModal()">
+  <div class="seller-modal-card" style="max-width: 450px;">
+    <div class="seller-modal-head">
+      <div style="display:flex; align-items:center; gap:8px;">
+        <span style="font-size:1.3rem;">📲</span>
+        <h3 class="seller-modal-title" style="margin:0;">Enviar Cotação ao Cliente</h3>
+      </div>
+      <button type="button" class="sheet-close-btn" onclick="closeClientWhatsAppModal()">✕</button>
+    </div>
+    <div class="seller-modal-body">
+      <div id="client-wa-mode-badge" style="margin-bottom:12px; display:inline-flex; align-items:center; gap:6px; padding:4px 10px; border-radius:var(--radius-full); font-size:0.75rem; font-weight:800;">
+        <!-- Preenchido dinamicamente -->
+      </div>
+      <form onsubmit="handleDirectClientWhatsAppSubmit(event)">
+        <p style="font-size:0.85rem; color:var(--text-2); margin-bottom:14px; line-height:1.45;">
+          Informe o WhatsApp do cliente com DDD. Ao clicar em enviar, a cotação será aberta diretamente na conversa com o número digitado:
+        </p>
+        <div class="seller-form-group">
+          <label class="seller-form-label">WhatsApp do Cliente (com DDD):</label>
+          <input type="tel" id="input-client-wa-number" class="seller-form-input" placeholder="(45) 99999-9999" required autocomplete="tel" style="font-size:1.05rem; font-weight:700;">
+        </div>
+        <div style="display:flex; gap:10px; margin-top:16px;">
+          <button type="button" class="btn-cart-secondary" style="flex:1;" onclick="closeClientWhatsAppModal()">Cancelar</button>
+          <button type="submit" class="btn-send-whatsapp" style="flex:1.5; height:42px; font-size:0.9rem;">
+            <span>🚀 Enviar no WhatsApp</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══ APP DO VENDEDOR (MODAL & PAINEL DO REPRESENTANTE) ═════════ -->
+<div class="seller-app-modal-backdrop" id="seller-app-modal-backdrop" onclick="if(event.target===this) closeSellerAppModal()">
+  <div class="seller-app-card">
+    <div class="seller-app-header">
+      <div class="seller-app-profile">
+        <div class="seller-app-avatar">👔</div>
+        <div>
+          <div class="seller-app-name" id="seller-app-profile-name">Carlos Silva</div>
+          <div class="seller-app-status">
+            <span>🟢</span> <span>Modo Comercial Ativo</span>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex; align-items:center; gap:8px;">
+        <button type="button" class="btn-logout-seller" onclick="closeSellerAppModal(); handleSellerLogout();" title="Desconectar do Modo Vendedor">
+          <span>Sair</span> 🔒
+        </button>
+        <button type="button" class="sheet-close-btn" onclick="closeSellerAppModal()">✕</button>
+      </div>
+    </div>
+
+    <!-- Navegação de Módulos (Abas do App) -->
+    <div class="seller-app-tabs-nav">
+      <button type="button" class="seller-app-tab-btn active" id="tab-btn-seller-quotes" onclick="switchSellerAppTab('quotes')">
+        <span>📋</span> Meus Orçamentos Recentes (<span id="seller-app-quote-count">0</span>)
+      </button>
+      <button type="button" class="seller-app-tab-btn" id="tab-btn-seller-tools" onclick="switchSellerAppTab('tools')">
+        <span>⚡</span> Ferramentas & Links
+      </button>
+    </div>
+
+    <!-- Corpo do App do Vendedor -->
+    <div class="seller-app-body" id="seller-app-body">
+      <!-- Conteúdo inserido dinamicamente via JS -->
     </div>
   </div>
 </div>
