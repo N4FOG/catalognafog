@@ -2348,6 +2348,42 @@ mark {
   line-height: 1.35;
 }
 
+/* Galeria de Miniaturas / Múltiplas Fotos no Modal */
+.sheet-thumbs-row {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 12px;
+  padding: 4px;
+}
+.sheet-thumb-item {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-xs);
+  border: 2px solid var(--border);
+  background: var(--bg-card);
+  padding: 3px;
+  cursor: pointer;
+  transition: all var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.sheet-thumb-item:hover {
+  border-color: var(--brand-light);
+}
+.sheet-thumb-item.active {
+  border-color: var(--brand-light);
+  box-shadow: 0 0 0 3px var(--brand-pale);
+  transform: scale(1.06);
+}
+.sheet-thumb-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
 /* Botão de PDF no Drawer */
 .btn-gen-pdf {
   width: 100%;
@@ -3924,7 +3960,9 @@ const PRODUTOS = [
       "Sachês 200g e 1kg"
     ],
     "imagens": [
-      "img/produtos/p28-karamujo-metaldeido-pellets.webp"
+      "img/produtos/p28-karamujo-metaldeido-pellets.webp",
+      "img/produtos/p28-karamujo-metaldeido-pellets1.webp",
+      "img/produtos/p28-karamujo-metaldeido-pellets2.webp"
     ],
     "unidade": "sachê",
     "referencia": "KARM-MET-200-1K",
@@ -4527,6 +4565,19 @@ document.addEventListener('keydown', (e) => {
 // ═══════════════════════════════════════════════════════════════
 //  MODAL / BOTTOM SHEET DE DETALHES DO PRODUTO
 // ═══════════════════════════════════════════════════════════════
+function changeSheetMainImg(src, thumbEl) {
+  hapticFeedback(12);
+  const mainImg = document.getElementById('sheet-main-img');
+  if (mainImg) {
+    mainImg.src = src;
+  }
+  if (thumbEl) {
+    const parent = thumbEl.parentElement;
+    parent.querySelectorAll('.sheet-thumb-item').forEach(el => el.classList.remove('active'));
+    thumbEl.classList.add('active');
+  }
+}
+
 function openProductSheet(id) {
   hapticFeedback(20);
   const p = PRODUTOS.find(item => item.id === id);
@@ -4542,7 +4593,16 @@ function openProductSheet(id) {
   const body = document.getElementById('product-sheet-body');
   body.innerHTML = `
     <div class="sheet-prod-img-box">
-      <img src="${p.imagens[0]}" alt="${p.nome}">
+      <img id="sheet-main-img" src="${p.imagens[0]}" alt="${p.nome}">
+      ${p.imagens.length > 1 ? `
+        <div class="sheet-thumbs-row">
+          ${p.imagens.map((imgSrc, idx) => `
+            <div class="sheet-thumb-item ${idx === 0 ? 'active' : ''}" onclick="changeSheetMainImg('${imgSrc}', this)" title="Foto ${idx + 1}">
+              <img src="${imgSrc}" alt="${p.nome} - Foto ${idx + 1}">
+            </div>
+          `).join('')}
+        </div>
+      ` : ''}
     </div>
 
     <div>
