@@ -3299,9 +3299,9 @@ function logSellerActivity(tipoEvento, dadosExtras = {}) {
       num_proposta: dadosExtras.numProposta || '-',
       cliente_nome: dadosExtras.clienteNome || document.getElementById('client-name')?.value?.trim() || '-',
       cliente_doc: dadosExtras.clienteDoc || document.getElementById('client-doc')?.value?.trim() || '-',
-      total_itens: totalQtd,
-      valor_total: valorTotal > 0 ? `R$ ${valorTotal.toFixed(2).replace('.', ',')}` : '-',
-      resumo_itens: resumoItens,
+      total_itens: (dadosExtras.totalItens !== undefined) ? dadosExtras.totalItens : totalQtd,
+      valor_total: dadosExtras.valorTotal || (valorTotal > 0 ? `R$ ${valorTotal.toFixed(2).replace('.', ',')}` : '-'),
+      resumo_itens: dadosExtras.resumoItens || resumoItens,
       link_proposta: linkProposta,
       link_com_preco: linkComPreco,
       user_agent: navigator.userAgent || '-',
@@ -5439,18 +5439,34 @@ function logCartPriceChange(id, newPrice) {
   const pNovo = parseFloat(newPrice);
   if (isNaN(pNovo) || pNovo < 0) return;
 
-  const diff = pNovo - pBase;
-  const diffPercent = pBase > 0 ? ((diff / pBase) * 100).toFixed(1) : '0';
-  let diffSinal = 'Sem alteração (Tabela)';
-  if (diff > 0) {
-    diffSinal = `+R$ ${diff.toFixed(2).replace('.', ',')} (+${diffPercent}%)`;
-  } else if (diff < 0) {
-    diffSinal = `-R$ ${Math.abs(diff).toFixed(2).replace('.', ',')} (${diffPercent}%)`;
+  const diffUnitario = pNovo - pBase;
+  const diffPercent = pBase > 0 ? ((diffUnitario / pBase) * 100).toFixed(1) : '0';
+  const impactoTotalItem = diffUnitario * item.quantidade;
+  const subtotalItem = item.quantidade * pNovo;
+
+  let tipoMovimento = 'Preço de Tabela Mantido';
+  let diffSinal = 'R$ 0,00 (0.0%)';
+  let impactoTexto = 'R$ 0,00';
+
+  if (diffUnitario > 0) {
+    tipoMovimento = `🔺 Acréscimo (+${diffPercent}%)`;
+    diffSinal = `+R$ ${diffUnitario.toFixed(2).replace('.', ',')} (+${diffPercent}%)`;
+    impactoTexto = `+R$ ${impactoTotalItem.toFixed(2).replace('.', ',')}`;
+  } else if (diffUnitario < 0) {
+    tipoMovimento = `🔻 Desconto (-${Math.abs(diffPercent)}%)`;
+    diffSinal = `-R$ ${Math.abs(diffUnitario).toFixed(2).replace('.', ',')} (-${Math.abs(diffPercent)}%)`;
+    impactoTexto = `-R$ ${Math.abs(impactoTotalItem).toFixed(2).replace('.', ',')}`;
   }
 
-  const subtotalItem = item.quantidade * pNovo;
-  logSellerActivity(`💲 Alterou Preço: [${item.nome}] De R$ ${pBase.toFixed(2).replace('.', ',')} Para R$ ${pNovo.toFixed(2).replace('.', ',')}`, {
-    observacao: `Item: ${item.nome} (Ref: ${item.referencia}) | Tabela: R$ ${pBase.toFixed(2).replace('.', ',')} ➔ Negociado: R$ ${pNovo.toFixed(2).replace('.', ',')} | Variação: ${diffSinal} | Qtd no carrinho: ${item.quantidade} un | Subtotal do item: R$ ${subtotalItem.toFixed(2).replace('.', ',')}`
+  const eventoTitulo = `💲 Alterou Preço: [${item.nome}] De R$ ${pBase.toFixed(2).replace('.', ',')} Para R$ ${pNovo.toFixed(2).replace('.', ',')}`;
+  const resumoLinha = `${item.nome} (${item.quantidade} un) | Tabela: R$ ${pBase.toFixed(2).replace('.', ',')} ➔ Cobrado: R$ ${pNovo.toFixed(2).replace('.', ',')} | Dif. Unitária: ${diffSinal} | Impacto no Lote: ${impactoTexto}`;
+  const obsLinha = `Alteração individual de preço: ${item.nome} (Ref: ${item.referencia}). ${tipoMovimento}. Preço Tabela: R$ ${pBase.toFixed(2).replace('.', ',')} | Preço Negociado: R$ ${pNovo.toFixed(2).replace('.', ',')} | Margem/Variação: ${diffSinal} | Impacto financeiro no lote (${item.quantidade} un): ${impactoTexto} | Novo Subtotal do Produto: R$ ${subtotalItem.toFixed(2).replace('.', ',')}.`;
+
+  logSellerActivity(eventoTitulo, {
+    totalItens: `${item.quantidade} un`,
+    valorTotal: `R$ ${subtotalItem.toFixed(2).replace('.', ',')}`,
+    resumoItens: resumoLinha,
+    observacao: obsLinha
   });
 }
 
