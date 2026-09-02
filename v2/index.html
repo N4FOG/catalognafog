@@ -2225,7 +2225,7 @@ mark {
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   NOVO: PLANO 3 & FICHA CONSULTIVA DO ESPECIALISTA RAWELL
+   PLANO 3: 3 PILARES & FICHA CONSULTIVA DO ESPECIALISTA RAWELL
 ═══════════════════════════════════════════════════════════════ */
 
 /* Badge "O que faz" no Card */
@@ -2246,6 +2246,27 @@ mark {
 .action-bolt {
   font-size: 0.9rem;
   flex-shrink: 0;
+}
+
+/* Preço de Tabela no Card do Produto (Modo Vendedor) */
+.card-seller-price-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  color: var(--brand-mid);
+  font-size: 0.8rem;
+  font-weight: 800;
+  padding: 4px 8px;
+  border-radius: var(--radius-xs);
+  margin-top: 6px;
+}
+.card-seller-price-tag strong {
+  color: #0f4531;
+}
+[data-theme="dark"] .card-seller-price-tag strong {
+  color: #34d399;
 }
 
 /* Ficha Consultiva - Blocos Estruturados */
@@ -2420,22 +2441,262 @@ mark {
   object-fit: contain;
 }
 
-/* Badge de Vendedor Ativo no Header */
-.seller-header-pill {
+/* ═══════════════════════════════════════════════════════════════
+   MODO VENDEDOR: PREÇOS, NEGOCIAÇÃO & PAINEL COMERCIAL
+═══════════════════════════════════════════════════════════════ */
+
+/* Botão de Login do Vendedor no Header (quando deslogado) */
+.btn-seller-login-header {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--brand-pale);
+  border: 1.5px solid var(--brand-light);
+  color: var(--brand-dark);
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  font-size: 0.76rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--transition);
+  white-space: nowrap;
+  box-shadow: 0 1px 4px rgba(16, 185, 129, 0.15);
+}
+[data-theme="dark"] .btn-seller-login-header {
+  background: rgba(16, 185, 129, 0.15);
+  color: #a7f3d0;
+  border-color: rgba(16, 185, 129, 0.4);
+}
+.btn-seller-login-header:hover {
+  background: var(--brand);
+  color: #fff;
+  border-color: var(--brand);
+  transform: translateY(-1px);
+}
+@media (max-width: 600px) {
+  .btn-seller-login-header {
+    padding: 3px 8px;
+    font-size: 0.72rem;
+  }
+}
+
+/* Badge de Vendedor Ativo no Header (quando logado) */
+.seller-status-header {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(135deg, rgba(15, 69, 49, 0.95), rgba(9, 38, 27, 0.98));
+  border: 1px solid rgba(16, 185, 129, 0.45);
+  color: #fff;
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+  font-size: 0.72rem;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.2);
+  white-space: nowrap;
+  flex-shrink: 0;
+  max-width: 220px;
+  animation: sellerPulse 2s infinite ease-in-out;
+}
+@keyframes sellerPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+  50% { box-shadow: 0 0 0 4px rgba(16, 185, 129, 0); }
+}
+.seller-status-header .seller-label-text {
+  display: inline;
+}
+.seller-status-header .seller-name {
+  color: var(--brand-light);
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 95px;
+  display: inline-block;
+  vertical-align: middle;
+}
+.seller-status-header .btn-logout-seller {
+  background: rgba(239, 68, 68, 0.3);
+  border: 1px solid rgba(239, 68, 68, 0.55);
+  color: #fff;
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: 0.68rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: var(--transition);
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  flex-shrink: 0;
+}
+.seller-status-header .btn-logout-seller:hover {
+  background: var(--danger);
+  transform: scale(1.04);
+}
+
+/* Badge de Atendimento (para o Cliente com link ?vendedor=carlos) */
+.seller-client-pill {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   background: var(--brand-pale);
   color: var(--brand-dark);
-  font-size: 0.78rem;
+  font-size: 0.76rem;
   font-weight: 700;
   padding: 4px 10px;
   border-radius: var(--radius-full);
   border: 1px solid var(--border);
   white-space: nowrap;
 }
-.seller-header-pill strong {
+.seller-client-pill strong {
   color: var(--brand-mid);
+}
+
+/* Edição de Preços no Carrinho (Modo Vendedor) */
+.cart-item-price-section {
+  background: var(--bg-card-sub);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.cart-item-price-edit-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.cart-item-price-input-wrap {
+  display: inline-flex;
+  align-items: center;
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-xs);
+  padding: 2px 8px;
+  transition: border-color var(--transition);
+}
+.cart-item-price-input-wrap:focus-within {
+  border-color: var(--brand-light);
+}
+.cart-price-symbol {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-3);
+  margin-right: 4px;
+}
+.cart-price-input-field {
+  width: 75px;
+  border: none;
+  background: transparent;
+  color: var(--text);
+  font-size: 0.9rem;
+  font-weight: 800;
+  outline: none;
+}
+.cart-base-price-ref {
+  font-size: 0.74rem;
+  color: var(--text-3);
+  font-weight: 600;
+}
+.cart-item-subtotal-line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.82rem;
+  border-top: 1px dashed var(--border);
+  padding-top: 5px;
+}
+.subtotal-val {
+  color: var(--brand-mid);
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
+/* Total Geral da Proposta no Rodapé do Carrinho */
+.cart-total-proposal-card {
+  background: linear-gradient(135deg, rgba(15, 69, 49, 0.08), rgba(9, 38, 27, 0.12));
+  border: 1.5px solid var(--brand-light);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.cart-total-proposal-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-2);
+}
+.cart-total-proposal-num {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--brand-mid);
+}
+
+/* Botões Duplos de Compartilhamento no Carrinho */
+.cart-share-btns-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 8px;
+}
+.btn-share-link {
+  height: 42px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-card-sub);
+  color: var(--text-2);
+  border: 1px dashed var(--border);
+  font-size: 0.84rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+.btn-share-link:hover {
+  background: var(--brand-pale);
+  color: var(--brand-mid);
+  border-color: var(--brand-light);
+}
+.btn-share-price {
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  color: var(--brand-mid);
+}
+.btn-share-price:hover {
+  background: var(--brand);
+  color: #fff;
+  border-color: var(--brand);
+}
+
+.btn-gen-pdf {
+  width: 100%;
+  height: 44px;
+  border-radius: var(--radius-sm);
+  background: var(--brand-dark);
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  margin-top: 8px;
+  border: 1px solid var(--border);
+  transition: all var(--transition);
+}
+.btn-gen-pdf:hover {
+  background: var(--brand-mid);
+  transform: translateY(-1px);
 }
 
 /* Botão de Histórico no Header */
@@ -2468,67 +2729,126 @@ mark {
   font-weight: 800;
 }
 
-/* Botão de PDF e Compartilhamento */
-.btn-share-link {
-  width: 100%;
-  height: 42px;
-  border-radius: var(--radius-sm);
-  background: var(--bg-card-sub);
-  color: var(--text-2);
-  border: 1px dashed var(--border);
-  font-size: 0.88rem;
+/* Status e Botão do Vendedor no Rodapé */
+.footer-secret-seller-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.78rem;
   font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
   cursor: pointer;
-  transition: all var(--transition);
-  margin-top: 8px;
+  padding: 5px 12px;
+  border-radius: var(--radius-full);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: var(--transition);
 }
-.btn-share-link:hover {
-  background: var(--brand-pale);
-  color: var(--brand-mid);
-  border-color: var(--brand-light);
-}
-
-.btn-gen-pdf {
-  width: 100%;
-  height: 44px;
-  border-radius: var(--radius-sm);
-  background: var(--brand-dark);
+.footer-secret-seller-btn:hover {
   color: #fff;
-  font-size: 0.9rem;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  cursor: pointer;
-  margin-top: 8px;
-  border: 1px solid var(--border);
-  transition: all var(--transition);
-}
-.btn-gen-pdf:hover {
-  background: var(--brand-mid);
-  transform: translateY(-1px);
+  border-color: var(--brand-light);
+  background: rgba(16, 185, 129, 0.25);
 }
 
-/* Modal / Dashboard de Orçamentos Recentes */
-.history-modal-backdrop {
+.footer-seller-logged-box {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(16, 185, 129, 0.14);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  font-size: 0.76rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+.footer-seller-tag strong {
+  color: var(--brand-light);
+}
+.footer-btn-logout {
+  background: rgba(239, 68, 68, 0.25);
+  border: 1px solid rgba(239, 68, 68, 0.5);
+  color: #fca5a5;
+  padding: 2px 8px;
+  border-radius: var(--radius-xs);
+  font-size: 0.72rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition);
+}
+.footer-btn-logout:hover {
+  background: var(--danger);
+  color: #fff;
+}
+
+/* Modais: Seller Login, History, PDF */
+.seller-modal-backdrop, .history-modal-backdrop, .pdf-modal-backdrop {
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.75);
   backdrop-filter: blur(8px);
-  z-index: 1150;
+  z-index: 1200;
   display: none;
   align-items: center;
   justify-content: center;
   padding: 16px;
 }
-.history-modal-backdrop.show {
+.seller-modal-backdrop.show, .history-modal-backdrop.show, .pdf-modal-backdrop.show {
   display: flex;
 }
+.seller-modal-card {
+  background: var(--bg-card);
+  color: var(--text);
+  max-width: 440px;
+  width: 100%;
+  border-radius: 18px;
+  border: 1px solid var(--border);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+}
+.seller-modal-head {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg-card-sub);
+}
+.seller-modal-title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--brand-mid);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.seller-modal-body {
+  padding: 20px;
+}
+.seller-form-group {
+  margin-bottom: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.seller-form-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-2);
+}
+.seller-form-input {
+  height: 44px;
+  background: var(--bg-sheet);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0 14px;
+  color: var(--text);
+  outline: none;
+  font-size: 0.95rem;
+}
+.seller-form-input:focus {
+  border-color: var(--brand-light);
+}
+
 .history-modal-card {
   background: var(--bg-card);
   color: var(--text);
@@ -2567,7 +2887,6 @@ mark {
   gap: 14px;
 }
 
-/* Cards do Histórico */
 .history-item-card {
   background: var(--bg-card-sub);
   border: 1px solid var(--border);
@@ -2615,40 +2934,6 @@ mark {
   color: var(--danger);
 }
 
-.history-client-row {
-  display: flex;
-  align-items: baseline;
-  gap: 8px;
-  font-size: 0.92rem;
-  font-weight: 700;
-  color: var(--text);
-}
-.history-client-doc {
-  font-size: 0.8rem;
-  color: var(--text-3);
-  font-weight: 500;
-}
-
-.history-items-summary {
-  background: var(--bg-card);
-  border-radius: 8px;
-  padding: 8px 12px;
-  border: 1px solid var(--border-subtle);
-  font-size: 0.82rem;
-  color: var(--text-2);
-  line-height: 1.45;
-}
-
-.history-card-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-top: 4px;
-}
-
-/* Status do Pedido (Funil de Vendas) */
 .history-status-select {
   padding: 4px 10px;
   border-radius: 20px;
@@ -2703,24 +2988,10 @@ mark {
 }
 
 /* Modal / Visualizador de Proposta em PDF */
-.pdf-modal-backdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.75);
-  backdrop-filter: blur(8px);
-  z-index: 1200;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  padding: 16px;
-}
-.pdf-modal-backdrop.show {
-  display: flex;
-}
 .pdf-modal-card {
   background: #ffffff;
   color: #0f1f17;
-  max-width: 800px;
+  max-width: 820px;
   width: 100%;
   max-height: 92vh;
   border-radius: 16px;
@@ -2743,7 +3014,7 @@ mark {
   color: #0f4531;
 }
 .pdf-modal-body {
-  padding: 30px;
+  padding: 26px;
   font-size: 14px;
   line-height: 1.6;
 }
@@ -2991,7 +3262,10 @@ mark {
     </div>
     <div class="footer-bottom-bar">
       <span>© 2026 Rawell Química. Todos os direitos reservados.</span>
-      <span>Catálogo restrito para clientes, distribuidores e parceiros autorizados.</span>
+      <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+        <span>Catálogo restrito para parceiros e clientes autorizados.</span>
+        <div id="footer-seller-container"></div>
+      </div>
     </div>
   </div>
 </footer>
@@ -3050,8 +3324,13 @@ mark {
       <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
       Enviar Cotação pelo WhatsApp
     </button>
-    <button class="btn-share-link" onclick="copyCartShareLink()">
-      <span>🔗</span> Copiar Link do Orçamento
+    <div id="cart-share-btns-container">
+      <button class="btn-share-link" onclick="copyCartShareLink(false)">
+        <span>🔗</span> Copiar Link do Orçamento
+      </button>
+    </div>
+    <button class="btn-gen-pdf" onclick="openPdfProposalModal()">
+      <span>📄</span> Gerar Proposta Comercial (PDF)
     </button>
   </div>
 </div>
@@ -3089,7 +3368,8 @@ const CONFIG = {
   whatsapp: '5545999332563',
   empresa: 'Rawell Química — Catálogo 2026',
   mensagem_intro: 'Olá! Gostaria de solicitar uma cotação dos seguintes produtos da Rawell Química:',
-  mensagem_fim: '✅ Aguardo retorno sobre disponibilidade e condições de fornecimento. Obrigado!'
+  mensagem_fim: '✅ Aguardo retorno sobre disponibilidade e condições de fornecimento. Obrigado!',
+  auditWebhookUrl: 'https://script.google.com/macros/s/AKfycbx6ZFn14Z0Ro6M2FIFJkoJd_VcPNlk9kl3jfK51A2SYbh4GxO5FBwu2Xbiie2Fi8ScVSQ/exec'
 };
 
 const VENDEDORES = [
@@ -3165,7 +3445,8 @@ const PRODUTOS = [
     "unidade": "frasco",
     "referencia": "KP-PLUS-60",
     "rendimento": "Rende até 100 a 150 litros de calda de pulverização.",
-    "destaque": true
+    "destaque": true,
+    "preco_base": 89.9
   },
   {
     "id": 2,
@@ -3206,7 +3487,8 @@ const PRODUTOS = [
     "unidade": "frasco",
     "referencia": "KP-TRAD-60",
     "rendimento": "Rende até 100 litros de calda (trata áreas médias de gramado).",
-    "destaque": true
+    "destaque": true,
+    "preco_base": 78.5
   },
   {
     "id": 3,
@@ -3245,7 +3527,8 @@ const PRODUTOS = [
     "unidade": "frasco",
     "referencia": "KOR-60",
     "rendimento": "Trata de 150m² a 300m² dependendo do nível de infestação.",
-    "destaque": false
+    "destaque": false,
+    "preco_base": 84
   },
   {
     "id": 4,
@@ -3285,7 +3568,8 @@ const PRODUTOS = [
     "unidade": "frasco",
     "referencia": "KAT-30",
     "rendimento": "Frasco de 30ml rende até 60 a 100 litros de calda.",
-    "destaque": true
+    "destaque": true,
+    "preco_base": 98
   },
   {
     "id": 5,
@@ -3325,7 +3609,8 @@ const PRODUTOS = [
     "unidade": "frasco",
     "referencia": "KCURA-100",
     "rendimento": "Trata até 300m² de gramado.",
-    "destaque": false
+    "destaque": false,
+    "preco_base": 42
   },
   {
     "id": 6,
@@ -3367,7 +3652,8 @@ const PRODUTOS = [
     "unidade": "frasco",
     "referencia": "ROC-100",
     "rendimento": "Rendimento garantido de 300m² por frasco de 100ml.",
-    "destaque": true
+    "destaque": true,
+    "preco_base": 38
   },
   {
     "id": 7,
@@ -3408,7 +3694,8 @@ const PRODUTOS = [
     "unidade": "frasco",
     "referencia": "ARR-EW-100",
     "rendimento": "Trata até 300m² de área.",
-    "destaque": false
+    "destaque": false,
+    "preco_base": 46
   },
   {
     "id": 8,
@@ -3449,7 +3736,8 @@ const PRODUTOS = [
     "unidade": "frasco",
     "referencia": "ARR-PU-1L",
     "rendimento": "Frasco de 1L cobre até 300m² de calçadas e frestas.",
-    "destaque": true
+    "destaque": true,
+    "preco_base": 35
   },
   {
     "id": 9,
@@ -3491,7 +3779,8 @@ const PRODUTOS = [
     "unidade": "frasco",
     "referencia": "BRAV-10",
     "rendimento": "Frasco de 10ml rende até 20 a 30 litros de calda protetora.",
-    "destaque": true
+    "destaque": true,
+    "preco_base": 24
   },
   {
     "id": 10,
@@ -3532,7 +3821,8 @@ const PRODUTOS = [
     "unidade": "frasco",
     "referencia": "BRAV-PU-240",
     "rendimento": "Trata dezenas de vasos e plantas em recipientes.",
-    "destaque": false
+    "destaque": false,
+    "preco_base": 28
   },
   {
     "id": 11,
@@ -3576,7 +3866,8 @@ const PRODUTOS = [
     "unidade": "frasco",
     "referencia": "KABIO-60",
     "rendimento": "Rende de 30 a 60 litros de calda natural.",
-    "destaque": false
+    "destaque": false,
+    "preco_base": 52
   },
   {
     "id": 12,
@@ -3617,7 +3908,8 @@ const PRODUTOS = [
     "unidade": "frasco",
     "referencia": "KABIO-PU-240",
     "rendimento": "Rende centenas de borrifadas práticas.",
-    "destaque": false
+    "destaque": false,
+    "preco_base": 32
   },
   {
     "id": 13,
@@ -3658,7 +3950,8 @@ const PRODUTOS = [
     "unidade": "frasco",
     "referencia": "IMP-250-500",
     "rendimento": "Frascos de 250ml e 500ml com alto rendimento.",
-    "destaque": true
+    "destaque": true,
+    "preco_base": 48
   },
   {
     "id": 14,
@@ -3699,7 +3992,8 @@ const PRODUTOS = [
     "unidade": "frasco",
     "referencia": "FIMO-40-120",
     "rendimento": "Residual ativo por até 6 meses por aplicação.",
-    "destaque": false
+    "destaque": false,
+    "preco_base": 36
   },
   {
     "id": 15,
@@ -3742,7 +4036,8 @@ const PRODUTOS = [
     "unidade": "frasco",
     "referencia": "PANK-30-60-250",
     "rendimento": "Altíssima concentração com diluição super econômica.",
-    "destaque": true
+    "destaque": true,
+    "preco_base": 34
   },
   {
     "id": 16,
@@ -3780,7 +4075,8 @@ const PRODUTOS = [
     "unidade": "frasco",
     "referencia": "UNIX-REP-30",
     "rendimento": "Trata dezenas de metros lineares de barreira ou furos.",
-    "destaque": false
+    "destaque": false,
+    "preco_base": 29
   },
   {
     "id": 17,
@@ -3819,7 +4115,8 @@ const PRODUTOS = [
     "unidade": "envelope",
     "referencia": "ARR-SPM-10",
     "rendimento": "Envelope com 3 sachês de 10g para até 3 pulverizadores.",
-    "destaque": false
+    "destaque": false,
+    "preco_base": 18
   },
   {
     "id": 18,
@@ -3858,7 +4155,8 @@ const PRODUTOS = [
     "unidade": "envelope",
     "referencia": "ARR-PM-10",
     "rendimento": "Envelope com 2 sachês de 10g.",
-    "destaque": false
+    "destaque": false,
+    "preco_base": 22
   },
   {
     "id": 19,
@@ -3897,7 +4195,8 @@ const PRODUTOS = [
     "unidade": "sachê",
     "referencia": "NAMOSCA-20",
     "rendimento": "Sachê de 20g atrai e elimina milhares de moscas.",
-    "destaque": true
+    "destaque": true,
+    "preco_base": 15
   },
   {
     "id": 20,
@@ -3938,7 +4237,8 @@ const PRODUTOS = [
     "unidade": "un",
     "referencia": "BLEK-90-1KG",
     "rendimento": "Trata galpões inteiros de granjas e confinamentos.",
-    "destaque": true
+    "destaque": true,
+    "preco_base": 68
   },
   {
     "id": 21,
@@ -3978,7 +4278,8 @@ const PRODUTOS = [
     "unidade": "frasco",
     "referencia": "KORAL-MOSC-60",
     "rendimento": "Frasco de 60ml rende até 20 a 30 litros de calda.",
-    "destaque": false
+    "destaque": false,
+    "preco_base": 39
   },
   {
     "id": 22,
@@ -4018,7 +4319,8 @@ const PRODUTOS = [
     "unidade": "seringa",
     "referencia": "GEL-FORM-10G",
     "rendimento": "Seringa de 10g trata dezenas de cômodos e ninhos.",
-    "destaque": true
+    "destaque": true,
+    "preco_base": 25
   },
   {
     "id": 23,
@@ -4057,7 +4359,8 @@ const PRODUTOS = [
     "unidade": "seringa",
     "referencia": "GEL-BAR-10G",
     "rendimento": "Seringa de 10g trata até 40m² de frestas e cozinhas.",
-    "destaque": true
+    "destaque": true,
+    "preco_base": 25
   },
   {
     "id": 24,
@@ -4098,7 +4401,8 @@ const PRODUTOS = [
     "unidade": "sachê",
     "referencia": "ISCA-ETIP-50",
     "rendimento": "Sachê de 50g elimina ninhos médios de formigueiros.",
-    "destaque": true
+    "destaque": true,
+    "preco_base": 16
   },
   {
     "id": 25,
@@ -4140,7 +4444,8 @@ const PRODUTOS = [
     "unidade": "un",
     "referencia": "KRATO-SOFT-150-2K",
     "rendimento": "Sachê de 150g ou Balde de 2kg para grandes infestações.",
-    "destaque": true
+    "destaque": true,
+    "preco_base": 32
   },
   {
     "id": 26,
@@ -4180,7 +4485,8 @@ const PRODUTOS = [
     "unidade": "frasco",
     "referencia": "KRATO-PO-100-250-1K",
     "rendimento": "Frascos de 100g, 250g e 1kg com alto rendimento.",
-    "destaque": false
+    "destaque": false,
+    "preco_base": 26
   },
   {
     "id": 27,
@@ -4220,7 +4526,8 @@ const PRODUTOS = [
     "unidade": "sachê",
     "referencia": "KARM-GARD-30",
     "rendimento": "Sachê de 30g cobre canteiros residenciais.",
-    "destaque": true
+    "destaque": true,
+    "preco_base": 14
   },
   {
     "id": 28,
@@ -4261,7 +4568,8 @@ const PRODUTOS = [
     "unidade": "sachê",
     "referencia": "KARM-MET-200-1K",
     "rendimento": "Sachês de 200g e 1kg para grandes áreas.",
-    "destaque": false
+    "destaque": false,
+    "preco_base": 38
   },
   {
     "id": 29,
@@ -4302,7 +4610,8 @@ const PRODUTOS = [
     "unidade": "frasco",
     "referencia": "KOR-CARR-60",
     "rendimento": "Frasco de 60ml rende 20 litros de calda (limpeza de grandes pátios).",
-    "destaque": true
+    "destaque": true,
+    "preco_base": 44
   },
   {
     "id": 30,
@@ -4341,7 +4650,8 @@ const PRODUTOS = [
     "unidade": "frasco",
     "referencia": "KOR-PU-240",
     "rendimento": "Frasco de 240ml com centenas de borrifadas.",
-    "destaque": false
+    "destaque": false,
+    "preco_base": 29
   },
   {
     "id": 31,
@@ -4380,7 +4690,8 @@ const PRODUTOS = [
     "unidade": "frasco",
     "referencia": "RED-PH-100",
     "rendimento": "Frasco de 100ml trata de 50 a 100 litros de água.",
-    "destaque": false
+    "destaque": false,
+    "preco_base": 22
   },
   {
     "id": 32,
@@ -4419,7 +4730,8 @@ const PRODUTOS = [
     "unidade": "frasco",
     "referencia": "OLEO-MIN-100",
     "rendimento": "Frasco de 100ml prepara até 100 litros de calda.",
-    "destaque": true
+    "destaque": true,
+    "preco_base": 24
   }
 ];
 
@@ -4674,10 +4986,6 @@ function renderProductList() {
               </div>
 	      <span class="prod-ref">Ref: ${p.referencia}</span>
               <h3 class="prod-name">${highlightSearch(p.nome, term)}</h3>
-              <div class="prod-action-headline">
-                <span class="action-bolt">⚡</span>
-                <span>${p.o_que_faz || p.descricao}</span>
-              </div>
               <p class="prod-desc-line">${highlightSearch(p.descricao, term)}</p>
             </div>
 
@@ -4716,10 +5024,6 @@ function renderProductList() {
                 <span class="prod-pack-tag">📦 ${packTag}</span>
               </div>
               <h3 class="prod-name">${highlightSearch(p.nome, term)}</h3>
-              <div class="prod-action-headline">
-                <span class="action-bolt">⚡</span>
-                <span>${p.o_que_faz || p.descricao}</span>
-              </div>
               <p class="prod-desc-line">${highlightSearch(p.descricao, term)}</p>
             </div>
 
@@ -5429,14 +5733,17 @@ document.addEventListener('keydown', (e) => {
 });
 
 // ═══════════════════════════════════════════════════════════════
-//  VENDEDORES & ROTEAMENTO EXCLUSIVO (LINK DO VENDEDOR)
+//  SESSÃO DO VENDEDOR & ATRIBUIÇÃO DE CLIENTE (COMISSÃO)
 // ═══════════════════════════════════════════════════════════════
-var currentAssignedSeller = null;
-const SELLER_STORAGE_KEY = 'rawell_assigned_seller_v2';
+const SELLER_STORAGE_KEY = 'rawell_seller_session_auth_v2';
+const CLIENT_SELLER_STORAGE_KEY = 'rawell_client_attributed_seller_v2';
 const QUOTE_HISTORY_KEY = 'rawell_quote_history_v2';
+
+var clientAttributedSeller = null;
 
 function initSellerAssignment() {
   try {
+    // 1. Verifica se o CLIENTE acessou com ?vendedor=carlos (Segmentação de Comissões)
     const params = new URLSearchParams(window.location.search);
     const code = params.get('vendedor') || params.get('v') || params.get('rep');
 
@@ -5444,41 +5751,1232 @@ function initSellerAssignment() {
       const norm = normText(code);
       const found = VENDEDORES.find(v => normText(v.id) === norm || normText(v.nome).includes(norm));
       if (found) {
-        currentAssignedSeller = found.id;
-        localStorage.setItem(SELLER_STORAGE_KEY, found.id);
+        clientAttributedSeller = found.id;
+        sessionStorage.setItem(CLIENT_SELLER_STORAGE_KEY, found.id);
       }
     } else {
-      currentAssignedSeller = localStorage.getItem(SELLER_STORAGE_KEY) || null;
+      clientAttributedSeller = sessionStorage.getItem(CLIENT_SELLER_STORAGE_KEY) || null;
     }
 
-    updateSellerHeaderBadge();
+    updateSellerUI();
+    trackInitialSession();
   } catch(e) {
     console.warn('Erro ao carregar vendedor:', e);
   }
 }
 
-function updateSellerHeaderBadge() {
-  const badge = document.getElementById('seller-status-header');
-  if (!badge) return;
+function isSellerLoggedIn() {
+  const session = getSellerSession();
+  return !!(session && session.logged);
+}
 
-  if (currentAssignedSeller) {
-    const vObj = VENDEDORES.find(v => v.id === currentAssignedSeller);
-    if (vObj) {
-      badge.innerHTML = `👔 Atendimento: <strong>${vObj.nome}</strong>`;
-      badge.style.display = 'inline-flex';
-      return;
+function getSellerSession() {
+  try {
+    return JSON.parse(localStorage.getItem(SELLER_STORAGE_KEY));
+  } catch (e) {
+    return null;
+  }
+}
+
+function openSellerLoginModal() {
+  hapticFeedback(20);
+  document.getElementById('seller-modal-backdrop')?.classList.add('show');
+}
+
+function closeSellerLoginModal() {
+  document.getElementById('seller-modal-backdrop')?.classList.remove('show');
+}
+
+function handleSellerLogin(event) {
+  if (event) event.preventDefault();
+  hapticFeedback(30);
+
+  const select = document.getElementById('seller-login-select');
+  const pinInput = document.getElementById('seller-login-pin');
+  const rawVendedor = select ? select.value : 'Carlos Silva (carlos)';
+  const pin = pinInput ? pinInput.value.trim() : '';
+
+  if (!pin) {
+    showToast('⚠️ Por favor, informe o PIN de acesso.');
+    pinInput?.focus();
+    return;
+  }
+
+  const vIdMatch = rawVendedor.match(/\((.*?)\)/);
+  const vendedorId = vIdMatch ? vIdMatch[1] : rawVendedor.toLowerCase().replace(/\s+/g, '-');
+  const vendedorNome = rawVendedor.split('(')[0].trim();
+
+  const sessionData = {
+    logged: true,
+    vendedorNome: vendedorNome,
+    vendedorId: vendedorId,
+    loginTime: new Date().toISOString()
+  };
+
+  localStorage.setItem(SELLER_STORAGE_KEY, JSON.stringify(sessionData));
+  closeSellerLoginModal();
+  updateSellerUI();
+  renderProductList();
+  if (document.getElementById('cart-bottom-sheet')?.classList.contains('show')) {
+    renderCartSheet();
+  }
+
+  showToast(`🎉 Bem-vindo(a), ${vendedorNome}! Modo Vendedor ativado com preços e propostas.`);
+  
+  logSellerActivity('Login no Modo Vendedor', {
+    vendedorNome: vendedorNome,
+    detalhes_extras: 'Representante autenticou-se via PIN'
+  });
+}
+
+function handleSellerLogout() {
+  hapticFeedback(20);
+  const session = getSellerSession();
+  logSellerActivity('Logout do Modo Vendedor', {
+    vendedorNome: session?.vendedorNome || 'Representante',
+    detalhes_extras: 'Modo vendedor desconectado'
+  });
+  localStorage.removeItem(SELLER_STORAGE_KEY);
+  updateSellerUI();
+  renderProductList();
+  if (document.getElementById('cart-bottom-sheet')?.classList.contains('show')) {
+    renderCartSheet();
+  }
+  showToast('🔒 Modo vendedor desconectado.');
+}
+
+function updateSellerUI() {
+  const isLogged = isSellerLoggedIn();
+  const session = getSellerSession();
+
+  // 1. Header: Se logado como vendedor vs deslogado
+  const headerContainer = document.getElementById('seller-status-header');
+  if (headerContainer) {
+    if (isLogged && session) {
+      const shortName = (session.vendedorNome || 'Vendedor').split(' ')[0];
+      headerContainer.innerHTML = `
+        <div class="seller-status-header">
+          <span title="Modo Vendedor Ativo">👔</span>
+          <span><span class="seller-label-text">Vendedor: </span><span class="seller-name" title="${session.vendedorNome}">${shortName}</span></span>
+          <button type="button" class="btn-logout-seller" onclick="handleSellerLogout()" title="Sair do modo vendedor">
+            <span>Sair</span> 🚪
+          </button>
+        </div>
+      `;
+      headerContainer.style.display = 'block';
+    } else {
+      headerContainer.innerHTML = `
+        <button type="button" class="btn-seller-login-header" onclick="openSellerLoginModal()" title="Acesso Restrito do Vendedor">
+          <span>🔒</span> <span>Vendedor</span>
+        </button>
+      `;
+      headerContainer.style.display = 'block';
     }
   }
-  badge.style.display = 'none';
+
+  // 2. Header: Se um CLIENTE veio pelo link com vendedor atribuído
+  const clientHeader = document.getElementById('seller-client-header');
+  if (clientHeader) {
+    if (!isLogged && clientAttributedSeller) {
+      const vObj = VENDEDORES.find(v => v.id === clientAttributedSeller);
+      if (vObj) {
+        clientHeader.innerHTML = `👔 Atendimento: <strong>${vObj.nome}</strong>`;
+        clientHeader.style.display = 'inline-flex';
+      } else {
+        clientHeader.style.display = 'none';
+      }
+    } else {
+      clientHeader.style.display = 'none';
+    }
+  }
+
+  // 3. Rodapé: Status do Vendedor
+  const footerContainer = document.getElementById('footer-seller-container');
+  if (footerContainer) {
+    if (isLogged && session) {
+      footerContainer.innerHTML = `
+        <div class="footer-seller-logged-box">
+          <span class="footer-seller-tag">👔 <strong>${session.vendedorNome}</strong> (Logado)</span>
+          <button type="button" class="footer-btn-logout" onclick="handleSellerLogout()" title="Encerrar sessão">
+            🚪 Sair
+          </button>
+        </div>
+      `;
+    } else {
+      footerContainer.innerHTML = `
+        <button type="button" class="footer-secret-seller-btn" onclick="openSellerLoginModal()" title="Área Restrita do Vendedor">
+          🔒 Acesso Vendedor
+        </button>
+      `;
+    }
+  }
 }
 
 function getActiveSellerObj() {
-  if (currentAssignedSeller) {
-    return VENDEDORES.find(v => v.id === currentAssignedSeller) || VENDEDORES[0];
+  const session = getSellerSession();
+  if (isSellerLoggedIn() && session) {
+    const found = VENDEDORES.find(v => v.id === session.vendedorId || normText(v.nome).includes(normText(session.vendedorNome)));
+    if (found) return found;
+    return { id: session.vendedorId, nome: session.vendedorNome, whatsapp: CONFIG.whatsapp };
+  }
+  if (clientAttributedSeller) {
+    return VENDEDORES.find(v => v.id === clientAttributedSeller) || VENDEDORES[0];
   }
   const clientSel = document.getElementById('client-vendedor');
   const selId = clientSel ? clientSel.value : '';
   return VENDEDORES.find(v => v.id === selId) || VENDEDORES[0];
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  SISTEMA DE AUDITORIA & TELEMETRIA GOOGLE SHEETS
+// ═══════════════════════════════════════════════════════════════
+function logSellerActivity(tipoEvento, dadosExtras = {}) {
+  try {
+    const webhookUrl = CONFIG.auditWebhookUrl || '';
+    if (!webhookUrl || !webhookUrl.startsWith('http')) return;
+
+    const session = getSellerSession();
+    const isSeller = isSellerLoggedIn();
+    const sellerObj = getActiveSellerObj();
+    const isAttributed = !!(clientAttributedSeller && !isSeller);
+
+    const origemCanal = isSeller 
+      ? `👔 Vendedor Logado (${session.vendedorNome})`
+      : (isAttributed ? `🟢 Vendedor (${sellerObj.nome})` : '🔵 Base / Central (Orgânico)');
+
+    let resumoItens = dadosExtras.resumo_itens || '-';
+    let totalQtd = dadosExtras.total_itens || 0;
+    let valorTotal = 0;
+    let linkProposta = dadosExtras.link_proposta || generateCartShareUrl(false);
+    let linkComPreco = generateCartShareUrl(true);
+
+    if (cartItems && cartItems.length > 0) {
+      const itensArr = cartItems.map(item => {
+        const prod = PRODUTOS.find(p => p.id === item.id);
+        const precoBase = prod ? (prod.preco_base || 0) : 0;
+        const precoUnit = (item.preco_unitario !== undefined) ? item.preco_unitario : precoBase;
+        const subtotal = item.quantidade * precoUnit;
+        totalQtd += item.quantidade;
+        valorTotal += subtotal;
+        return `${item.quantidade}x ${item.nome} [Cobrado: R$ ${precoUnit.toFixed(2)} | Tabela: R$ ${precoBase.toFixed(2)}]`;
+      });
+      resumoItens = itensArr.join('; ');
+    }
+
+    const payload = {
+      timestamp: new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' }) + ' ' + new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', second: '2-digit' }),
+      origem_canal: origemCanal,
+      vendedor: isSeller ? session.vendedorNome : (sellerObj ? sellerObj.nome : 'Atendimento Geral'),
+      vendedor_nome: isSeller ? session.vendedorNome : (sellerObj ? sellerObj.nome : 'Atendimento Geral'),
+      evento: tipoEvento,
+      num_proposta: dadosExtras.num_proposta || dadosExtras.numProposta || '-',
+      cliente_nome: dadosExtras.cliente_nome || dadosExtras.clienteNome || document.getElementById('client-name')?.value?.trim() || '-',
+      cliente_doc: dadosExtras.cliente_doc || dadosExtras.clienteDoc || document.getElementById('client-doc')?.value?.trim() || '-',
+      total_itens: totalQtd,
+      valor_total: valorTotal > 0 ? `R$ ${valorTotal.toFixed(2).replace('.', ',')}` : '-',
+      resumo_itens: resumoItens,
+      link_proposta: linkProposta,
+      link_com_preco: linkComPreco,
+      url_acessada: window.location.href,
+      detalhes_extras: dadosExtras.detalhes_extras || dadosExtras.observacao || '-',
+      user_agent: navigator.userAgent || '-'
+    };
+
+    if (navigator.sendBeacon) {
+      navigator.sendBeacon(webhookUrl, JSON.stringify(payload));
+    } else {
+      fetch(webhookUrl, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      }).catch(() => {});
+    }
+  } catch (e) {
+    console.debug('Auditoria sync:', e);
+  }
+}
+
+function trackInitialSession() {
+  try {
+    if (!sessionStorage.getItem('rawell_session_logged_v2')) {
+      sessionStorage.setItem('rawell_session_logged_v2', 'true');
+      logSellerActivity('Acesso ao Catálogo (Sessão Iniciada)', {
+        detalhes_extras: 'Navegação iniciada no catálogo'
+      });
+    }
+  } catch(e) {}
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  RENDERIZAÇÃO DOS PRODUTOS COM PREÇO NO MODO VENDEDOR
+// ═══════════════════════════════════════════════════════════════
+function renderProductList() {
+  const container = document.getElementById('products-layout');
+  const countLabel = document.getElementById('products-count-label');
+  const emptyBox = document.getElementById('empty-state-box');
+  const isSeller = isSellerLoggedIn();
+
+  if (!container) return;
+
+  const filtered = getFilteredProducts();
+
+  if (countLabel) {
+    countLabel.textContent = `Exibindo ${filtered.length} de ${PRODUTOS.length} produtos`;
+  }
+
+  if (filtered.length === 0) {
+    container.innerHTML = '';
+    emptyBox.style.display = 'block';
+    return;
+  }
+  emptyBox.style.display = 'none';
+
+  const isGrid = appState.viewMode === 'grid';
+  const term = (appState.searchTerm || appState.search || '').trim();
+
+  container.innerHTML = filtered.map(p => {
+    const catObj = CATEGORIAS.find(c => c.id === p.categoria);
+    const formObj = FORMULACOES.find(f => f.id === p.tipo_formulacao);
+    const inCart = cartItems.find(i => i.id === p.id);
+    const qty = inCart ? inCart.quantidade : 0;
+    const precoBase = p.preco_base || 0;
+
+    const sellerPriceHtml = (isSeller && precoBase > 0) ? `
+      <div class="card-seller-price-tag" title="Preço de tabela de fábrica">
+        <span>💰 Tabela:</span> <strong>R$ ${precoBase.toFixed(2).replace('.', ',')}</strong>
+      </div>
+    ` : '';
+
+    if (isGrid) {
+      return `
+        <article class="prod-card ${qty > 0 ? 'in-cart' : ''}" id="prod-card-${p.id}">
+          <div class="prod-card-top" onclick="openProductSheet(${p.id})">
+            <div class="prod-pic-wrap">
+              <img src="${p.imagens[0]}" alt="${p.nome}" loading="lazy">
+              ${p.destaque ? '<span class="prod-pill-star">⭐ Destaque</span>' : ''}
+            </div>
+            <div class="prod-info-block">
+              <div class="prod-ref-line">CÓD: ${p.referencia}</div>
+              <h3 class="prod-name">${highlightSearch(p.nome, term)}</h3>
+              <div class="prod-action-headline">
+                <span class="action-bolt">⚡</span>
+                <span>${p.o_que_faz || p.descricao}</span>
+              </div>
+              <p class="prod-desc-line">${highlightSearch(p.descricao, term)}</p>
+              ${sellerPriceHtml}
+              <div class="prod-tags-row">
+                <span class="prod-tag">${catObj ? catObj.icone + ' ' + catObj.nome : 'Geral'}</span>
+                <span class="prod-tag">${formObj ? formObj.icone + ' ' + formObj.nome : 'Forma'}</span>
+              </div>
+            </div>
+          </div>
+          <div class="prod-card-actions">
+            ${qty === 0 ? `
+              <button class="btn-card-add" onclick="addToCart(${p.id})">
+                <span>+ Adicionar ao Orçamento</span>
+              </button>
+            ` : `
+              <div class="card-stepper-wrap">
+                <button class="card-step-btn" onclick="updateCartQty(${p.id}, -1)">−</button>
+                <input type="number" class="card-step-input" value="${qty}" min="1" max="999" onchange="setCartQty(${p.id}, this.value)">
+                <button class="card-step-btn" onclick="updateCartQty(${p.id}, 1)">+</button>
+              </div>
+            `}
+            <button class="btn-card-more" onclick="openProductSheet(${p.id})" title="Ver bula e guia prático">
+              <span>Bula</span> ℹ️
+            </button>
+          </div>
+        </article>
+      `;
+    } else {
+      return `
+        <article class="prod-card-list ${qty > 0 ? 'in-cart' : ''}" id="prod-card-${p.id}">
+          <div class="list-pic-col" onclick="openProductSheet(${p.id})">
+            <img src="${p.imagens[0]}" alt="${p.nome}" loading="lazy">
+          </div>
+          <div class="list-info-col" onclick="openProductSheet(${p.id})">
+            <div class="prod-ref-line">CÓD: ${p.referencia}</div>
+            <h3 class="prod-name">${highlightSearch(p.nome, term)}</h3>
+            <div class="prod-action-headline">
+              <span class="action-bolt">⚡</span>
+              <span>${p.o_que_faz || p.descricao}</span>
+            </div>
+            <p class="prod-desc-line">${highlightSearch(p.descricao, term)}</p>
+            ${sellerPriceHtml}
+            <div class="prod-tags-row">
+              <span class="prod-tag">${catObj ? catObj.icone + ' ' + catObj.nome : 'Geral'}</span>
+              <span class="prod-tag">${formObj ? formObj.icone + ' ' + formObj.nome : 'Forma'}</span>
+            </div>
+          </div>
+          <div class="list-actions-col">
+            ${qty === 0 ? `
+              <button class="btn-card-add" onclick="addToCart(${p.id})">
+                <span>+ Orçamento</span>
+              </button>
+            ` : `
+              <div class="card-stepper-wrap">
+                <button class="card-step-btn" onclick="updateCartQty(${p.id}, -1)">−</button>
+                <span class="card-step-input">${qty}</span>
+                <button class="card-step-btn" onclick="updateCartQty(${p.id}, 1)">+</button>
+              </div>
+            `}
+            <button class="btn-card-more" onclick="openProductSheet(${p.id})">
+              <span>Bula</span> ℹ️
+            </button>
+          </div>
+        </article>
+      `;
+    }
+  }).join('');
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  CARRINHO & CONTROLE DE PREÇOS UNITÁRIOS NEGOCIADOS
+// ═══════════════════════════════════════════════════════════════
+function renderCartSheet() {
+  const area = document.getElementById('cart-content-area');
+  const footerBar = document.getElementById('cart-footer-bar');
+  const summaryQty = document.getElementById('cart-summary-qty');
+
+  if (!cartItems.length) {
+    area.innerHTML = `
+      <div style="text-align:center; padding:50px 10px;">
+        <div style="font-size:3.8rem; margin-bottom:12px;">🛒</div>
+        <h3 style="font-size:1.15rem; font-weight:800; color:var(--text); margin-bottom:6px;">Seu orçamento está vazio</h3>
+        <p style="font-size:0.88rem; color:var(--text-3); margin-bottom:20px;">Navegue pelo catálogo e clique em "+ Adicionar" nos produtos.</p>
+        <button class="hero-btn-primary" style="margin:0 auto; padding:0 24px; height:42px;" onclick="closeCartSheet(); scrollToProducts();">
+          Ver Catálogo de Produtos
+        </button>
+      </div>
+    `;
+    footerBar.style.display = 'none';
+    return;
+  }
+
+  footerBar.style.display = 'flex';
+  const totalQty = cartItems.reduce((acc, i) => acc + i.quantidade, 0);
+  summaryQty.textContent = `${totalQty} ite${totalQty === 1 ? 'm' : 'ns'} selecionado${totalQty === 1 ? '' : 's'}`;
+
+  const isSeller = isSellerLoggedIn();
+  let totalGeral = 0;
+  cartItems.forEach(i => {
+    const pUnit = (i.preco_unitario !== undefined) ? i.preco_unitario : (i.preco_base || 0);
+    totalGeral += (i.quantidade * pUnit);
+  });
+
+  let savedClient = {};
+  try {
+    savedClient = JSON.parse(localStorage.getItem(CLIENT_STORAGE_KEY)) || {};
+  } catch (e) {}
+
+  area.innerHTML = `
+    <div class="cart-items-wrap">
+      ${cartItems.map(item => {
+        const pUnit = (item.preco_unitario !== undefined) ? item.preco_unitario : (item.preco_base || 0);
+        const pBase = (item.preco_base !== undefined) ? item.preco_base : pUnit;
+        const subtotal = item.quantidade * pUnit;
+
+        return `
+          <div class="cart-item-card">
+            <div class="cart-item-pic">
+              <img src="${item.imagem}" alt="${item.nome}">
+            </div>
+            <div class="cart-item-details">
+              <h4 class="cart-item-title">${item.nome}</h4>
+              <div class="cart-item-subtitle">Ref: ${item.referencia}</div>
+              
+              <div style="display:flex; align-items:center; justify-content:space-between; margin-top:4px;">
+                <div class="cart-item-stepper">
+                  <button class="cart-step-btn" onclick="updateCartQty(${item.id}, -1)">−</button>
+                  <span class="cart-step-num">${item.quantidade}</span>
+                  <button class="cart-step-btn" onclick="updateCartQty(${item.id}, 1)">+</button>
+                </div>
+              </div>
+
+              ${isSeller ? `
+                <div class="cart-item-price-section">
+                  <div class="cart-item-price-edit-row">
+                    <div class="cart-item-price-input-wrap" title="Alterar valor unitário negociado">
+                      <span class="cart-price-symbol">R$</span>
+                      <input type="number" step="0.01" min="0" class="cart-price-input-field" id="cart-input-price-${item.id}" value="${pUnit.toFixed(2)}" oninput="updateCartItemPrice(${item.id}, this.value)" onclick="this.select()">
+                    </div>
+                    <span class="cart-base-price-ref" title="Valor base da tabela">Tabela: R$ ${pBase.toFixed(2).replace('.', ',')}</span>
+                  </div>
+                  <div class="cart-item-subtotal-line">
+                    <span style="font-size:0.78rem; color:var(--text-3);">Subtotal:</span>
+                    <strong class="subtotal-val" id="cart-subtotal-${item.id}">R$ ${subtotal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong>
+                  </div>
+                </div>
+              ` : ''}
+            </div>
+            <button class="cart-del-btn" onclick="removeCartItem(${item.id})" title="Remover produto">🗑️</button>
+          </div>
+        `;
+      }).join('')}
+    </div>
+
+    <!-- Formulário do Cliente -->
+    <div class="client-form-card">
+      <div class="form-head-title">
+        <span>👤</span> Dados para Contato Comercial
+      </div>
+      <div class="form-field-group">
+        <label class="form-field-label">Nome Completo / Empresa <span class="req">*</span></label>
+        <input type="text" id="client-name" class="form-field-input" placeholder="Ex: João da Silva ou Fazenda Primavera" value="${savedClient.nome || ''}">
+      </div>
+      <div class="form-field-group">
+        <label class="form-field-label">Vendedor Responsável (opcional)</label>
+        <div class="vendedor-select-wrap">
+          <select id="client-vendedor" class="form-field-input">
+            <option value="">Nenhum vendedor selecionado (Geral)</option>
+            <option value="carlos" ${(savedClient.vendedor === 'carlos' || clientAttributedSeller === 'carlos') ? 'selected' : ''}>Carlos Silva</option>
+            <option value="vendedor-1" ${savedClient.vendedor === 'vendedor-1' ? 'selected' : ''}>Vendedor 1</option>
+            <option value="vendedor-2" ${savedClient.vendedor === 'vendedor-2' ? 'selected' : ''}>Vendedor 2</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-field-group">
+        <label class="form-field-label">CNPJ / Cidade / Estado (opcional)</label>
+        <input type="text" id="client-doc" class="form-field-input" placeholder="00.000.000/0001-00 ou Cascavel - PR" value="${savedClient.doc || ''}">
+      </div>
+      ${!isSeller ? `
+        <div style="text-align:center; padding:10px 4px 2px; font-size:0.78rem; color:var(--text-3);">
+          💼 É representante comercial? <button type="button" onclick="openSellerLoginModal()" style="color:var(--brand-light); font-weight:700; text-decoration:underline; cursor:pointer;">Acessar Modo Vendedor 🔒</button>
+        </div>
+      ` : ''}
+    </div>
+  `;
+
+  // Totalizador no rodapé do drawer se logado como vendedor
+  let totalBox = document.getElementById('cart-seller-total-box');
+  if (isSeller) {
+    if (!totalBox) {
+      totalBox = document.createElement('div');
+      totalBox.id = 'cart-seller-total-box';
+      totalBox.className = 'cart-total-proposal-card';
+      totalBox.innerHTML = `
+        <span class="cart-total-proposal-label">Total da Proposta:</span>
+        <strong class="cart-total-proposal-num" id="cart-seller-total-num">R$ ${totalGeral.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong>
+      `;
+      footerBar.insertBefore(totalBox, footerBar.firstChild);
+    } else {
+      totalBox.style.display = 'flex';
+      const totalNum = document.getElementById('cart-seller-total-num');
+      if (totalNum) totalNum.textContent = `R$ ${totalGeral.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    }
+  } else if (totalBox) {
+    totalBox.style.display = 'none';
+  }
+
+  // Botões de compartilhamento
+  const shareContainer = document.getElementById('cart-share-btns-container');
+  if (shareContainer) {
+    if (isSeller) {
+      shareContainer.innerHTML = `
+        <div class="cart-share-btns-row">
+          <button class="btn-share-link" onclick="copyCartShareLink(false)" title="Copiar link sem preços">
+            <span>🔗</span> Link s/ Preço
+          </button>
+          <button class="btn-share-link btn-share-price" onclick="copyCartShareLink(true)" title="Copiar link com valores travados">
+            <span>💰</span> Link Com Preço
+          </button>
+        </div>
+      `;
+    } else {
+      shareContainer.innerHTML = `
+        <button class="btn-share-link" onclick="copyCartShareLink(false)" title="Copiar link do orçamento">
+          <span>🔗</span> Copiar Link do Orçamento
+        </button>
+      `;
+    }
+  }
+}
+
+function updateCartItemPrice(itemId, rawValue) {
+  const item = cartItems.find(i => i.id === itemId);
+  if (!item) return;
+
+  const newPrice = parseFloat(rawValue);
+  if (!isNaN(newPrice) && newPrice >= 0) {
+    item.preco_unitario = newPrice;
+    saveCart();
+
+    const subtotalEl = document.getElementById(`cart-subtotal-${itemId}`);
+    if (subtotalEl) {
+      const subtotal = item.quantidade * newPrice;
+      subtotalEl.textContent = `R$ ${subtotal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    }
+
+    let totalGeral = 0;
+    cartItems.forEach(i => {
+      const pUnit = (i.preco_unitario !== undefined) ? i.preco_unitario : (i.preco_base || 0);
+      totalGeral += (i.quantidade * pUnit);
+    });
+
+    const totalNumEl = document.getElementById('cart-seller-total-num');
+    if (totalNumEl) {
+      totalNumEl.textContent = `R$ ${totalGeral.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    }
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  COMPARTILHAMENTO DE ORÇAMENTO (LINK MÁGICO COM / SEM PREÇO)
+// ═══════════════════════════════════════════════════════════════
+function generateCartShareUrl(includePrices = false) {
+  if (!cartItems || !cartItems.length) return window.location.href.split('?')[0];
+
+  let itemsParam = '';
+  if (includePrices) {
+    itemsParam = cartItems.map(i => {
+      const price = (i.preco_unitario !== undefined) ? i.preco_unitario : (i.preco_base || 0);
+      return `${i.id}:${i.quantidade}:${price.toFixed(2)}`;
+    }).join(',');
+  } else {
+    itemsParam = cartItems.map(i => `${i.id}:${i.quantidade}`).join(',');
+  }
+
+  const cleanBase = window.location.href.split('?')[0].split('#')[0];
+  const url = new URL(cleanBase);
+  url.searchParams.set('orcamento', itemsParam);
+
+  const activeSeller = getActiveSellerObj();
+  if (activeSeller && activeSeller.id) {
+    url.searchParams.set('vendedor', activeSeller.id);
+  }
+  if (includePrices) {
+    url.searchParams.set('com_precos', '1');
+  }
+
+  return url.toString();
+}
+
+function copyCartShareLink(includePrices = false) {
+  hapticFeedback(25);
+  if (!cartItems.length) {
+    showToast('⚠️ Seu orçamento está vazio.');
+    return;
+  }
+  const shareUrl = generateCartShareUrl(includePrices);
+  const toastMsg = includePrices 
+    ? '💰 Link com PREÇOS NEGOCIADOS copiado com sucesso!' 
+    : '🔗 Link do orçamento copiado com sucesso!';
+
+  logSellerActivity(includePrices ? 'Cópia de Link COM PREÇO' : 'Cópia de Link do Orçamento', {
+    link_proposta: shareUrl,
+    detalhes_extras: includePrices ? 'Link com preços negociados embutidos' : 'Link padrão'
+  });
+
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(shareUrl).then(() => {
+      showToast(toastMsg);
+    }).catch(() => {
+      prompt(includePrices ? 'Copie o link com preços:' : 'Copie o link do orçamento:', shareUrl);
+    });
+  } else {
+    prompt(includePrices ? 'Copie o link com preços:' : 'Copie o link do orçamento:', shareUrl);
+  }
+}
+
+function loadCartFromUrl() {
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const orcamentoParam = params.get('orcamento') || params.get('pedido') || params.get('cart');
+    if (!orcamentoParam) return false;
+
+    // Formato: 1:2 ou 1:2:85.00
+    const entries = orcamentoParam.split(',');
+    const newItems = [];
+    let hasCustomPrices = false;
+
+    entries.forEach(entry => {
+      const parts = entry.trim().split(':');
+      const prodId = parseInt(parts[0], 10);
+      const qty = parseInt(parts[1], 10) || 1;
+      const customPrice = parts[2] ? parseFloat(parts[2]) : null;
+
+      if (!isNaN(prodId)) {
+        const p = PRODUTOS.find(item => item.id === prodId);
+        if (p) {
+          let unitPrice = p.preco_base || 0;
+          if (customPrice !== null && !isNaN(customPrice) && customPrice >= 0) {
+            unitPrice = customPrice;
+            hasCustomPrices = true;
+          }
+          newItems.push({
+            id: p.id,
+            nome: p.nome,
+            referencia: p.referencia,
+            unidade: p.unidade,
+            imagem: p.imagens[0],
+            quantidade: Math.max(1, Math.min(999, qty)),
+            preco_base: p.preco_base || 0,
+            preco_unitario: unitPrice
+          });
+        }
+      }
+    });
+
+    if (newItems.length > 0) {
+      cartItems = newItems;
+      saveCart();
+      renderProductList();
+      updateBadges();
+
+      const cleanBase = window.location.origin + window.location.pathname;
+      const cleanUrl = clientAttributedSeller ? `${cleanBase}?vendedor=${clientAttributedSeller}` : cleanBase;
+      window.history.replaceState({}, document.title, cleanUrl);
+
+      setTimeout(() => {
+        if (hasCustomPrices) {
+          showToast(`💰 Orçamento com preços (${newItems.length} itens) carregado!`);
+        } else {
+          showToast(`🎉 Orçamento com ${newItems.length} itens carregado!`);
+        }
+        openCartSheet();
+      }, 400);
+
+      logSellerActivity('Abertura via Link Mágico Recompra', {
+        total_itens: newItems.reduce((acc, i) => acc + i.quantidade, 0),
+        resumo_itens: newItems.map(i => `${i.quantidade}x ${i.nome}`).join(', ')
+      });
+
+      return true;
+    }
+  } catch (err) {
+    console.warn('Erro ao carregar orçamento da URL:', err);
+  }
+  return false;
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  HISTÓRICO & DASHBOARD DE ORÇAMENTOS
+// ═══════════════════════════════════════════════════════════════
+function getQuoteHistory() {
+  try {
+    return JSON.parse(localStorage.getItem(QUOTE_HISTORY_KEY)) || [];
+  } catch {
+    return [];
+  }
+}
+
+function saveQuoteToHistory(record) {
+  try {
+    const list = getQuoteHistory();
+    const filtered = list.filter(q => q.id !== record.id);
+    filtered.unshift(record);
+    localStorage.setItem(QUOTE_HISTORY_KEY, JSON.stringify(filtered.slice(0, 50)));
+    updateHistoryBadges();
+  } catch(e) {
+    console.warn('Erro ao salvar histórico:', e);
+  }
+}
+
+function deleteQuoteFromHistory(quoteId) {
+  hapticFeedback(20);
+  try {
+    let list = getQuoteHistory();
+    list = list.filter(q => q.id !== quoteId);
+    localStorage.setItem(QUOTE_HISTORY_KEY, JSON.stringify(list));
+    renderQuoteHistoryModal();
+    updateHistoryBadges();
+    showToast('🗑️ Orçamento excluído do histórico');
+  } catch(e) {}
+}
+
+function clearAllQuoteHistory() {
+  hapticFeedback(30);
+  const list = getQuoteHistory();
+  if (!list.length) return;
+  if (confirm('Tem certeza que deseja apagar todo o histórico de orçamentos salvos?')) {
+    localStorage.removeItem(QUOTE_HISTORY_KEY);
+    renderQuoteHistoryModal();
+    updateHistoryBadges();
+    showToast('🗑️ Histórico de orçamentos limpo');
+  }
+}
+
+function updateQuoteStatus(quoteId, newStatus) {
+  hapticFeedback(15);
+  try {
+    const list = getQuoteHistory();
+    const found = list.find(q => q.id === quoteId);
+    if (found) {
+      found.status = newStatus;
+      localStorage.setItem(QUOTE_HISTORY_KEY, JSON.stringify(list));
+      showToast(`📌 Status atualizado: ${newStatus.toUpperCase()}`);
+      renderQuoteHistoryModal();
+      
+      logSellerActivity('Atualização de Status de Orçamento', {
+        num_proposta: quoteId,
+        detalhes_extras: `Novo Status: ${newStatus.toUpperCase()}`
+      });
+    }
+  } catch(e) {}
+}
+
+function loadQuoteIntoCart(quoteId) {
+  hapticFeedback(30);
+  const list = getQuoteHistory();
+  const q = list.find(item => item.id === quoteId);
+  if (!q || !q.itens || !q.itens.length) {
+    showToast('⚠️ Erro ao carregar itens deste orçamento.');
+    return;
+  }
+
+  cartItems = q.itens.map(i => ({
+    id: i.id,
+    nome: i.nome,
+    referencia: i.referencia,
+    unidade: i.unidade,
+    imagem: i.imagem,
+    quantidade: i.quantidade,
+    preco_base: i.preco_base || 0,
+    preco_unitario: (i.preco_unitario !== undefined) ? i.preco_unitario : (i.preco_base || 0)
+  }));
+
+  saveCart();
+  renderProductList();
+  updateBadges();
+
+  try {
+    localStorage.setItem(CLIENT_STORAGE_KEY, JSON.stringify({
+      nome: q.cliente || '',
+      doc: q.doc || '',
+      vendedor: q.vendedorId || ''
+    }));
+  } catch(e) {}
+
+  closeQuoteHistoryModal();
+  setTimeout(() => {
+    openCartSheet();
+    showToast(`🛒 Orçamento ${q.id} carregado no carrinho!`);
+  }, 250);
+
+  logSellerActivity('Reabertura de Orçamento do Histórico', {
+    num_proposta: q.id,
+    total_itens: cartItems.reduce((acc, i) => acc + i.quantidade, 0)
+  });
+}
+
+function updateHistoryBadges() {
+  const count = getQuoteHistory().length;
+  const headPill = document.getElementById('header-history-pill');
+  const btmBadge = document.getElementById('bottom-history-badge');
+
+  if (headPill) headPill.textContent = count;
+  if (btmBadge) {
+    btmBadge.textContent = count;
+    btmBadge.style.display = count > 0 ? 'inline-flex' : 'none';
+  }
+}
+
+function openQuoteHistoryModal() {
+  hapticFeedback(25);
+  renderQuoteHistoryModal();
+  document.getElementById('history-modal-backdrop')?.classList.add('show');
+}
+
+function closeQuoteHistoryModal() {
+  document.getElementById('history-modal-backdrop')?.classList.remove('show');
+}
+
+function renderQuoteHistoryModal() {
+  const list = getQuoteHistory();
+  const body = document.getElementById('history-modal-body');
+  const subTitle = document.getElementById('history-count-subtitle');
+
+  if (subTitle) {
+    subTitle.textContent = `${list.length} cotaç${list.length === 1 ? 'ão salva' : 'ões salvas'} no seu aparelho`;
+  }
+
+  if (!body) return;
+
+  if (!list.length) {
+    body.innerHTML = `
+      <div style="text-align:center; padding:40px 10px;">
+        <div style="font-size:3.5rem; margin-bottom:12px;">📋</div>
+        <h3 style="font-size:1.15rem; font-weight:800; color:var(--text); margin-bottom:6px;">Nenhum orçamento salvo ainda</h3>
+        <p style="font-size:0.88rem; color:var(--text-3); max-width:400px; margin:0 auto 20px;">
+          Assim que você gerar propostas em PDF ou enviar cotações pelo WhatsApp, elas ficarão salvas aqui para você reabrir ou gerenciar facilmente.
+        </p>
+        <button class="hero-btn-primary" style="margin:0 auto; padding:0 24px; height:42px;" onclick="closeQuoteHistoryModal(); scrollToProducts();">
+          Explorar Produtos
+        </button>
+      </div>
+    `;
+    return;
+  }
+
+  body.innerHTML = list.map(q => {
+    const currentStatus = q.status || 'aguardando';
+    const valorStr = q.valorTotal ? `<span style="color:var(--brand-mid); font-weight:800; margin-left:6px;">• ${q.valorTotal}</span>` : '';
+
+    return `
+      <div class="history-item-card">
+        <div class="history-card-top">
+          <div>
+            <span class="history-quote-num">${q.id}</span>
+            <span class="history-quote-date"> • ${q.data || 'Data recente'} ${valorStr}</span>
+          </div>
+          <button class="history-del-btn" onclick="deleteQuoteFromHistory('${q.id}')" title="Excluir este orçamento">
+            🗑️ Excluir
+          </button>
+        </div>
+
+        <div class="history-client-row">
+          <span>👤 ${q.cliente || 'Cliente não identificado'}</span>
+          ${q.doc ? `<span class="history-client-doc">(${q.doc})</span>` : ''}
+        </div>
+
+        <div class="history-items-summary">
+          <strong>${q.totalQtd || q.itens.reduce((acc, i) => acc + i.quantidade, 0)} itens:</strong>
+          ${q.itens.map(i => `${i.quantidade}x ${i.nome}`).join(', ')}
+        </div>
+
+        <div class="history-card-footer">
+          <div style="display:flex; align-items:center; gap:6px;">
+            <label style="font-size:0.75rem; font-weight:700; color:var(--text-3);">Status:</label>
+            <select class="history-status-select" data-status="${currentStatus}" onchange="updateQuoteStatus('${q.id}', this.value)">
+              <option value="aguardando" ${currentStatus === 'aguardando' ? 'selected' : ''}>🟡 Aguardando</option>
+              <option value="negociando" ${currentStatus === 'negociando' ? 'selected' : ''}>⚪ Em Negociação</option>
+              <option value="fechado" ${currentStatus === 'fechado' ? 'selected' : ''}>🟢 Fechado</option>
+              <option value="recusado" ${currentStatus === 'recusado' ? 'selected' : ''}>🔴 Recusado</option>
+            </select>
+          </div>
+
+          <div class="history-actions-row">
+            <button class="btn-history-pdf" onclick="openPdfProposalFromHistory('${q.id}')" title="Ver proposta formal">
+              📄 PDF
+            </button>
+            <button class="btn-history-load" onclick="loadQuoteIntoCart('${q.id}')" title="Carregar este pedido no carrinho">
+              🛒 Carregar Orçamento
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function openPdfProposalFromHistory(quoteId) {
+  const list = getQuoteHistory();
+  const q = list.find(item => item.id === quoteId);
+  if (!q) return;
+
+  renderPdfPaperContent({
+    orcNum: q.id,
+    dataAtual: q.data ? q.data.split(' ')[0] : 'Recente',
+    horaAtual: q.data && q.data.includes('às') ? q.data.split('às')[1].trim() : '',
+    clienteNome: q.cliente || 'Cliente / Empresa',
+    clienteDoc: q.doc || 'Não informado',
+    vendedorNome: q.vendedorNome || 'Atendimento Geral',
+    itemsList: q.itens,
+    shareUrl: q.shareUrl || generateCartShareUrl(),
+    isSeller: isSellerLoggedIn()
+  });
+
+  document.getElementById('pdf-modal-backdrop')?.classList.add('show');
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  GERADOR DE PROPOSTA COMERCIAL (PDF COM / SEM VALORES)
+// ═══════════════════════════════════════════════════════════════
+function renderPdfPaperContent(data) {
+  const paper = document.getElementById('pdf-paper-content');
+  if (!paper) return;
+
+  const showPrices = data.isSeller;
+  let totalGeral = 0;
+  data.itemsList.forEach(i => {
+    const pUnit = (i.preco_unitario !== undefined) ? i.preco_unitario : (i.preco_base || 0);
+    totalGeral += (i.quantidade * pUnit);
+  });
+
+  paper.innerHTML = `
+    <div class="pdf-doc-head">
+      <div>
+        <div style="font-size:22px; font-weight:800; color:#0f4531; display:flex; align-items:center; gap:8px;">
+          <span>🌿</span> Rawell Química
+        </div>
+        <div style="font-size:12px; color:#64748b; margin-top:2px;">Catálogo Oficial de Produtos &amp; Soluções Químicas 2026</div>
+        <div style="font-size:11px; color:#64748b;">WhatsApp Comercial: (45) 99933-2563 • Paraná — Brasil</div>
+      </div>
+      <div style="text-align:right;">
+        <div style="font-size:15px; font-weight:800; color:#0f4531;">PROPOSTA COMERCIAL</div>
+        <div style="font-size:13px; font-weight:700; color:#2563eb;">Nº ${data.orcNum}</div>
+        <div style="font-size:11px; color:#64748b;">Emissão: ${data.dataAtual} ${data.horaAtual ? 'às ' + data.horaAtual : ''}</div>
+      </div>
+    </div>
+
+    <!-- Dados do Cliente & Vendedor -->
+    <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:14px; margin-bottom:20px; display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+      <div>
+        <div style="font-size:11px; font-weight:700; color:#64748b; text-transform:uppercase;">Dados do Cliente / Solicitante</div>
+        <div style="font-size:14px; font-weight:800; color:#0f1f17; margin-top:2px;">${data.clienteNome}</div>
+        <div style="font-size:12px; color:#475569;">Documento / Cidade: ${data.clienteDoc}</div>
+      </div>
+      <div>
+        <div style="font-size:11px; font-weight:700; color:#64748b; text-transform:uppercase;">Responsável Comercial</div>
+        <div style="font-size:14px; font-weight:800; color:#0f4531; margin-top:2px;">${data.vendedorNome}</div>
+        <div style="font-size:12px; color:#475569;">Central de Vendas e Atendimento Técnico</div>
+      </div>
+    </div>
+
+    <!-- Tabela de Produtos -->
+    <table class="pdf-table">
+      <thead>
+        <tr>
+          <th style="width:36px; text-align:center;">#</th>
+          <th style="width:80px;">Código</th>
+          <th>Produto &amp; Descrição Técnica</th>
+          <th style="width:90px;">Embalagem</th>
+          <th style="width:60px; text-align:center;">Qtd.</th>
+          ${showPrices ? `
+            <th style="width:105px; text-align:right;">Valor Unit.</th>
+            <th style="width:115px; text-align:right;">Subtotal</th>
+          ` : ''}
+        </tr>
+      </thead>
+      <tbody>
+        ${data.itemsList.map((item, idx) => {
+          const p = PRODUTOS.find(prod => prod.id === item.id);
+          const packTag = (p && p.unidade) ? p.unidade.toUpperCase() : 'UN';
+          const oQueFaz = (p && p.o_que_faz) ? p.o_que_faz : '';
+          const pUnit = (item.preco_unitario !== undefined) ? item.preco_unitario : (item.preco_base || (p ? p.preco_base : 0) || 0);
+          const subtotal = item.quantidade * pUnit;
+
+          return `
+            <tr>
+              <td style="text-align:center; font-weight:700; color:#64748b;">${idx + 1}</td>
+              <td style="font-family:monospace; font-weight:700; color:#0f4531;">${item.referencia}</td>
+              <td>
+                <strong style="color:#0f1f17; font-size:13px;">${item.nome}</strong>
+                ${oQueFaz ? `<div style="font-size:11px; color:#475569; margin-top:2px;">⚡ ${oQueFaz}</div>` : ''}
+              </td>
+              <td>${packTag}</td>
+              <td style="text-align:center; font-weight:800; font-size:13.5px; color:#0f4531;">${item.quantidade}</td>
+              ${showPrices ? `
+                <td style="text-align:right; font-weight:700; font-size:13px; color:#334155;">R$ ${pUnit.toFixed(2).replace('.', ',')}</td>
+                <td style="text-align:right; font-weight:800; font-size:13.5px; color:#0f4531;">R$ ${subtotal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+              ` : ''}
+            </tr>
+          `;
+        }).join('')}
+      </tbody>
+    </table>
+
+    <!-- Resumo & Observações -->
+    <div class="pdf-footer-terms">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:8px;">
+        <span style="font-weight:700; color:#0f1f17;">Total de Itens: <strong>${data.itemsList.reduce((acc, i) => acc + i.quantidade, 0)} unidades</strong></span>
+        ${showPrices ? `
+          <div style="font-size:16px; font-weight:800; color:#0f4531;">
+            VALOR TOTAL: R$ ${totalGeral.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+          </div>
+        ` : ''}
+      </div>
+      <div style="background:#f1f5f9; padding:10px 14px; border-radius:6px; margin-bottom:12px; font-size:11.5px; color:#334155;">
+        <strong>📌 Termos &amp; Condições da Proposta:</strong><br>
+        1. Validade desta proposta: <strong>7 (sete) dias úteis</strong> a partir da data de emissão.<br>
+        2. Valores, condições de pagamento, frete e faturamento sujeitos a confirmação comercial conforme o volume do pedido.<br>
+        3. Para pedidos de caixas fechadas, consulte descontos por volume com o representante.
+      </div>
+      <div style="font-size:11px; color:#64748b; word-break:break-all;">
+        🔗 <strong>Link Direto deste Orçamento:</strong> <a href="${data.shareUrl}" target="_blank" style="color:#2563eb;">${data.shareUrl}</a>
+      </div>
+    </div>
+  `;
+}
+
+function openPdfProposalModal() {
+  hapticFeedback(30);
+  if (!cartItems.length) {
+    showToast('⚠️ Adicione itens ao orçamento primeiro.');
+    return;
+  }
+
+  const nameInput = document.getElementById('client-name');
+  const docInput = document.getElementById('client-doc');
+
+  const clienteNome = (nameInput && nameInput.value.trim()) || 'Cliente / Empresa Não Informado';
+  const clienteDoc = (docInput && docInput.value.trim()) || 'Não informado';
+
+  const vendedorObj = getActiveSellerObj();
+  const vendedorNome = vendedorObj ? vendedorObj.nome : 'Atendimento Geral';
+
+  const dataAtual = new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+  const horaAtual = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+  const orcNum = 'RQ-2026-' + Math.floor(1000 + Math.random() * 9000);
+  const isSeller = isSellerLoggedIn();
+  const shareUrl = generateCartShareUrl(isSeller);
+
+  let totalGeral = 0;
+  cartItems.forEach(i => {
+    const pUnit = (i.preco_unitario !== undefined) ? i.preco_unitario : (i.preco_base || 0);
+    totalGeral += (i.quantidade * pUnit);
+  });
+
+  saveQuoteToHistory({
+    id: orcNum,
+    data: `${dataAtual} às ${horaAtual}`,
+    timestamp: Date.now(),
+    cliente: clienteNome,
+    doc: clienteDoc,
+    vendedorId: vendedorObj.id,
+    vendedorNome: vendedorNome,
+    itens: cartItems.map(i => ({
+      id: i.id,
+      nome: i.nome,
+      referencia: i.referencia,
+      unidade: i.unidade,
+      imagem: i.imagem,
+      quantidade: i.quantidade,
+      preco_base: i.preco_base || 0,
+      preco_unitario: (i.preco_unitario !== undefined) ? i.preco_unitario : (i.preco_base || 0)
+    })),
+    totalQtd: cartItems.reduce((acc, i) => acc + i.quantidade, 0),
+    valorTotal: isSeller ? `R$ ${totalGeral.toFixed(2).replace('.', ',')}` : '',
+    status: 'aguardando',
+    shareUrl: shareUrl
+  });
+
+  logSellerActivity('Geração de Proposta PDF', {
+    num_proposta: orcNum,
+    cliente_nome: clienteNome,
+    cliente_doc: clienteDoc,
+    total_itens: cartItems.reduce((acc, i) => acc + i.quantidade, 0),
+    resumo_itens: cartItems.map(i => `${i.quantidade}x ${i.nome}`).join(', '),
+    link_proposta: shareUrl
+  });
+
+  renderPdfPaperContent({
+    orcNum,
+    dataAtual,
+    horaAtual,
+    clienteNome,
+    clienteDoc,
+    vendedorNome,
+    itemsList: cartItems,
+    shareUrl,
+    isSeller
+  });
+
+  document.getElementById('pdf-modal-backdrop')?.classList.add('show');
+}
+
+function closePdfProposalModal() {
+  document.getElementById('pdf-modal-backdrop')?.classList.remove('show');
+}
+
+function printPdfProposal() {
+  window.print();
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  ENVIO DO ORÇAMENTO PARA O WHATSAPP (COM / SEM VALORES)
+// ═══════════════════════════════════════════════════════════════
+function sendQuoteToWhatsApp() {
+  hapticFeedback(35);
+  const nameInput = document.getElementById('client-name');
+  const docInput = document.getElementById('client-doc');
+
+  const nome = nameInput ? nameInput.value.trim() : '';
+  const doc = docInput ? docInput.value.trim() : '';
+
+  if (!nome) {
+    nameInput?.classList.add('has-error');
+    showToast('⚠️ Por favor, informe seu Nome ou Empresa');
+    nameInput?.focus();
+    return;
+  }
+  nameInput?.classList.remove('has-error');
+
+  const vendedorObj = getActiveSellerObj();
+  const destWhatsapp = (vendedorObj && vendedorObj.whatsapp) ? vendedorObj.whatsapp : CONFIG.whatsapp;
+
+  localStorage.setItem(CLIENT_STORAGE_KEY, JSON.stringify({ nome, vendedor: vendedorObj.id, doc }));
+
+  const isSeller = isSellerLoggedIn();
+  const shareUrl = generateCartShareUrl(isSeller);
+  const dataAtual = new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+  const horaAtual = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+  const orcNum = 'RQ-2026-' + Math.floor(1000 + Math.random() * 9000);
+
+  let totalGeral = 0;
+  cartItems.forEach(i => {
+    const pUnit = (i.preco_unitario !== undefined) ? i.preco_unitario : (i.preco_base || 0);
+    totalGeral += (i.quantidade * pUnit);
+  });
+
+  saveQuoteToHistory({
+    id: orcNum,
+    data: `${dataAtual} às ${horaAtual}`,
+    timestamp: Date.now(),
+    cliente: nome,
+    doc: doc,
+    vendedorId: vendedorObj.id,
+    vendedorNome: vendedorObj.nome,
+    itens: cartItems.map(i => ({
+      id: i.id,
+      nome: i.nome,
+      referencia: i.referencia,
+      unidade: i.unidade,
+      imagem: i.imagem,
+      quantidade: i.quantidade,
+      preco_base: i.preco_base || 0,
+      preco_unitario: (i.preco_unitario !== undefined) ? i.preco_unitario : (i.preco_base || 0)
+    })),
+    totalQtd: cartItems.reduce((acc, i) => acc + i.quantidade, 0),
+    valorTotal: isSeller ? `R$ ${totalGeral.toFixed(2).replace('.', ',')}` : '',
+    status: 'aguardando',
+    shareUrl: shareUrl
+  });
+
+  logSellerActivity('Envio de Orçamento WhatsApp', {
+    num_proposta: orcNum,
+    cliente_nome: nome,
+    cliente_doc: doc,
+    total_itens: cartItems.reduce((acc, i) => acc + i.quantidade, 0),
+    resumo_itens: cartItems.map(i => `${i.quantidade}x ${i.nome}`).join(', '),
+    link_proposta: shareUrl,
+    detalhes_extras: `Destino WhatsApp: ${destWhatsapp}`
+  });
+
+  let msg = `🌿 *${CONFIG.empresa}*\n`;
+  msg += `━━━━━━━━━━━━━━━━━━━━━\n`;
+  msg += `📋 *SOLICITAÇÃO DE ORÇAMENTO (Nº ${orcNum})*\n\n`;
+
+  cartItems.forEach((item, index) => {
+    const pUnit = (item.preco_unitario !== undefined) ? item.preco_unitario : (item.preco_base || 0);
+    const subtotal = item.quantidade * pUnit;
+
+    msg += `*${index + 1}. ${item.nome}*\n`;
+    msg += `   • Ref: \`${item.referencia}\`\n`;
+    msg += `   • Quantidade: *${item.quantidade} ${item.unidade || 'unidade'}(s)*\n`;
+    if (isSeller && pUnit > 0) {
+      msg += `   • Valor Unit.: R$ ${pUnit.toFixed(2).replace('.', ',')} (Subtotal: R$ ${subtotal.toFixed(2).replace('.', ',')})\n`;
+    }
+    msg += `\n`;
+  });
+
+  if (isSeller && totalGeral > 0) {
+    msg += `💰 *VALOR TOTAL DA PROPOSTA: R$ ${totalGeral.toFixed(2).replace('.', ',')}*\n\n`;
+  }
+
+  msg += `━━━━━━━━━━━━━━━━━━━━━\n`;
+  msg += `👤 *Cliente:* ${nome}\n`;
+  if (vendedorObj && vendedorObj.id) {
+    msg += `👔 *Vendedor:* ${vendedorObj.nome}\n`;
+  }
+  if (doc) msg += `🏢 *Documento/Local:* ${doc}\n`;
+  msg += `━━━━━━━━━━━━━━━━━━━━━\n\n`;
+  msg += `🔗 *Abrir / Recomprar este pedido no Catálogo:*\n${shareUrl}\n\n`;
+  msg += `${CONFIG.mensagem_fim}`;
+
+  const waUrl = `https://api.whatsapp.com/send?phone=${destWhatsapp}&text=${encodeURIComponent(msg)}`;
+  window.open(waUrl, '_blank');
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -5514,6 +7012,12 @@ function openProductSheet(id) {
 
   const catObj = CATEGORIAS.find(c => c.id === p.categoria);
   const formObj = FORMULACOES.find(f => f.id === p.tipo_formulacao);
+  const isSeller = isSellerLoggedIn();
+  const precoBase = p.preco_base || 0;
+
+  logSellerActivity('Visualização de Produto', {
+    detalhes_extras: `Produto: ${p.nome} (Ref: ${p.referencia})`
+  });
 
   const body = document.getElementById('product-sheet-body');
   body.innerHTML = `
@@ -5542,6 +7046,13 @@ function openProductSheet(id) {
           <span class="sheet-pill form">${formObj ? formObj.icone + ' ' + formObj.nome : 'Formulação'}</span>
         </div>
       </div>
+
+      ${(isSeller && precoBase > 0) ? `
+        <div style="background:rgba(16, 185, 129, 0.12); border:1.5px solid rgba(16, 185, 129, 0.4); border-radius:var(--radius-sm); padding:10px 14px; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center;">
+          <span style="font-size:0.85rem; font-weight:700; color:var(--text-2);">💰 Preço Tabela de Fábrica:</span>
+          <strong style="font-size:1.1rem; color:var(--brand-mid); font-weight:800;">R$ ${precoBase.toFixed(2).replace('.', ',')}</strong>
+        </div>
+      ` : ''}
 
       <!-- Destaque "O que faz" -->
       <div class="prod-action-headline" style="font-size:0.9rem; padding:10px 14px; margin-bottom:14px;">
@@ -5649,549 +7160,6 @@ function openProductSheet(id) {
   document.body.style.overflow = 'hidden';
 }
 
-// ═══════════════════════════════════════════════════════════════
-//  COMPARTILHAMENTO DE ORÇAMENTO (LINK MÁGICO)
-// ═══════════════════════════════════════════════════════════════
-function generateCartShareUrl() {
-  if (!cartItems || !cartItems.length) return window.location.href.split('?')[0];
-  const itemsParam = cartItems.map(i => `${i.id}:${i.quantidade}`).join(',');
-  const cleanBase = window.location.href.split('?')[0].split('#')[0];
-  const url = new URL(cleanBase);
-  url.searchParams.set('orcamento', itemsParam);
-  if (currentAssignedSeller) {
-    url.searchParams.set('vendedor', currentAssignedSeller);
-  }
-  return url.toString();
-}
-
-function copyCartShareLink() {
-  hapticFeedback(25);
-  if (!cartItems.length) {
-    showToast('⚠️ Seu orçamento está vazio.');
-    return;
-  }
-  const shareUrl = generateCartShareUrl();
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(shareUrl).then(() => {
-      showToast('🔗 Link do orçamento copiado com sucesso!');
-    }).catch(() => {
-      prompt('Copie o link do orçamento:', shareUrl);
-    });
-  } else {
-    prompt('Copie o link do orçamento:', shareUrl);
-  }
-}
-
-function loadCartFromUrl() {
-  try {
-    const params = new URLSearchParams(window.location.search);
-    const orcamentoParam = params.get('orcamento') || params.get('pedido') || params.get('cart');
-    if (!orcamentoParam) return false;
-
-    // Formato esperado: 1:2,4:1,32:1
-    const entries = orcamentoParam.split(',');
-    const newItems = [];
-
-    entries.forEach(entry => {
-      const parts = entry.trim().split(':');
-      const prodId = parseInt(parts[0], 10);
-      const qty = parseInt(parts[1], 10) || 1;
-
-      if (!isNaN(prodId)) {
-        const p = PRODUTOS.find(item => item.id === prodId);
-        if (p) {
-          newItems.push({
-            id: p.id,
-            nome: p.nome,
-            referencia: p.referencia,
-            unidade: p.unidade,
-            imagem: p.imagens[0],
-            quantidade: Math.max(1, Math.min(999, qty))
-          });
-        }
-      }
-    });
-
-    if (newItems.length > 0) {
-      cartItems = newItems;
-      saveCart();
-      renderProductList();
-      updateBadges();
-
-      // Limpa os parâmetros da barra de endereço mantendo o vendedor se houver
-      const cleanBase = window.location.origin + window.location.pathname;
-      const cleanUrl = currentAssignedSeller ? `${cleanBase}?vendedor=${currentAssignedSeller}` : cleanBase;
-      window.history.replaceState({}, document.title, cleanUrl);
-
-      setTimeout(() => {
-        showToast(`🎉 Orçamento com ${newItems.length} ite${newItems.length === 1 ? 'm' : 'ns'} carregado!`);
-        openCartSheet();
-      }, 400);
-
-      return true;
-    }
-  } catch (err) {
-    console.warn('Erro ao carregar orçamento da URL:', err);
-  }
-  return false;
-}
-
-// ═══════════════════════════════════════════════════════════════
-//  HISTÓRICO & DASHBOARD DE ORÇAMENTOS (LOCAL STORAGE)
-// ═══════════════════════════════════════════════════════════════
-function getQuoteHistory() {
-  try {
-    return JSON.parse(localStorage.getItem(QUOTE_HISTORY_KEY)) || [];
-  } catch {
-    return [];
-  }
-}
-
-function saveQuoteToHistory(record) {
-  try {
-    const list = getQuoteHistory();
-    // Remove se já houver com o mesmo ID para atualizar
-    const filtered = list.filter(q => q.id !== record.id);
-    filtered.unshift(record); // adiciona no início
-    localStorage.setItem(QUOTE_HISTORY_KEY, JSON.stringify(filtered.slice(0, 50))); // guarda até 50
-    updateHistoryBadges();
-  } catch(e) {
-    console.warn('Erro ao salvar histórico:', e);
-  }
-}
-
-function deleteQuoteFromHistory(quoteId) {
-  hapticFeedback(20);
-  try {
-    let list = getQuoteHistory();
-    list = list.filter(q => q.id !== quoteId);
-    localStorage.setItem(QUOTE_HISTORY_KEY, JSON.stringify(list));
-    renderQuoteHistoryModal();
-    updateHistoryBadges();
-    showToast('🗑️ Orçamento excluído do histórico');
-  } catch(e) {}
-}
-
-function clearAllQuoteHistory() {
-  hapticFeedback(30);
-  const list = getQuoteHistory();
-  if (!list.length) return;
-  if (confirm('Tem certeza que deseja apagar todo o histórico de orçamentos salvos?')) {
-    localStorage.removeItem(QUOTE_HISTORY_KEY);
-    renderQuoteHistoryModal();
-    updateHistoryBadges();
-    showToast('🗑️ Histórico de orçamentos limpo');
-  }
-}
-
-function updateQuoteStatus(quoteId, newStatus) {
-  hapticFeedback(15);
-  try {
-    const list = getQuoteHistory();
-    const found = list.find(q => q.id === quoteId);
-    if (found) {
-      found.status = newStatus;
-      localStorage.setItem(QUOTE_HISTORY_KEY, JSON.stringify(list));
-      showToast(`📌 Status atualizado: ${newStatus.toUpperCase()}`);
-      renderQuoteHistoryModal();
-    }
-  } catch(e) {}
-}
-
-function loadQuoteIntoCart(quoteId) {
-  hapticFeedback(30);
-  const list = getQuoteHistory();
-  const q = list.find(item => item.id === quoteId);
-  if (!q || !q.itens || !q.itens.length) {
-    showToast('⚠️ Erro ao carregar itens deste orçamento.');
-    return;
-  }
-
-  // Carrega no carrinho
-  cartItems = q.itens.map(i => ({
-    id: i.id,
-    nome: i.nome,
-    referencia: i.referencia,
-    unidade: i.unidade,
-    imagem: i.imagem,
-    quantidade: i.quantidade
-  }));
-
-  saveCart();
-  renderProductList();
-  updateBadges();
-
-  // Preenche dados do cliente se disponíveis
-  try {
-    localStorage.setItem(CLIENT_STORAGE_KEY, JSON.stringify({
-      nome: q.cliente || '',
-      doc: q.doc || '',
-      vendedor: q.vendedorId || ''
-    }));
-  } catch(e) {}
-
-  closeQuoteHistoryModal();
-  setTimeout(() => {
-    openCartSheet();
-    showToast(`🛒 Orçamento ${q.id} carregado no carrinho!`);
-  }, 250);
-}
-
-function updateHistoryBadges() {
-  const count = getQuoteHistory().length;
-  const headPill = document.getElementById('header-history-pill');
-  const btmBadge = document.getElementById('bottom-history-badge');
-
-  if (headPill) headPill.textContent = count;
-  if (btmBadge) {
-    btmBadge.textContent = count;
-    btmBadge.style.display = count > 0 ? 'inline-flex' : 'none';
-  }
-}
-
-function openQuoteHistoryModal() {
-  hapticFeedback(25);
-  renderQuoteHistoryModal();
-  document.getElementById('history-modal-backdrop')?.classList.add('show');
-}
-
-function closeQuoteHistoryModal() {
-  document.getElementById('history-modal-backdrop')?.classList.remove('show');
-}
-
-function renderQuoteHistoryModal() {
-  const list = getQuoteHistory();
-  const body = document.getElementById('history-modal-body');
-  const subTitle = document.getElementById('history-count-subtitle');
-
-  if (subTitle) {
-    subTitle.textContent = `${list.length} cotaç${list.length === 1 ? 'ão salva' : 'ões salvas'} no seu aparelho`;
-  }
-
-  if (!body) return;
-
-  if (!list.length) {
-    body.innerHTML = `
-      <div style="text-align:center; padding:40px 10px;">
-        <div style="font-size:3.5rem; margin-bottom:12px;">📋</div>
-        <h3 style="font-size:1.15rem; font-weight:800; color:var(--text); margin-bottom:6px;">Nenhum orçamento salvo ainda</h3>
-        <p style="font-size:0.88rem; color:var(--text-3); max-width:400px; margin:0 auto 20px;">
-          Assim que você gerar propostas em PDF ou enviar cotações pelo WhatsApp, elas ficarão salvas aqui para você reabrir ou gerenciar facilmente.
-        </p>
-        <button class="hero-btn-primary" style="margin:0 auto; padding:0 24px; height:42px;" onclick="closeQuoteHistoryModal(); scrollToProducts();">
-          Explorar Produtos
-        </button>
-      </div>
-    `;
-    return;
-  }
-
-  body.innerHTML = list.map(q => {
-    const statusLabels = {
-      'aguardando': '🟡 Aguardando',
-      'negociando': '⚪ Em Negociação',
-      'fechado': '🟢 Fechado',
-      'recusado': '🔴 Recusado'
-    };
-    const currentStatus = q.status || 'aguardando';
-
-    return `
-      <div class="history-item-card">
-        <div class="history-card-top">
-          <div>
-            <span class="history-quote-num">${q.id}</span>
-            <span class="history-quote-date"> • ${q.data || 'Data recente'}</span>
-          </div>
-          <button class="history-del-btn" onclick="deleteQuoteFromHistory('${q.id}')" title="Excluir este orçamento">
-            🗑️ Excluir
-          </button>
-        </div>
-
-        <div class="history-client-row">
-          <span>👤 ${q.cliente || 'Cliente não identificado'}</span>
-          ${q.doc ? `<span class="history-client-doc">(${q.doc})</span>` : ''}
-        </div>
-
-        <div class="history-items-summary">
-          <strong>${q.totalQtd || q.itens.reduce((acc, i) => acc + i.quantidade, 0)} itens:</strong>
-          ${q.itens.map(i => `${i.quantidade}x ${i.nome}`).join(', ')}
-        </div>
-
-        <div class="history-card-footer">
-          <div style="display:flex; align-items:center; gap:6px;">
-            <label style="font-size:0.75rem; font-weight:700; color:var(--text-3);">Status:</label>
-            <select class="history-status-select" data-status="${currentStatus}" onchange="updateQuoteStatus('${q.id}', this.value)">
-              <option value="aguardando" ${currentStatus === 'aguardando' ? 'selected' : ''}>🟡 Aguardando</option>
-              <option value="negociando" ${currentStatus === 'negociando' ? 'selected' : ''}>⚪ Em Negociação</option>
-              <option value="fechado" ${currentStatus === 'fechado' ? 'selected' : ''}>🟢 Fechado</option>
-              <option value="recusado" ${currentStatus === 'recusado' ? 'selected' : ''}>🔴 Recusado</option>
-            </select>
-          </div>
-
-          <div class="history-actions-row">
-            <button class="btn-history-pdf" onclick="openPdfProposalFromHistory('${q.id}')" title="Ver proposta formal">
-              📄 PDF
-            </button>
-            <button class="btn-history-load" onclick="loadQuoteIntoCart('${q.id}')" title="Carregar este pedido no carrinho">
-              🛒 Carregar Orçamento
-            </button>
-          </div>
-        </div>
-      </div>
-    `;
-  }).join('');
-}
-
-function openPdfProposalFromHistory(quoteId) {
-  const list = getQuoteHistory();
-  const q = list.find(item => item.id === quoteId);
-  if (!q) return;
-
-  renderPdfPaperContent({
-    orcNum: q.id,
-    dataAtual: q.data ? q.data.split(' ')[0] : 'Recente',
-    horaAtual: q.data && q.data.includes('às') ? q.data.split('às')[1].trim() : '',
-    clienteNome: q.cliente || 'Cliente / Empresa',
-    clienteDoc: q.doc || 'Não informado',
-    vendedorNome: q.vendedorNome || 'Atendimento Geral',
-    itemsList: q.itens,
-    shareUrl: q.shareUrl || generateCartShareUrl()
-  });
-
-  document.getElementById('pdf-modal-backdrop')?.classList.add('show');
-}
-
-// ═══════════════════════════════════════════════════════════════
-//  GERADOR DE PROPOSTA COMERCIAL (PDF TIMBRADO)
-// ═══════════════════════════════════════════════════════════════
-function renderPdfPaperContent(data) {
-  const paper = document.getElementById('pdf-paper-content');
-  if (!paper) return;
-
-  paper.innerHTML = `
-    <div class="pdf-doc-head">
-      <div>
-        <div style="font-size:22px; font-weight:800; color:#0f4531; display:flex; align-items:center; gap:8px;">
-          <span>🌿</span> Rawell Química
-        </div>
-        <div style="font-size:12px; color:#64748b; margin-top:2px;">Catálogo Oficial de Produtos &amp; Soluções Químicas 2026</div>
-        <div style="font-size:11px; color:#64748b;">WhatsApp Comercial: (45) 99933-2563 • Paraná — Brasil</div>
-      </div>
-      <div style="text-align:right;">
-        <div style="font-size:15px; font-weight:800; color:#0f4531;">PROPOSTA COMERCIAL</div>
-        <div style="font-size:13px; font-weight:700; color:#2563eb;">Nº ${data.orcNum}</div>
-        <div style="font-size:11px; color:#64748b;">Emissão: ${data.dataAtual} ${data.horaAtual ? 'às ' + data.horaAtual : ''}</div>
-      </div>
-    </div>
-
-    <!-- Dados do Cliente & Vendedor -->
-    <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:14px; margin-bottom:20px; display:grid; grid-template-columns:1fr 1fr; gap:12px;">
-      <div>
-        <div style="font-size:11px; font-weight:700; color:#64748b; text-transform:uppercase;">Dados do Cliente / Solicitante</div>
-        <div style="font-size:14px; font-weight:800; color:#0f1f17; margin-top:2px;">${data.clienteNome}</div>
-        <div style="font-size:12px; color:#475569;">Documento / Cidade: ${data.clienteDoc}</div>
-      </div>
-      <div>
-        <div style="font-size:11px; font-weight:700; color:#64748b; text-transform:uppercase;">Responsável Comercial</div>
-        <div style="font-size:14px; font-weight:800; color:#0f4531; margin-top:2px;">${data.vendedorNome}</div>
-        <div style="font-size:12px; color:#475569;">Central de Vendas e Atendimento Técnico</div>
-      </div>
-    </div>
-
-    <!-- Tabela de Produtos -->
-    <table class="pdf-table">
-      <thead>
-        <tr>
-          <th style="width:40px; text-align:center;">#</th>
-          <th style="width:90px;">Código</th>
-          <th>Produto &amp; Descrição Técnica</th>
-          <th style="width:110px;">Embalagem</th>
-          <th style="width:80px; text-align:center;">Qtd.</th>
-        </tr>
-      </thead>
-      <tbody>
-        ${data.itemsList.map((item, idx) => {
-          const p = PRODUTOS.find(prod => prod.id === item.id);
-          const packTag = (p && p.unidade) ? p.unidade.toUpperCase() : 'UN';
-          const oQueFaz = (p && p.o_que_faz) ? p.o_que_faz : '';
-          return `
-            <tr>
-              <td style="text-align:center; font-weight:700; color:#64748b;">${idx + 1}</td>
-              <td style="font-family:monospace; font-weight:700; color:#0f4531;">${item.referencia}</td>
-              <td>
-                <strong style="color:#0f1f17; font-size:13.5px;">${item.nome}</strong>
-                ${oQueFaz ? `<div style="font-size:11.5px; color:#475569; margin-top:2px;">⚡ ${oQueFaz}</div>` : ''}
-              </td>
-              <td>${packTag}</td>
-              <td style="text-align:center; font-weight:800; font-size:14px; color:#0f4531;">${item.quantidade}</td>
-            </tr>
-          `;
-        }).join('')}
-      </tbody>
-    </table>
-
-    <!-- Resumo & Observações -->
-    <div class="pdf-footer-terms">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-        <span style="font-weight:700; color:#0f1f17;">Total de Itens Solicitados:</span>
-        <strong style="font-size:15px; color:#0f4531;">${data.itemsList.reduce((acc, i) => acc + i.quantidade, 0)} unidades</strong>
-      </div>
-      <div style="background:#f1f5f9; padding:10px 14px; border-radius:6px; margin-bottom:12px; font-size:11.5px; color:#334155;">
-        <strong>📌 Termos &amp; Condições da Proposta:</strong><br>
-        1. Validade desta proposta: <strong>7 (sete) dias úteis</strong> a partir da data de emissão.<br>
-        2. Valores, condições de pagamento, frete e faturamento sujeitos a confirmação comercial conforme o volume do pedido.<br>
-        3. Para pedidos de caixas fechadas, consulte descontos por volume com o representante.
-      </div>
-      <div style="font-size:11px; color:#64748b; word-break:break-all;">
-        🔗 <strong>Link Direto deste Orçamento:</strong> <a href="${data.shareUrl}" target="_blank" style="color:#2563eb;">${data.shareUrl}</a>
-      </div>
-    </div>
-  `;
-}
-
-function openPdfProposalModal() {
-  hapticFeedback(30);
-  if (!cartItems.length) {
-    showToast('⚠️ Adicione itens ao orçamento primeiro.');
-    return;
-  }
-
-  const nameInput = document.getElementById('client-name');
-  const docInput = document.getElementById('client-doc');
-
-  const clienteNome = (nameInput && nameInput.value.trim()) || 'Cliente / Empresa Não Informado';
-  const clienteDoc = (docInput && docInput.value.trim()) || 'Não informado';
-
-  const vendedorObj = getActiveSellerObj();
-  const vendedorNome = vendedorObj ? vendedorObj.nome : 'Atendimento Geral';
-
-  const dataAtual = new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
-  const horaAtual = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-  const orcNum = 'RQ-2026-' + Math.floor(1000 + Math.random() * 9000);
-  const shareUrl = generateCartShareUrl();
-
-  // Salva no histórico
-  saveQuoteToHistory({
-    id: orcNum,
-    data: `${dataAtual} às ${horaAtual}`,
-    timestamp: Date.now(),
-    cliente: clienteNome,
-    doc: clienteDoc,
-    vendedorId: vendedorObj.id,
-    vendedorNome: vendedorNome,
-    itens: cartItems.map(i => ({
-      id: i.id,
-      nome: i.nome,
-      referencia: i.referencia,
-      unidade: i.unidade,
-      imagem: i.imagem,
-      quantidade: i.quantidade
-    })),
-    totalQtd: cartItems.reduce((acc, i) => acc + i.quantidade, 0),
-    status: 'aguardando',
-    shareUrl: shareUrl
-  });
-
-  renderPdfPaperContent({
-    orcNum,
-    dataAtual,
-    horaAtual,
-    clienteNome,
-    clienteDoc,
-    vendedorNome,
-    itemsList: cartItems,
-    shareUrl
-  });
-
-  document.getElementById('pdf-modal-backdrop')?.classList.add('show');
-}
-
-function closePdfProposalModal() {
-  document.getElementById('pdf-modal-backdrop')?.classList.remove('show');
-}
-
-function printPdfProposal() {
-  window.print();
-}
-
-// ═══════════════════════════════════════════════════════════════
-//  ENVIO DO ORÇAMENTO PARA O WHATSAPP
-// ═══════════════════════════════════════════════════════════════
-function sendQuoteToWhatsApp() {
-  hapticFeedback(35);
-  const nameInput = document.getElementById('client-name');
-  const docInput = document.getElementById('client-doc');
-
-  const nome = nameInput ? nameInput.value.trim() : '';
-  const doc = docInput ? docInput.value.trim() : '';
-
-  if (!nome) {
-    nameInput?.classList.add('has-error');
-    showToast('⚠️ Por favor, informe seu Nome ou Empresa');
-    nameInput?.focus();
-    return;
-  }
-  nameInput?.classList.remove('has-error');
-
-  const vendedorObj = getActiveSellerObj();
-  const destWhatsapp = (vendedorObj && vendedorObj.whatsapp) ? vendedorObj.whatsapp : CONFIG.whatsapp;
-
-  // Salva no perfil local para agilizar próximos orçamentos
-  localStorage.setItem(CLIENT_STORAGE_KEY, JSON.stringify({ nome, vendedor: vendedorObj.id, doc }));
-
-  // Link mágico para edição/recompra
-  const shareUrl = generateCartShareUrl();
-  const dataAtual = new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
-  const horaAtual = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-  const orcNum = 'RQ-2026-' + Math.floor(1000 + Math.random() * 9000);
-
-  // Salva no Histórico
-  saveQuoteToHistory({
-    id: orcNum,
-    data: `${dataAtual} às ${horaAtual}`,
-    timestamp: Date.now(),
-    cliente: nome,
-    doc: doc,
-    vendedorId: vendedorObj.id,
-    vendedorNome: vendedorObj.nome,
-    itens: cartItems.map(i => ({
-      id: i.id,
-      nome: i.nome,
-      referencia: i.referencia,
-      unidade: i.unidade,
-      imagem: i.imagem,
-      quantidade: i.quantidade
-    })),
-    totalQtd: cartItems.reduce((acc, i) => acc + i.quantidade, 0),
-    status: 'aguardando',
-    shareUrl: shareUrl
-  });
-
-  // Formata Mensagem
-  let msg = `🌿 *${CONFIG.empresa}*\n`;
-  msg += `━━━━━━━━━━━━━━━━━━━━━\n`;
-  msg += `📋 *SOLICITAÇÃO DE ORÇAMENTO (Nº ${orcNum})*\n\n`;
-
-  cartItems.forEach((item, index) => {
-    msg += `*${index + 1}. ${item.nome}*\n`;
-    msg += `   • Ref: \`${item.referencia}\`\n`;
-    msg += `   • Quantidade: *${item.quantidade} ${item.unidade || 'unidade'}(s)*\n\n`;
-  });
-
-  msg += `━━━━━━━━━━━━━━━━━━━━━\n`;
-  msg += `👤 *Cliente:* ${nome}\n`;
-  if (vendedorObj && vendedorObj.id) {
-    msg += `👔 *Vendedor:* ${vendedorObj.nome}\n`;
-  }
-  if (doc) msg += `🏢 *Documento/Local:* ${doc}\n`;
-  msg += `━━━━━━━━━━━━━━━━━━━━━\n\n`;
-  msg += `🔗 *Abrir / Recomprar este pedido no Catálogo:*\n${shareUrl}\n\n`;
-  msg += `${CONFIG.mensagem_fim}`;
-
-  const waUrl = `https://api.whatsapp.com/send?phone=${destWhatsapp}&text=${encodeURIComponent(msg)}`;
-  window.open(waUrl, '_blank');
-}
-
 </script>
 
 <!-- Banner Flutuante de Instalação Mobile PWA -->
@@ -6209,7 +7177,40 @@ function sendQuoteToWhatsApp() {
   </div>
 </div>
 
-<!-- ══ MODAL DE HISTÓRICO DE ORÇAMENTOS (DASHBOARD DO VENDEDOR / CLIENTE) ══ -->
+<!-- ══ MODAL DE LOGIN DO VENDEDOR (ACESSO RESTRITO COM PIN) ═════ -->
+<div class="seller-modal-backdrop" id="seller-modal-backdrop" onclick="if(event.target===this) closeSellerLoginModal()">
+  <div class="seller-modal-card">
+    <div class="seller-modal-head">
+      <div class="seller-modal-title"><span>🔒</span> Área do Representante / Vendedor</div>
+      <button class="sheet-close-btn" onclick="closeSellerLoginModal()">✕</button>
+    </div>
+    <div class="seller-modal-body" id="seller-modal-body">
+      <form onsubmit="handleSellerLogin(event)">
+        <p style="font-size:0.85rem; color:var(--text-2); margin-bottom:14px; line-height:1.45;">
+          Acesso exclusivo para consulta de preços de tabela, margem, propostas com valores e emissão de links de comissão.
+        </p>
+        <div class="seller-form-group">
+          <label class="seller-form-label">Identificação do Vendedor:</label>
+          <select id="seller-login-select" class="seller-form-input">
+            <option value="Carlos Silva (carlos)">Carlos Silva (carlos)</option>
+            <option value="Vendedor 1 (vendedor-1)">Vendedor 1 (vendedor-1)</option>
+            <option value="Vendedor 2 (vendedor-2)">Vendedor 2 (vendedor-2)</option>
+            <option value="Equipe Comercial Geral">Equipe Comercial Geral</option>
+          </select>
+        </div>
+        <div class="seller-form-group">
+          <label class="seller-form-label">PIN / Senha de Acesso (ex: 1234):</label>
+          <input type="password" id="seller-login-pin" class="seller-form-input" placeholder="Digite seu PIN..." required autocomplete="current-password">
+        </div>
+        <button type="submit" class="hero-btn-primary" style="width:100%; height:46px; font-size:0.95rem; margin-top:8px;">
+          🔓 Entrar no Modo Vendedor
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL DE HISTÓRICO DE ORÇAMENTOS (DASHBOARD) ═════════════ -->
 <div class="history-modal-backdrop" id="history-modal-backdrop" onclick="if(event.target===this) closeQuoteHistoryModal()">
   <div class="history-modal-card">
     <div class="history-modal-head">
