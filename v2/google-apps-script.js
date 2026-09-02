@@ -1,4 +1,4 @@
-﻿// ══════════════════════════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════════════════════════
 //  RAWELL QUÍMICA — SISTEMA DE AUDITORIA E ANTI-FRAUDE (GOOGLE APPS SCRIPT)
 // ══════════════════════════════════════════════════════════════════════════════
 //  Instruções de Instalação:
@@ -79,9 +79,10 @@ function doPost(e) {
     const lastRow = sheet.getLastRow();
     sheet.getRange(lastRow, 1, 1, 15).setVerticalAlignment("middle");
     
-    // Destaca se for emissão de proposta ou link com preço
-    if (evento.indexOf("Proposta") !== -1 || evento.indexOf("PREÇO") !== -1) {
+    // Destaca se for emissão de proposta, alteração ou link com preço
+    if (evento.indexOf("Proposta") !== -1 || evento.indexOf("PREÇO") !== -1 || evento.indexOf("Preço") !== -1 || evento.indexOf("Alterou") !== -1) {
       sheet.getRange(lastRow, 7).setFontWeight("bold").setFontColor("#0f4531"); // Valor total em destaque verde
+      sheet.getRange(lastRow, 3).setFontWeight("bold"); // Evento em negrito
     }
 
     lock.releaseLock();
@@ -154,7 +155,7 @@ function getOrCreateAuditSheet() {
     // Larguras recomendadas para fácil visualização
     sheet.setColumnWidth(1, 150); // Data
     sheet.setColumnWidth(2, 170); // Vendedor
-    sheet.setColumnWidth(3, 180); // Evento
+    sheet.setColumnWidth(3, 280); // Evento / Ação (expandido para descrições exatas)
     sheet.setColumnWidth(4, 130); // Nº Proposta
     sheet.setColumnWidth(5, 200); // Cliente
     sheet.setColumnWidth(6, 150); // Documento
@@ -165,7 +166,7 @@ function getOrCreateAuditSheet() {
     sheet.setColumnWidth(11, 160); // Link c/ Preço
     sheet.setColumnWidth(12, 220); // URL Direta
     sheet.setColumnWidth(13, 220); // URL Direta Preço
-    sheet.setColumnWidth(14, 200); // Obs
+    sheet.setColumnWidth(14, 300); // Obs / Detalhes (expandido)
     sheet.setColumnWidth(15, 180); // Dispositivo
   }
 
