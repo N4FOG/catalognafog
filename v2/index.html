@@ -2697,16 +2697,15 @@ function renderProductList() {
       pills.push(`
         <span class="filter-active-pill">
           ${catObj ? catObj.icone + ' ' + catObj.nome : appState.cat}
-          <button onclick="setCategory('todos')">✕</button>
+          <button onclick="setCategory('todos')" title="Remover filtro de categoria">✕</button>
         </span>
       `);
     }
-    if (appState.form !== 'todos') {
-      const formObj = FORMULACOES.find(f => f.id === appState.form);
+    if (appState.search) {
       pills.push(`
         <span class="filter-active-pill">
-          ${formObj ? formObj.icone + ' ' + formObj.nome : appState.form}
-          <button onclick="setFormulation('todos')">✕</button>
+          🔍 "${appState.search}"
+          <button onclick="clearSearch()" title="Limpar busca">✕</button>
         </span>
       `);
     }
@@ -2832,19 +2831,19 @@ function setViewMode(mode) {
 
 function setCategory(id) {
   hapticFeedback(15);
+  
+  // Limpa busca ativa ao selecionar categoria para evitar conflito de filtros
+  appState.search = '';
+  if (mSearchInput) mSearchInput.value = '';
+  if (dSearchInput) dSearchInput.value = '';
+  searchClearBtn?.classList.remove('show');
+
   appState.cat = id;
   renderStoriesCategories();
   renderProductList();
   setTimeout(() => {
     scrollToProducts();
   }, 30);
-}
-
-function setFormulation(id) {
-  hapticFeedback(15);
-  appState.form = id;
-  renderFormulationPills();
-  renderProductList();
 }
 
 function changeSorting(val) {
@@ -2857,9 +2856,9 @@ function resetAllFilters() {
   appState.cat = 'todos';
   appState.form = 'todos';
   appState.search = '';
-  document.getElementById('main-search-input').value = '';
-  document.getElementById('desktop-search-input').value = '';
-  document.getElementById('search-clear-btn')?.classList.remove('show');
+  if (mSearchInput) mSearchInput.value = '';
+  if (dSearchInput) dSearchInput.value = '';
+  searchClearBtn?.classList.remove('show');
   renderStoriesCategories();
   renderProductList();
 }
@@ -2878,6 +2877,12 @@ function handleSearchChange(val) {
   if (dSearchInput) dSearchInput.value = val;
   searchClearBtn?.classList.toggle('show', val.length > 0);
 
+  // Ao buscar termo, reseta a categoria para 'todos' para pesquisar no catálogo geral
+  if (val.trim().length > 0 && appState.cat !== 'todos') {
+    appState.cat = 'todos';
+    renderStoriesCategories();
+  }
+
   clearTimeout(searchDebounce);
   searchDebounce = setTimeout(() => {
     renderProductList();
@@ -2889,8 +2894,11 @@ dSearchInput?.addEventListener('input', (e) => handleSearchChange(e.target.value
 
 function clearSearch() {
   hapticFeedback(15);
-  handleSearchChange('');
-  mSearchInput?.focus();
+  appState.search = '';
+  if (mSearchInput) mSearchInput.value = '';
+  if (dSearchInput) dSearchInput.value = '';
+  searchClearBtn?.classList.remove('show');
+  renderProductList();
 }
 
 function focusMainSearch() {
@@ -2901,8 +2909,13 @@ function focusMainSearch() {
 
 function quickSearch(term) {
   hapticFeedback(15);
+  // Garante pesquisa global nos 32 produtos ao clicar em tag
+  appState.cat = 'todos';
+  renderStoriesCategories();
   handleSearchChange(term);
-  scrollToProducts();
+  setTimeout(() => {
+    scrollToProducts();
+  }, 40);
 }
 
 // Atalho '/' para buscar no desktop
