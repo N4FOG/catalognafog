@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nfog Catálogo — Agro</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    :root {
+      --bg: #f5efe3;
+      --bg-white: #fdf8f0;
+      --primary: #3d6b2f;
+      --primary-dark: #2d5022;
+      --primary-light: #5a9044;
+      --primary-pale: #eaf4e3;
+      --accent: #c07c2a;
+      --accent-light: #f5e4c8;
+      --text: #2c1f0f;
+      --text-light: #6b5340;
+      --text-muted: #9c8070;
+      --border: #d4c4a8;
+      --shadow: 0 4px 20px rgba(60,40,10,.1);
+      --radius: 8px;
+      --header-h: 72px;
+    }
+
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); }
+
+    /* ── TEXTURE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Crect width='4' height='4' fill='%23f5efe3'/%3E%3Crect width='1' height='1' fill='%23e8d8bc' opacity='.4'/%3E%3C/svg%3E");
+      opacity: .5;
+    }
+
+    * { position: relative; z-index: 1; }
+
+    /* ── HEADER ── */
+    .site-header { background: var(--primary-dark); border-bottom: 4px solid var(--accent); height: var(--header-h); box-shadow: 0 4px 16px rgba(0,0,0,.2); }
+    .logo-icon { background: var(--accent); color: #fff; border-radius: 4px; font-weight: 900; }
+    .logo-text { font-family: 'Lora', serif; color: #fff; font-size: 1.3rem; }
+    .logo-text span { color: rgba(255,255,255,.55); font-family: 'Inter', sans-serif; }
+    .header-search input { background: rgba(255,255,255,.12); border-color: rgba(255,255,255,.25); color: #fff; border-radius: 4px; }
+    .header-search input::placeholder { color: rgba(255,255,255,.45); }
+    .header-search input:focus { background: rgba(255,255,255,.2); border-color: rgba(255,255,255,.5); box-shadow: none; }
+    .header-search svg { color: rgba(255,255,255,.5); }
+    .nav-link { color: rgba(255,255,255,.75); border-radius: 4px; }
+    .nav-link:hover { background: rgba(255,255,255,.12); color: #fff; }
+    .cart-toggle { background: var(--accent); color: #fff; border-radius: 4px; font-weight: 700; }
+    .cart-toggle:hover { background: #a86820; }
+
+    /* ── TOP BAR ── */
+    .agro-topbar {
+      background: var(--accent);
+      color: #fff;
+      text-align: center;
+      font-size: .78rem;
+      font-weight: 600;
+      padding: .4rem;
+      letter-spacing: .04em;
+    }
+
+    /* ── BANNER ── */
+    #banner-slider { height: clamp(280px, 48vw, 500px); }
+    .banner-slide:nth-child(1) { background: linear-gradient(135deg, #1e3a16 0%, #2d5022 50%, #3d6b2f 100%); }
+    .banner-slide:nth-child(2) { background: linear-gradient(135deg, #4a2c0a 0%, #7a4820 50%, #c07c2a 100%); }
+    .banner-slide:nth-child(3) { background: linear-gradient(135deg, #1c3015 0%, #3d6b2f 50%, #5a9044 100%); }
+    .banner-slide::before {
+      background: repeating-linear-gradient(
+        -45deg, transparent, transparent 30px,
+        rgba(255,255,255,.02) 30px, rgba(255,255,255,.02) 31px
+      );
+    }
+    .banner-tag { background: rgba(192,124,42,.3); border-color: rgba(192,124,42,.6); color: #f5d99a; }
+    .banner-title { font-family: 'Lora', serif; font-style: italic; }
+    .banner-btn { background: var(--accent); color: #fff; border-radius: 4px; }
+    .banner-btn:hover { background: #a86820; transform: translateY(-2px); }
+
+    /* ── SECTION TITLES ── */
+    .section-tag { background: var(--accent-light); color: var(--accent); }
+    .section-title { font-family: 'Lora', serif; color: var(--primary-dark); }
+    .section-sub { color: var(--text-light); }
+
+    /* ── CATEGORIAS ── */
+    #categorias { background: var(--bg-white); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    #categorias-grid { max-width: 1280px; margin: 0 auto; padding: 0 1.5rem; }
+    .categoria-card { background: var(--bg); border-color: var(--border); border-radius: 4px; }
+    .categoria-card:hover, .categoria-card.active { background: var(--primary-pale); border-color: var(--primary); }
+    .categoria-nome { color: var(--text); font-weight: 600; }
+    .categoria-card.active .categoria-nome { color: var(--primary-dark); }
+
+    /* ── PRODUTOS ── */
+    #produtos-section { background: var(--bg); }
+    .filtro-btn { background: var(--bg-white); border-color: var(--border); color: var(--text-light); border-radius: 4px; font-weight: 600; }
+    .filtro-btn:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-pale); }
+    .filtro-btn.active { background: var(--primary); border-color: var(--primary); color: #fff; }
+
+    .produto-card { background: var(--bg-white); border: 1px solid var(--border); border-radius: 4px; box-shadow: var(--shadow); }
+    .produto-card:hover { border-color: var(--primary); box-shadow: 0 8px 32px rgba(45,80,34,.15); transform: translateY(-3px); }
+    .produto-ref { color: var(--accent); font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
+    .produto-nome a { color: var(--primary-dark); font-family: 'Lora', serif; }
+    .produto-desc { color: var(--text-light); }
+    .badge-destaque { background: var(--accent); border-radius: 2px; letter-spacing: .04em; }
+    .qty-btn { background: var(--bg); border-color: var(--border); color: var(--text); border-radius: 3px; }
+    .qty-btn:hover { background: var(--primary-pale); border-color: var(--primary); color: var(--primary); }
+    .qty-input { background: var(--bg); border-color: var(--border); color: var(--text); border-radius: 3px; }
+    .btn-add-cart { background: var(--primary); border-radius: 4px; font-weight: 700; }
+    .btn-add-cart:hover { background: var(--primary-dark); box-shadow: 0 4px 16px rgba(45,80,34,.35); }
+    .btn-ver-mais { color: var(--accent); }
+
+    /* ── DIVIDER ── */
+    .wheat-divider {
+      text-align: center;
+      color: var(--accent);
+      font-size: 1.5rem;
+      margin: .5rem 0;
+      letter-spacing: .5rem;
+    }
+
+    /* ── FOOTER ── */
+    .site-footer { background: var(--primary-dark); margin-top: 0; }
+    .site-footer .footer-brand .logo-text { color: #fff; }
+    .site-footer .footer-bottom { border-color: rgba(255,255,255,.1); }
+
+    /* ── BADGE strip ── */
+    .agro-badges {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      padding: 1.5rem;
+      background: var(--primary-pale);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+    .agro-badge {
+      display: flex; align-items: center; gap: .5rem;
+      font-size: .85rem; font-weight: 700; color: var(--primary-dark);
+    }
+    .agro-badge span { font-size: 1.3rem; }
+  </style>
+</head>
+<body>
+  <div class="agro-topbar">🌾 Catálogo de Produtos Agrícolas e Industriais — Solicite Orçamento pelo WhatsApp</div>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="index7.html" class="logo">
+        <div class="logo-icon">🌱</div>
+        <div class="logo-text">Nfog Catálogo<span>Linha Agro</span></div>
+      </a>
+      <div class="header-search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="search" id="search-input" placeholder="Buscar produto...">
+      </div>
+      <nav class="header-nav">
+        <a href="index.html" class="nav-link">← Voltar</a>
+        <button class="cart-toggle">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+          Orçamento <span class="cart-badge">0</span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <section id="banner-slider">
+    <div class="banner-slide"><div class="banner-content"><span class="banner-tag">🌾 Linha Agro</span><h1 class="banner-title">Do campo para sua produção — qualidade que você pode ver</h1><p class="banner-sub">Produtos selecionados para o agronegócio e industria. Solicite orçamento via WhatsApp.</p><a href="#produtos-section" class="banner-btn">Ver catálogo →</a></div></div>
+    <div class="banner-slide"><div class="banner-content"><span class="banner-tag">🌿 Insumos</span><h1 class="banner-title">Insumos e equipamentos para maximizar sua produção</h1><p class="banner-sub">Qualidade e confiança para o seu negócio crescer.</p><a href="#categorias" class="banner-btn">Ver categorias →</a></div></div>
+    <div class="banner-slide"><div class="banner-content"><span class="banner-tag">⚙️ Equipamentos</span><h1 class="banner-title">Equipamentos de alta durabilidade para o campo</h1><p class="banner-sub">Monte seu pedido e solicite orçamento direto pelo WhatsApp.</p><a href="#produtos-section" class="banner-btn">Montar orçamento →</a></div></div>
+    <button id="banner-prev" class="banner-arrow prev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18"><polyline points="15 18 9 12 15 6"/></svg></button>
+    <button id="banner-next" class="banner-arrow next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18"><polyline points="9 18 15 12 9 6"/></svg></button>
+    <div class="banner-dots"><button class="banner-dot"></button><button class="banner-dot"></button><button class="banner-dot"></button></div>
+  </section>
+
+  <div class="agro-badges">
+    <div class="agro-badge"><span>🌱</span> Produtos Naturais</div>
+    <div class="agro-badge"><span>✅</span> Qualidade Certificada</div>
+    <div class="agro-badge"><span>🚚</span> Entrega Rápida</div>
+    <div class="agro-badge"><span>💬</span> Orçamento via WhatsApp</div>
+    <div class="agro-badge"><span>🤝</span> Atendimento Personalizado</div>
+  </div>
+
+  <section id="categorias">
+    <div class="container"><div class="section-header"><span class="section-tag">Categorias</span><div class="wheat-divider">— 🌾 —</div><h2 class="section-title">Nossas Linhas de Produto</h2><p class="section-sub">Encontre o que precisa para sua operação</p></div></div>
+    <div id="categorias-grid"></div>
+  </section>
+
+  <section id="produtos-section">
+    <div class="container">
+      <div class="section-header"><span class="section-tag">Catálogo</span><h2 class="section-title">Nossos Produtos</h2><p class="section-sub">Selecione e solicite orçamento pelo WhatsApp</p></div>
+      <div id="filtros-bar"></div>
+      <div id="produtos-grid"></div>
+      <div id="nenhum-produto" style="display:none;text-align:center;padding:4rem;color:var(--text-light)"><p>Nenhum produto encontrado.</p><button onclick="filtrarPor('todos')" style="margin-top:1rem;padding:.7rem 1.75rem;background:var(--primary);color:#fff;border:none;cursor:pointer;border-radius:4px;font-family:inherit;font-weight:700">Ver todos os produtos</button></div>
+    </div>
+  </section>
+
+  <div id="overlay"></div>
+  <aside id="cart-drawer">
+    <div class="drawer-header"><div class="drawer-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg> Meu Orçamento</div><button id="cart-close">✕</button></div>
+    <div id="cart-empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="56" height="56"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg><p>Seu orçamento está vazio.<br>Adicione produtos ao catálogo.</p></div>
+    <div id="cart-items-list"></div>
+    <div id="cart-footer">
+      <div class="orcamento-form"><h4 class="orcamento-form-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Seus Dados</h4>
+        <div class="form-row"><div class="form-group"><label for="f-nome">Nome <span class="req">*</span></label><input type="text" id="f-nome" placeholder="Seu nome completo" autocomplete="name"><span class="form-error-msg">Campo obrigatório</span></div></div>
+        <div class="form-row"><div class="form-group"><label for="f-tel">Telefone <span class="req">*</span></label><input type="tel" id="f-tel" placeholder="(00) 00000-0000" inputmode="numeric"><span class="form-error-msg">Campo obrigatório</span></div></div>
+        <div class="form-row form-row--2col"><div class="form-group"><label for="f-cnpj">CNPJ <span class="opt">opcional</span></label><input type="text" id="f-cnpj" placeholder="00.000.000/0001-00" inputmode="numeric"></div><div class="form-group"><label for="f-vendedor">Vendedor <span class="opt">opcional</span></label><input type="text" id="f-vendedor" placeholder="Nome do vendedor"></div></div>
+      </div>
+      <div class="cart-summary"><span>Total:</span><strong><span id="cart-total-count">0</span> itens</strong></div>
+      <button class="btn-whatsapp" id="btn-whatsapp-send"><svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg> Solicitar Orçamento</button>
+      <button class="btn-limpar" id="btn-limpar">Limpar orçamento</button>
+    </div>
+  </aside>
+  <div id="cart-feedback"></div>
+  <a href="https://wa.me/5545999332563" target="_blank" class="whatsapp-float"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg></a>
+
+  <footer class="site-footer" style="margin-top:4rem">
+    <div class="footer-grid">
+      <div class="footer-brand"><div class="logo"><div class="logo-icon" style="background:var(--accent)">🌱</div><div class="logo-text">Nfog Catálogo<span>Linha Agro</span></div></div><p class="footer-desc">Catálogo agro e industrial. Qualidade e tradição no campo.</p></div>
+      <div class="footer-col"><h5>Categorias</h5><ul><li><a href="#" onclick="filtrarPor('linha-a');return false;">🌱 Linha A</a></li><li><a href="#" onclick="filtrarPor('linha-b');return false;">⚗️ Linha B</a></li><li><a href="#" onclick="filtrarPor('equipamentos');return false;">⚙️ Equipamentos</a></li><li><a href="#" onclick="filtrarPor('insumos');return false;">📦 Insumos</a></li></ul></div>
+      <div class="footer-col"><h5>Outros Layouts</h5><ul><li><a href="index.html">Layout 1</a></li><li><a href="index2.html">Layout 2 — Dark</a></li><li><a href="index8.html">Layout 8 — Corporate</a></li><li><a href="index9.html">Layout 9 — Luxury</a></li><li><a href="index10.html">Layout 10 — Neon</a></li><li><a href="index11.html">Layout 11 — Zen</a></li></ul></div>
+    </div>
+    <div class="footer-bottom"><p>© 2025 Nfog Catálogo — Linha Agro.</p></div>
+  </footer>
+
+  <script src="js/produtos.js"></script>
+  <script src="js/carrinho.js"></script>
+  <script src="js/home.js"></script>
+</body>
+</html>

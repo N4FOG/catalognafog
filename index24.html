@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nfog Catálogo — Terminal CLI Matrix Edition</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    :root {
+      --term-bg: #0c100c;
+      --term-green: #00ff66;
+      --term-green-dim: #00aa44;
+      --term-border: #005522;
+      --term-panel: #111811;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Fira Code', monospace;
+      background-color: var(--term-bg);
+      color: var(--term-green);
+      line-height: 1.45;
+    }
+    a { text-decoration: none; color: inherit; }
+    button { font-family: inherit; cursor: pointer; }
+    .term-wrap { max-width: 1200px; margin: 0 auto; padding: 1.5rem; }
+
+    /* HEADER */
+    .term-header {
+      border: 1px solid var(--term-border);
+      background: var(--term-panel);
+      padding: 1rem 1.5rem; margin-bottom: 1.5rem;
+      display: flex; align-items: center; justify-content: space-between; gap: 1.5rem;
+    }
+    .term-logo { font-weight: 700; font-size: 1.1rem; }
+    .term-search-box {
+      flex: 1; max-width: 450px; display: flex; align-items: center; gap: 0.5rem;
+    }
+    .term-search-box input {
+      flex: 1; background: #000; border: 1px solid var(--term-green-dim);
+      color: var(--term-green); padding: 0.45rem 0.75rem; font-family: inherit; font-size: 0.85rem;
+    }
+    .term-search-box input:focus { outline: none; border-color: var(--term-green); box-shadow: 0 0 10px rgba(0,255,102,0.3); }
+
+    .term-cart-btn {
+      background: #000; color: var(--term-green); border: 1px solid var(--term-green);
+      padding: 0.5rem 1rem; font-weight: 700; font-size: 0.82rem;
+    }
+    .term-cart-btn:hover { background: var(--term-green); color: #000; }
+
+    /* CATS */
+    .term-cats {
+      display: flex; gap: 0.5rem; margin-bottom: 1.5rem; overflow-x: auto;
+    }
+    .term-cat-btn {
+      background: #000; border: 1px solid var(--term-border); color: var(--term-green-dim);
+      padding: 0.4rem 0.8rem; font-size: 0.8rem; white-space: nowrap;
+    }
+    .term-cat-btn.active, .term-cat-btn:hover {
+      border-color: var(--term-green); color: var(--term-green); background: rgba(0,255,102,0.08);
+    }
+
+    /* GRID */
+    .term-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.2rem; margin-bottom: 4rem;
+    }
+    .term-card {
+      border: 1px solid var(--term-border); background: var(--term-panel);
+      padding: 1rem; display: flex; flex-direction: column;
+    }
+    .term-card:hover { border-color: var(--term-green); box-shadow: 0 0 15px rgba(0,255,102,0.2); }
+    .term-card-img { width: 100%; height: 160px; object-fit: cover; border: 1px solid var(--term-border); margin-bottom: 0.8rem; filter: grayscale(1) brightness(0.9) contrast(1.2); }
+    .term-card:hover .term-card-img { filter: none; }
+    .term-sku { font-size: 0.72rem; color: #88ffaa; margin-bottom: 0.2rem; }
+    .term-title { font-size: 0.95rem; font-weight: 700; color: #fff; margin-bottom: 0.4rem; }
+    .term-desc { font-size: 0.78rem; color: #77aa88; margin-bottom: 1rem; flex: 1; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .term-row { display: flex; gap: 0.4rem; align-items: center; }
+    .term-qty { display: flex; border: 1px solid var(--term-border); }
+    .term-qty button { background: #000; border: none; color: var(--term-green); width: 24px; height: 28px; }
+    .term-qty input { width: 30px; background: transparent; border: none; color: var(--term-green); text-align: center; font-family: inherit; font-size: 0.82rem; }
+    .term-add-btn {
+      flex: 1; background: #003311; border: 1px solid var(--term-green); color: var(--term-green);
+      padding: 0.45rem; font-weight: 700; font-size: 0.78rem;
+    }
+    .term-add-btn:hover { background: var(--term-green); color: #000; }
+  </style>
+</head>
+<body>
+
+  <div class="term-wrap">
+    <header class="term-header">
+      <div class="term-logo">> NFOG_TERMINAL // v4.0</div>
+      <div class="term-search-box">
+        <span>$</span>
+        <input type="search" id="search-input" placeholder="grep --search item...">
+      </div>
+      <button class="term-cart-btn cart-toggle">
+        [ BUFFER_ORÇAMENTO: <span class="cart-badge">0</span> ]
+      </button>
+    </header>
+
+    <div class="term-cats" id="term-cats"></div>
+    <div class="term-grid" id="produtos-grid"></div>
+    <div id="nenhum-produto" style="display:none; text-align:center; padding:3rem; border:1px dashed var(--term-border);"><p>> ERROR 404: ITEM NOT FOUND</p></div>
+  </div>
+
+  <!-- CART DRAWER -->
+  <div id="overlay" style="position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:1999; opacity:0; pointer-events:none; transition:0.2s;"></div>
+  <aside id="cart-drawer" style="position:fixed; top:0; right:0; height:100%; width:min(420px, 100vw); background:#060d06; border-left:2px solid var(--term-green); z-index:2000; transform:translateX(100%); transition:0.3s; display:flex; flex-direction:column;">
+    <div style="padding:1.2rem; border-bottom:1px solid var(--term-border); display:flex; justify-content:space-between; align-items:center;">
+      <h3 style="font-size:0.95rem;">> MANIFEST_STAGING</h3>
+      <button id="cart-close" style="background:none; border:none; color:var(--term-green); font-size:1.2rem; cursor:pointer;">✕</button>
+    </div>
+    <div id="cart-empty" style="padding:3rem 1rem; text-align:center; color:#558866;"><p>> BUFFER EMPTY</p></div>
+    <div id="cart-items-list" style="flex:1; overflow-y:auto; padding:1rem; display:flex; flex-direction:column; gap:0.5rem;"></div>
+    <div id="cart-footer" style="padding:1rem; border-top:1px solid var(--term-border); background:#040904;">
+      <div class="orcamento-form" style="border:1px solid var(--term-border); padding:0.8rem; margin-bottom:0.8rem; font-size:0.8rem;">
+        <input type="text" id="f-nome" placeholder="name *" style="width:100%; background:#000; border:1px solid var(--term-border); color:var(--term-green); padding:0.4rem; margin-bottom:0.4rem;">
+        <input type="tel" id="f-tel" placeholder="whatsapp / phone *" style="width:100%; background:#000; border:1px solid var(--term-border); color:var(--term-green); padding:0.4rem; margin-bottom:0.4rem;">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.4rem;">
+          <input type="text" id="f-cnpj" placeholder="tax_id" style="background:#000; border:1px solid var(--term-border); color:var(--term-green); padding:0.4rem;">
+          <input type="text" id="f-vendedor" placeholder="rep_id" style="background:#000; border:1px solid var(--term-border); color:var(--term-green); padding:0.4rem;">
+        </div>
+      </div>
+      <div style="display:flex; justify-content:space-between; margin-bottom:0.6rem; font-size:0.85rem;">
+        <span>TOTAL_COUNT:</span><span id="cart-total-count">0</span>
+      </div>
+      <button id="btn-whatsapp-send" class="term-add-btn" style="width:100%; padding:0.75rem; background:var(--term-green); color:#000; font-weight:800; cursor:pointer;">
+        $ send --channel whatsapp
+      </button>
+      <button id="btn-limpar" style="width:100%; text-align:center; background:none; border:none; margin-top:0.4rem; color:#558866; font-size:0.75rem; cursor:pointer;">$ clear buffer</button>
+    </div>
+  </aside>
+
+  <div id="cart-feedback" style="display:none"></div>
+
+  <!-- COMPATIBILITY HOOKS -->
+  <div id="banner-slider" style="display:none"><div class="banner-slide"></div><button id="banner-prev"></button><button id="banner-next"></button><div class="banner-dots"><button class="banner-dot"></button></div></div>
+  <div id="categorias-grid" style="display:none"></div>
+  <div id="filtros-bar" style="display:none"></div>
+  <div id="produtos-section" style="display:none"></div>
+
+  <script src="js/produtos.js"></script>
+  <script src="js/carrinho.js"></script>
+  <script>
+    function renderProdutos(catId, termoBusca = '') {
+      const grid = document.getElementById('produtos-grid');
+      const empty = document.getElementById('nenhum-produto');
+      if (!grid) return;
+      let lista = PRODUTOS;
+      if (catId && catId !== 'todos') lista = lista.filter(p => p.categoria === catId);
+      if (termoBusca) {
+        const t = termoBusca.toLowerCase();
+        lista = lista.filter(p => p.nome.toLowerCase().includes(t) || p.referencia.toLowerCase().includes(t) || p.descricao.toLowerCase().includes(t));
+      }
+      if (lista.length === 0) { grid.innerHTML = ''; if (empty) empty.style.display = 'block'; return; }
+      if (empty) empty.style.display = 'none';
+      grid.innerHTML = lista.map(p => `
+        <div class="term-card">
+          <img src="${p.imagens[0]}" alt="${p.nome}" class="term-card-img" onerror="this.src='https://picsum.photos/seed/term${p.id}/300/200'">
+          <div class="term-sku">> SKU: ${p.referencia}</div>
+          <div class="term-title"><a href="produto.html?id=${p.id}">${p.nome}</a></div>
+          <div class="term-desc">${p.descricao}</div>
+          <div class="term-row">
+            <div class="term-qty">
+              <button onclick="decrementarCard(${p.id})">−</button>
+              <input type="number" id="qty-${p.id}" value="1" min="1" readonly>
+              <button onclick="incrementarCard(${p.id})">+</button>
+            </div>
+            <button class="term-add-btn" onclick="adicionarAoOrcamento(${p.id})">+ stage</button>
+          </div>
+        </div>
+      `).join('');
+    }
+    function initCategorias() {
+      const row = document.getElementById('term-cats');
+      if (row) {
+        row.innerHTML = CATEGORIAS.map(c => `
+          <button class="term-cat-btn ${c.id === 'todos' ? 'active' : ''}" onclick="filtrarPor('${c.id}')">
+            [${c.nome.toLowerCase()}]
+          </button>
+        `).join('');
+      }
+    }
+    function filtrarPor(catId) {
+      document.querySelectorAll('.term-cat-btn').forEach(p => p.classList.toggle('active', p.getAttribute('onclick')?.includes(`'${catId}'`)));
+      renderProdutos(catId, document.getElementById('search-input')?.value || '');
+    }
+    function incrementarCard(id) { const i = document.getElementById(`qty-${id}`); if(i) i.value = parseInt(i.value)+1; }
+    function decrementarCard(id) { const i = document.getElementById(`qty-${id}`); if(i && parseInt(i.value)>1) i.value = parseInt(i.value)-1; }
+    function adicionarAoOrcamento(id) { const i = document.getElementById(`qty-${id}`); Carrinho.adicionar(id, parseInt(i?.value)||1); }
+    function initSearch() { document.getElementById('search-input')?.addEventListener('input', e => renderProdutos('todos', e.target.value)); }
+    document.addEventListener('DOMContentLoaded', () => { initCategorias(); renderProdutos('todos'); initSearch(); });
+  </script>
+</body>
+</html>

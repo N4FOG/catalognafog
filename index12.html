@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nfog Catálogo — Neo-Brutalism Edition</title>
+  <link rel="stylesheet" href="css/template12.css">
+</head>
+<body>
+
+  <!-- TICKER -->
+  <div class="nb-ticker">
+    <div class="nb-ticker-track">
+      <span>⚡ COTAÇÃO DIRETA NO WHATSAPP</span>
+      <span>★ ENVIE SEU PEDIDO EM 1 MINUTO</span>
+      <span>📦 QUALIDADE & ROBUSTEZ GARANTIDA</span>
+      <span>★ SEM CADASTRO DEMORADO</span>
+      <span>⚡ COTAÇÃO DIRETA NO WHATSAPP</span>
+      <span>★ ENVIE SEU PEDIDO EM 1 MINUTO</span>
+      <span>📦 QUALIDADE & ROBUSTEZ GARANTIDA</span>
+      <span>★ SEM CADASTRO DEMORADO</span>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <header class="nb-header">
+    <div class="nb-header-inner">
+      <a href="index12.html" class="nb-logo">
+        <div class="nb-logo-badge">⚡</div>
+        <div>NFOG / CATÁLOGO</div>
+      </a>
+
+      <div class="nb-search-box">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="search" id="search-input" placeholder="O que você precisa hoje?">
+      </div>
+
+      <div style="display: flex; gap: 0.75rem; align-items: center;">
+        <button class="nb-cart-btn cart-toggle">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+          ORÇAMENTO
+          <span class="nb-cart-badge cart-badge">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="nb-container">
+
+    <!-- HERO -->
+    <section class="nb-hero">
+      <div class="nb-hero-card">
+        <div>
+          <span class="nb-hero-tag">🔥 NOVO FLUXO DE ORÇAMENTO</span>
+          <h1 class="nb-hero-title">Monte seu pedido com clique rápido.</h1>
+          <p class="nb-hero-desc">Selecione os produtos, defina as quantidades e receba resposta com valores e frete no seu WhatsApp!</p>
+          <a href="#produtos-anchor" class="nb-hero-btn">
+            EXPLORAR PRODUTOS ↓
+          </a>
+        </div>
+        <div class="nb-hero-visual">
+          <div class="nb-hero-sticker">✨ CATÁLOGO OFICIAL 2025</div>
+          <div style="font-size: 4rem; margin: 1rem 0;">📦⚡🌿</div>
+          <div style="font-weight: 900; font-size: 1.1rem;">ATENDIMENTO 100% DIRETO</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CATEGORIAS -->
+    <section style="margin-bottom: 2.5rem;">
+      <div class="nb-section-heading">
+        <h2 class="nb-section-title">📂 CATEGORIAS</h2>
+      </div>
+      <div class="nb-cats-grid" id="categorias-grid"></div>
+    </section>
+
+    <!-- PRODUTOS -->
+    <section id="produtos-anchor" style="padding-top: 1rem;">
+      <div class="nb-section-heading">
+        <h2 class="nb-section-title">⚡ PRODUTOS EM DESTAQUE</h2>
+      </div>
+
+      <!-- Filtros -->
+      <div class="nb-filters" id="filtros-bar"></div>
+
+      <!-- Grid -->
+      <div class="nb-products-grid" id="produtos-grid"></div>
+
+      <div id="nenhum-produto" style="display:none; text-align:center; padding: 4rem; background:#fff; border:3px solid #000; box-shadow:5px 5px 0px #000; margin-bottom:4rem;">
+        <h3 style="font-family:'Space Grotesk',sans-serif; font-size:1.5rem; font-weight:900; margin-bottom:0.5rem;">NENHUM PRODUTO ENCONTRADO!</h3>
+        <p style="margin-bottom: 1.5rem; font-weight:600;">Tente outro termo na busca ou volte a ver todos.</p>
+        <button onclick="filtrarPor('todos')" class="nb-filter-btn active">VER TODOS OS PRODUTOS</button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- HIDDEN BANNER for compatibility with home.js -->
+  <div id="banner-slider" style="display:none">
+    <div class="banner-slide"></div><div class="banner-slide"></div><div class="banner-slide"></div>
+    <button id="banner-prev" class="banner-arrow prev"></button>
+    <button id="banner-next" class="banner-arrow next"></button>
+    <div class="banner-dots"><button class="banner-dot"></button></div>
+  </div>
+  <div id="produtos-section" style="display:none"></div>
+
+  <!-- CART DRAWER -->
+  <div class="nb-overlay" id="overlay"></div>
+  <aside class="nb-drawer" id="cart-drawer">
+    <div class="nb-drawer-header">
+      <div class="nb-drawer-title">
+        <span>🛒</span> MEU ORÇAMENTO
+      </div>
+      <button class="nb-drawer-close" id="cart-close">✕</button>
+    </div>
+
+    <div id="cart-empty" style="padding: 3rem 1.5rem; text-align: center; color: #666; font-weight: 700;">
+      <div style="font-size: 3rem; margin-bottom: 0.5rem;">🎒</div>
+      <p>Seu orçamento está vazio.<br>Adicione itens do catálogo!</p>
+    </div>
+
+    <div class="nb-cart-list" id="cart-items-list"></div>
+
+    <div class="nb-drawer-footer" id="cart-footer">
+      <div class="nb-form">
+        <div class="nb-form-title">📋 SEUS DADOS</div>
+        <div class="nb-form-group">
+          <label>Nome Completo *</label>
+          <input type="text" id="f-nome" placeholder="Digite seu nome">
+        </div>
+        <div class="nb-form-group">
+          <label>WhatsApp / Telefone *</label>
+          <input type="tel" id="f-tel" placeholder="(00) 00000-0000">
+        </div>
+        <div class="nb-form-2col">
+          <div class="nb-form-group">
+            <label>CNPJ (Opcional)</label>
+            <input type="text" id="f-cnpj" placeholder="00.000.000/0001-00">
+          </div>
+          <div class="nb-form-group">
+            <label>Vendedor</label>
+            <input type="text" id="f-vendedor" placeholder="Nome">
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex; justify-content:space-between; font-weight:900; margin-bottom:0.8rem; font-size:1rem;">
+        <span>TOTAL DE ITENS:</span>
+        <span id="cart-total-count">0 itens</span>
+      </div>
+
+      <button class="nb-wa-submit" id="btn-whatsapp-send">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+        SOLICITAR NO WHATSAPP
+      </button>
+      <button id="btn-limpar" style="width:100%; text-align:center; background:none; border:none; margin-top:0.6rem; font-size:0.8rem; font-weight:700; color:#888; cursor:pointer;">Limpar Orçamento</button>
+    </div>
+  </aside>
+
+  <div id="cart-feedback" style="position:fixed; bottom:2rem; left:50%; transform:translateX(-50%); background:#000; color:#fff; padding:0.8rem 1.5rem; border:2px solid var(--nb-green); font-weight:800; display:none; z-index:3000;"></div>
+
+  <!-- FOOTER -->
+  <footer class="nb-footer">
+    <div class="nb-container nb-footer-grid">
+      <div>
+        <div class="nb-logo" style="color:#fff; margin-bottom:1rem;">
+          <div class="nb-logo-badge" style="color:#000;">⚡</div>
+          <div>NFOG / CATÁLOGO</div>
+        </div>
+        <p style="color:#aaa; font-weight:500; font-size:0.9rem; max-width:320px;">Catálogo dinâmico de produtos com solicitação instantânea pelo WhatsApp.</p>
+      </div>
+      <div>
+        <div class="nb-footer-title">MODELOS DISPONÍVEIS</div>
+        <ul style="list-style:none; line-height:1.9; font-weight:700; font-size:0.85rem;">
+          <li><a href="index.html" style="color:#ccc;">Layout 1 (Base)</a></li>
+          <li><a href="index12.html" style="color:var(--nb-yellow);">Layout 12 (Neo-Brutalism)</a></li>
+          <li><a href="index13.html" style="color:#ccc;">Layout 13 (Apple Bento)</a></li>
+          <li><a href="index14.html" style="color:#ccc;">Layout 14 (Visual Feed)</a></li>
+          <li><a href="index15.html" style="color:#ccc;">Layout 15 (B2B Fast Order)</a></li>
+          <li><a href="index16.html" style="color:#ccc;">Layout 16 (App 3-Colunas)</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="nb-footer-title">CONTATO RÁPIDO</div>
+        <p style="font-weight:700; font-size:0.9rem; color:#fff;">(45) 99933-2563</p>
+        <p style="color:#888; font-size:0.85rem; margin-top:0.4rem;">Atendimento de Seg. a Sex.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/produtos.js"></script>
+  <script src="js/carrinho.js"></script>
+  <script>
+    // Custom renderer for Neo-Brutalism Cards
+    function renderProdutos(catId, termoBusca = '') {
+      const grid = document.getElementById('produtos-grid');
+      const empty = document.getElementById('nenhum-produto');
+      if (!grid) return;
+
+      let lista = PRODUTOS;
+      if (catId && catId !== 'todos') {
+        lista = lista.filter(p => p.categoria === catId);
+      }
+      if (termoBusca) {
+        const t = termoBusca.toLowerCase();
+        lista = lista.filter(p =>
+          p.nome.toLowerCase().includes(t) ||
+          p.referencia.toLowerCase().includes(t) ||
+          p.descricao.toLowerCase().includes(t)
+        );
+      }
+
+      if (lista.length === 0) {
+        grid.innerHTML = '';
+        if (empty) empty.style.display = 'block';
+        return;
+      }
+      if (empty) empty.style.display = 'none';
+
+      grid.innerHTML = lista.map(p => `
+        <article class="nb-card">
+          <div class="nb-card-img-wrap">
+            ${p.destaque ? '<span class="nb-card-tag">★ DESTAQUE</span>' : ''}
+            <a href="produto.html?id=${p.id}">
+              <img src="${p.imagens[0]}" alt="${p.nome}" class="nb-card-img" loading="lazy"
+                onerror="this.src='https://picsum.photos/seed/nb${p.id}/400/300'">
+            </a>
+          </div>
+          <div class="nb-card-body">
+            <div class="nb-card-ref">REF: ${p.referencia}</div>
+            <h3 class="nb-card-title"><a href="produto.html?id=${p.id}">${p.nome}</a></h3>
+            <p class="nb-card-desc">${p.descricao}</p>
+            <div class="nb-card-actions">
+              <div class="nb-qty-group">
+                <button class="nb-qty-btn" onclick="decrementarCard(${p.id})">−</button>
+                <input type="number" id="qty-${p.id}" value="1" min="1" class="nb-qty-input" readonly>
+                <button class="nb-qty-btn" onclick="incrementarCard(${p.id})">+</button>
+              </div>
+              <button class="nb-add-btn" onclick="adicionarAoOrcamento(${p.id})">
+                <span>+</span> ORÇAR
+              </button>
+            </div>
+          </div>
+        </article>
+      `).join('');
+    }
+
+    function initCategorias() {
+      const grid = document.getElementById('categorias-grid');
+      const filtros = document.getElementById('filtros-bar');
+      if (grid) {
+        grid.innerHTML = CATEGORIAS.filter(c => c.id !== 'todos').map(c => `
+          <div class="nb-cat-card" onclick="filtrarPor('${c.id}')">
+            <span class="nb-cat-icon">${c.icone}</span>
+            <span class="nb-cat-name">${c.nome}</span>
+          </div>
+        `).join('');
+      }
+      if (filtros) {
+        filtros.innerHTML = CATEGORIAS.map(c => `
+          <button class="nb-filter-btn ${c.id === 'todos' ? 'active' : ''}" onclick="filtrarPor('${c.id}')">
+            ${c.icone} ${c.nome}
+          </button>
+        `).join('');
+      }
+    }
+
+    function filtrarPor(catId) {
+      document.querySelectorAll('.nb-filter-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('onclick')?.includes(`'${catId}'`));
+      });
+      document.querySelectorAll('.nb-cat-card').forEach(card => {
+        card.classList.toggle('active', card.getAttribute('onclick')?.includes(`'${catId}'`));
+      });
+      renderProdutos(catId, document.getElementById('search-input')?.value || '');
+    }
+
+    function incrementarCard(id) {
+      const input = document.getElementById(`qty-${id}`);
+      if (input) input.value = parseInt(input.value) + 1;
+    }
+
+    function decrementarCard(id) {
+      const input = document.getElementById(`qty-${id}`);
+      if (input && parseInt(input.value) > 1) input.value = parseInt(input.value) - 1;
+    }
+
+    function adicionarAoOrcamento(id) {
+      const input = document.getElementById(`qty-${id}`);
+      const qty = parseInt(input?.value) || 1;
+      Carrinho.adicionar(id, qty);
+    }
+
+    function initSearch() {
+      const input = document.getElementById('search-input');
+      if (!input) return;
+      input.addEventListener('input', (e) => {
+        renderProdutos('todos', e.target.value);
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      initCategorias();
+      renderProdutos('todos');
+      initSearch();
+    });
+  </script>
+</body>
+</html>

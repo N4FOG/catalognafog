@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nfog Catálogo — Carbon & High-Tech Edition</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,400;0,600;0,700;1,700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    :root {
+      --carb-bg: #0c0d10;
+      --carb-surface: #14171d;
+      --carb-surface-hover: #1c212a;
+      --carb-red: #ff2a4b;
+      --carb-orange: #ff7700;
+      --carb-border: #262b35;
+      --carb-border-active: #ff2a4b;
+      --carb-text: #f0f2f5;
+      --carb-muted: #848b98;
+      --whatsapp: #25D366;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--carb-bg);
+      color: var(--carb-text);
+      background-image: 
+        radial-gradient(rgba(255, 42, 75, 0.05) 1px, transparent 0),
+        linear-gradient(45deg, #111317 25%, transparent 25%, transparent 75%, #111317 75%, #111317),
+        linear-gradient(45deg, #111317 25%, transparent 25%, transparent 75%, #111317 75%, #111317);
+      background-size: 30px 30px, 8px 8px, 8px 8px;
+      background-position: 0 0, 0 0, 4px 4px;
+    }
+    h1, h2, h3, .logo-title, .carb-tag, .carb-btn { font-family: 'Chakra Petch', sans-serif; text-transform: uppercase; }
+    a { text-decoration: none; color: inherit; }
+    button { font-family: inherit; cursor: pointer; }
+    .carb-wrap { max-width: 1280px; margin: 0 auto; padding: 0 1.5rem; }
+
+    /* HEADER */
+    .carb-header {
+      background: rgba(14, 16, 21, 0.95);
+      backdrop-filter: blur(15px);
+      border-bottom: 2px solid var(--carb-border);
+      position: sticky; top: 0; z-index: 1000;
+    }
+    .carb-nav-inner {
+      display: flex; align-items: center; justify-content: space-between; gap: 1.5rem;
+      padding: 1rem 0;
+    }
+    .carb-logo {
+      display: flex; align-items: center; gap: 0.8rem;
+    }
+    .carb-logo-emblem {
+      background: linear-gradient(135deg, var(--carb-red), var(--carb-orange));
+      color: #fff; font-weight: 900; font-size: 1.2rem;
+      width: 38px; height: 38px; display: flex; align-items: center; justify-content: center;
+      clip-path: polygon(0 0, 100% 0, 85% 100%, 0 100%);
+    }
+    .logo-title { font-size: 1.35rem; font-weight: 700; letter-spacing: 0.05em; color: #fff; }
+    .logo-title span { color: var(--carb-red); }
+
+    .carb-search {
+      flex: 1; max-width: 480px; position: relative;
+    }
+    .carb-search input {
+      width: 100%; background: #181c24; border: 1px solid var(--carb-border);
+      border-radius: 4px; padding: 0.65rem 1rem 0.65rem 2.6rem; color: #fff;
+      font-family: inherit; font-size: 0.9rem; transition: 0.2s;
+    }
+    .carb-search input:focus {
+      outline: none; border-color: var(--carb-red); box-shadow: 0 0 15px rgba(255,42,75,0.3);
+    }
+    .carb-search svg { position: absolute; left: 0.85rem; top: 50%; transform: translateY(-50%); color: var(--carb-muted); }
+
+    .carb-cart-trigger {
+      background: linear-gradient(135deg, var(--carb-red), #c71431);
+      color: #fff; border: none; padding: 0.65rem 1.4rem; font-weight: 700; font-size: 0.9rem;
+      letter-spacing: 0.08em; display: flex; align-items: center; gap: 0.6rem;
+      clip-path: polygon(0 0, 100% 0, 90% 100%, 0 100%);
+      transition: 0.2s;
+    }
+    .carb-cart-trigger:hover { transform: translateY(-2px); box-shadow: 0 0 20px rgba(255,42,75,0.5); }
+
+    /* HERO */
+    .carb-hero {
+      padding: 3rem 0 2rem;
+      display: grid; grid-template-columns: 1.4fr 1fr; gap: 2rem; align-items: center;
+    }
+    .carb-hero-box {
+      background: var(--carb-surface);
+      border: 1px solid var(--carb-border);
+      border-left: 4px solid var(--carb-red);
+      padding: 2.5rem;
+      position: relative;
+    }
+    .carb-tag {
+      display: inline-block; background: rgba(255,42,75,0.15); color: var(--carb-red);
+      border: 1px solid rgba(255,42,75,0.4); padding: 0.3rem 0.8rem; font-size: 0.8rem;
+      font-weight: 700; letter-spacing: 0.1em; margin-bottom: 1.2rem;
+    }
+    .carb-hero-title {
+      font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 800; line-height: 1.1; margin-bottom: 1rem;
+      color: #fff;
+    }
+    .carb-hero-title em { font-style: normal; color: var(--carb-red); }
+    .carb-hero-desc { color: var(--carb-muted); font-size: 1rem; line-height: 1.6; margin-bottom: 1.8rem; max-width: 500px; }
+    .carb-btn-primary {
+      background: linear-gradient(135deg, var(--carb-red), var(--carb-orange));
+      color: #fff; border: none; padding: 0.85rem 2rem; font-weight: 800; font-size: 0.95rem;
+      letter-spacing: 0.1em; display: inline-flex; align-items: center; gap: 0.5rem;
+      clip-path: polygon(0 0, 100% 0, 92% 100%, 0 100%);
+    }
+
+    .carb-hero-stats {
+      background: #11141a; border: 1px solid var(--carb-border); padding: 1.5rem;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+    }
+    .carb-stat-card {
+      background: var(--carb-surface); border: 1px solid var(--carb-border); padding: 1.2rem;
+    }
+    .carb-stat-val { font-size: 2.2rem; font-weight: 800; color: #fff; font-family: 'Chakra Petch', sans-serif; }
+    .carb-stat-lbl { color: var(--carb-muted); font-size: 0.75rem; text-transform: uppercase; font-weight: 600; margin-top: 0.2rem; }
+
+    /* CATEGORIES BAR */
+    .carb-cats-row {
+      display: flex; gap: 0.75rem; overflow-x: auto; padding: 1rem 0 2rem; scrollbar-width: none;
+    }
+    .carb-cats-row::-webkit-scrollbar { display: none; }
+    .carb-cat-pill {
+      background: var(--carb-surface); border: 1px solid var(--carb-border);
+      padding: 0.65rem 1.4rem; font-family: 'Chakra Petch', sans-serif;
+      font-weight: 700; font-size: 0.85rem; letter-spacing: 0.05em; color: var(--carb-muted);
+      white-space: nowrap; cursor: pointer; transition: 0.15s;
+      clip-path: polygon(0 0, 100% 0, 92% 100%, 0 100%);
+    }
+    .carb-cat-pill:hover, .carb-cat-pill.active {
+      background: var(--carb-red); color: #fff; border-color: var(--carb-red);
+      box-shadow: 0 0 15px rgba(255,42,75,0.4);
+    }
+
+    /* PRODUCTS GRID */
+    .carb-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem; margin-bottom: 5rem;
+    }
+    .carb-card {
+      background: var(--carb-surface); border: 1px solid var(--carb-border);
+      display: flex; flex-direction: column; position: relative; transition: 0.2s;
+    }
+    .carb-card:hover {
+      border-color: var(--carb-red); background: var(--carb-surface-hover);
+      transform: translateY(-4px); box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 15px rgba(255,42,75,0.2);
+    }
+    .carb-card-img-wrap {
+      height: 190px; overflow: hidden; background: #0a0b0d; position: relative;
+    }
+    .carb-card-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s; }
+    .carb-card:hover .carb-card-img { transform: scale(1.08); }
+    .carb-card-sku {
+      position: absolute; top: 0.6rem; left: 0.6rem;
+      background: rgba(0,0,0,0.8); border-left: 2px solid var(--carb-red);
+      padding: 0.2rem 0.5rem; font-family: 'Chakra Petch', sans-serif;
+      font-size: 0.7rem; font-weight: 700; color: #fff;
+    }
+    .carb-card-body { padding: 1.25rem; display: flex; flex-direction: column; flex: 1; }
+    .carb-card-title {
+      font-size: 1.1rem; font-weight: 700; margin-bottom: 0.4rem; color: #fff; line-height: 1.25;
+    }
+    .carb-card-desc {
+      font-size: 0.82rem; color: var(--carb-muted); line-height: 1.5; margin-bottom: 1.2rem;
+      flex: 1; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .carb-card-action { display: flex; gap: 0.5rem; align-items: center; }
+    .carb-qty {
+      display: flex; background: #0d0f13; border: 1px solid var(--carb-border);
+    }
+    .carb-qty button {
+      width: 28px; height: 32px; background: none; border: none; color: #fff; font-weight: 700;
+    }
+    .carb-qty button:hover { background: rgba(255,42,75,0.2); color: var(--carb-red); }
+    .carb-qty input {
+      width: 32px; background: none; border: none; color: #fff; text-align: center; font-weight: 700;
+    }
+    .carb-add-btn {
+      flex: 1; background: var(--carb-red); color: #fff; border: none; font-weight: 700;
+      font-size: 0.85rem; padding: 0.55rem; letter-spacing: 0.05em; font-family: 'Chakra Petch', sans-serif;
+      clip-path: polygon(0 0, 100% 0, 92% 100%, 0 100%);
+    }
+    .carb-add-btn:hover { background: #ff4562; box-shadow: 0 0 15px rgba(255,42,75,0.5); }
+
+    /* FOOTER */
+    .carb-footer {
+      background: #090a0d; border-top: 2px solid var(--carb-border); padding: 3rem 0 1.5rem;
+    }
+    @media (max-width: 768px) {
+      .carb-hero { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="carb-header">
+    <div class="carb-wrap carb-nav-inner">
+      <a href="index17.html" class="carb-logo">
+        <div class="carb-logo-emblem">⚡</div>
+        <div class="logo-title">NFOG <span>// PERFORMANCE</span></div>
+      </a>
+      <div class="carb-search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="search" id="search-input" placeholder="Buscar por código ou especificação...">
+      </div>
+      <button class="carb-cart-trigger cart-toggle">
+        <span>ORÇAMENTO</span>
+        <span class="cart-badge" style="background:#fff; color:#000; padding:0.1rem 0.4rem; border-radius:3px; font-size:0.75rem;">0</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="carb-wrap">
+    <!-- HERO -->
+    <section class="carb-hero">
+      <div class="carb-hero-box">
+        <span class="carb-tag">HIGH PERFORMANCE GEAR</span>
+        <h1 class="carb-hero-title">ENGENHARIA ROBUSTA &amp; <em>ALTA RESISTÊNCIA</em></h1>
+        <p class="carb-hero-desc">Catálogo de alto rendimento. Selecione componentes e solicite cotação instantânea pelo WhatsApp.</p>
+        <a href="#catalogo" class="carb-btn-primary">EXPLORAR LINHA COMPLETA →</a>
+      </div>
+      <div class="carb-hero-stats">
+        <div class="carb-stat-card"><div class="carb-stat-val">12+</div><div class="carb-stat-lbl">Produtos Ativos</div></div>
+        <div class="carb-stat-card"><div class="carb-stat-val">100%</div><div class="carb-stat-lbl">Qualidade Certificada</div></div>
+        <div class="carb-stat-card"><div class="carb-stat-val">DIRECT</div><div class="carb-stat-lbl">Cotação WhatsApp</div></div>
+        <div class="carb-stat-card"><div class="carb-stat-val">24H</div><div class="carb-stat-lbl">Agilidade no Retorno</div></div>
+      </div>
+    </section>
+
+    <!-- CATEGORIES -->
+    <section id="catalogo">
+      <div class="carb-cats-row" id="carb-cats"></div>
+      <div class="carb-grid" id="produtos-grid"></div>
+      <div id="nenhum-produto" style="display:none; text-align:center; padding:4rem; background:var(--carb-surface); border:1px solid var(--carb-border);">
+        <p style="color:var(--carb-muted); font-size:1.1rem;">Nenhum produto correspondente aos parâmetros de busca.</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- CART DRAWER -->
+  <div id="overlay" style="position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:1999; opacity:0; pointer-events:none; transition:0.2s;"></div>
+  <aside id="cart-drawer" style="position:fixed; top:0; right:0; height:100%; width:min(420px, 100vw); background:#12151b; border-left:2px solid var(--carb-red); z-index:2000; transform:translateX(100%); transition:0.3s; display:flex; flex-direction:column;">
+    <div style="padding:1.25rem; background:#0c0e12; border-bottom:1px solid var(--carb-border); display:flex; justify-content:space-between; align-items:center;">
+      <h3 style="font-family:'Chakra Petch',sans-serif; color:#fff; font-size:1.1rem;">RESUMO DO ORÇAMENTO</h3>
+      <button id="cart-close" style="background:none; border:none; color:#fff; font-size:1.2rem; cursor:pointer;">✕</button>
+    </div>
+    <div id="cart-empty" style="padding:3rem 1.5rem; text-align:center; color:var(--carb-muted);">
+      <p>Nenhum item adicionado ao orçamento.</p>
+    </div>
+    <div id="cart-items-list" style="flex:1; overflow-y:auto; padding:1.25rem; display:flex; flex-direction:column; gap:0.75rem;"></div>
+    <div id="cart-footer" style="padding:1.25rem; border-top:1px solid var(--carb-border); background:#0c0e12;">
+      <div class="orcamento-form" style="background:var(--carb-surface); border:1px solid var(--carb-border); padding:0.85rem; margin-bottom:1rem;">
+        <div style="font-family:'Chakra Petch',sans-serif; font-size:0.8rem; color:var(--carb-red); margin-bottom:0.5rem; font-weight:700;">DADOS DO COMPRADOR</div>
+        <input type="text" id="f-nome" placeholder="Nome Completo *" style="width:100%; background:#0e1014; border:1px solid var(--carb-border); color:#fff; padding:0.45rem; margin-bottom:0.4rem; font-size:0.82rem;">
+        <input type="tel" id="f-tel" placeholder="WhatsApp / Telefone *" style="width:100%; background:#0e1014; border:1px solid var(--carb-border); color:#fff; padding:0.45rem; margin-bottom:0.4rem; font-size:0.82rem;">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.4rem;">
+          <input type="text" id="f-cnpj" placeholder="CNPJ" style="background:#0e1014; border:1px solid var(--carb-border); color:#fff; padding:0.45rem; font-size:0.82rem;">
+          <input type="text" id="f-vendedor" placeholder="Vendedor" style="background:#0e1014; border:1px solid var(--carb-border); color:#fff; padding:0.45rem; font-size:0.82rem;">
+        </div>
+      </div>
+      <div style="display:flex; justify-content:space-between; font-weight:700; margin-bottom:0.8rem; font-size:0.88rem;">
+        <span>TOTAL ITENS:</span>
+        <span id="cart-total-count">0</span>
+      </div>
+      <button id="btn-whatsapp-send" class="carb-btn-primary" style="width:100%; justify-content:center; padding:0.8rem; cursor:pointer;">
+        DISPARAR COTAÇÃO NO WHATSAPP
+      </button>
+      <button id="btn-limpar" style="width:100%; text-align:center; background:none; border:none; margin-top:0.6rem; color:var(--carb-muted); font-size:0.75rem; cursor:pointer;">Limpar Lista</button>
+    </div>
+  </aside>
+
+  <div id="cart-feedback" style="display:none"></div>
+
+  <!-- COMPATIBILITY HOOKS -->
+  <div id="banner-slider" style="display:none"><div class="banner-slide"></div><button id="banner-prev"></button><button id="banner-next"></button><div class="banner-dots"><button class="banner-dot"></button></div></div>
+  <div id="categorias-grid" style="display:none"></div>
+  <div id="filtros-bar" style="display:none"></div>
+  <div id="produtos-section" style="display:none"></div>
+
+  <script src="js/produtos.js"></script>
+  <script src="js/carrinho.js"></script>
+  <script>
+    function renderProdutos(catId, termoBusca = '') {
+      const grid = document.getElementById('produtos-grid');
+      const empty = document.getElementById('nenhum-produto');
+      if (!grid) return;
+      let lista = PRODUTOS;
+      if (catId && catId !== 'todos') lista = lista.filter(p => p.categoria === catId);
+      if (termoBusca) {
+        const t = termoBusca.toLowerCase();
+        lista = lista.filter(p => p.nome.toLowerCase().includes(t) || p.referencia.toLowerCase().includes(t) || p.descricao.toLowerCase().includes(t));
+      }
+      if (lista.length === 0) { grid.innerHTML = ''; if (empty) empty.style.display = 'block'; return; }
+      if (empty) empty.style.display = 'none';
+      grid.innerHTML = lista.map(p => `
+        <div class="carb-card">
+          <div class="carb-card-img-wrap">
+            <span class="carb-card-sku">REF: ${p.referencia}</span>
+            <a href="produto.html?id=${p.id}"><img src="${p.imagens[0]}" alt="${p.nome}" class="carb-card-img" onerror="this.src='https://picsum.photos/seed/carb${p.id}/400/300'"></a>
+          </div>
+          <div class="carb-card-body">
+            <h3 class="carb-card-title"><a href="produto.html?id=${p.id}">${p.nome}</a></h3>
+            <p class="carb-card-desc">${p.descricao}</p>
+            <div class="carb-card-action">
+              <div class="carb-qty">
+                <button onclick="decrementarCard(${p.id})">−</button>
+                <input type="number" id="qty-${p.id}" value="1" min="1" readonly>
+                <button onclick="incrementarCard(${p.id})">+</button>
+              </div>
+              <button class="carb-add-btn" onclick="adicionarAoOrcamento(${p.id})">+ ADICIONAR</button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+    function initCategorias() {
+      const row = document.getElementById('carb-cats');
+      if (row) {
+        row.innerHTML = CATEGORIAS.map(c => `
+          <div class="carb-cat-pill ${c.id === 'todos' ? 'active' : ''}" onclick="filtrarPor('${c.id}')">
+            ${c.icone} ${c.nome}
+          </div>
+        `).join('');
+      }
+    }
+    function filtrarPor(catId) {
+      document.querySelectorAll('.carb-cat-pill').forEach(p => p.classList.toggle('active', p.getAttribute('onclick')?.includes(`'${catId}'`)));
+      renderProdutos(catId, document.getElementById('search-input')?.value || '');
+    }
+    function incrementarCard(id) { const i = document.getElementById(`qty-${id}`); if(i) i.value = parseInt(i.value)+1; }
+    function decrementarCard(id) { const i = document.getElementById(`qty-${id}`); if(i && parseInt(i.value)>1) i.value = parseInt(i.value)-1; }
+    function adicionarAoOrcamento(id) { const i = document.getElementById(`qty-${id}`); Carrinho.adicionar(id, parseInt(i?.value)||1); }
+    function initSearch() { document.getElementById('search-input')?.addEventListener('input', e => renderProdutos('todos', e.target.value)); }
+    document.addEventListener('DOMContentLoaded', () => { initCategorias(); renderProdutos('todos'); initSearch(); });
+  </script>
+</body>
+</html>

@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nfog Catálogo — Dark Mode</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* ── DARK MODE OVERRIDES ── */
+    :root {
+      --bg: #0d1117;
+      --bg-white: #161b22;
+      --bg-card: #161b22;
+      --primary: #00e676;
+      --primary-dark: #00c853;
+      --primary-light: #00e676;
+      --primary-pale: rgba(0,230,118,.08);
+      --primary-muted: rgba(0,230,118,.15);
+      --text: #e6edf3;
+      --text-light: #8b949e;
+      --text-muted: #6e7681;
+      --border: #30363d;
+      --shadow-sm: 0 1px 4px rgba(0,0,0,.4);
+      --shadow: 0 4px 16px rgba(0,0,0,.5);
+      --whatsapp: #25D366;
+    }
+
+    body { background: var(--bg); font-family: 'Space Grotesk', sans-serif; }
+
+    /* ── HEADER ── */
+    .site-header { background: rgba(13,17,23,.95); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+    .logo-icon { background: var(--primary); color: #000; font-weight: 900; }
+    .logo-text { color: var(--primary); }
+    .logo-text span { color: var(--text-muted); }
+    .header-search input { background: #21262d; border-color: var(--border); color: var(--text); }
+    .header-search input:focus { background: #161b22; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(0,230,118,.12); }
+    .nav-link { color: var(--text-light); }
+    .nav-link:hover { background: var(--primary-pale); color: var(--primary); }
+    .cart-toggle { background: var(--primary); color: #000; font-weight: 700; }
+    .cart-toggle:hover { background: var(--primary-dark); }
+
+    /* ── BANNER ── */
+    #banner-slider { height: clamp(280px, 50vw, 540px); background: #000; }
+    .banner-slide:nth-child(1) { background: linear-gradient(135deg, #000 0%, #0d1117 40%, #00230f 100%); }
+    .banner-slide:nth-child(2) { background: linear-gradient(135deg, #001a0a 0%, #0d2b18 50%, #001500 100%); }
+    .banner-slide:nth-child(3) { background: linear-gradient(135deg, #050e06 0%, #0d1117 50%, #002211 100%); }
+    .banner-slide::before {
+      background: repeating-linear-gradient(
+        90deg, transparent, transparent 40px, rgba(0,230,118,.03) 40px, rgba(0,230,118,.03) 41px
+      ), repeating-linear-gradient(
+        0deg, transparent, transparent 40px, rgba(0,230,118,.03) 40px, rgba(0,230,118,.03) 41px
+      );
+    }
+    .banner-tag { background: rgba(0,230,118,.15); border-color: rgba(0,230,118,.4); color: var(--primary); }
+    .banner-title { color: #fff; }
+    .banner-sub { color: #8b949e; }
+    .banner-btn { background: var(--primary); color: #000; font-weight: 800; }
+    .banner-btn:hover { background: var(--primary-dark); color: #000; transform: translateY(-3px); }
+    .banner-arrow { background: rgba(0,230,118,.1); border-color: rgba(0,230,118,.3); }
+    .banner-arrow:hover { background: rgba(0,230,118,.25); }
+    .banner-dot { background: rgba(255,255,255,.2); }
+    .banner-dot.active { background: var(--primary); }
+
+    /* ── CATEGORIAS ── */
+    #categorias { background: #0d1117; border-bottom: 1px solid var(--border); padding: 2rem 0; }
+    #categorias-grid { display: flex; gap: 1rem; overflow-x: auto; padding: 0 1.5rem; scrollbar-width: none; flex-wrap: nowrap; }
+    #categorias-grid::-webkit-scrollbar { display: none; }
+    .categoria-card { background: #21262d; border-color: var(--border); border-radius: 50px; flex-direction: row; gap: .5rem; white-space: nowrap; padding: .7rem 1.4rem; min-width: fit-content; }
+    .categoria-card:hover, .categoria-card.active { background: var(--primary-pale); border-color: var(--primary); color: var(--primary); transform: none; }
+    .categoria-icone { font-size: 1.2rem; }
+    .categoria-nome { color: var(--text-light); font-size: .85rem; font-weight: 600; }
+    .categoria-card.active .categoria-nome, .categoria-card:hover .categoria-nome { color: var(--primary); }
+    .section-tag { background: rgba(0,230,118,.1); color: var(--primary); }
+    .section-title { color: var(--primary); }
+    .section-sub { color: var(--text-light); }
+
+    /* ── PRODUTOS ── */
+    #produtos-section { background: var(--bg); }
+    .filtro-btn { background: #21262d; border-color: var(--border); color: var(--text-light); }
+    .filtro-btn:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-pale); }
+    .filtro-btn.active { background: var(--primary); border-color: var(--primary); color: #000; font-weight: 700; }
+
+    /* Produto card dark */
+    .produto-card { background: #161b22; border: 1px solid #30363d; box-shadow: none; }
+    .produto-card:hover { border-color: var(--primary); box-shadow: 0 0 0 1px var(--primary), 0 8px 32px rgba(0,230,118,.12); transform: translateY(-4px); }
+    .produto-ref { color: var(--text-muted); }
+    .produto-nome a { color: var(--primary); }
+    .produto-desc { color: var(--text-light); }
+    .badge-destaque { background: var(--primary); color: #000; font-weight: 800; }
+    .qty-btn { background: #21262d; border-color: var(--border); color: var(--text); }
+    .qty-btn:hover { background: var(--primary-pale); border-color: var(--primary); color: var(--primary); }
+    .qty-input { background: #21262d; border-color: var(--border); color: var(--text); }
+    .qty-unit { color: var(--text-muted); }
+    .btn-add-cart { background: var(--primary); color: #000; font-weight: 700; }
+    .btn-add-cart:hover { background: var(--primary-dark); box-shadow: 0 4px 20px rgba(0,230,118,.35); }
+    .btn-ver-mais { color: var(--primary); }
+    #nenhum-produto { color: var(--text-light); }
+
+    /* ── FOOTER ── */
+    .site-footer { background: #010409; border-top: 1px solid var(--border); margin-top: 0; }
+    .footer-brand .logo-text { color: var(--primary); }
+    .footer-bottom { border-color: var(--border); color: var(--text-muted); }
+
+    /* ── DRAWER keep dark ── */
+    .drawer-header { background: #161b22; border-bottom: 1px solid var(--border); }
+    .cart-item { background: #21262d; border-color: var(--border); }
+    .cart-item-name { color: var(--text); }
+    #cart-drawer { background: #0d1117; }
+    #cart-items-list { background: #0d1117; }
+    #cart-footer { background: #0d1117; border-color: var(--border); }
+    .orcamento-form { background: #161b22; border-color: var(--border); }
+    .form-group label { color: var(--text-light); }
+    .form-group input { background: #21262d; border-color: var(--border); color: var(--text); }
+    .form-group input:focus { border-color: var(--primary); box-shadow: 0 0 0 2px rgba(0,230,118,.12); }
+    .cart-summary { color: var(--text-light); }
+    .cart-summary strong { color: var(--text); }
+    .opt { background: #21262d; border-color: var(--border); color: var(--text-muted); }
+    .btn-limpar { color: var(--text-muted); }
+    #cart-empty { color: var(--text-light); }
+    .cart-qty-input { background: #21262d; border-color: var(--border); color: var(--text); }
+
+    /* Glow tag */
+    .neon-tag {
+      display: inline-flex; align-items: center; gap: .4rem;
+      font-size: .75rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+      color: var(--primary); padding: .35rem 1rem; border: 1px solid rgba(0,230,118,.3);
+      border-radius: 50px; background: rgba(0,230,118,.06);
+      margin-bottom: 3rem;
+    }
+    .neon-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--primary); box-shadow: 0 0 8px var(--primary); animation: blink 1.5s ease-in-out infinite; }
+    @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: .3; } }
+
+    #produtos-section > .container > .section-header::before {
+      content: '';
+      display: block;
+      width: 40px;
+      height: 3px;
+      background: var(--primary);
+      margin: 0 auto .5rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="index2.html" class="logo">
+        <div class="logo-icon">N</div>
+        <div class="logo-text">Nfog Catálogo<span>Dark Mode</span></div>
+      </a>
+      <div class="header-search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="search" id="search-input" placeholder="Buscar produto...">
+      </div>
+      <nav class="header-nav">
+        <a href="index.html" class="nav-link">← Original</a>
+        <button class="cart-toggle">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+          Orçamento
+          <span class="cart-badge">0</span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- BANNER -->
+  <section id="banner-slider">
+    <div class="banner-slide">
+      <div class="banner-content">
+        <span class="banner-tag">⚡ Dark Mode</span>
+        <h1 class="banner-title">Tecnologia e qualidade<br>no próximo nível</h1>
+        <p class="banner-sub">Catálogo completo de produtos. Monte seu orçamento e envie pelo WhatsApp.</p>
+        <a href="#produtos-section" class="banner-btn">Ver produtos →</a>
+      </div>
+    </div>
+    <div class="banner-slide">
+      <div class="banner-content">
+        <span class="banner-tag">🔋 Equipamentos</span>
+        <h1 class="banner-title">Equipamentos de alta performance</h1>
+        <p class="banner-sub">Soluções robustas para todos os portes de negócio.</p>
+        <a href="#categorias" class="banner-btn">Explorar →</a>
+      </div>
+    </div>
+    <div class="banner-slide">
+      <div class="banner-content">
+        <span class="banner-tag">💬 WhatsApp</span>
+        <h1 class="banner-title">Orçamento rápido<br>direto no WhatsApp</h1>
+        <p class="banner-sub">Selecione, informe a quantidade e solicite em segundos.</p>
+        <a href="#produtos-section" class="banner-btn">Montar orçamento →</a>
+      </div>
+    </div>
+    <button id="banner-prev" class="banner-arrow prev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18"><polyline points="15 18 9 12 15 6"/></svg></button>
+    <button id="banner-next" class="banner-arrow next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18"><polyline points="9 18 15 12 9 6"/></svg></button>
+    <div class="banner-dots">
+      <button class="banner-dot"></button>
+      <button class="banner-dot"></button>
+      <button class="banner-dot"></button>
+    </div>
+  </section>
+
+  <!-- CATEGORIAS -->
+  <section id="categorias">
+    <div class="container">
+      <div class="section-header">
+        <div class="neon-tag"><span class="neon-dot"></span> Navegue por categoria</div>
+        <h2 class="section-title">Nossas Categorias</h2>
+      </div>
+    </div>
+    <div id="categorias-grid"></div>
+  </section>
+
+  <!-- PRODUTOS -->
+  <section id="produtos-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Catálogo</span>
+        <h2 class="section-title">Nossos Produtos</h2>
+        <p class="section-sub">Adicione ao orçamento e envie pelo WhatsApp</p>
+      </div>
+      <div id="filtros-bar"></div>
+      <div id="produtos-grid"></div>
+      <div id="nenhum-produto"><p>Nenhum produto encontrado.</p><button class="btn-primary" onclick="filtrarPor('todos')">Ver todos</button></div>
+    </div>
+  </section>
+
+  <!-- CART DRAWER -->
+  <div id="overlay"></div>
+  <aside id="cart-drawer">
+    <div class="drawer-header">
+      <div class="drawer-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg> Meu Orçamento</div>
+      <button id="cart-close">✕</button>
+    </div>
+    <div id="cart-empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="56" height="56"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg><p>Seu orçamento está vazio.</p></div>
+    <div id="cart-items-list"></div>
+    <div id="cart-footer">
+      <div class="orcamento-form">
+        <h4 class="orcamento-form-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Seus Dados</h4>
+        <div class="form-row"><div class="form-group"><label for="f-nome">Nome <span class="req">*</span></label><input type="text" id="f-nome" placeholder="Seu nome completo" autocomplete="name"><span class="form-error-msg">Campo obrigatório</span></div></div>
+        <div class="form-row"><div class="form-group"><label for="f-tel">Telefone <span class="req">*</span></label><input type="tel" id="f-tel" placeholder="(00) 00000-0000" inputmode="numeric"><span class="form-error-msg">Campo obrigatório</span></div></div>
+        <div class="form-row form-row--2col">
+          <div class="form-group"><label for="f-cnpj">CNPJ <span class="opt">opcional</span></label><input type="text" id="f-cnpj" placeholder="00.000.000/0001-00" inputmode="numeric"></div>
+          <div class="form-group"><label for="f-vendedor">Vendedor <span class="opt">opcional</span></label><input type="text" id="f-vendedor" placeholder="Nome do vendedor"></div>
+        </div>
+      </div>
+      <div class="cart-summary"><span>Total:</span><strong><span id="cart-total-count">0</span> itens</strong></div>
+      <button class="btn-whatsapp" id="btn-whatsapp-send"><svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg> Solicitar Orçamento</button>
+      <button class="btn-limpar" id="btn-limpar">Limpar orçamento</button>
+    </div>
+  </aside>
+  <div id="cart-feedback"></div>
+
+  <a href="https://wa.me/5545999332563" target="_blank" class="whatsapp-float"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg></a>
+
+  <!-- FOOTER -->
+  <footer class="site-footer" style="margin-top:4rem">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo"><div class="logo-icon">N</div><div class="logo-text">Nfog Catálogo<span>Dark Mode Edition</span></div></div>
+        <p class="footer-desc">Catálogo online. Monte seu orçamento e solicite via WhatsApp.</p>
+      </div>
+      <div class="footer-col"><h5>Categorias</h5><ul>
+        <li><a href="#" onclick="filtrarPor('linha-a');return false;">🌱 Linha A</a></li>
+        <li><a href="#" onclick="filtrarPor('linha-b');return false;">⚗️ Linha B</a></li>
+        <li><a href="#" onclick="filtrarPor('equipamentos');return false;">⚙️ Equipamentos</a></li>
+        <li><a href="#" onclick="filtrarPor('insumos');return false;">📦 Insumos</a></li>
+      </ul></div>
+      <div class="footer-col"><h5>Layouts</h5><ul>
+        <li><a href="index.html">Layout 1 — Original</a></li>
+        <li><a href="index2.html">Layout 2 — Dark Mode</a></li>
+        <li><a href="index3.html">Layout 3 — Dashboard</a></li>
+        <li><a href="index4.html">Layout 4 — Editorial</a></li>
+        <li><a href="index5.html">Layout 5 — Colorido</a></li>
+        <li><a href="index6.html">Layout 6 — Glass</a></li>
+      </ul></div>
+    </div>
+    <div class="footer-bottom"><p>© 2025 Nfog Catálogo.</p></div>
+  </footer>
+
+  <script src="js/produtos.js"></script>
+  <script src="js/carrinho.js"></script>
+  <script src="js/home.js"></script>
+</body>
+</html>

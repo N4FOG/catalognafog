@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Rawell Química — Catálogo Mobile App</title>
+  <meta name="theme-color" content="#059669">
+  <link rel="stylesheet" href="css/template30-app-mobile-first.css">
+</head>
+<body>
+
+  <!-- APP HEADER -->
+  <header class="mob-header">
+    <div class="mob-wrap mob-nav">
+      <div class="mob-brand-group">
+        <a href="index30.html" class="mob-logo">
+          <span>🌿</span> Rawell
+        </a>
+        <span class="mob-logo-badge">2026</span>
+      </div>
+
+      <div class="mob-search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="search" id="search-input" placeholder="Buscar defensivos, desinfestantes..." autocomplete="off">
+      </div>
+
+      <button class="mob-header-cart-btn cart-toggle" aria-label="Abrir Orçamento">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        <span class="mob-header-cart-badge cart-badge">0</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="mob-wrap">
+
+    <!-- ULTRA-SLIM WIDE HERO BANNER (ESTILO CRO PRO) -->
+    <section class="mob-wide-banner">
+      <div class="mob-wide-content">
+        <span class="mob-wide-tag">🔥 CONDIÇÕES ESPECIAIS DE ATACADO</span>
+        <h1 class="mob-wide-title">Monte seu pedido online e receba a <span>melhor proposta no WhatsApp</span></h1>
+        <p class="mob-wide-desc">Selecione os produtos, ajuste as quantidades e envie sua lista com 1 clique para nossa equipe técnica.</p>
+      </div>
+    </section>
+
+    <!-- STORIES CATEGORIES -->
+    <section class="mob-stories-section">
+      <div class="mob-stories-header">
+        <span class="mob-stories-title">Categorias</span>
+        <span id="categoria-atual-txt" style="font-size:0.75rem; font-weight:700; color:var(--mob-primary);">Todos (32)</span>
+      </div>
+      <div class="mob-stories" id="mob-stories"></div>
+    </section>
+
+    <!-- FEED HEADER -->
+    <div class="mob-feed-header">
+      <h2 class="mob-feed-title" id="feed-title">Catálogo Completo</h2>
+      <span class="mob-feed-count" id="feed-count">32 produtos</span>
+    </div>
+
+    <!-- PRODUCTS GRID -->
+    <div class="mob-grid" id="produtos-grid"></div>
+
+    <div id="nenhum-produto" style="display:none; text-align:center; padding:3.5rem 1rem; background:#fff; border-radius:16px; margin:2rem 0;">
+      <div style="font-size:2.5rem; margin-bottom:0.5rem;">🔍</div>
+      <h3 style="font-size:1rem; margin-bottom:0.3rem;">Nenhum produto encontrado</h3>
+      <p style="font-size:0.8rem; color:var(--mob-muted); margin-bottom:1rem;">Tente pesquisar com outros termos ou selecione outra categoria.</p>
+      <button onclick="filtrarPor('todos')" class="mob-add-btn" style="width:auto; margin:0 auto; padding:0.5rem 1.2rem;">
+        Ver Todos os Produtos
+      </button>
+    </div>
+
+  </main>
+
+  <!-- FLOATING BOTTOM APP DOCK (FIXED) -->
+  <div class="mob-dock-container">
+    <div class="mob-dock">
+      <div class="mob-dock-info">
+        <div class="mob-dock-icon">🛒</div>
+        <div class="mob-dock-text">
+          <strong><span id="dock-count">0</span> itens no orçamento</strong>
+          <span>Toque para revisar</span>
+        </div>
+      </div>
+      <button class="mob-dock-btn cart-toggle">
+        <span>Cotar</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- CART DRAWER / MEU ORÇAMENTO -->
+  <div class="mob-overlay" id="overlay"></div>
+  <aside class="mob-drawer" id="cart-drawer">
+    <div class="mob-drawer-header">
+      <div class="mob-drawer-title">
+        <span>📋</span> Meu Orçamento
+      </div>
+      <button class="mob-drawer-close" id="cart-close" aria-label="Fechar">✕</button>
+    </div>
+
+    <!-- Empty State -->
+    <div id="cart-empty" style="display:none;">
+      <div style="font-size:3.2rem; margin-bottom:0.6rem;">🛒</div>
+      <h4 style="font-size:1.05rem; font-weight:800; color:var(--mob-text); margin-bottom:0.4rem;">Sua lista está vazia</h4>
+      <p style="font-size:0.85rem; max-width:260px; line-height:1.5;">Adicione produtos do catálogo para gerar sua proposta via WhatsApp.</p>
+    </div>
+
+    <!-- Items List -->
+    <div id="cart-items-list"></div>
+
+    <!-- Drawer Footer & Form -->
+    <div id="cart-footer">
+      <div class="orcamento-form">
+        <div class="orcamento-form-title">
+          <span>👤</span> Dados para Cotação
+        </div>
+        <div class="form-group">
+          <label for="f-nome">Nome Completo *</label>
+          <input type="text" id="f-nome" placeholder="Digite seu nome completo" required>
+        </div>
+        <div class="form-group">
+          <label for="f-tel">WhatsApp com DDD *</label>
+          <input type="tel" id="f-tel" placeholder="(00) 00000-0000" required>
+        </div>
+        <div class="form-row-2">
+          <div class="form-group">
+            <label for="f-cnpj">CNPJ / CPF</label>
+            <input type="text" id="f-cnpj" placeholder="Opcional">
+          </div>
+          <div class="form-group">
+            <label for="f-vendedor">Vendedor</label>
+            <input type="text" id="f-vendedor" placeholder="Nome">
+          </div>
+        </div>
+      </div>
+
+      <div class="cart-total-row">
+        <span>Total de Produtos:</span>
+        <span class="cart-total-badge" id="cart-total-count">0</span>
+      </div>
+
+      <button id="btn-whatsapp-send">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+        <span>Solicitar Orçamento no WhatsApp</span>
+      </button>
+      <button id="btn-limpar">✕ Limpar Lista de Orçamento</button>
+    </div>
+  </aside>
+
+  <div id="cart-feedback"></div>
+
+  <!-- COMPATIBILITY HOOKS -->
+  <div id="banner-slider" style="display:none"><div class="banner-slide"></div><button id="banner-prev"></button><button id="banner-next"></button><div class="banner-dots"><button class="banner-dot"></button></div></div>
+  <div id="categorias-grid" style="display:none"></div>
+  <div id="filtros-bar" style="display:none"></div>
+  <div id="produtos-section" style="display:none"></div>
+
+  <script src="js/produtos.js"></script>
+  <script src="js/carrinho.js"></script>
+  <script>
+    let categoriaSelecionada = 'todos';
+
+    function renderProdutos(catId, termoBusca = '') {
+      const grid = document.getElementById('produtos-grid');
+      const empty = document.getElementById('nenhum-produto');
+      const feedTitle = document.getElementById('feed-title');
+      const feedCount = document.getElementById('feed-count');
+      const catTxt = document.getElementById('categoria-atual-txt');
+
+      if (!grid) return;
+
+      let lista = PRODUTOS;
+      if (catId && catId !== 'todos') {
+        lista = lista.filter(p => p.categoria === catId);
+      }
+
+      if (termoBusca) {
+        const t = termoBusca.toLowerCase();
+        lista = lista.filter(p =>
+          p.nome.toLowerCase().includes(t) ||
+          p.referencia.toLowerCase().includes(t) ||
+          p.descricao.toLowerCase().includes(t)
+        );
+      }
+
+      const catObj = CATEGORIAS.find(c => c.id === catId);
+      if (feedTitle) feedTitle.textContent = catObj ? catObj.nome : 'Catálogo Completo';
+      if (feedCount) feedCount.textContent = `${lista.length} produto${lista.length !== 1 ? 's' : ''}`;
+      if (catTxt) catTxt.textContent = catObj ? `${catObj.nome} (${lista.length})` : `Todos (${lista.length})`;
+
+      if (lista.length === 0) {
+        grid.innerHTML = '';
+        if (empty) empty.style.display = 'block';
+        return;
+      }
+      if (empty) empty.style.display = 'none';
+
+      grid.innerHTML = lista.map(p => `
+        <article class="mob-card">
+          <a href="produto.html?id=${p.id}" class="mob-card-img-link">
+            ${p.destaque ? '<span class="mob-badge-feat">★ Destaque</span>' : ''}
+            <img src="${p.imagens[0]}" alt="${p.nome}" class="mob-card-img" loading="lazy"
+              onerror="this.src='https://picsum.photos/seed/raw${p.id}/400/300'">
+          </a>
+          <div class="mob-card-body">
+            <span class="mob-card-sku">Ref: ${p.referencia}</span>
+            <h3 class="mob-card-title"><a href="produto.html?id=${p.id}">${p.nome}</a></h3>
+            <p class="mob-card-desc">${p.descricao}</p>
+            <div class="mob-card-row">
+              <div class="mob-qty">
+                <button class="mob-qty-btn" onclick="decrementarCard(${p.id})">−</button>
+                <input type="number" id="qty-${p.id}" value="1" min="1" class="mob-qty-input" readonly>
+                <button class="mob-qty-btn" onclick="incrementarCard(${p.id})">+</button>
+              </div>
+              <button class="mob-add-btn" onclick="adicionarAoOrcamento(${p.id})">
+                <span>+ Cotar</span>
+              </button>
+            </div>
+          </div>
+        </article>
+      `).join('');
+    }
+
+    function initCategorias() {
+      const row = document.getElementById('mob-stories');
+      if (!row) return;
+
+      row.innerHTML = CATEGORIAS.map(c => `
+        <div class="mob-story-item ${c.id === 'todos' ? 'active' : ''}"
+             data-cat="${c.id}"
+             onclick="filtrarPor('${c.id}')">
+          <div class="mob-story-circle">${c.icone}</div>
+          <div class="mob-story-name">${c.nome}</div>
+        </div>
+      `).join('');
+    }
+
+    function filtrarPor(catId) {
+      categoriaSelecionada = catId;
+      document.querySelectorAll('.mob-story-item').forEach(item => {
+        item.classList.toggle('active', item.dataset.cat === catId);
+      });
+      renderProdutos(catId, document.getElementById('search-input')?.value || '');
+    }
+
+    function incrementarCard(id) {
+      const i = document.getElementById(`qty-${id}`);
+      if (i) i.value = parseInt(i.value) + 1;
+    }
+
+    function decrementarCard(id) {
+      const i = document.getElementById(`qty-${id}`);
+      if (i && parseInt(i.value) > 1) i.value = parseInt(i.value) - 1;
+    }
+
+    function adicionarAoOrcamento(id) {
+      const i = document.getElementById(`qty-${id}`);
+      const qty = parseInt(i?.value) || 1;
+      Carrinho.adicionar(id, qty);
+      updateDock();
+    }
+
+    function updateDock() {
+      const d = document.getElementById('dock-count');
+      if (d) d.textContent = Carrinho.total();
+    }
+
+    function initSearch() {
+      const input = document.getElementById('search-input');
+      if (input) {
+        input.addEventListener('input', e => {
+          renderProdutos(categoriaSelecionada, e.target.value.trim());
+        });
+      }
+    }
+
+    // Sincroniza o dock flutuante quando o carrinho é alterado
+    window.addEventListener('storage', updateDock);
+
+    document.addEventListener('DOMContentLoaded', () => {
+      initCategorias();
+      renderProdutos('todos');
+      initSearch();
+      updateDock();
+    });
+  </script>
+</body>
+</html>

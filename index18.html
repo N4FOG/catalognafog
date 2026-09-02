@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nfog Catálogo — Nordic Hygge & Organic</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    :root {
+      --nord-bg: #f5efe6;
+      --nord-card: #fdfbf7;
+      --nord-terracotta: #c86446;
+      --nord-terracotta-pale: #f6e6e0;
+      --nord-pine: #364e3f;
+      --nord-pine-pale: #e7ede8;
+      --nord-text: #242d27;
+      --nord-muted: #748078;
+      --nord-border: #e3dacd;
+      --radius-nord: 20px;
+      --whatsapp: #25D366;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--nord-bg);
+      color: var(--nord-text);
+      line-height: 1.55;
+    }
+    h1, h2, h3, .nord-brand, .nord-hero-title { font-family: 'Fraunces', serif; }
+    a { text-decoration: none; color: inherit; }
+    button { font-family: inherit; cursor: pointer; }
+    .nord-wrap { max-width: 1240px; margin: 0 auto; padding: 0 1.5rem; }
+
+    /* HEADER */
+    .nord-header {
+      background: rgba(245, 239, 230, 0.95);
+      backdrop-filter: blur(12px);
+      padding: 1.2rem 0; position: sticky; top: 0; z-index: 1000;
+      border-bottom: 1px solid var(--nord-border);
+    }
+    .nord-header-inner {
+      display: flex; align-items: center; justify-content: space-between; gap: 1.5rem;
+    }
+    .nord-brand {
+      font-size: 1.45rem; font-weight: 700; color: var(--nord-pine);
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .nord-search {
+      flex: 1; max-width: 440px; position: relative;
+    }
+    .nord-search input {
+      width: 100%; background: #fff; border: 1px solid var(--nord-border);
+      border-radius: 50px; padding: 0.65rem 1rem 0.65rem 2.6rem;
+      font-family: inherit; font-size: 0.9rem; color: var(--nord-text);
+    }
+    .nord-search input:focus {
+      outline: none; border-color: var(--nord-pine); box-shadow: 0 0 0 3px var(--nord-pine-pale);
+    }
+    .nord-search svg { position: absolute; left: 0.9rem; top: 50%; transform: translateY(-50%); color: var(--nord-muted); }
+
+    .nord-cart-btn {
+      background: var(--nord-pine); color: #fff; border: none;
+      padding: 0.65rem 1.4rem; border-radius: 50px; font-weight: 600; font-size: 0.9rem;
+      display: flex; align-items: center; gap: 0.5rem; transition: 0.2s;
+    }
+    .nord-cart-btn:hover { background: var(--nord-terracotta); }
+
+    /* HERO */
+    .nord-hero {
+      padding: 3rem 0;
+      display: grid; grid-template-columns: 1.2fr 1fr; gap: 3rem; align-items: center;
+    }
+    .nord-hero-badge {
+      display: inline-block; background: var(--nord-terracotta-pale); color: var(--nord-terracotta);
+      font-size: 0.8rem; font-weight: 700; padding: 0.35rem 0.9rem; border-radius: 30px; margin-bottom: 1.2rem;
+    }
+    .nord-hero-title {
+      font-size: clamp(2.4rem, 4.5vw, 3.8rem); line-height: 1.15; color: var(--nord-pine);
+      margin-bottom: 1rem;
+    }
+    .nord-hero-title em { font-style: italic; color: var(--nord-terracotta); }
+    .nord-hero-desc { color: var(--nord-muted); font-size: 1.05rem; line-height: 1.7; margin-bottom: 2rem; max-width: 480px; }
+    .nord-hero-btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: var(--nord-terracotta); color: #fff; padding: 0.85rem 2rem;
+      border-radius: 50px; font-weight: 700; font-size: 0.95rem; transition: 0.2s;
+    }
+    .nord-hero-btn:hover { background: #b05337; transform: translateY(-2px); }
+
+    .nord-hero-visual {
+      background: var(--nord-card); border: 1px solid var(--nord-border);
+      border-radius: 30px; padding: 2.5rem; text-align: center;
+      box-shadow: 0 10px 30px rgba(54, 78, 63, 0.06);
+    }
+
+    /* CATEGORIES */
+    .nord-cats {
+      display: flex; gap: 0.75rem; overflow-x: auto; padding-bottom: 1rem; margin-bottom: 2.5rem;
+      scrollbar-width: none;
+    }
+    .nord-cats::-webkit-scrollbar { display: none; }
+    .nord-cat-pill {
+      background: #fff; border: 1px solid var(--nord-border); border-radius: 40px;
+      padding: 0.6rem 1.3rem; font-weight: 600; font-size: 0.88rem; color: var(--nord-muted);
+      white-space: nowrap; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; transition: 0.15s;
+    }
+    .nord-cat-pill:hover, .nord-cat-pill.active {
+      background: var(--nord-pine); color: #fff; border-color: var(--nord-pine);
+    }
+
+    /* GRID */
+    .nord-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+      gap: 1.8rem; margin-bottom: 5rem;
+    }
+    .nord-card {
+      background: var(--nord-card); border: 1px solid var(--nord-border);
+      border-radius: var(--radius-nord); overflow: hidden; display: flex; flex-direction: column;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.03); transition: 0.25s;
+    }
+    .nord-card:hover {
+      transform: translateY(-5px); box-shadow: 0 15px 35px rgba(54, 78, 63, 0.1);
+      border-color: #c9c0b1;
+    }
+    .nord-card-img { width: 100%; height: 210px; object-fit: cover; }
+    .nord-card-body { padding: 1.5rem; display: flex; flex-direction: column; flex: 1; }
+    .nord-card-ref { font-size: 0.75rem; font-weight: 700; color: var(--nord-terracotta); text-transform: uppercase; margin-bottom: 0.3rem; }
+    .nord-card-title { font-size: 1.25rem; font-weight: 700; color: var(--nord-pine); margin-bottom: 0.4rem; }
+    .nord-card-desc { font-size: 0.88rem; color: var(--nord-muted); line-height: 1.6; margin-bottom: 1.5rem; flex: 1; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .nord-card-footer { display: flex; align-items: center; gap: 0.5rem; margin-top: auto; }
+    .nord-qty {
+      display: flex; align-items: center; background: #fff; border: 1px solid var(--nord-border); border-radius: 30px;
+    }
+    .nord-qty button { width: 28px; height: 32px; background: none; border: none; font-size: 1rem; color: var(--nord-text); }
+    .nord-qty input { width: 32px; background: none; border: none; text-align: center; font-weight: 700; font-size: 0.85rem; }
+    .nord-add-btn {
+      flex: 1; background: var(--nord-pine-pale); color: var(--nord-pine); border: none;
+      border-radius: 30px; padding: 0.6rem; font-weight: 700; font-size: 0.85rem; transition: 0.15s;
+    }
+    .nord-add-btn:hover { background: var(--nord-pine); color: #fff; }
+
+    @media (max-width: 768px) {
+      .nord-hero { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="nord-header">
+    <div class="nord-wrap nord-header-inner">
+      <a href="index18.html" class="nord-brand">
+        <span>🌿</span> Nfog Studio
+      </a>
+      <div class="nord-search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="search" id="search-input" placeholder="Procurar produtos no catálogo...">
+      </div>
+      <button class="nord-cart-btn cart-toggle">
+        <span>Orçamento</span>
+        <span class="cart-badge" style="background:#fff; color:#000; border-radius:10px; padding:0.1rem 0.4rem; font-size:0.75rem;">0</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="nord-wrap">
+    <section class="nord-hero">
+      <div>
+        <span class="nord-hero-badge">✦ Curadoria Orgânica &amp; Precisa</span>
+        <h1 class="nord-hero-title">A união perfeita entre <em>simplicidade</em> &amp; eficiência.</h1>
+        <p class="nord-hero-desc">Explore itens selecionados para impulsionar seus resultados com elegância, transparência e cotação direta.</p>
+        <a href="#catalogo" class="nord-hero-btn">Descobrir Catálogo ↓</a>
+      </div>
+      <div class="nord-hero-visual">
+        <div style="font-size:3.5rem; margin-bottom:0.5rem;">🌾🪵🌿</div>
+        <h3 style="font-size:1.3rem; color:var(--nord-pine); margin-bottom:0.4rem;">Feito para Durar</h3>
+        <p style="color:var(--nord-muted); font-size:0.9rem;">Produtos projetados com materiais nobres e alta performance.</p>
+      </div>
+    </section>
+
+    <section id="catalogo">
+      <div class="nord-cats" id="nord-cats"></div>
+      <div class="nord-grid" id="produtos-grid"></div>
+      <div id="nenhum-produto" style="display:none; text-align:center; padding:4rem; background:#fff; border-radius:20px;">
+        <p style="color:var(--nord-muted);">Nenhum produto encontrado com estes filtros.</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- CART DRAWER -->
+  <div id="overlay" style="position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:1999; opacity:0; pointer-events:none; transition:0.2s;"></div>
+  <aside id="cart-drawer" style="position:fixed; top:0; right:0; height:100%; width:min(420px, 100vw); background:#fff; border-left:1px solid var(--nord-border); z-index:2000; transform:translateX(100%); transition:0.3s; display:flex; flex-direction:column;">
+    <div style="padding:1.5rem; border-bottom:1px solid var(--nord-border); display:flex; justify-content:space-between; align-items:center;">
+      <h3 style="font-family:'Fraunces',serif; font-size:1.3rem; color:var(--nord-pine);">Itens do Orçamento</h3>
+      <button id="cart-close" style="background:none; border:none; font-size:1.2rem; cursor:pointer;">✕</button>
+    </div>
+    <div id="cart-empty" style="padding:3rem 1.5rem; text-align:center; color:var(--nord-muted);">
+      <p>Nenhum item selecionado.</p>
+    </div>
+    <div id="cart-items-list" style="flex:1; overflow-y:auto; padding:1.25rem; display:flex; flex-direction:column; gap:0.75rem;"></div>
+    <div id="cart-footer" style="padding:1.5rem; border-top:1px solid var(--nord-border); background:#fcfaf7;">
+      <div class="orcamento-form" style="background:#fff; border:1px solid var(--nord-border); border-radius:12px; padding:1rem; margin-bottom:1rem;">
+        <div style="font-weight:700; font-size:0.8rem; color:var(--nord-pine); margin-bottom:0.6rem;">SEUS DADOS DE CONTATO</div>
+        <input type="text" id="f-nome" placeholder="Nome Completo *" style="width:100%; border:1px solid var(--nord-border); border-radius:6px; padding:0.5rem; margin-bottom:0.4rem; font-size:0.85rem;">
+        <input type="tel" id="f-tel" placeholder="WhatsApp *" style="width:100%; border:1px solid var(--nord-border); border-radius:6px; padding:0.5rem; margin-bottom:0.4rem; font-size:0.85rem;">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.4rem;">
+          <input type="text" id="f-cnpj" placeholder="CNPJ" style="border:1px solid var(--nord-border); border-radius:6px; padding:0.5rem; font-size:0.85rem;">
+          <input type="text" id="f-vendedor" placeholder="Vendedor" style="border:1px solid var(--nord-border); border-radius:6px; padding:0.5rem; font-size:0.85rem;">
+        </div>
+      </div>
+      <div style="display:flex; justify-content:space-between; font-weight:700; margin-bottom:0.8rem; font-size:0.9rem;">
+        <span>Total:</span>
+        <span id="cart-total-count">0</span>
+      </div>
+      <button id="btn-whatsapp-send" class="nord-hero-btn" style="width:100%; justify-content:center; border:none; cursor:pointer;">
+        Solicitar via WhatsApp
+      </button>
+      <button id="btn-limpar" style="width:100%; text-align:center; background:none; border:none; margin-top:0.5rem; color:var(--nord-muted); font-size:0.75rem; cursor:pointer;">Limpar Lista</button>
+    </div>
+  </aside>
+
+  <div id="cart-feedback" style="display:none"></div>
+
+  <!-- COMPATIBILITY HOOKS -->
+  <div id="banner-slider" style="display:none"><div class="banner-slide"></div><button id="banner-prev"></button><button id="banner-next"></button><div class="banner-dots"><button class="banner-dot"></button></div></div>
+  <div id="categorias-grid" style="display:none"></div>
+  <div id="filtros-bar" style="display:none"></div>
+  <div id="produtos-section" style="display:none"></div>
+
+  <script src="js/produtos.js"></script>
+  <script src="js/carrinho.js"></script>
+  <script>
+    function renderProdutos(catId, termoBusca = '') {
+      const grid = document.getElementById('produtos-grid');
+      const empty = document.getElementById('nenhum-produto');
+      if (!grid) return;
+      let lista = PRODUTOS;
+      if (catId && catId !== 'todos') lista = lista.filter(p => p.categoria === catId);
+      if (termoBusca) {
+        const t = termoBusca.toLowerCase();
+        lista = lista.filter(p => p.nome.toLowerCase().includes(t) || p.referencia.toLowerCase().includes(t) || p.descricao.toLowerCase().includes(t));
+      }
+      if (lista.length === 0) { grid.innerHTML = ''; if (empty) empty.style.display = 'block'; return; }
+      if (empty) empty.style.display = 'none';
+      grid.innerHTML = lista.map(p => `
+        <div class="nord-card">
+          <a href="produto.html?id=${p.id}"><img src="${p.imagens[0]}" alt="${p.nome}" class="nord-card-img" onerror="this.src='https://picsum.photos/seed/nord${p.id}/400/300'"></a>
+          <div class="nord-card-body">
+            <span class="nord-card-ref">Ref: ${p.referencia}</span>
+            <h3 class="nord-card-title"><a href="produto.html?id=${p.id}">${p.nome}</a></h3>
+            <p class="nord-card-desc">${p.descricao}</p>
+            <div class="nord-card-footer">
+              <div class="nord-qty">
+                <button onclick="decrementarCard(${p.id})">−</button>
+                <input type="number" id="qty-${p.id}" value="1" min="1" readonly>
+                <button onclick="incrementarCard(${p.id})">+</button>
+              </div>
+              <button class="nord-add-btn" onclick="adicionarAoOrcamento(${p.id})">+ Adicionar</button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+    function initCategorias() {
+      const row = document.getElementById('nord-cats');
+      if (row) {
+        row.innerHTML = CATEGORIAS.map(c => `
+          <div class="nord-cat-pill ${c.id === 'todos' ? 'active' : ''}" onclick="filtrarPor('${c.id}')">
+            ${c.icone} ${c.nome}
+          </div>
+        `).join('');
+      }
+    }
+    function filtrarPor(catId) {
+      document.querySelectorAll('.nord-cat-pill').forEach(p => p.classList.toggle('active', p.getAttribute('onclick')?.includes(`'${catId}'`)));
+      renderProdutos(catId, document.getElementById('search-input')?.value || '');
+    }
+    function incrementarCard(id) { const i = document.getElementById(`qty-${id}`); if(i) i.value = parseInt(i.value)+1; }
+    function decrementarCard(id) { const i = document.getElementById(`qty-${id}`); if(i && parseInt(i.value)>1) i.value = parseInt(i.value)-1; }
+    function adicionarAoOrcamento(id) { const i = document.getElementById(`qty-${id}`); Carrinho.adicionar(id, parseInt(i?.value)||1); }
+    function initSearch() { document.getElementById('search-input')?.addEventListener('input', e => renderProdutos('todos', e.target.value)); }
+    document.addEventListener('DOMContentLoaded', () => { initCategorias(); renderProdutos('todos'); initSearch(); });
+  </script>
+</body>
+</html>

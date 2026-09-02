@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nfog Catálogo — Editorial Monolith Edition</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;0,6..96,900;1,6..96,400&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    :root {
+      --mono-bg: #ffffff;
+      --mono-black: #000000;
+      --mono-gray: #f5f5f5;
+      --mono-muted: #666666;
+      --mono-border: #e0e0e0;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Syne', sans-serif;
+      background: var(--mono-bg);
+      color: var(--mono-black);
+    }
+    h1, h2, h3, .mono-title { font-family: 'Bodoni Moda', serif; }
+    a { text-decoration: none; color: inherit; }
+    button { font-family: inherit; cursor: pointer; }
+    .mono-container { max-width: 1300px; margin: 0 auto; padding: 0 2rem; }
+
+    /* HEADER */
+    .mono-header {
+      border-bottom: 2px solid #000;
+      padding: 1.5rem 0; position: sticky; top: 0; background: #fff; z-index: 1000;
+    }
+    .mono-nav {
+      display: flex; align-items: center; justify-content: space-between; gap: 2rem;
+    }
+    .mono-logo {
+      font-family: 'Bodoni Moda', serif; font-size: 2rem; font-weight: 900; letter-spacing: -0.04em;
+    }
+    .mono-search {
+      flex: 1; max-width: 400px; border-bottom: 2px solid #000; display: flex; align-items: center; padding: 0.3rem 0;
+    }
+    .mono-search input {
+      width: 100%; border: none; font-family: inherit; font-size: 0.95rem; font-weight: 700;
+    }
+    .mono-search input:focus { outline: none; }
+    .mono-cart-btn {
+      background: #000; color: #fff; padding: 0.75rem 1.8rem; font-size: 0.85rem; font-weight: 800;
+      text-transform: uppercase; letter-spacing: 0.1em;
+    }
+    .mono-cart-btn:hover { background: #333; }
+
+    /* HERO */
+    .mono-hero {
+      padding: 4rem 0 3rem; text-align: center; border-bottom: 1px solid var(--mono-border);
+    }
+    .mono-hero-tag {
+      font-size: 0.8rem; font-weight: 800; letter-spacing: 0.25em; text-transform: uppercase; margin-bottom: 1rem; display: block;
+    }
+    .mono-hero-title {
+      font-size: clamp(2.8rem, 6vw, 5.5rem); font-weight: 900; line-height: 0.95; letter-spacing: -0.04em; margin-bottom: 1.5rem;
+    }
+    .mono-hero-title em { font-style: italic; }
+
+    /* CATEGORIES TABS */
+    .mono-cats {
+      display: flex; justify-content: center; gap: 2rem; padding: 2rem 0; border-bottom: 1px solid var(--mono-border);
+      flex-wrap: wrap;
+    }
+    .mono-cat-item {
+      font-size: 0.9rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; cursor: pointer; color: var(--mono-muted);
+      position: relative; padding-bottom: 0.3rem;
+    }
+    .mono-cat-item.active, .mono-cat-item:hover {
+      color: #000; border-bottom: 2px solid #000;
+    }
+
+    /* GRID */
+    .mono-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 3rem 2rem; padding: 4rem 0 6rem;
+    }
+    .mono-card {
+      display: flex; flex-direction: column;
+    }
+    .mono-card-img-wrap {
+      width: 100%; height: 320px; overflow: hidden; background: #eee; margin-bottom: 1.2rem;
+    }
+    .mono-card-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
+    .mono-card:hover .mono-card-img { transform: scale(1.06); }
+    .mono-card-ref { font-size: 0.75rem; font-weight: 800; letter-spacing: 0.15em; text-transform: uppercase; color: var(--mono-muted); margin-bottom: 0.3rem; }
+    .mono-card-title { font-size: 1.4rem; font-weight: 800; line-height: 1.2; margin-bottom: 0.4rem; }
+    .mono-card-desc { font-size: 0.88rem; color: var(--mono-muted); line-height: 1.5; margin-bottom: 1.2rem; flex: 1; }
+    .mono-card-row { display: flex; gap: 0.5rem; align-items: center; border-top: 1px solid #eee; padding-top: 1rem; }
+    .mono-qty { display: flex; border: 1px solid #000; }
+    .mono-qty button { width: 32px; height: 36px; background: none; border: none; font-weight: 800; }
+    .mono-qty input { width: 36px; border: none; text-align: center; font-weight: 800; font-family: inherit; }
+    .mono-add { flex: 1; background: #000; color: #fff; border: none; padding: 0.65rem; font-weight: 800; font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; }
+    .mono-add:hover { background: #333; }
+  </style>
+</head>
+<body>
+
+  <header class="mono-header">
+    <div class="mono-container mono-nav">
+      <a href="index21.html" class="mono-logo">NFOG.</a>
+      <div class="mono-search">
+        <input type="search" id="search-input" placeholder="Search portfolio...">
+      </div>
+      <button class="mono-cart-btn cart-toggle">
+        Order (<span class="cart-badge">0</span>)
+      </button>
+    </div>
+  </header>
+
+  <main class="mono-container">
+    <section class="mono-hero">
+      <span class="mono-hero-tag">Vol. 2025 // Lookbook</span>
+      <h1 class="mono-hero-title">Purity of form &amp; <em>unrivaled strength.</em></h1>
+    </section>
+
+    <div class="mono-cats" id="mono-cats"></div>
+    <div class="mono-grid" id="produtos-grid"></div>
+    <div id="nenhum-produto" style="display:none; text-align:center; padding:4rem;"><p>No items found.</p></div>
+  </main>
+
+  <!-- CART DRAWER -->
+  <div id="overlay" style="position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:1999; opacity:0; pointer-events:none; transition:0.2s;"></div>
+  <aside id="cart-drawer" style="position:fixed; top:0; right:0; height:100%; width:min(440px, 100vw); background:#fff; border-left:2px solid #000; z-index:2000; transform:translateX(100%); transition:0.3s; display:flex; flex-direction:column;">
+    <div style="padding:1.5rem; border-bottom:2px solid #000; display:flex; justify-content:space-between; align-items:center;">
+      <h3 style="font-family:'Bodoni Moda',serif; font-size:1.4rem;">Order Summary</h3>
+      <button id="cart-close" style="background:none; border:none; font-size:1.2rem; cursor:pointer;">✕</button>
+    </div>
+    <div id="cart-empty" style="padding:3rem 1.5rem; text-align:center; color:#999;"><p>Your quote bag is empty.</p></div>
+    <div id="cart-items-list" style="flex:1; overflow-y:auto; padding:1.5rem; display:flex; flex-direction:column; gap:0.75rem;"></div>
+    <div id="cart-footer" style="padding:1.5rem; border-top:2px solid #000; background:#fafafa;">
+      <div class="orcamento-form" style="border:1px solid #000; padding:1rem; margin-bottom:1rem;">
+        <input type="text" id="f-nome" placeholder="Full Name *" style="width:100%; border:1px solid #ccc; padding:0.5rem; margin-bottom:0.4rem;">
+        <input type="tel" id="f-tel" placeholder="WhatsApp / Phone *" style="width:100%; border:1px solid #ccc; padding:0.5rem; margin-bottom:0.4rem;">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.4rem;">
+          <input type="text" id="f-cnpj" placeholder="Tax ID / CNPJ" style="border:1px solid #ccc; padding:0.5rem;">
+          <input type="text" id="f-vendedor" placeholder="Sales Rep" style="border:1px solid #ccc; padding:0.5rem;">
+        </div>
+      </div>
+      <div style="display:flex; justify-content:space-between; font-weight:800; margin-bottom:0.8rem;">
+        <span>Total Items:</span><span id="cart-total-count">0</span>
+      </div>
+      <button id="btn-whatsapp-send" class="mono-cart-btn" style="width:100%; cursor:pointer;">SUBMIT VIA WHATSAPP</button>
+      <button id="btn-limpar" style="width:100%; text-align:center; background:none; border:none; margin-top:0.6rem; color:#888; font-size:0.75rem; cursor:pointer;">Clear Bag</button>
+    </div>
+  </aside>
+
+  <div id="cart-feedback" style="display:none"></div>
+
+  <!-- COMPATIBILITY HOOKS -->
+  <div id="banner-slider" style="display:none"><div class="banner-slide"></div><button id="banner-prev"></button><button id="banner-next"></button><div class="banner-dots"><button class="banner-dot"></button></div></div>
+  <div id="categorias-grid" style="display:none"></div>
+  <div id="filtros-bar" style="display:none"></div>
+  <div id="produtos-section" style="display:none"></div>
+
+  <script src="js/produtos.js"></script>
+  <script src="js/carrinho.js"></script>
+  <script>
+    function renderProdutos(catId, termoBusca = '') {
+      const grid = document.getElementById('produtos-grid');
+      const empty = document.getElementById('nenhum-produto');
+      if (!grid) return;
+      let lista = PRODUTOS;
+      if (catId && catId !== 'todos') lista = lista.filter(p => p.categoria === catId);
+      if (termoBusca) {
+        const t = termoBusca.toLowerCase();
+        lista = lista.filter(p => p.nome.toLowerCase().includes(t) || p.referencia.toLowerCase().includes(t) || p.descricao.toLowerCase().includes(t));
+      }
+      if (lista.length === 0) { grid.innerHTML = ''; if (empty) empty.style.display = 'block'; return; }
+      if (empty) empty.style.display = 'none';
+      grid.innerHTML = lista.map(p => `
+        <div class="mono-card">
+          <div class="mono-card-img-wrap">
+            <a href="produto.html?id=${p.id}"><img src="${p.imagens[0]}" alt="${p.nome}" class="mono-card-img" onerror="this.src='https://picsum.photos/seed/mono${p.id}/450/450'"></a>
+          </div>
+          <div class="mono-card-ref">REF ${p.referencia}</div>
+          <h3 class="mono-card-title"><a href="produto.html?id=${p.id}">${p.nome}</a></h3>
+          <p class="mono-card-desc">${p.descricao}</p>
+          <div class="mono-card-row">
+            <div class="mono-qty">
+              <button onclick="decrementarCard(${p.id})">−</button>
+              <input type="number" id="qty-${p.id}" value="1" min="1" readonly>
+              <button onclick="incrementarCard(${p.id})">+</button>
+            </div>
+            <button class="mono-add" onclick="adicionarAoOrcamento(${p.id})">+ ADD TO QUOTE</button>
+          </div>
+        </div>
+      `).join('');
+    }
+    function initCategorias() {
+      const row = document.getElementById('mono-cats');
+      if (row) {
+        row.innerHTML = CATEGORIAS.map(c => `
+          <div class="mono-cat-item ${c.id === 'todos' ? 'active' : ''}" onclick="filtrarPor('${c.id}')">
+            ${c.nome}
+          </div>
+        `).join('');
+      }
+    }
+    function filtrarPor(catId) {
+      document.querySelectorAll('.mono-cat-item').forEach(p => p.classList.toggle('active', p.getAttribute('onclick')?.includes(`'${catId}'`)));
+      renderProdutos(catId, document.getElementById('search-input')?.value || '');
+    }
+    function incrementarCard(id) { const i = document.getElementById(`qty-${id}`); if(i) i.value = parseInt(i.value)+1; }
+    function decrementarCard(id) { const i = document.getElementById(`qty-${id}`); if(i && parseInt(i.value)>1) i.value = parseInt(i.value)-1; }
+    function adicionarAoOrcamento(id) { const i = document.getElementById(`qty-${id}`); Carrinho.adicionar(id, parseInt(i?.value)||1); }
+    function initSearch() { document.getElementById('search-input')?.addEventListener('input', e => renderProdutos('todos', e.target.value)); }
+    document.addEventListener('DOMContentLoaded', () => { initCategorias(); renderProdutos('todos'); initSearch(); });
+  </script>
+</body>
+</html>

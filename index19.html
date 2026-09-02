@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nfog Catálogo — Win95 Retro OS Edition</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    :root {
+      --win-bg: #008080;
+      --win-gray: #c0c0c0;
+      --win-gray-light: #dfdfdf;
+      --win-gray-dark: #808080;
+      --win-gray-darker: #404040;
+      --win-blue: #000080;
+      --win-blue-light: #1084d0;
+      --win-text: #000000;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--win-bg);
+      color: var(--win-text);
+      padding-bottom: 50px;
+    }
+    a { text-decoration: none; color: inherit; }
+    button { font-family: inherit; cursor: pointer; }
+
+    /* WIN95 BEVEL BORDERS */
+    .bevel-outset {
+      border: 2px solid;
+      border-color: #fff var(--win-gray-darker) var(--win-gray-darker) #fff;
+      box-shadow: inset 1px 1px 0px #dfdfdf, inset -1px -1px 0px var(--win-gray-dark);
+      background: var(--win-gray);
+    }
+    .bevel-inset {
+      border: 2px solid;
+      border-color: var(--win-gray-darker) #fff #fff var(--win-gray-darker);
+      box-shadow: inset 1px 1px 0px #000, inset -1px -1px 0px var(--win-gray-light);
+      background: #fff;
+    }
+
+    .win-wrap { max-width: 1200px; margin: 1.5rem auto; padding: 0 1rem; }
+
+    /* WINDOW SHELL */
+    .win-window {
+      background: var(--win-gray);
+      margin-bottom: 2rem;
+    }
+    .win-titlebar {
+      background: linear-gradient(90deg, var(--win-blue), var(--win-blue-light));
+      color: #fff; padding: 0.35rem 0.6rem; font-weight: 700; font-size: 0.88rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .win-titlebar-buttons { display: flex; gap: 2px; }
+    .win-btn-small {
+      width: 18px; height: 18px; font-size: 0.65rem; font-weight: 900;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--win-gray); border: 2px solid;
+      border-color: #fff #404040 #404040 #fff; color: #000;
+    }
+
+    .win-body { padding: 1.25rem; }
+
+    /* SEARCH BAR */
+    .win-search-row {
+      display: flex; gap: 0.75rem; align-items: center; margin-bottom: 1.25rem;
+    }
+    .win-input {
+      flex: 1; padding: 0.5rem 0.75rem; font-family: inherit; font-size: 0.85rem;
+    }
+
+    /* CATEGORIES TABS */
+    .win-tabs {
+      display: flex; gap: 2px; margin-bottom: 1.25rem; border-bottom: 2px solid var(--win-gray-darker);
+    }
+    .win-tab {
+      padding: 0.4rem 1rem; font-size: 0.85rem; font-weight: 700;
+      background: var(--win-gray); border: 2px solid;
+      border-color: #fff var(--win-gray-darker) transparent #fff;
+      cursor: pointer; position: relative; top: 2px;
+    }
+    .win-tab.active {
+      background: var(--win-gray-light); border-bottom-color: var(--win-gray-light); z-index: 2;
+    }
+
+    /* GRID */
+    .win-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1.25rem;
+    }
+    .win-card {
+      background: var(--win-gray); padding: 0.75rem; display: flex; flex-direction: column;
+    }
+    .win-card-img {
+      width: 100%; height: 160px; object-fit: cover; margin-bottom: 0.6rem;
+    }
+    .win-card-title {
+      font-size: 0.95rem; font-weight: 700; margin-bottom: 0.3rem;
+    }
+    .win-card-desc {
+      font-size: 0.78rem; color: #333; margin-bottom: 0.8rem; flex: 1;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .win-card-action { display: flex; gap: 0.4rem; align-items: center; }
+    .win-qty {
+      display: flex; align-items: center; width: 80px;
+    }
+    .win-qty button { width: 24px; height: 26px; font-weight: 700; background: var(--win-gray); }
+    .win-qty input { width: 32px; height: 26px; text-align: center; font-size: 0.8rem; border: none; }
+    .win-add-btn {
+      flex: 1; padding: 0.4rem; font-weight: 700; font-size: 0.8rem;
+    }
+
+    /* TASKBAR */
+    .win-taskbar {
+      position: fixed; bottom: 0; left: 0; right: 0; height: 42px;
+      background: var(--win-gray); border-top: 2px solid #fff;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 0.5rem; z-index: 10000;
+    }
+    .win-start-btn {
+      background: var(--win-gray); font-weight: 800; font-size: 0.9rem;
+      padding: 0.35rem 0.85rem; display: flex; align-items: center; gap: 0.4rem;
+    }
+    .win-clock {
+      padding: 0.3rem 0.8rem; font-size: 0.8rem; font-family: monospace; font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="win-wrap">
+    <div class="win-window bevel-outset">
+      <div class="win-titlebar">
+        <span>💾 Nfog_Catalogo_v3.11.exe — [Catálogo de Produtos e Orçamentos]</span>
+        <div class="win-titlebar-buttons">
+          <button class="win-btn-small">_</button>
+          <button class="win-btn-small">□</button>
+          <button class="win-btn-small" onclick="alert('Sistema de Catálogo Online Ativo!')">✕</button>
+        </div>
+      </div>
+      <div class="win-body">
+        <div class="win-search-row">
+          <label style="font-weight:700; font-size:0.85rem;">🔍 Buscar Arquivo/Item:</label>
+          <input type="search" id="search-input" class="win-input bevel-inset" placeholder="Digite o nome ou código de referência...">
+        </div>
+
+        <div class="win-tabs" id="win-tabs"></div>
+
+        <div class="win-grid" id="produtos-grid"></div>
+
+        <div id="nenhum-produto" style="display:none; text-align:center; padding:3rem;" class="bevel-inset">
+          <p>Nenhum item localizado no diretório selecionado.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TASKBAR -->
+  <div class="win-taskbar">
+    <button class="win-start-btn bevel-outset cart-toggle">
+      <span>🪟</span> <strong>Iniciar Orçamento</strong>
+      <span class="cart-badge" style="background:#000080; color:#fff; padding:0.1rem 0.4rem; font-size:0.75rem;">0</span>
+    </button>
+    <div class="win-clock bevel-inset" id="win-clock">12:00 PM</div>
+  </div>
+
+  <!-- CART DRAWER / WINDOW -->
+  <div id="overlay" style="position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:1999; opacity:0; pointer-events:none; transition:0.2s;"></div>
+  <aside id="cart-drawer" class="bevel-outset" style="position:fixed; top:50px; right:20px; width:min(440px, 95vw); max-height:85vh; background:var(--win-gray); z-index:2000; transform:scale(0); transition:0.2s; display:flex; flex-direction:column;">
+    <div class="win-titlebar">
+      <span>📋 Orçamento_Final.txt</span>
+      <button id="cart-close" class="win-btn-small">✕</button>
+    </div>
+    <div id="cart-empty" style="padding:2rem 1rem; text-align:center;">
+      <p>Nenhum registro no documento.</p>
+    </div>
+    <div id="cart-items-list" class="bevel-inset" style="flex:1; overflow-y:auto; margin:0.75rem; padding:0.75rem; display:flex; flex-direction:column; gap:0.5rem; max-height:220px;"></div>
+    <div id="cart-footer" style="padding:0.75rem;">
+      <div class="orcamento-form bevel-inset" style="padding:0.6rem; margin-bottom:0.6rem; font-size:0.8rem;">
+        <div style="font-weight:700; margin-bottom:0.3rem;">DADOS DO REQUISITANTE:</div>
+        <input type="text" id="f-nome" placeholder="Nome Completo *" style="width:100%; margin-bottom:0.3rem; padding:0.3rem;">
+        <input type="tel" id="f-tel" placeholder="WhatsApp / Telefone *" style="width:100%; margin-bottom:0.3rem; padding:0.3rem;">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.3rem;">
+          <input type="text" id="f-cnpj" placeholder="CNPJ" style="padding:0.3rem;">
+          <input type="text" id="f-vendedor" placeholder="Vendedor" style="padding:0.3rem;">
+        </div>
+      </div>
+      <div style="display:flex; justify-content:space-between; font-weight:700; font-size:0.85rem; margin-bottom:0.5rem;">
+        <span>TOTAL ITENS:</span>
+        <span id="cart-total-count">0</span>
+      </div>
+      <button id="btn-whatsapp-send" class="bevel-outset" style="width:100%; padding:0.6rem; font-weight:800; background:#008000; color:#fff; font-size:0.9rem;">
+        ▶ TRANSMITIR VIA WHATSAPP
+      </button>
+      <button id="btn-limpar" style="width:100%; text-align:center; background:none; border:none; margin-top:0.4rem; font-size:0.75rem; cursor:pointer;">Limpar Buffer</button>
+    </div>
+  </aside>
+
+  <div id="cart-feedback" style="display:none"></div>
+
+  <!-- COMPATIBILITY HOOKS -->
+  <div id="banner-slider" style="display:none"><div class="banner-slide"></div><button id="banner-prev"></button><button id="banner-next"></button><div class="banner-dots"><button class="banner-dot"></button></div></div>
+  <div id="categorias-grid" style="display:none"></div>
+  <div id="filtros-bar" style="display:none"></div>
+  <div id="produtos-section" style="display:none"></div>
+
+  <script src="js/produtos.js"></script>
+  <script src="js/carrinho.js"></script>
+  <script>
+    function renderProdutos(catId, termoBusca = '') {
+      const grid = document.getElementById('produtos-grid');
+      const empty = document.getElementById('nenhum-produto');
+      if (!grid) return;
+      let lista = PRODUTOS;
+      if (catId && catId !== 'todos') lista = lista.filter(p => p.categoria === catId);
+      if (termoBusca) {
+        const t = termoBusca.toLowerCase();
+        lista = lista.filter(p => p.nome.toLowerCase().includes(t) || p.referencia.toLowerCase().includes(t) || p.descricao.toLowerCase().includes(t));
+      }
+      if (lista.length === 0) { grid.innerHTML = ''; if (empty) empty.style.display = 'block'; return; }
+      if (empty) empty.style.display = 'none';
+      grid.innerHTML = lista.map(p => `
+        <div class="win-card bevel-outset">
+          <div class="bevel-inset"><img src="${p.imagens[0]}" alt="${p.nome}" class="win-card-img" onerror="this.src='https://picsum.photos/seed/win${p.id}/300/200'"></div>
+          <div style="font-size:0.7rem; color:#555; margin-top:0.3rem;">[REF: ${p.referencia}]</div>
+          <div class="win-card-title"><a href="produto.html?id=${p.id}">${p.nome}</a></div>
+          <div class="win-card-desc">${p.descricao}</div>
+          <div class="win-card-action">
+            <div class="win-qty bevel-inset">
+              <button onclick="decrementarCard(${p.id})">−</button>
+              <input type="number" id="qty-${p.id}" value="1" min="1" readonly>
+              <button onclick="incrementarCard(${p.id})">+</button>
+            </div>
+            <button class="win-add-btn bevel-outset" onclick="adicionarAoOrcamento(${p.id})">+ Incluir</button>
+          </div>
+        </div>
+      `).join('');
+    }
+    function initCategorias() {
+      const tabs = document.getElementById('win-tabs');
+      if (tabs) {
+        tabs.innerHTML = CATEGORIAS.map(c => `
+          <div class="win-tab ${c.id === 'todos' ? 'active' : ''}" onclick="filtrarPor('${c.id}')">
+            ${c.icone} ${c.nome}
+          </div>
+        `).join('');
+      }
+    }
+    function filtrarPor(catId) {
+      document.querySelectorAll('.win-tab').forEach(p => p.classList.toggle('active', p.getAttribute('onclick')?.includes(`'${catId}'`)));
+      renderProdutos(catId, document.getElementById('search-input')?.value || '');
+    }
+    function incrementarCard(id) { const i = document.getElementById(`qty-${id}`); if(i) i.value = parseInt(i.value)+1; }
+    function decrementarCard(id) { const i = document.getElementById(`qty-${id}`); if(i && parseInt(i.value)>1) i.value = parseInt(i.value)-1; }
+    function adicionarAoOrcamento(id) { const i = document.getElementById(`qty-${id}`); Carrinho.adicionar(id, parseInt(i?.value)||1); }
+    function initSearch() { document.getElementById('search-input')?.addEventListener('input', e => renderProdutos('todos', e.target.value)); }
+    
+    // Override drawer opener for Win95 window scale effect
+    const origAbrir = Carrinho.abrirDrawer;
+    Carrinho.abrirDrawer = function() {
+      const d = document.getElementById('cart-drawer');
+      const o = document.getElementById('overlay');
+      if(d) d.style.transform = 'scale(1)';
+      if(o) { o.classList.add('show'); o.style.opacity = '1'; o.style.pointerEvents = 'auto'; }
+    };
+    const origFechar = Carrinho.fecharDrawer;
+    Carrinho.fecharDrawer = function() {
+      const d = document.getElementById('cart-drawer');
+      const o = document.getElementById('overlay');
+      if(d) d.style.transform = 'scale(0)';
+      if(o) { o.classList.remove('show'); o.style.opacity = '0'; o.style.pointerEvents = 'none'; }
+    };
+
+    function updateClock() {
+      const d = new Date();
+      const el = document.getElementById('win-clock');
+      if(el) el.textContent = d.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      initCategorias();
+      renderProdutos('todos');
+      initSearch();
+      updateClock();
+      setInterval(updateClock, 1000);
+    });
+  </script>
+</body>
+</html>

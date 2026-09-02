@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nfog Catálogo — Blueprint Technical CAD</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    :root {
+      --cad-bg: #072a40;
+      --cad-blue: #0b3c5d;
+      --cad-cyan: #00e5ff;
+      --cad-yellow: #ffd600;
+      --cad-white: #ffffff;
+      --cad-grid-line: rgba(0, 229, 255, 0.12);
+      --cad-text: #e0f7fa;
+      --cad-muted: #80deea;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Space Mono', monospace;
+      background-color: var(--cad-bg);
+      color: var(--cad-text);
+      background-image: 
+        linear-gradient(var(--cad-grid-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--cad-grid-line) 1px, transparent 1px),
+        linear-gradient(rgba(0, 229, 255, 0.04) 10px, transparent 10px),
+        linear-gradient(90deg, rgba(0, 229, 255, 0.04) 10px, transparent 10px);
+      background-size: 20px 20px, 20px 20px, 100px 100px, 100px 100px;
+    }
+    a { text-decoration: none; color: inherit; }
+    button { font-family: inherit; cursor: pointer; }
+    .cad-wrap { max-width: 1280px; margin: 0 auto; padding: 0 1.5rem; }
+
+    /* HEADER */
+    .cad-header {
+      background: rgba(7, 42, 64, 0.95);
+      border-bottom: 2px dashed var(--cad-cyan);
+      padding: 1rem 0; position: sticky; top: 0; z-index: 1000;
+    }
+    .cad-header-inner {
+      display: flex; align-items: center; justify-content: space-between; gap: 1.5rem;
+    }
+    .cad-logo {
+      font-family: 'Syne', sans-serif; font-size: 1.4rem; font-weight: 800;
+      color: var(--cad-yellow); letter-spacing: 0.05em; display: flex; align-items: center; gap: 0.5rem;
+    }
+    .cad-search {
+      flex: 1; max-width: 440px; position: relative;
+    }
+    .cad-search input {
+      width: 100%; background: #062031; border: 1px solid var(--cad-cyan);
+      color: #fff; padding: 0.6rem 1rem 0.6rem 2.4rem; font-family: inherit; font-size: 0.85rem;
+    }
+    .cad-search input:focus {
+      outline: none; box-shadow: 0 0 15px rgba(0,229,255,0.4);
+    }
+    .cad-search svg { position: absolute; left: 0.8rem; top: 50%; transform: translateY(-50%); color: var(--cad-cyan); }
+
+    .cad-cart-trigger {
+      background: var(--cad-yellow); color: #000; border: 2px solid #fff;
+      font-weight: 700; padding: 0.6rem 1.2rem; font-size: 0.85rem;
+      box-shadow: 3px 3px 0px var(--cad-cyan);
+    }
+
+    /* HERO */
+    .cad-hero {
+      border: 1px solid var(--cad-cyan); padding: 2.5rem; margin: 2rem 0;
+      background: rgba(11, 60, 93, 0.4); position: relative;
+    }
+    .cad-hero::before {
+      content: '+ CAD_DRAFT_2025 // REV_4.2 +';
+      position: absolute; top: -10px; left: 20px; background: var(--cad-bg);
+      padding: 0 10px; font-size: 0.75rem; color: var(--cad-yellow);
+    }
+    .cad-hero-title {
+      font-family: 'Syne', sans-serif; font-size: clamp(2rem, 3.5vw, 3.2rem);
+      color: #fff; margin-bottom: 0.8rem; line-height: 1.15;
+    }
+    .cad-hero-title span { color: var(--cad-cyan); }
+    .cad-hero-desc { color: var(--cad-muted); max-width: 600px; margin-bottom: 1.5rem; font-size: 0.95rem; }
+
+    /* CATEGORIES */
+    .cad-cats {
+      display: flex; gap: 0.6rem; overflow-x: auto; padding-bottom: 1rem; margin-bottom: 2rem;
+      scrollbar-width: none;
+    }
+    .cad-cats::-webkit-scrollbar { display: none; }
+    .cad-cat-pill {
+      background: #062031; border: 1px solid var(--cad-cyan); padding: 0.5rem 1rem;
+      font-size: 0.8rem; color: var(--cad-text); white-space: nowrap; cursor: pointer;
+    }
+    .cad-cat-pill.active, .cad-cat-pill:hover {
+      background: var(--cad-cyan); color: #000; font-weight: 700;
+    }
+
+    /* GRID */
+    .cad-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem; margin-bottom: 5rem;
+    }
+    .cad-card {
+      border: 1px solid var(--cad-cyan); background: rgba(6, 32, 49, 0.7);
+      padding: 1rem; display: flex; flex-direction: column; position: relative;
+    }
+    .cad-card::after {
+      content: '[]'; position: absolute; top: 5px; right: 8px; color: var(--cad-yellow); font-size: 0.7rem;
+    }
+    .cad-card-img { width: 100%; height: 180px; object-fit: cover; border: 1px solid rgba(0,229,255,0.3); margin-bottom: 0.8rem; filter: saturate(0.8); }
+    .cad-card:hover .cad-card-img { filter: saturate(1.2); }
+    .cad-sku { color: var(--cad-yellow); font-size: 0.75rem; font-weight: 700; margin-bottom: 0.3rem; }
+    .cad-card-title { font-family: 'Syne', sans-serif; font-size: 1.15rem; color: #fff; margin-bottom: 0.4rem; }
+    .cad-card-desc { font-size: 0.8rem; color: var(--cad-muted); margin-bottom: 1.2rem; flex: 1; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .cad-card-foot { display: flex; gap: 0.4rem; align-items: center; }
+    .cad-qty { display: flex; border: 1px solid var(--cad-cyan); }
+    .cad-qty button { background: #062031; border: none; color: #fff; width: 26px; height: 30px; }
+    .cad-qty input { width: 32px; background: transparent; border: none; color: #fff; text-align: center; font-family: inherit; font-size: 0.85rem; }
+    .cad-add-btn {
+      flex: 1; background: var(--cad-cyan); color: #000; border: none; padding: 0.5rem; font-weight: 700; font-size: 0.8rem;
+    }
+    .cad-add-btn:hover { background: var(--cad-yellow); }
+  </style>
+</head>
+<body>
+
+  <header class="cad-header">
+    <div class="cad-wrap cad-header-inner">
+      <a href="index20.html" class="cad-logo">
+        <span>📐</span> NFOG_CAD // SPEC
+      </a>
+      <div class="cad-search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="search" id="search-input" placeholder=">> PESQUISAR SPEC OU SKU...">
+      </div>
+      <button class="cad-cart-trigger cart-toggle">
+        [ ORÇAMENTO: <span class="cart-badge">0</span> ]
+      </button>
+    </div>
+  </header>
+
+  <main class="cad-wrap">
+    <section class="cad-hero">
+      <h1 class="cad-hero-title">BLUEPRINT // ESPECIFICAÇÕES &amp; <span>COTAÇÕES</span></h1>
+      <p class="cad-hero-desc">Mapeamento técnico de produtos e equipamentos industriais. Seleção direta de itens com integração de cotação WhatsApp.</p>
+    </section>
+
+    <section>
+      <div class="cad-cats" id="cad-cats"></div>
+      <div class="cad-grid" id="produtos-grid"></div>
+      <div id="nenhum-produto" style="display:none; text-align:center; padding:4rem; border:1px dashed var(--cad-cyan);">
+        <p style="color:var(--cad-yellow);">[ALERTA: NENHUM REGISTRO TÉCNICO ENCONTRADO]</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- CART DRAWER -->
+  <div id="overlay" style="position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:1999; opacity:0; pointer-events:none; transition:0.2s;"></div>
+  <aside id="cart-drawer" style="position:fixed; top:0; right:0; height:100%; width:min(420px, 100vw); background:#062031; border-left:2px solid var(--cad-cyan); z-index:2000; transform:translateX(100%); transition:0.3s; display:flex; flex-direction:column;">
+    <div style="padding:1.25rem; border-bottom:1px solid var(--cad-cyan); display:flex; justify-content:space-between; align-items:center;">
+      <h3 style="color:var(--cad-yellow); font-size:1rem;">[+] MANIFESTO DE COTAÇÃO</h3>
+      <button id="cart-close" style="background:none; border:none; color:#fff; font-size:1.2rem; cursor:pointer;">✕</button>
+    </div>
+    <div id="cart-empty" style="padding:3rem 1rem; text-align:center; color:var(--cad-muted);">
+      <p>> BUFFER DE ITENS VAZIO</p>
+    </div>
+    <div id="cart-items-list" style="flex:1; overflow-y:auto; padding:1.25rem; display:flex; flex-direction:column; gap:0.6rem;"></div>
+    <div id="cart-footer" style="padding:1.25rem; border-top:1px solid var(--cad-cyan); background:#041724;">
+      <div class="orcamento-form" style="border:1px solid rgba(0,229,255,0.3); padding:0.8rem; margin-bottom:1rem; font-size:0.8rem;">
+        <div style="color:var(--cad-yellow); margin-bottom:0.4rem; font-weight:700;">IDENTIFICAÇÃO TÉCNICA:</div>
+        <input type="text" id="f-nome" placeholder="Nome Completo *" style="width:100%; background:#062031; border:1px solid var(--cad-cyan); color:#fff; padding:0.4rem; margin-bottom:0.4rem;">
+        <input type="tel" id="f-tel" placeholder="WhatsApp *" style="width:100%; background:#062031; border:1px solid var(--cad-cyan); color:#fff; padding:0.4rem; margin-bottom:0.4rem;">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.4rem;">
+          <input type="text" id="f-cnpj" placeholder="CNPJ" style="background:#062031; border:1px solid var(--cad-cyan); color:#fff; padding:0.4rem;">
+          <input type="text" id="f-vendedor" placeholder="Vendedor" style="background:#062031; border:1px solid var(--cad-cyan); color:#fff; padding:0.4rem;">
+        </div>
+      </div>
+      <div style="display:flex; justify-content:space-between; font-weight:700; margin-bottom:0.6rem; color:#fff; font-size:0.85rem;">
+        <span>TOTAL QUANTIDADE:</span>
+        <span id="cart-total-count">0</span>
+      </div>
+      <button id="btn-whatsapp-send" class="cad-cart-trigger" style="width:100%; cursor:pointer;">
+        >> ENVIAR COTAÇÃO CAD NO WHATSAPP
+      </button>
+      <button id="btn-limpar" style="width:100%; text-align:center; background:none; border:none; margin-top:0.5rem; color:var(--cad-muted); font-size:0.75rem; cursor:pointer;">Limpar Manifesto</button>
+    </div>
+  </aside>
+
+  <div id="cart-feedback" style="display:none"></div>
+
+  <!-- COMPATIBILITY HOOKS -->
+  <div id="banner-slider" style="display:none"><div class="banner-slide"></div><button id="banner-prev"></button><button id="banner-next"></button><div class="banner-dots"><button class="banner-dot"></button></div></div>
+  <div id="categorias-grid" style="display:none"></div>
+  <div id="filtros-bar" style="display:none"></div>
+  <div id="produtos-section" style="display:none"></div>
+
+  <script src="js/produtos.js"></script>
+  <script src="js/carrinho.js"></script>
+  <script>
+    function renderProdutos(catId, termoBusca = '') {
+      const grid = document.getElementById('produtos-grid');
+      const empty = document.getElementById('nenhum-produto');
+      if (!grid) return;
+      let lista = PRODUTOS;
+      if (catId && catId !== 'todos') lista = lista.filter(p => p.categoria === catId);
+      if (termoBusca) {
+        const t = termoBusca.toLowerCase();
+        lista = lista.filter(p => p.nome.toLowerCase().includes(t) || p.referencia.toLowerCase().includes(t) || p.descricao.toLowerCase().includes(t));
+      }
+      if (lista.length === 0) { grid.innerHTML = ''; if (empty) empty.style.display = 'block'; return; }
+      if (empty) empty.style.display = 'none';
+      grid.innerHTML = lista.map(p => `
+        <div class="cad-card">
+          <img src="${p.imagens[0]}" alt="${p.nome}" class="cad-card-img" onerror="this.src='https://picsum.photos/seed/cad${p.id}/400/300'">
+          <div class="cad-sku">SKU// ${p.referencia}</div>
+          <h3 class="cad-card-title"><a href="produto.html?id=${p.id}">${p.nome}</a></h3>
+          <p class="cad-card-desc">${p.descricao}</p>
+          <div class="cad-card-foot">
+            <div class="cad-qty">
+              <button onclick="decrementarCard(${p.id})">−</button>
+              <input type="number" id="qty-${p.id}" value="1" min="1" readonly>
+              <button onclick="incrementarCard(${p.id})">+</button>
+            </div>
+            <button class="cad-add-btn" onclick="adicionarAoOrcamento(${p.id})">+ INCLUIR SPEC</button>
+          </div>
+        </div>
+      `).join('');
+    }
+    function initCategorias() {
+      const row = document.getElementById('cad-cats');
+      if (row) {
+        row.innerHTML = CATEGORIAS.map(c => `
+          <div class="cad-cat-pill ${c.id === 'todos' ? 'active' : ''}" onclick="filtrarPor('${c.id}')">
+            [${c.nome}]
+          </div>
+        `).join('');
+      }
+    }
+    function filtrarPor(catId) {
+      document.querySelectorAll('.cad-cat-pill').forEach(p => p.classList.toggle('active', p.getAttribute('onclick')?.includes(`'${catId}'`)));
+      renderProdutos(catId, document.getElementById('search-input')?.value || '');
+    }
+    function incrementarCard(id) { const i = document.getElementById(`qty-${id}`); if(i) i.value = parseInt(i.value)+1; }
+    function decrementarCard(id) { const i = document.getElementById(`qty-${id}`); if(i && parseInt(i.value)>1) i.value = parseInt(i.value)-1; }
+    function adicionarAoOrcamento(id) { const i = document.getElementById(`qty-${id}`); Carrinho.adicionar(id, parseInt(i?.value)||1); }
+    function initSearch() { document.getElementById('search-input')?.addEventListener('input', e => renderProdutos('todos', e.target.value)); }
+    document.addEventListener('DOMContentLoaded', () => { initCategorias(); renderProdutos('todos'); initSearch(); });
+  </script>
+</body>
+</html>

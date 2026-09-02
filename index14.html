@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nfog Catálogo — Visual Feed & Masonry</title>
+  <link rel="stylesheet" href="css/template14.css">
+</head>
+<body>
+
+  <div class="feed-container">
+
+    <!-- TOPBAR -->
+    <header class="feed-topbar">
+      <a href="index14.html" class="feed-brand">
+        <div class="feed-brand-icon">🌿</div>
+        <span>Nfog Catálogo</span>
+      </a>
+
+      <div class="feed-search-bar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="search" id="search-input" placeholder="Pesquisar por nome, referência ou especificação...">
+      </div>
+
+      <button class="feed-quote-btn cart-toggle">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        <span>Orçamento</span>
+        <span class="feed-badge cart-badge">0</span>
+      </button>
+    </header>
+
+    <!-- CATEGORIES -->
+    <div class="feed-categories" id="feed-cats">
+      <!-- Injected by JS -->
+    </div>
+
+    <!-- MASONRY FEED -->
+    <main class="feed-masonry" id="produtos-grid">
+      <!-- Injected by JS -->
+    </main>
+
+    <div id="nenhum-produto" style="display:none; text-align:center; padding: 4rem; background:#fff; border-radius:16px; margin-bottom:3rem;">
+      <h3 style="margin-bottom:0.5rem;">Nenhum produto encontrado</h3>
+      <p style="color:#777; margin-bottom:1.5rem;">Tente buscar com outras palavras-chave.</p>
+      <button onclick="filtrarPor('todos')" class="feed-quote-btn" style="margin:0 auto;">Ver Todos os Produtos</button>
+    </div>
+
+  </div>
+
+  <!-- BOTTOM SHEET MODAL (CART / ORÇAMENTO) -->
+  <div class="feed-sheet-overlay" id="overlay"></div>
+  <div class="feed-sheet" id="cart-drawer">
+    <div class="feed-sheet-drag"></div>
+    <div class="feed-sheet-header">
+      <div class="feed-sheet-title">Itens do Orçamento</div>
+      <button class="feed-sheet-close" id="cart-close">✕</button>
+    </div>
+
+    <div class="feed-sheet-body">
+      <div id="cart-empty" style="padding: 2.5rem 1rem; text-align: center; color: #888;">
+        <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🧺</div>
+        <p>Seu orçamento está vazio.<br>Escolha produtos do feed para cotar!</p>
+      </div>
+
+      <div id="cart-items-list" style="display:flex; flex-direction:column; gap:0.75rem; margin-bottom:1rem;"></div>
+
+      <div class="feed-form-card" id="cart-footer">
+        <div style="font-weight: 700; font-size: 0.85rem; margin-bottom: 0.6rem; color: #333;">Seus Dados para Envio</div>
+        <div>
+          <label>Nome *</label>
+          <input type="text" id="f-nome" placeholder="Seu nome completo">
+        </div>
+        <div>
+          <label>Telefone / WhatsApp *</label>
+          <input type="tel" id="f-tel" placeholder="(00) 00000-0000">
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem;">
+          <div>
+            <label>CNPJ</label>
+            <input type="text" id="f-cnpj" placeholder="00.000.000/0001-00">
+          </div>
+          <div>
+            <label>Vendedor</label>
+            <input type="text" id="f-vendedor" placeholder="Nome">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="feed-sheet-footer">
+      <div style="display:flex; justify-content:space-between; font-weight:800; font-size:0.95rem; margin-bottom:0.8rem;">
+        <span>Total de itens:</span>
+        <span id="cart-total-count">0</span>
+      </div>
+      <button class="feed-wa-send" id="btn-whatsapp-send">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+        Enviar Orçamento no WhatsApp
+      </button>
+      <button id="btn-limpar" style="width:100%; text-align:center; background:none; border:none; margin-top:0.5rem; font-size:0.75rem; color:#888; cursor:pointer;">Limpar Itens</button>
+    </div>
+  </div>
+
+  <div id="cart-feedback" style="display:none"></div>
+
+  <!-- Compatibility hooks -->
+  <div id="banner-slider" style="display:none"><div class="banner-slide"></div><button id="banner-prev"></button><button id="banner-next"></button><div class="banner-dots"><button class="banner-dot"></button></div></div>
+  <div id="categorias-grid" style="display:none"></div>
+  <div id="filtros-bar" style="display:none"></div>
+  <div id="produtos-section" style="display:none"></div>
+
+  <script src="js/produtos.js"></script>
+  <script src="js/carrinho.js"></script>
+  <script>
+    function renderProdutos(catId, termoBusca = '') {
+      const grid = document.getElementById('produtos-grid');
+      const empty = document.getElementById('nenhum-produto');
+      if (!grid) return;
+
+      let lista = PRODUTOS;
+      if (catId && catId !== 'todos') {
+        lista = lista.filter(p => p.categoria === catId);
+      }
+      if (termoBusca) {
+        const t = termoBusca.toLowerCase();
+        lista = lista.filter(p =>
+          p.nome.toLowerCase().includes(t) ||
+          p.referencia.toLowerCase().includes(t) ||
+          p.descricao.toLowerCase().includes(t)
+        );
+      }
+
+      if (lista.length === 0) {
+        grid.innerHTML = '';
+        if (empty) empty.style.display = 'block';
+        return;
+      }
+      if (empty) empty.style.display = 'none';
+
+      grid.innerHTML = lista.map((p, idx) => {
+        // Vary heights slightly for Pinterest effect
+        const heights = [220, 280, 240, 260, 300];
+        const h = heights[idx % heights.length];
+        return `
+          <div class="feed-item">
+            <div class="feed-img-wrap">
+              ${p.destaque ? '<span class="feed-tag-badge">★ Destaque</span>' : ''}
+              <a href="produto.html?id=${p.id}">
+                <img src="${p.imagens[0]}" alt="${p.nome}" class="feed-img" style="height:${h}px" loading="lazy"
+                  onerror="this.src='https://picsum.photos/seed/feed${p.id}/400/${h}'">
+              </a>
+            </div>
+            <div class="feed-content">
+              <div class="feed-ref">Ref: ${p.referencia}</div>
+              <div class="feed-title"><a href="produto.html?id=${p.id}">${p.nome}</a></div>
+              <div class="feed-desc">${p.descricao}</div>
+              <div class="feed-actions">
+                <div class="feed-qty">
+                  <button class="feed-qty-btn" onclick="decrementarCard(${p.id})">−</button>
+                  <input type="number" id="qty-${p.id}" value="1" min="1" class="feed-qty-val" readonly>
+                  <button class="feed-qty-btn" onclick="incrementarCard(${p.id})">+</button>
+                </div>
+                <button class="feed-add-btn" onclick="adicionarAoOrcamento(${p.id})">
+                  + Adicionar
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function initCategorias() {
+      const bar = document.getElementById('feed-cats');
+      if (bar) {
+        bar.innerHTML = CATEGORIAS.map(c => `
+          <div class="feed-cat-pill ${c.id === 'todos' ? 'active' : ''}" onclick="filtrarPor('${c.id}')">
+            <span>${c.icone}</span>
+            <span>${c.nome}</span>
+          </div>
+        `).join('');
+      }
+    }
+
+    function filtrarPor(catId) {
+      document.querySelectorAll('.feed-cat-pill').forEach(pill => {
+        pill.classList.toggle('active', pill.getAttribute('onclick')?.includes(`'${catId}'`));
+      });
+      renderProdutos(catId, document.getElementById('search-input')?.value || '');
+    }
+
+    function incrementarCard(id) {
+      const input = document.getElementById(`qty-${id}`);
+      if (input) input.value = parseInt(input.value) + 1;
+    }
+
+    function decrementarCard(id) {
+      const input = document.getElementById(`qty-${id}`);
+      if (input && parseInt(input.value) > 1) input.value = parseInt(input.value) - 1;
+    }
+
+    function adicionarAoOrcamento(id) {
+      const input = document.getElementById(`qty-${id}`);
+      const qty = parseInt(input?.value) || 1;
+      Carrinho.adicionar(id, qty);
+    }
+
+    function initSearch() {
+      const input = document.getElementById('search-input');
+      if (input) {
+        input.addEventListener('input', (e) => {
+          renderProdutos('todos', e.target.value);
+        });
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      initCategorias();
+      renderProdutos('todos');
+      initSearch();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nfog Catálogo — Mercado & Atacado Club</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    :root {
+      --mkt-yellow: #ffe600;
+      --mkt-blue: #2d3277;
+      --mkt-green: #00a650;
+      --mkt-bg: #ebebeb;
+      --mkt-card: #ffffff;
+      --mkt-text: #333333;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: var(--mkt-bg);
+      color: var(--mkt-text);
+    }
+    a { text-decoration: none; color: inherit; }
+    button { font-family: inherit; cursor: pointer; }
+    .mkt-wrap { max-width: 1240px; margin: 0 auto; padding: 0 1rem; }
+
+    /* HEADER */
+    .mkt-header {
+      background: var(--mkt-yellow);
+      padding: 0.8rem 0; border-bottom: 1px solid #e5ce00; position: sticky; top: 0; z-index: 1000;
+      box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
+    }
+    .mkt-header-inner {
+      display: flex; align-items: center; justify-content: space-between; gap: 1.5rem;
+    }
+    .mkt-logo {
+      font-size: 1.5rem; font-weight: 900; color: var(--mkt-blue); display: flex; align-items: center; gap: 0.4rem;
+    }
+    .mkt-search {
+      flex: 1; max-width: 550px; position: relative;
+    }
+    .mkt-search input {
+      width: 100%; padding: 0.7rem 1rem 0.7rem 2.8rem; border-radius: 4px; border: none;
+      box-shadow: 0 1px 2px 0 rgba(0,0,0,.2); font-size: 0.95rem;
+    }
+    .mkt-search input:focus { outline: none; }
+    .mkt-search svg { position: absolute; left: 0.9rem; top: 50%; transform: translateY(-50%); color: #999; }
+
+    .mkt-cart-btn {
+      background: var(--mkt-blue); color: #fff; border: none; padding: 0.65rem 1.3rem; border-radius: 4px;
+      font-weight: 700; font-size: 0.9rem; display: flex; align-items: center; gap: 0.5rem;
+    }
+
+    /* PROMO BANNER */
+    .mkt-banner {
+      background: linear-gradient(90deg, #1b2055, #2d3277);
+      color: #fff; border-radius: 6px; padding: 1.5rem 2rem; margin: 1.5rem 0;
+      display: flex; justify-content: space-between; align-items: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    /* CATEGORIES BAR */
+    .mkt-cats {
+      display: flex; gap: 0.5rem; overflow-x: auto; padding-bottom: 0.8rem; margin-bottom: 1.5rem;
+    }
+    .mkt-cat-pill {
+      background: #fff; padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.85rem; font-weight: 500;
+      white-space: nowrap; cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    }
+    .mkt-cat-pill.active { background: var(--mkt-blue); color: #fff; font-weight: 700; }
+
+    /* PRODUCT GRID */
+    .mkt-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1rem; margin-bottom: 4rem;
+    }
+    .mkt-card {
+      background: #fff; border-radius: 6px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      display: flex; flex-direction: column; transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .mkt-card:hover { transform: translateY(-3px); box-shadow: 0 8px 16px rgba(0,0,0,0.15); }
+    .mkt-card-img { width: 100%; height: 170px; object-fit: cover; border-bottom: 1px solid #f0f0f0; }
+    .mkt-card-body { padding: 0.9rem; display: flex; flex-direction: column; flex: 1; }
+    .mkt-free-tag { color: var(--mkt-green); font-size: 0.75rem; font-weight: 700; margin-bottom: 0.2rem; }
+    .mkt-title { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.3rem; line-height: 1.25; color: #333; }
+    .mkt-desc { font-size: 0.78rem; color: #666; margin-bottom: 0.8rem; flex: 1; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .mkt-qty-row { display: flex; gap: 0.4rem; align-items: center; }
+    .mkt-qty { display: flex; border: 1px solid #ccc; border-radius: 4px; }
+    .mkt-qty button { width: 26px; height: 28px; background: #f0f0f0; border: none; font-weight: 700; }
+    .mkt-qty input { width: 30px; text-align: center; border: none; font-size: 0.85rem; }
+    .mkt-add-btn {
+      flex: 1; background: #3483fa; color: #fff; border: none; border-radius: 4px; font-weight: 700; font-size: 0.8rem; padding: 0.5rem;
+    }
+    .mkt-add-btn:hover { background: #2968c8; }
+  </style>
+</head>
+<body>
+
+  <header class="mkt-header">
+    <div class="mkt-wrap mkt-header-inner">
+      <a href="index22.html" class="mkt-logo">
+        <span>🛒</span> Nfog Livre
+      </a>
+      <div class="mkt-search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="search" id="search-input" placeholder="Buscar produtos, marcas e muito mais...">
+      </div>
+      <button class="mkt-cart-btn cart-toggle">
+        <span>Orçamento</span>
+        <span class="cart-badge" style="background:#ffe600; color:#000; padding:0.1rem 0.4rem; border-radius:10px; font-size:0.75rem;">0</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="mkt-wrap">
+    <div class="mkt-banner">
+      <div>
+        <span style="background:#00a650; color:#fff; padding:0.2rem 0.6rem; border-radius:3px; font-size:0.75rem; font-weight:700;">OFERTA DE ATACADO</span>
+        <h2 style="font-size:1.6rem; margin:0.4rem 0;">Monte sua cotação completa pelo WhatsApp</h2>
+        <p style="opacity:0.85; font-size:0.9rem;">Selecione os produtos e negocie direto com o departamento comercial.</p>
+      </div>
+      <button class="mkt-cart-btn cart-toggle" style="background:#ffe600; color:#000;">Ver Carrinho →</button>
+    </div>
+
+    <div class="mkt-cats" id="mkt-cats"></div>
+    <div class="mkt-grid" id="produtos-grid"></div>
+    <div id="nenhum-produto" style="display:none; text-align:center; padding:4rem; background:#fff; border-radius:6px;"><p>Nenhum produto encontrado.</p></div>
+  </main>
+
+  <!-- CART DRAWER -->
+  <div id="overlay" style="position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:1999; opacity:0; pointer-events:none; transition:0.2s;"></div>
+  <aside id="cart-drawer" style="position:fixed; top:0; right:0; height:100%; width:min(420px, 100vw); background:#fff; z-index:2000; transform:translateX(100%); transition:0.3s; display:flex; flex-direction:column; box-shadow:-5px 0 25px rgba(0,0,0,0.2);">
+    <div style="padding:1.25rem; background:var(--mkt-yellow); display:flex; justify-content:space-between; align-items:center;">
+      <h3 style="color:var(--mkt-blue); font-size:1.1rem; font-weight:900;">Meu Orçamento</h3>
+      <button id="cart-close" style="background:none; border:none; font-size:1.2rem; cursor:pointer;">✕</button>
+    </div>
+    <div id="cart-empty" style="padding:3rem 1.5rem; text-align:center; color:#888;"><p>Nenhum item adicionado.</p></div>
+    <div id="cart-items-list" style="flex:1; overflow-y:auto; padding:1.25rem; display:flex; flex-direction:column; gap:0.75rem;"></div>
+    <div id="cart-footer" style="padding:1.25rem; border-top:1px solid #eee; background:#f9f9f9;">
+      <div class="orcamento-form" style="background:#fff; border:1px solid #ddd; padding:0.85rem; border-radius:4px; margin-bottom:1rem;">
+        <div style="font-weight:700; font-size:0.8rem; margin-bottom:0.4rem; color:var(--mkt-blue);">DADOS PARA ORÇAMENTO</div>
+        <input type="text" id="f-nome" placeholder="Nome Completo *" style="width:100%; border:1px solid #ccc; padding:0.45rem; margin-bottom:0.4rem; border-radius:4px;">
+        <input type="tel" id="f-tel" placeholder="WhatsApp *" style="width:100%; border:1px solid #ccc; padding:0.45rem; margin-bottom:0.4rem; border-radius:4px;">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.4rem;">
+          <input type="text" id="f-cnpj" placeholder="CNPJ" style="border:1px solid #ccc; padding:0.45rem; border-radius:4px;">
+          <input type="text" id="f-vendedor" placeholder="Vendedor" style="border:1px solid #ccc; padding:0.45rem; border-radius:4px;">
+        </div>
+      </div>
+      <div style="display:flex; justify-content:space-between; font-weight:700; margin-bottom:0.8rem;">
+        <span>Total:</span><span id="cart-total-count">0</span>
+      </div>
+      <button id="btn-whatsapp-send" class="mkt-cart-btn" style="width:100%; justify-content:center; background:var(--mkt-green); font-size:0.95rem; cursor:pointer;">
+        Solicitar Orçamento no WhatsApp
+      </button>
+      <button id="btn-limpar" style="width:100%; text-align:center; background:none; border:none; margin-top:0.5rem; color:#888; font-size:0.75rem; cursor:pointer;">Limpar Carrinho</button>
+    </div>
+  </aside>
+
+  <div id="cart-feedback" style="display:none"></div>
+
+  <!-- COMPATIBILITY HOOKS -->
+  <div id="banner-slider" style="display:none"><div class="banner-slide"></div><button id="banner-prev"></button><button id="banner-next"></button><div class="banner-dots"><button class="banner-dot"></button></div></div>
+  <div id="categorias-grid" style="display:none"></div>
+  <div id="filtros-bar" style="display:none"></div>
+  <div id="produtos-section" style="display:none"></div>
+
+  <script src="js/produtos.js"></script>
+  <script src="js/carrinho.js"></script>
+  <script>
+    function renderProdutos(catId, termoBusca = '') {
+      const grid = document.getElementById('produtos-grid');
+      const empty = document.getElementById('nenhum-produto');
+      if (!grid) return;
+      let lista = PRODUTOS;
+      if (catId && catId !== 'todos') lista = lista.filter(p => p.categoria === catId);
+      if (termoBusca) {
+        const t = termoBusca.toLowerCase();
+        lista = lista.filter(p => p.nome.toLowerCase().includes(t) || p.referencia.toLowerCase().includes(t) || p.descricao.toLowerCase().includes(t));
+      }
+      if (lista.length === 0) { grid.innerHTML = ''; if (empty) empty.style.display = 'block'; return; }
+      if (empty) empty.style.display = 'none';
+      grid.innerHTML = lista.map(p => `
+        <div class="mkt-card">
+          <a href="produto.html?id=${p.id}"><img src="${p.imagens[0]}" alt="${p.nome}" class="mkt-card-img" onerror="this.src='https://picsum.photos/seed/mkt${p.id}/300/200'"></a>
+          <div class="mkt-card-body">
+            <span class="mkt-free-tag">✓ Cotação Disponível</span>
+            <div class="mkt-title"><a href="produto.html?id=${p.id}">${p.nome}</a></div>
+            <div class="mkt-desc">${p.descricao}</div>
+            <div class="mkt-qty-row">
+              <div class="mkt-qty">
+                <button onclick="decrementarCard(${p.id})">−</button>
+                <input type="number" id="qty-${p.id}" value="1" min="1" readonly>
+                <button onclick="incrementarCard(${p.id})">+</button>
+              </div>
+              <button class="mkt-add-btn" onclick="adicionarAoOrcamento(${p.id})">+ Adicionar</button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+    function initCategorias() {
+      const row = document.getElementById('mkt-cats');
+      if (row) {
+        row.innerHTML = CATEGORIAS.map(c => `
+          <div class="mkt-cat-pill ${c.id === 'todos' ? 'active' : ''}" onclick="filtrarPor('${c.id}')">
+            ${c.icone} ${c.nome}
+          </div>
+        `).join('');
+      }
+    }
+    function filtrarPor(catId) {
+      document.querySelectorAll('.mkt-cat-pill').forEach(p => p.classList.toggle('active', p.getAttribute('onclick')?.includes(`'${catId}'`)));
+      renderProdutos(catId, document.getElementById('search-input')?.value || '');
+    }
+    function incrementarCard(id) { const i = document.getElementById(`qty-${id}`); if(i) i.value = parseInt(i.value)+1; }
+    function decrementarCard(id) { const i = document.getElementById(`qty-${id}`); if(i && parseInt(i.value)>1) i.value = parseInt(i.value)-1; }
+    function adicionarAoOrcamento(id) { const i = document.getElementById(`qty-${id}`); Carrinho.adicionar(id, parseInt(i?.value)||1); }
+    function initSearch() { document.getElementById('search-input')?.addEventListener('input', e => renderProdutos('todos', e.target.value)); }
+    document.addEventListener('DOMContentLoaded', () => { initCategorias(); renderProdutos('todos'); initSearch(); });
+  </script>
+</body>
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nfog Catálogo — High-Ticket Lead Matrix</title>
+  <link rel="stylesheet" href="css/template29-landing-lead.css">
+</head>
+<body>
+
+  <div class="lead-topbar">
+    🔥 COTAÇÃO PRIORITÁRIA VIA WHATSAPP COM RESPOSTA RÁPIDA
+  </div>
+
+  <header class="lead-header">
+    <div class="lead-wrap lead-nav">
+      <a href="index29.html" class="lead-logo">
+        NFOG <span>PRO</span>
+      </a>
+
+      <div style="flex:1; max-width:440px; margin:0 1rem;">
+        <input type="search" id="search-input" placeholder="Buscar catálogo..." style="width:100%; padding:0.6rem 1rem; border:1.5px solid var(--lead-border); border-radius:6px; font-family:inherit; font-size:0.88rem;">
+      </div>
+
+      <button class="lead-cart-btn cart-toggle">
+        <span>Meu Orçamento</span>
+        <span class="cart-badge" style="background:#dc2626; color:#fff; padding:0.1rem 0.4rem; border-radius:4px; font-size:0.75rem;">0</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="lead-wrap">
+    <section class="lead-hero">
+      <span class="lead-hero-tag">ATENDIMENTO COMERCIAL DIRETO</span>
+      <h1 class="lead-hero-title">Soluções de Alto Desempenho para <span>Maximizar sua Operação.</span></h1>
+      <p class="lead-hero-sub">Selecione os produtos necessários, informe as quantidades e receba uma proposta personalizada com condições exclusivas no seu WhatsApp.</p>
+
+      <div class="lead-badges-row">
+        <div class="lead-badge-item"><span>✅</span> Qualidade de Fábrica</div>
+        <div class="lead-badge-item"><span>🚀</span> Pronta Entrega</div>
+        <div class="lead-badge-item"><span>🛡️</span> Garantia Oficial</div>
+        <div class="lead-badge-item"><span>💬</span> Suporte via WhatsApp</div>
+      </div>
+    </section>
+
+    <div class="lead-cats" id="lead-cats"></div>
+    <div class="lead-grid" id="produtos-grid"></div>
+    <div id="nenhum-produto" style="display:none; text-align:center; padding:4rem; background:#fff; border-radius:12px;"><p>Nenhum produto encontrado.</p></div>
+  </main>
+
+  <!-- CART DRAWER -->
+  <div id="overlay" style="position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:1999; opacity:0; pointer-events:none; transition:0.2s;"></div>
+  <aside id="cart-drawer" style="position:fixed; top:0; right:0; height:100%; width:min(440px, 100vw); background:#fff; z-index:2000; transform:translateX(100%); transition:0.25s; display:flex; flex-direction:column; box-shadow:-5px 0 25px rgba(0,0,0,0.2);">
+    <div style="padding:1.25rem; background:var(--lead-dark); color:#fff; display:flex; justify-content:space-between; align-items:center;">
+      <h3 style="font-size:1.1rem; font-weight:800;">Itens Selecionados</h3>
+      <button id="cart-close" style="background:none; border:none; color:#fff; font-size:1.2rem; cursor:pointer;">✕</button>
+    </div>
+    <div id="cart-empty" style="padding:3rem 1.5rem; text-align:center; color:#888;"><p>Nenhum item selecionado.</p></div>
+    <div id="cart-items-list" style="flex:1; overflow-y:auto; padding:1.25rem; display:flex; flex-direction:column; gap:0.75rem;"></div>
+    <div id="cart-footer" style="padding:1.25rem; border-top:1px solid var(--lead-border); background:#f8fafc;">
+      <div class="orcamento-form" style="background:#fff; border:1.5px solid var(--lead-border); border-radius:8px; padding:0.9rem; margin-bottom:1rem;">
+        <div style="font-weight:800; font-size:0.8rem; color:var(--lead-dark); margin-bottom:0.5rem;">SEUS DADOS DE CONTATO</div>
+        <input type="text" id="f-nome" placeholder="Nome Completo *" style="width:100%; border:1px solid var(--lead-border); padding:0.45rem; border-radius:4px; margin-bottom:0.4rem; font-size:0.85rem;">
+        <input type="tel" id="f-tel" placeholder="WhatsApp *" style="width:100%; border:1px solid var(--lead-border); padding:0.45rem; border-radius:4px; margin-bottom:0.4rem; font-size:0.85rem;">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.4rem;">
+          <input type="text" id="f-cnpj" placeholder="CNPJ" style="border:1px solid var(--lead-border); padding:0.45rem; border-radius:4px; font-size:0.85rem;">
+          <input type="text" id="f-vendedor" placeholder="Vendedor" style="border:1px solid var(--lead-border); padding:0.45rem; border-radius:4px; font-size:0.85rem;">
+        </div>
+      </div>
+      <div style="display:flex; justify-content:space-between; font-weight:800; margin-bottom:0.8rem;">
+        <span>Total:</span><span id="cart-total-count">0</span>
+      </div>
+      <button id="btn-whatsapp-send" class="lead-add-btn" style="width:100%; padding:0.85rem; font-size:0.95rem; cursor:pointer;">
+        Solicitar Orçamento Agora
+      </button>
+      <button id="btn-limpar" style="width:100%; text-align:center; background:none; border:none; margin-top:0.5rem; color:#888; font-size:0.75rem; cursor:pointer;">Limpar Lista</button>
+    </div>
+  </aside>
+
+  <div id="cart-feedback" style="display:none"></div>
+
+  <!-- COMPATIBILITY HOOKS -->
+  <div id="banner-slider" style="display:none"><div class="banner-slide"></div><button id="banner-prev"></button><button id="banner-next"></button><div class="banner-dots"><button class="banner-dot"></button></div></div>
+  <div id="categorias-grid" style="display:none"></div>
+  <div id="filtros-bar" style="display:none"></div>
+  <div id="produtos-section" style="display:none"></div>
+
+  <script src="js/produtos.js"></script>
+  <script src="js/carrinho.js"></script>
+  <script>
+    function renderProdutos(catId, termoBusca = '') {
+      const grid = document.getElementById('produtos-grid');
+      const empty = document.getElementById('nenhum-produto');
+      if (!grid) return;
+      let lista = PRODUTOS;
+      if (catId && catId !== 'todos') lista = lista.filter(p => p.categoria === catId);
+      if (termoBusca) {
+        const t = termoBusca.toLowerCase();
+        lista = lista.filter(p => p.nome.toLowerCase().includes(t) || p.referencia.toLowerCase().includes(t) || p.descricao.toLowerCase().includes(t));
+      }
+      if (lista.length === 0) { grid.innerHTML = ''; if (empty) empty.style.display = 'block'; return; }
+      if (empty) empty.style.display = 'none';
+      grid.innerHTML = lista.map(p => `
+        <div class="lead-card">
+          <a href="produto.html?id=${p.id}"><img src="${p.imagens[0]}" alt="${p.nome}" class="lead-card-img" onerror="this.src='https://picsum.photos/seed/lead${p.id}/400/300'"></a>
+          <div class="lead-card-body">
+            <span class="lead-card-sku">Ref: ${p.referencia}</span>
+            <h3 class="lead-card-title"><a href="produto.html?id=${p.id}">${p.nome}</a></h3>
+            <p class="lead-card-desc">${p.descricao}</p>
+            <div class="lead-card-row">
+              <div class="lead-qty">
+                <button onclick="decrementarCard(${p.id})">−</button>
+                <input type="number" id="qty-${p.id}" value="1" min="1" readonly>
+                <button onclick="incrementarCard(${p.id})">+</button>
+              </div>
+              <button class="lead-add-btn" onclick="adicionarAoOrcamento(${p.id})">+ Cotar</button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+    function initCategorias() {
+      const row = document.getElementById('lead-cats');
+      if (row) {
+        row.innerHTML = CATEGORIAS.map(c => `
+          <button class="lead-cat-btn ${c.id === 'todos' ? 'active' : ''}" onclick="filtrarPor('${c.id}')">
+            ${c.icone} ${c.nome}
+          </button>
+        `).join('');
+      }
+    }
+    function filtrarPor(catId) {
+      document.querySelectorAll('.lead-cat-btn').forEach(p => p.classList.toggle('active', p.getAttribute('onclick')?.includes(`'${catId}'`)));
+      renderProdutos(catId, document.getElementById('search-input')?.value || '');
+    }
+    function incrementarCard(id) { const i = document.getElementById(`qty-${id}`); if(i) i.value = parseInt(i.value)+1; }
+    function decrementarCard(id) { const i = document.getElementById(`qty-${id}`); if(i && parseInt(i.value)>1) i.value = parseInt(i.value)-1; }
+    function adicionarAoOrcamento(id) { const i = document.getElementById(`qty-${id}`); Carrinho.adicionar(id, parseInt(i?.value)||1); }
+    function initSearch() { document.getElementById('search-input')?.addEventListener('input', e => renderProdutos('todos', e.target.value)); }
+    document.addEventListener('DOMContentLoaded', () => { initCategorias(); renderProdutos('todos'); initSearch(); });
+  </script>
+</body>
+</html>

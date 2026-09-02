@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nfog Catálogo — Zen Minimal & Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Shippori+Mincho:wght@500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* ── ZEN MINIMAL / JAPANESE STUDIO THEME ── */
+    :root {
+      --bg: #f9f8f6;
+      --bg-white: #ffffff;
+      --primary: #191817;
+      --primary-dark: #0f0e0e;
+      --crimson: #bc2d2d;
+      --crimson-pale: rgba(188, 45, 45, 0.08);
+      --sand: #ece9e2;
+      --text: #242220;
+      --text-light: #736f69;
+      --text-muted: #a6a29a;
+      --border: #e6e3dc;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.03);
+      --shadow: 0 4px 20px rgba(0,0,0,0.05);
+      --radius: 0px; /* Sharp Japanese Architectural Lines */
+      --header-h: 75px;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    h1, h2, h3, .logo-text, .section-title, .banner-title {
+      font-family: 'Shippori Mincho', serif;
+      font-weight: 700;
+    }
+
+    /* ── HEADER ── */
+    .site-header {
+      background: rgba(249, 248, 246, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      height: var(--header-h);
+      box-shadow: none;
+    }
+
+    .logo-icon {
+      background: var(--crimson);
+      color: #fff;
+      border-radius: 0;
+      font-family: 'Shippori Mincho', serif;
+      font-weight: 700;
+      width: 36px;
+      height: 36px;
+    }
+
+    .logo-text {
+      color: var(--primary);
+      font-size: 1.3rem;
+      letter-spacing: -0.01em;
+    }
+
+    .logo-text span {
+      color: var(--crimson);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      font-size: 0.65rem;
+    }
+
+    .header-search input {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 0;
+      color: var(--text);
+      font-size: 0.85rem;
+    }
+
+    .header-search input:focus {
+      border-color: var(--primary);
+      box-shadow: none;
+      background: #fff;
+    }
+
+    .nav-link {
+      color: var(--text);
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      border-radius: 0;
+    }
+
+    .nav-link:hover {
+      background: transparent;
+      color: var(--crimson);
+      text-decoration: underline;
+    }
+
+    .cart-toggle {
+      background: var(--primary);
+      color: #fff;
+      border-radius: 0;
+      font-weight: 600;
+      font-size: 0.85rem;
+      letter-spacing: 0.05em;
+      padding: 0.6rem 1.3rem;
+    }
+
+    .cart-toggle:hover {
+      background: var(--crimson);
+      box-shadow: none;
+    }
+
+    /* ── BANNER (Minimalist Asymmetric) ── */
+    #banner-slider {
+      height: clamp(320px, 46vw, 480px);
+      background: #f0eee8;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .banner-slide:nth-child(1) { background: #f2efe9; }
+    .banner-slide:nth-child(2) { background: #eae6de; }
+    .banner-slide:nth-child(3) { background: #f5f2eb; }
+
+    .banner-slide::before { display: none; }
+
+    .banner-content {
+      color: var(--primary);
+      max-width: 600px;
+    }
+
+    .banner-tag {
+      background: transparent;
+      border: 1px solid var(--crimson);
+      color: var(--crimson);
+      border-radius: 0;
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      font-weight: 600;
+    }
+
+    .banner-title {
+      color: var(--primary);
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      line-height: 1.15;
+      font-weight: 800;
+    }
+
+    .banner-sub {
+      color: var(--text-light);
+      font-size: 1rem;
+      line-height: 1.7;
+    }
+
+    .banner-btn {
+      background: var(--primary);
+      color: #fff;
+      border-radius: 0;
+      font-size: 0.9rem;
+      letter-spacing: 0.06em;
+      padding: 0.85rem 2rem;
+    }
+
+    .banner-btn:hover {
+      background: var(--crimson);
+      transform: none;
+    }
+
+    .banner-arrow {
+      background: #fff;
+      border: 1px solid var(--border);
+      color: var(--primary);
+      border-radius: 0;
+    }
+
+    .banner-arrow:hover {
+      background: var(--sand);
+    }
+
+    .banner-dot {
+      background: var(--text-muted);
+      border-radius: 0;
+      width: 14px;
+      height: 2px;
+    }
+
+    .banner-dot.active {
+      background: var(--crimson);
+      width: 28px;
+    }
+
+    /* ── CATEGORIAS ── */
+    #categorias {
+      background: #fff;
+      padding: 4rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-tag {
+      background: var(--crimson-pale);
+      color: var(--crimson);
+      border-radius: 0;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      font-size: 0.75rem;
+    }
+
+    .section-title {
+      color: var(--primary);
+      font-size: clamp(1.8rem, 3vw, 2.4rem);
+    }
+
+    .section-sub {
+      color: var(--text-light);
+      font-weight: 300;
+    }
+
+    .categoria-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 0;
+      padding: 1.8rem 1rem;
+    }
+
+    .categoria-card:hover, .categoria-card.active {
+      background: #fff;
+      border-color: var(--primary);
+      box-shadow: var(--shadow);
+      transform: none;
+    }
+
+    .categoria-card.active {
+      border-left: 3px solid var(--crimson);
+    }
+
+    .categoria-nome {
+      color: var(--primary);
+      font-weight: 600;
+      letter-spacing: 0.04em;
+    }
+
+    /* ── PRODUTOS ── */
+    #produtos-section {
+      background: var(--bg);
+      padding: 4rem 0;
+    }
+
+    .filtro-btn {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 0;
+      color: var(--text);
+      font-size: 0.82rem;
+      letter-spacing: 0.04em;
+      font-weight: 600;
+      padding: 0.5rem 1.2rem;
+    }
+
+    .filtro-btn:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      background: #fff;
+    }
+
+    .filtro-btn.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+    }
+
+    .produto-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 0;
+      box-shadow: none;
+    }
+
+    .produto-card:hover {
+      border-color: var(--primary);
+      box-shadow: var(--shadow);
+      transform: translateY(-2px);
+    }
+
+    .produto-ref {
+      color: var(--crimson);
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      font-weight: 600;
+    }
+
+    .produto-nome {
+      font-family: 'Shippori Mincho', serif;
+      font-size: 1.1rem;
+    }
+
+    .produto-nome a {
+      color: var(--primary);
+    }
+
+    .produto-nome a:hover {
+      color: var(--crimson);
+    }
+
+    .badge-destaque {
+      background: var(--crimson);
+      color: #fff;
+      border-radius: 0;
+      font-size: 0.68rem;
+      letter-spacing: 0.08em;
+    }
+
+    .qty-btn {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 0;
+      color: var(--text);
+    }
+
+    .qty-btn:hover {
+      background: var(--sand);
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .qty-input {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 0;
+    }
+
+    .btn-add-cart {
+      background: var(--primary);
+      color: #fff;
+      border-radius: 0;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      font-size: 0.85rem;
+    }
+
+    .btn-add-cart:hover {
+      background: var(--crimson);
+      box-shadow: none;
+    }
+
+    .btn-ver-mais {
+      color: var(--crimson);
+      font-size: 0.8rem;
+      letter-spacing: 0.04em;
+    }
+
+    /* ── CART DRAWER ZEN ── */
+    #cart-drawer {
+      background: #fff;
+      border-left: 1px solid var(--border);
+    }
+
+    .drawer-header {
+      background: var(--primary);
+      border-radius: 0;
+    }
+
+    .cart-item {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 0;
+    }
+
+    .orcamento-form {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 0;
+    }
+
+    .form-group input {
+      border-radius: 0;
+      border: 1px solid var(--border);
+      background: #fff;
+    }
+
+    .form-group input:focus {
+      border-color: var(--primary);
+      box-shadow: none;
+    }
+
+    .btn-whatsapp {
+      background: #1e7e34 !important;
+      border-radius: 0 !important;
+      font-weight: 700 !important;
+    }
+
+    /* ── FOOTER ── */
+    .site-footer {
+      background: #141312;
+      border-top: 1px solid var(--border);
+      margin-top: 0;
+    }
+
+    .footer-brand .logo-text {
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="index11.html" class="logo">
+        <div class="logo-icon">和</div>
+        <div class="logo-text">Nfog Catálogo<span>Zen & Studio</span></div>
+      </a>
+      <div class="header-search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="search" id="search-input" placeholder="Pesquisar no catálogo...">
+      </div>
+      <nav class="header-nav">
+        <a href="index.html" class="nav-link">Catálogo</a>
+        <button class="cart-toggle">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+          Orçamento
+          <span class="cart-badge">0</span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- BANNER -->
+  <section id="banner-slider">
+    <div class="banner-slide">
+      <div class="banner-content">
+        <span class="banner-tag">SIMPLICIDADE & PRECISÃO</span>
+        <h1 class="banner-title">Design essencial e qualidade duradoura</h1>
+        <p class="banner-sub">Uma curadoria refinada de soluções e produtos. Solicite seu orçamento com total clareza via WhatsApp.</p>
+        <a href="#produtos-section" class="banner-btn">Ver Coleção →</a>
+      </div>
+    </div>
+    <div class="banner-slide">
+      <div class="banner-content">
+        <span class="banner-tag">EQUIPAMENTOS DE PONTA</span>
+        <h1 class="banner-title">Eficiência planejada para o seu trabalho</h1>
+        <p class="banner-sub">Soluções confiáveis para impulsionar suas operações diárias com excelência.</p>
+        <a href="#categorias" class="banner-btn">Explorar Linhas →</a>
+      </div>
+    </div>
+    <div class="banner-slide">
+      <div class="banner-content">
+        <span class="banner-tag">CONTATO DIRETO</span>
+        <h1 class="banner-title">Orçamento rápido sem burocracia</h1>
+        <p class="banner-sub">Adicione os itens ao carrinho e receba atendimento personalizado de nossa equipe.</p>
+        <a href="#produtos-section" class="banner-btn">Montar Orçamento →</a>
+      </div>
+    </div>
+    <button id="banner-prev" class="banner-arrow prev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18"><polyline points="15 18 9 12 15 6"/></svg></button>
+    <button id="banner-next" class="banner-arrow next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18"><polyline points="9 18 15 12 9 6"/></svg></button>
+    <div class="banner-dots"><button class="banner-dot"></button><button class="banner-dot"></button><button class="banner-dot"></button></div>
+  </section>
+
+  <!-- CATEGORIAS -->
+  <section id="categorias">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">SELEÇÃO</span>
+        <h2 class="section-title">Categorias</h2>
+        <p class="section-sub">Navegue pelas linhas de produtos selecionadas</p>
+      </div>
+    </div>
+    <div id="categorias-grid"></div>
+  </section>
+
+  <!-- PRODUTOS -->
+  <section id="produtos-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">CATÁLOGO</span>
+        <h2 class="section-title">Nossos Produtos</h2>
+        <p class="section-sub">Selecione os produtos e solicite cotação via WhatsApp</p>
+      </div>
+      <div id="filtros-bar"></div>
+      <div id="produtos-grid"></div>
+      <div id="nenhum-produto" style="display:none;text-align:center;padding:4rem"><p>Nenhum produto encontrado.</p><button onclick="filtrarPor('todos')" style="margin-top:1rem;padding:.7rem 1.75rem;background:var(--primary);color:#fff;border:none;cursor:pointer">Ver todos os produtos</button></div>
+    </div>
+  </section>
+
+  <!-- CART DRAWER -->
+  <div id="overlay"></div>
+  <aside id="cart-drawer">
+    <div class="drawer-header"><div class="drawer-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg> Orçamento</div><button id="cart-close">✕</button></div>
+    <div id="cart-empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="56" height="56"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg><p>Seu orçamento está vazio.</p></div>
+    <div id="cart-items-list"></div>
+    <div id="cart-footer">
+      <div class="orcamento-form">
+        <h4 class="orcamento-form-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Seus Dados</h4>
+        <div class="form-row"><div class="form-group"><label for="f-nome">Nome <span class="req">*</span></label><input type="text" id="f-nome" placeholder="Seu nome completo" autocomplete="name"><span class="form-error-msg">Campo obrigatório</span></div></div>
+        <div class="form-row"><div class="form-group"><label for="f-tel">Telefone <span class="req">*</span></label><input type="tel" id="f-tel" placeholder="(00) 00000-0000" inputmode="numeric"><span class="form-error-msg">Campo obrigatório</span></div></div>
+        <div class="form-row form-row--2col">
+          <div class="form-group"><label for="f-cnpj">CNPJ <span class="opt">opcional</span></label><input type="text" id="f-cnpj" placeholder="00.000.000/0001-00" inputmode="numeric"></div>
+          <div class="form-group"><label for="f-vendedor">Vendedor <span class="opt">opcional</span></label><input type="text" id="f-vendedor" placeholder="Nome do vendedor"></div>
+        </div>
+      </div>
+      <div class="cart-summary"><span>Total selecionado:</span><strong><span id="cart-total-count">0</span> itens</strong></div>
+      <button class="btn-whatsapp" id="btn-whatsapp-send"><svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg> Solicitar Orçamento no WhatsApp</button>
+      <button class="btn-limpar" id="btn-limpar">Limpar Orçamento</button>
+    </div>
+  </aside>
+  <div id="cart-feedback"></div>
+
+  <a href="https://wa.me/5545999332563" target="_blank" class="whatsapp-float"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg></a>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo"><div class="logo-icon">和</div><div class="logo-text">Nfog Catálogo<span>Zen Studio</span></div></div>
+        <p class="footer-desc">Curadoria refinada com atendimento direto via canal de orçamento.</p>
+      </div>
+      <div class="footer-col"><h5>Seletor de Layouts</h5><ul>
+        <li><a href="index.html">Layout 1 — Clássico</a></li>
+        <li><a href="index7.html">Layout 7 — Agro</a></li>
+        <li><a href="index8.html">Layout 8 — Corporate</a></li>
+        <li><a href="index9.html">Layout 9 — Luxury Gold</a></li>
+        <li><a href="index10.html">Layout 10 — Cyber Neon</a></li>
+        <li><a href="index11.html">Layout 11 — Zen Studio</a></li>
+      </ul></div>
+    </div>
+    <div class="footer-bottom"><p>© 2025 Nfog Catálogo — Zen Minimal Edition.</p></div>
+  </footer>
+
+  <script src="js/produtos.js"></script>
+  <script src="js/carrinho.js"></script>
+  <script src="js/home.js"></script>
+</body>
+</html>

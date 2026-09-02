@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nfog Catálogo — Colorido</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* ── COLORFUL / PLAYFUL ── */
+    :root {
+      --primary: #0f4531;
+      --primary-dark: #0b3828;
+      --coral: #FF6B6B;
+      --teal: #4ECDC4;
+      --yellow: #FFD93D;
+      --purple: #9B5DE5;
+      --blue: #3D9BE9;
+      --orange: #FF9A3C;
+    }
+
+    body { font-family: 'Nunito', sans-serif; background: #f8f9ff; }
+
+    /* ── HEADER ── */
+    .site-header { background: #fff; box-shadow: 0 2px 20px rgba(0,0,0,.06); }
+    .header-inner { border-bottom: 3px solid transparent; background-image: linear-gradient(#fff, #fff), linear-gradient(90deg, var(--coral), var(--yellow), var(--teal), var(--purple)); background-clip: padding-box, border-box; background-origin: padding-box, border-box; }
+    .logo-icon { background: linear-gradient(135deg, var(--primary), #2ecc71); }
+    .logo-text { color: var(--primary); font-weight: 900; }
+    .logo-text span { color: #a0aec0; }
+    .cart-toggle { background: linear-gradient(135deg, var(--primary), #1a7a50); border-radius: 50px; font-weight: 800; }
+    .cart-toggle:hover { transform: scale(1.04); box-shadow: 0 6px 20px rgba(15,69,49,.35); }
+    .nav-link { font-weight: 700; color: #4a5568; border-radius: 50px; }
+    .nav-link:hover { background: #f0f7ff; color: var(--primary); }
+
+    /* ── BANNER (colorful slides) ── */
+    #banner-slider { height: clamp(300px, 52vw, 520px); border-radius: 0 0 32px 32px; overflow: hidden; }
+    .banner-slide:nth-child(1) { background: linear-gradient(135deg, #FF6B6B 0%, #FFD93D 100%); }
+    .banner-slide:nth-child(2) { background: linear-gradient(135deg, #4ECDC4 0%, #3D9BE9 100%); }
+    .banner-slide:nth-child(3) { background: linear-gradient(135deg, #9B5DE5 0%, #FF6B6B 100%); }
+    .banner-slide::before { display: none; }
+    .banner-title { color: #fff; text-shadow: 0 2px 12px rgba(0,0,0,.15); }
+    .banner-sub { color: rgba(255,255,255,.9); }
+    .banner-tag { background: rgba(255,255,255,.25); border-color: rgba(255,255,255,.5); color: #fff; font-weight: 800; }
+    .banner-btn { background: #fff; color: #333; font-weight: 800; border-radius: 50px; padding: .85rem 2rem; }
+    .banner-btn:hover { transform: scale(1.06) translateY(0); box-shadow: 0 8px 30px rgba(0,0,0,.2); }
+    .banner-arrow { background: rgba(255,255,255,.3); border-color: rgba(255,255,255,.5); }
+    .banner-arrow:hover { background: rgba(255,255,255,.5); }
+    .banner-dot { background: rgba(255,255,255,.4); }
+    .banner-dot.active { background: #fff; }
+
+    /* ── CATEGORIAS (colorful big cards) ── */
+    #categorias { background: #f8f9ff; padding: 3rem 0; }
+    #categorias-grid {
+      display: grid !important;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)) !important;
+      gap: 1rem !important;
+      max-width: 1280px !important;
+      margin: 0 auto !important;
+      padding: 0 1.5rem !important;
+    }
+
+    .categoria-card {
+      border-radius: 20px !important;
+      padding: 2rem 1rem !important;
+      border: none !important;
+      font-weight: 800 !important;
+      box-shadow: 0 4px 20px rgba(0,0,0,.08) !important;
+    }
+
+    .categoria-card:nth-child(1) { background: linear-gradient(135deg, #e8f5ee, #d0ede0) !important; }
+    .categoria-card:nth-child(2) { background: linear-gradient(135deg, #fff0e6, #ffe0c2) !important; }
+    .categoria-card:nth-child(3) { background: linear-gradient(135deg, #e6f3ff, #c2dcf7) !important; }
+    .categoria-card:nth-child(4) { background: linear-gradient(135deg, #f3e6ff, #e0c2f7) !important; }
+    .categoria-card:nth-child(5) { background: linear-gradient(135deg, #e6faff, #c2eef7) !important; }
+
+    .categoria-card:hover, .categoria-card.active {
+      transform: translateY(-6px) scale(1.03) !important;
+      box-shadow: 0 12px 32px rgba(0,0,0,.15) !important;
+    }
+
+    .categoria-icone { font-size: 2.5rem !important; }
+    .categoria-nome { font-size: 1rem !important; font-weight: 800 !important; color: #2d3748 !important; }
+    .categoria-card.active .categoria-nome { color: var(--primary) !important; }
+
+    .section-tag { background: linear-gradient(135deg, #e8f5ee, #d0ede0); color: var(--primary); font-weight: 800; }
+    .section-title { color: #111; font-family: 'Nunito', sans-serif; }
+    .section-sub { color: #718096; }
+
+    /* ── PRODUTOS SECTION ── */
+    #produtos-section { background: #fff; padding: 3.5rem 0; margin-top: 1rem; border-radius: 32px 32px 0 0; }
+
+    .filtro-btn { border-radius: 50px !important; font-weight: 700 !important; font-size: .85rem !important; padding: .5rem 1.25rem !important; }
+    .filtro-btn.active { background: var(--primary) !important; border-color: var(--primary) !important; }
+
+    /* Product cards — colorful */
+    .produto-card {
+      border-radius: 20px !important;
+      border: none !important;
+      box-shadow: 0 4px 20px rgba(0,0,0,.07) !important;
+      overflow: hidden !important;
+      transition: transform .25s, box-shadow .25s !important;
+    }
+
+    .produto-card:hover {
+      transform: translateY(-8px) !important;
+      box-shadow: 0 16px 40px rgba(0,0,0,.13) !important;
+    }
+
+    .produto-img { height: 200px !important; border-radius: 0 !important; }
+    .produto-img-link { border-radius: 0 !important; }
+
+    .badge-destaque {
+      background: linear-gradient(135deg, var(--yellow), var(--orange)) !important;
+      color: #333 !important;
+      font-weight: 800 !important;
+      border-radius: 50px !important;
+    }
+
+    .produto-nome a { color: #111 !important; font-weight: 800 !important; }
+    .btn-add-cart {
+      border-radius: 50px !important;
+      background: linear-gradient(135deg, var(--primary), #1a7a50) !important;
+      font-weight: 800 !important;
+    }
+    .btn-add-cart:hover { transform: scale(1.03) translateY(0) !important; box-shadow: 0 6px 20px rgba(15,69,49,.35) !important; }
+    .btn-ver-mais { color: var(--primary) !important; font-weight: 700 !important; }
+
+    .qty-btn { border-radius: 50px !important; }
+
+    /* ── FOOTER com curva ── */
+    .site-footer {
+      margin-top: 0;
+      position: relative;
+      overflow: visible;
+    }
+
+    .footer-wave {
+      height: 60px;
+      background: var(--primary-dark);
+      clip-path: ellipse(55% 100% at 50% 100%);
+      margin-bottom: -1px;
+    }
+
+    /* Colorful divider between sections */
+    .color-bar {
+      height: 4px;
+      background: linear-gradient(90deg, var(--coral), var(--yellow), var(--teal), var(--purple), var(--blue));
+      border-radius: 2px;
+      margin-bottom: 2rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="index5.html" class="logo">
+        <div class="logo-icon">🌿</div>
+        <div class="logo-text">Nfog Catálogo<span>Edição Colorida</span></div>
+      </a>
+      <div class="header-search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="search" id="search-input" placeholder="Buscar produto...">
+      </div>
+      <nav class="header-nav">
+        <a href="index.html" class="nav-link">← Original</a>
+        <button class="cart-toggle">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+          Orçamento
+          <span class="cart-badge">0</span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- BANNER -->
+  <section id="banner-slider">
+    <div class="banner-slide">
+      <div class="banner-content">
+        <span class="banner-tag">🎨 Novo Visual!</span>
+        <h1 class="banner-title">Produtos que fazem a diferença no seu negócio!</h1>
+        <p class="banner-sub">Catálogo completo com orçamento rápido pelo WhatsApp</p>
+        <a href="#produtos-section" class="banner-btn">Explorar produtos 🚀</a>
+      </div>
+    </div>
+    <div class="banner-slide">
+      <div class="banner-content">
+        <span class="banner-tag">⚙️ Equipamentos</span>
+        <h1 class="banner-title">Equipamentos de alta performance!</h1>
+        <p class="banner-sub">Qualidade e durabilidade que você pode confiar</p>
+        <a href="#categorias" class="banner-btn">Ver categorias ✨</a>
+      </div>
+    </div>
+    <div class="banner-slide">
+      <div class="banner-content">
+        <span class="banner-tag">💬 Rápido e fácil!</span>
+        <h1 class="banner-title">Monte seu orçamento em segundos!</h1>
+        <p class="banner-sub">Selecione, adicione ao carrinho e envie pelo WhatsApp</p>
+        <a href="#produtos-section" class="banner-btn">Começar agora 🎯</a>
+      </div>
+    </div>
+    <button id="banner-prev" class="banner-arrow prev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18"><polyline points="15 18 9 12 15 6"/></svg></button>
+    <button id="banner-next" class="banner-arrow next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18"><polyline points="9 18 15 12 9 6"/></svg></button>
+    <div class="banner-dots"><button class="banner-dot"></button><button class="banner-dot"></button><button class="banner-dot"></button></div>
+  </section>
+
+  <!-- CATEGORIAS -->
+  <section id="categorias">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">🗂️ Categorias</span>
+        <h2 class="section-title">O que você procura?</h2>
+        <p class="section-sub">Clique em uma categoria para filtrar os produtos</p>
+      </div>
+    </div>
+    <div id="categorias-grid"></div>
+  </section>
+
+  <!-- PRODUTOS -->
+  <section id="produtos-section">
+    <div class="container">
+      <div class="section-header">
+        <div class="color-bar"></div>
+        <span class="section-tag">🛒 Catálogo</span>
+        <h2 class="section-title">Nossos Produtos</h2>
+        <p class="section-sub">Adicione ao orçamento e solicite via WhatsApp</p>
+      </div>
+      <div id="filtros-bar"></div>
+      <div id="produtos-grid"></div>
+      <div id="nenhum-produto" style="display:none;text-align:center;padding:4rem;color:#718096"><p>Nenhum produto encontrado.</p><button onclick="filtrarPor('todos')" style="margin-top:1rem;padding:.75rem 1.75rem;background:linear-gradient(135deg,#0f4531,#1a7a50);color:#fff;border:none;cursor:pointer;border-radius:50px;font-weight:800;font-family:inherit">Ver todos 🎯</button></div>
+    </div>
+  </section>
+
+  <!-- CART DRAWER -->
+  <div id="overlay"></div>
+  <aside id="cart-drawer">
+    <div class="drawer-header"><div class="drawer-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg> Meu Orçamento</div><button id="cart-close">✕</button></div>
+    <div id="cart-empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="56" height="56"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg><p>Seu orçamento está vazio.</p></div>
+    <div id="cart-items-list"></div>
+    <div id="cart-footer">
+      <div class="orcamento-form">
+        <h4 class="orcamento-form-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Seus Dados</h4>
+        <div class="form-row"><div class="form-group"><label for="f-nome">Nome <span class="req">*</span></label><input type="text" id="f-nome" placeholder="Seu nome completo" autocomplete="name"><span class="form-error-msg">Campo obrigatório</span></div></div>
+        <div class="form-row"><div class="form-group"><label for="f-tel">Telefone <span class="req">*</span></label><input type="tel" id="f-tel" placeholder="(00) 00000-0000" inputmode="numeric"><span class="form-error-msg">Campo obrigatório</span></div></div>
+        <div class="form-row form-row--2col">
+          <div class="form-group"><label for="f-cnpj">CNPJ <span class="opt">opcional</span></label><input type="text" id="f-cnpj" placeholder="00.000.000/0001-00" inputmode="numeric"></div>
+          <div class="form-group"><label for="f-vendedor">Vendedor <span class="opt">opcional</span></label><input type="text" id="f-vendedor" placeholder="Nome do vendedor"></div>
+        </div>
+      </div>
+      <div class="cart-summary"><span>Total:</span><strong><span id="cart-total-count">0</span> itens</strong></div>
+      <button class="btn-whatsapp" id="btn-whatsapp-send"><svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg> Solicitar Orçamento!</button>
+      <button class="btn-limpar" id="btn-limpar">Limpar orçamento</button>
+    </div>
+  </aside>
+  <div id="cart-feedback"></div>
+
+  <a href="https://wa.me/5545999332563" target="_blank" class="whatsapp-float"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg></a>
+
+  <!-- FOOTER -->
+  <div class="footer-wave"></div>
+  <footer class="site-footer" style="margin-top:0;padding-top:1rem">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo"><div class="logo-icon" style="background:linear-gradient(135deg,#0f4531,#2ecc71)">🌿</div><div class="logo-text">Nfog Catálogo<span>Edição Colorida</span></div></div>
+        <p class="footer-desc">Catálogo online colorido e moderno. Monte seu orçamento!</p>
+      </div>
+      <div class="footer-col"><h5>Layouts</h5><ul>
+        <li><a href="index.html">Layout 1 — Original</a></li>
+        <li><a href="index2.html">Layout 2 — Dark Mode</a></li>
+        <li><a href="index3.html">Layout 3 — Dashboard</a></li>
+        <li><a href="index4.html">Layout 4 — Editorial</a></li>
+        <li><a href="index5.html">Layout 5 — Colorido</a></li>
+        <li><a href="index6.html">Layout 6 — Glass</a></li>
+      </ul></div>
+    </div>
+    <div class="footer-bottom"><p>© 2025 Nfog Catálogo.</p></div>
+  </footer>
+
+  <script src="js/produtos.js"></script>
+  <script src="js/carrinho.js"></script>
+  <script src="js/home.js"></script>
+</body>
+</html>

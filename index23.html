@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nfog Catálogo — Split Screen Dual Pane</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    :root {
+      --split-bg: #f8fafc;
+      --split-left: #0f172a;
+      --split-accent: #38bdf8;
+      --split-border: #e2e8f0;
+      --split-text: #0f172a;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--split-bg);
+      color: var(--split-text);
+      height: 100vh; overflow: hidden;
+    }
+    a { text-decoration: none; color: inherit; }
+    button { font-family: inherit; cursor: pointer; }
+
+    .split-layout {
+      display: grid; grid-template-columns: 45% 55%; height: 100vh;
+    }
+
+    /* LEFT PANE */
+    .split-left-pane {
+      background: var(--split-left); color: #fff; padding: 2.5rem;
+      display: flex; flex-direction: column; justify-content: space-between;
+      overflow-y: auto; border-right: 1px solid #1e293b;
+    }
+    .split-brand {
+      display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem;
+    }
+    .split-brand h2 { font-size: 1.3rem; font-weight: 800; }
+    .split-spotlight-img {
+      width: 100%; height: 260px; object-fit: cover; border-radius: 12px; margin-bottom: 1.2rem;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .split-spotlight-sku {
+      color: var(--split-accent); font-weight: 700; font-size: 0.8rem; margin-bottom: 0.3rem;
+    }
+    .split-spotlight-title {
+      font-size: 1.6rem; font-weight: 800; margin-bottom: 0.6rem; line-height: 1.2;
+    }
+    .split-spotlight-desc {
+      color: #94a3b8; font-size: 0.9rem; line-height: 1.6; margin-bottom: 1.5rem;
+    }
+
+    /* RIGHT PANE */
+    .split-right-pane {
+      background: #f8fafc; padding: 2rem; overflow-y: auto; height: 100vh;
+    }
+    .split-search-box {
+      margin-bottom: 1.5rem; position: relative;
+    }
+    .split-search-box input {
+      width: 100%; background: #fff; border: 1px solid var(--split-border);
+      border-radius: 8px; padding: 0.75rem 1rem 0.75rem 2.6rem; font-size: 0.9rem;
+    }
+    .split-search-box svg { position: absolute; left: 0.9rem; top: 50%; transform: translateY(-50%); color: #94a3b8; }
+
+    .split-cats-bar {
+      display: flex; gap: 0.5rem; overflow-x: auto; padding-bottom: 0.8rem; margin-bottom: 1.5rem;
+    }
+    .split-cat-btn {
+      background: #fff; border: 1px solid var(--split-border); padding: 0.5rem 1rem;
+      border-radius: 6px; font-size: 0.82rem; font-weight: 600; color: #475569; white-space: nowrap;
+    }
+    .split-cat-btn.active { background: var(--split-left); color: #fff; border-color: var(--split-left); }
+
+    .split-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem;
+    }
+    .split-card {
+      background: #fff; border: 1px solid var(--split-border); border-radius: 8px; padding: 0.75rem;
+      display: flex; flex-direction: column; cursor: pointer; transition: 0.15s;
+    }
+    .split-card:hover { transform: translateY(-2px); border-color: #38bdf8; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+    .split-card-img { width: 100%; height: 130px; object-fit: cover; border-radius: 6px; margin-bottom: 0.6rem; }
+    .split-card-title { font-size: 0.88rem; font-weight: 700; color: #0f172a; margin-bottom: 0.3rem; }
+    .split-card-sku { font-size: 0.72rem; color: #64748b; margin-bottom: 0.6rem; }
+    .split-card-btn {
+      background: #0f172a; color: #fff; border: none; border-radius: 4px; padding: 0.4rem; font-size: 0.75rem; font-weight: 700;
+    }
+
+    @media (max-width: 900px) {
+      .split-layout { grid-template-columns: 1fr; height: auto; overflow: visible; }
+      body { height: auto; overflow: visible; }
+      .split-right-pane { height: auto; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="split-layout">
+    <!-- LEFT SPOTLIGHT -->
+    <section class="split-left-pane">
+      <div>
+        <div class="split-brand">
+          <h2>⚡ NFOG // SPOTLIGHT</h2>
+          <button class="cart-toggle" style="background:#38bdf8; color:#000; border:none; padding:0.4rem 0.9rem; border-radius:4px; font-weight:800; font-size:0.8rem;">
+            Orçamento (<span class="cart-badge">0</span>)
+          </button>
+        </div>
+
+        <img id="spotlight-img" src="https://picsum.photos/seed/spot1/600/400" alt="Spotlight" class="split-spotlight-img">
+        <div class="split-spotlight-sku" id="spotlight-sku">REF: LA-001</div>
+        <h1 class="split-spotlight-title" id="spotlight-title">Produto em Destaque</h1>
+        <p class="split-spotlight-desc" id="spotlight-desc">Selecione qualquer produto no catálogo à direita para inspecionar os detalhes e adicioná-lo à sua cotação instantânea.</p>
+      </div>
+
+      <div style="background:#1e293b; padding:1.2rem; border-radius:8px;">
+        <div style="display:flex; gap:0.5rem; margin-bottom:0.75rem;">
+          <input type="number" id="spotlight-qty" value="1" min="1" style="width:60px; background:#0f172a; border:1px solid #334155; color:#fff; padding:0.5rem; text-align:center; font-weight:700; border-radius:4px;">
+          <button id="spotlight-add-btn" onclick="addSpotlight()" style="flex:1; background:#38bdf8; color:#000; border:none; font-weight:800; border-radius:4px; font-size:0.9rem;">
+            + Adicionar ao Orçamento
+          </button>
+        </div>
+        <button class="cart-toggle" style="width:100%; background:#22c55e; color:#000; border:none; padding:0.7rem; font-weight:800; border-radius:4px; font-size:0.85rem;">
+          Finalizar Orçamento WhatsApp
+        </button>
+      </div>
+    </section>
+
+    <!-- RIGHT CATALOG -->
+    <section class="split-right-pane">
+      <div class="split-search-box">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="search" id="search-input" placeholder="Pesquisar catálogo...">
+      </div>
+
+      <div class="split-cats-bar" id="split-cats"></div>
+
+      <div class="split-grid" id="produtos-grid"></div>
+
+      <div id="nenhum-produto" style="display:none; text-align:center; padding:3rem;"><p>Nenhum produto encontrado.</p></div>
+    </section>
+  </div>
+
+  <!-- CART DRAWER -->
+  <div id="overlay" style="position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:1999; opacity:0; pointer-events:none; transition:0.2s;"></div>
+  <aside id="cart-drawer" style="position:fixed; top:0; right:0; height:100%; width:min(400px, 100vw); background:#fff; z-index:2000; transform:translateX(100%); transition:0.3s; display:flex; flex-direction:column;">
+    <div style="padding:1.2rem; background:#0f172a; color:#fff; display:flex; justify-content:space-between; align-items:center;">
+      <h3 style="font-size:1.1rem;">Meu Orçamento</h3>
+      <button id="cart-close" style="background:none; border:none; color:#fff; font-size:1.2rem; cursor:pointer;">✕</button>
+    </div>
+    <div id="cart-empty" style="padding:3rem 1rem; text-align:center; color:#888;"><p>Nenhum item adicionado.</p></div>
+    <div id="cart-items-list" style="flex:1; overflow-y:auto; padding:1rem; display:flex; flex-direction:column; gap:0.6rem;"></div>
+    <div id="cart-footer" style="padding:1rem; border-top:1px solid #eee; background:#f8fafc;">
+      <div class="orcamento-form" style="background:#fff; border:1px solid #e2e8f0; padding:0.8rem; border-radius:6px; margin-bottom:0.8rem;">
+        <input type="text" id="f-nome" placeholder="Nome Completo *" style="width:100%; border:1px solid #cbd5e1; padding:0.45rem; margin-bottom:0.4rem; border-radius:4px; font-size:0.82rem;">
+        <input type="tel" id="f-tel" placeholder="WhatsApp *" style="width:100%; border:1px solid #cbd5e1; padding:0.45rem; margin-bottom:0.4rem; border-radius:4px; font-size:0.82rem;">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.4rem;">
+          <input type="text" id="f-cnpj" placeholder="CNPJ" style="border:1px solid #cbd5e1; padding:0.45rem; border-radius:4px; font-size:0.82rem;">
+          <input type="text" id="f-vendedor" placeholder="Vendedor" style="border:1px solid #cbd5e1; padding:0.45rem; border-radius:4px; font-size:0.82rem;">
+        </div>
+      </div>
+      <div style="display:flex; justify-content:space-between; font-weight:700; margin-bottom:0.6rem; font-size:0.85rem;">
+        <span>Total Itens:</span><span id="cart-total-count">0</span>
+      </div>
+      <button id="btn-whatsapp-send" style="width:100%; background:#22c55e; color:#000; border:none; padding:0.75rem; font-weight:800; border-radius:4px; cursor:pointer;">
+        Solicitar via WhatsApp
+      </button>
+      <button id="btn-limpar" style="width:100%; text-align:center; background:none; border:none; margin-top:0.4rem; color:#888; font-size:0.75rem; cursor:pointer;">Limpar</button>
+    </div>
+  </aside>
+
+  <div id="cart-feedback" style="display:none"></div>
+
+  <!-- COMPATIBILITY HOOKS -->
+  <div id="banner-slider" style="display:none"><div class="banner-slide"></div><button id="banner-prev"></button><button id="banner-next"></button><div class="banner-dots"><button class="banner-dot"></button></div></div>
+  <div id="categorias-grid" style="display:none"></div>
+  <div id="filtros-bar" style="display:none"></div>
+  <div id="produtos-section" style="display:none"></div>
+
+  <script src="js/produtos.js"></script>
+  <script src="js/carrinho.js"></script>
+  <script>
+    let activeSpotlightId = 1;
+
+    function setSpotlight(p) {
+      activeSpotlightId = p.id;
+      document.getElementById('spotlight-img').src = p.imagens[0];
+      document.getElementById('spotlight-sku').textContent = `REF: ${p.referencia}`;
+      document.getElementById('spotlight-title').textContent = p.nome;
+      document.getElementById('spotlight-desc').textContent = p.descricao;
+    }
+
+    function addSpotlight() {
+      const qty = parseInt(document.getElementById('spotlight-qty')?.value) || 1;
+      Carrinho.adicionar(activeSpotlightId, qty);
+    }
+
+    function renderProdutos(catId, termoBusca = '') {
+      const grid = document.getElementById('produtos-grid');
+      const empty = document.getElementById('nenhum-produto');
+      if (!grid) return;
+      let lista = PRODUTOS;
+      if (catId && catId !== 'todos') lista = lista.filter(p => p.categoria === catId);
+      if (termoBusca) {
+        const t = termoBusca.toLowerCase();
+        lista = lista.filter(p => p.nome.toLowerCase().includes(t) || p.referencia.toLowerCase().includes(t) || p.descricao.toLowerCase().includes(t));
+      }
+      if (lista.length === 0) { grid.innerHTML = ''; if (empty) empty.style.display = 'block'; return; }
+      if (empty) empty.style.display = 'none';
+      if (lista.length > 0 && !termoBusca) setSpotlight(lista[0]);
+
+      grid.innerHTML = lista.map(p => `
+        <div class="split-card" onclick="setSpotlightById(${p.id})">
+          <img src="${p.imagens[0]}" alt="${p.nome}" class="split-card-img" onerror="this.src='https://picsum.photos/seed/split${p.id}/300/200'">
+          <div class="split-card-title">${p.nome}</div>
+          <div class="split-card-sku">Ref: ${p.referencia}</div>
+          <button class="split-card-btn" onclick="event.stopPropagation(); Carrinho.adicionar(${p.id}, 1)">+ Cotar</button>
+        </div>
+      `).join('');
+    }
+
+    function setSpotlightById(id) {
+      const p = PRODUTOS.find(x => x.id === id);
+      if (p) setSpotlight(p);
+    }
+
+    function initCategorias() {
+      const row = document.getElementById('split-cats');
+      if (row) {
+        row.innerHTML = CATEGORIAS.map(c => `
+          <button class="split-cat-btn ${c.id === 'todos' ? 'active' : ''}" onclick="filtrarPor('${c.id}')">
+            ${c.icone} ${c.nome}
+          </button>
+        `).join('');
+      }
+    }
+    function filtrarPor(catId) {
+      document.querySelectorAll('.split-cat-btn').forEach(p => p.classList.toggle('active', p.getAttribute('onclick')?.includes(`'${catId}'`)));
+      renderProdutos(catId, document.getElementById('search-input')?.value || '');
+    }
+    function initSearch() { document.getElementById('search-input')?.addEventListener('input', e => renderProdutos('todos', e.target.value)); }
+    document.addEventListener('DOMContentLoaded', () => { initCategorias(); renderProdutos('todos'); initSearch(); });
+  </script>
+</body>
+</html>

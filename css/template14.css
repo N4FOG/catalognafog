@@ -1,0 +1,412 @@
+/* ============================================================
+   TEMPLATE 14: MASONRY VISUAL FEED & BOTTOM SHEET MODAL
+   ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  --feed-bg: #f7f6f2;
+  --feed-card: #ffffff;
+  --feed-text: #1a1a1a;
+  --feed-text-muted: #757575;
+  --feed-accent: #2c5e3b;
+  --feed-accent-light: #eaf2ec;
+  --feed-shadow: 0 4px 15px rgba(0,0,0,0.06);
+  --feed-shadow-hover: 0 12px 30px rgba(0,0,0,0.12);
+  --radius-card: 16px;
+  --whatsapp: #25D366;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background-color: var(--feed-bg);
+  color: var(--feed-text);
+  line-height: 1.5;
+}
+
+a { text-decoration: none; color: inherit; }
+button { font-family: inherit; cursor: pointer; }
+img { max-width: 100%; display: block; }
+
+.feed-container {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+/* ── STICKY TOPBAR ── */
+.feed-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 1rem 0;
+  position: sticky;
+  top: 0;
+  background: rgba(247, 246, 242, 0.92);
+  backdrop-filter: blur(15px);
+  z-index: 100;
+  margin-bottom: 1.5rem;
+}
+
+.feed-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-weight: 800;
+  font-size: 1.3rem;
+  letter-spacing: -0.02em;
+  color: var(--feed-text);
+}
+.feed-brand-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  background: var(--feed-accent);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+}
+
+.feed-search-bar {
+  flex: 1;
+  max-width: 480px;
+  position: relative;
+}
+.feed-search-bar input {
+  width: 100%;
+  background: #fff;
+  border: 1px solid #e2ded5;
+  border-radius: 50px;
+  padding: 0.7rem 1.2rem 0.7rem 2.8rem;
+  font-size: 0.9rem;
+  font-family: inherit;
+  color: var(--feed-text);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+  transition: 0.2s;
+}
+.feed-search-bar input:focus {
+  outline: none;
+  border-color: var(--feed-accent);
+  box-shadow: 0 0 0 3px var(--feed-accent-light);
+}
+.feed-search-bar svg {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #999;
+}
+
+.feed-quote-btn {
+  background: var(--feed-text);
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  padding: 0.7rem 1.4rem;
+  font-weight: 700;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+  transition: 0.2s;
+}
+.feed-quote-btn:hover {
+  background: var(--feed-accent);
+  transform: translateY(-1px);
+}
+.feed-badge {
+  background: var(--feed-accent);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 800;
+  padding: 0.1rem 0.5rem;
+  border-radius: 20px;
+}
+
+/* ── STICKY CATEGORIES BAR ── */
+.feed-categories {
+  display: flex;
+  gap: 0.6rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+  margin-bottom: 2rem;
+  scrollbar-width: none;
+}
+.feed-categories::-webkit-scrollbar { display: none; }
+
+.feed-cat-pill {
+  background: #fff;
+  border: 1px solid #e2ded5;
+  border-radius: 50px;
+  padding: 0.55rem 1.2rem;
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--feed-text-muted);
+  white-space: nowrap;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: 0.15s;
+}
+.feed-cat-pill:hover, .feed-cat-pill.active {
+  background: var(--feed-accent);
+  border-color: var(--feed-accent);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(44, 94, 59, 0.25);
+}
+
+/* ── MASONRY FEED GRID ── */
+.feed-masonry {
+  columns: 4 280px;
+  column-gap: 1.5rem;
+  margin-bottom: 4rem;
+}
+
+.feed-item {
+  break-inside: avoid;
+  margin-bottom: 1.5rem;
+  background: var(--feed-card);
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  box-shadow: var(--feed-shadow);
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: flex;
+  flex-direction: column;
+}
+.feed-item:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--feed-shadow-hover);
+}
+
+.feed-img-wrap {
+  position: relative;
+  overflow: hidden;
+  background: #eee;
+}
+.feed-img {
+  width: 100%;
+  display: block;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+.feed-item:hover .feed-img {
+  transform: scale(1.05);
+}
+
+.feed-tag-badge {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(8px);
+  padding: 0.25rem 0.65rem;
+  border-radius: 20px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--feed-accent);
+}
+
+.feed-content {
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+.feed-ref {
+  font-size: 0.75rem;
+  color: #999;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-bottom: 0.3rem;
+}
+.feed-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--feed-text);
+  margin-bottom: 0.4rem;
+  line-height: 1.3;
+}
+.feed-desc {
+  font-size: 0.85rem;
+  color: var(--feed-text-muted);
+  line-height: 1.5;
+  margin-bottom: 1.2rem;
+}
+
+.feed-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: auto;
+}
+.feed-qty {
+  display: flex;
+  align-items: center;
+  border: 1px solid #e0ded5;
+  border-radius: 30px;
+  background: #fdfdfd;
+}
+.feed-qty-btn {
+  background: transparent;
+  border: none;
+  width: 28px;
+  height: 32px;
+  font-weight: 700;
+  font-size: 1rem;
+  color: #555;
+}
+.feed-qty-val {
+  width: 32px;
+  text-align: center;
+  font-size: 0.85rem;
+  font-weight: 700;
+  border: none;
+  background: transparent;
+}
+.feed-add-btn {
+  flex: 1;
+  background: var(--feed-accent-light);
+  color: var(--feed-accent);
+  border: none;
+  border-radius: 30px;
+  padding: 0.6rem 0.8rem;
+  font-weight: 700;
+  font-size: 0.82rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  transition: 0.15s;
+}
+.feed-add-btn:hover {
+  background: var(--feed-accent);
+  color: #fff;
+}
+
+/* ── BOTTOM SHEET MODAL (INSTEAD OF SIDE DRAWER) ── */
+.feed-sheet-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(5px);
+  z-index: 2000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s;
+}
+.feed-sheet-overlay.show { opacity: 1; pointer-events: auto; }
+
+.feed-sheet {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%) translateY(100%);
+  width: min(600px, 100vw);
+  max-height: 85vh;
+  background: #fff;
+  border-radius: 24px 24px 0 0;
+  box-shadow: 0 -10px 40px rgba(0,0,0,0.2);
+  z-index: 2001;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+}
+.feed-sheet.open {
+  transform: translateX(-50%) translateY(0);
+}
+
+.feed-sheet-drag {
+  width: 40px;
+  height: 5px;
+  border-radius: 10px;
+  background: #ddd;
+  margin: 0.8rem auto 0.4rem;
+}
+.feed-sheet-header {
+  padding: 0.8rem 1.5rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #eee;
+}
+.feed-sheet-title {
+  font-size: 1.2rem;
+  font-weight: 800;
+}
+.feed-sheet-close {
+  background: #f5f5f5;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+}
+
+.feed-sheet-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.25rem 1.5rem;
+}
+
+.feed-sheet-footer {
+  padding: 1.25rem 1.5rem;
+  border-top: 1px solid #eee;
+  background: #fafafa;
+}
+
+.feed-form-card {
+  background: #fdfdfd;
+  border: 1px solid #eaeaea;
+  border-radius: 14px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+.feed-form-card label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #666;
+  margin-bottom: 0.2rem;
+  display: block;
+}
+.feed-form-card input {
+  width: 100%;
+  padding: 0.55rem 0.8rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.85rem;
+  margin-bottom: 0.6rem;
+}
+.feed-form-card input:focus {
+  outline: none;
+  border-color: var(--feed-accent);
+}
+
+.feed-wa-send {
+  width: 100%;
+  background: var(--whatsapp);
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  padding: 0.9rem;
+  font-weight: 800;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  box-shadow: 0 4px 15px rgba(37, 211, 102, 0.35);
+}

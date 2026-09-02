@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nfog Catálogo — Glassmorphism</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* ── GLASSMORPHISM / GRADIENT MESH ── */
+    :root {
+      --g1: #0f4531;
+      --g2: #1a7a4f;
+      --g3: #073d28;
+      --g4: #0d5e40;
+      --glass-bg: rgba(255,255,255,0.08);
+      --glass-border: rgba(255,255,255,0.18);
+      --glass-card: rgba(255,255,255,0.10);
+      --glass-card-hover: rgba(255,255,255,0.18);
+      --text-on-dark: rgba(255,255,255,0.92);
+      --text-muted-dark: rgba(255,255,255,0.55);
+    }
+
+    /* ── ANIMATED MESH BACKGROUND ── */
+    body {
+      font-family: 'Sora', sans-serif;
+      min-height: 100vh;
+      background: #0a2e1a;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      background:
+        radial-gradient(ellipse 80% 70% at 10% 20%, rgba(46,204,113,.28) 0%, transparent 70%),
+        radial-gradient(ellipse 60% 80% at 90% 70%, rgba(15,69,49,.6) 0%, transparent 70%),
+        radial-gradient(ellipse 70% 60% at 50% 50%, rgba(26,118,79,.25) 0%, transparent 80%),
+        radial-gradient(ellipse 40% 50% at 80% 10%, rgba(0,230,118,.15) 0%, transparent 60%),
+        linear-gradient(135deg, #081c12 0%, #0f3d22 40%, #0a2e1a 100%);
+      animation: meshMove 15s ease-in-out infinite alternate;
+    }
+
+    @keyframes meshMove {
+      0%   { background-position: 0% 0%, 100% 100%, 50% 50%, 80% 10%, 0% 0%; }
+      100% { background-position: 20% 30%, 80% 60%, 40% 70%, 60% 30%, 0% 0%; }
+    }
+
+    * { position: relative; z-index: 1; }
+
+    /* ── HEADER: Glass ── */
+    .site-header {
+      background: rgba(10,20,15,.6) !important;
+      backdrop-filter: blur(20px) !important;
+      -webkit-backdrop-filter: blur(20px) !important;
+      border-bottom: 1px solid var(--glass-border) !important;
+      box-shadow: none !important;
+    }
+
+    .logo-icon { background: rgba(0,230,118,.2); border: 1px solid rgba(0,230,118,.4); color: #00e676; font-weight: 900; }
+    .logo-text { color: rgba(255,255,255,.95); }
+    .logo-text span { color: rgba(255,255,255,.45); }
+
+    .header-search input {
+      background: var(--glass-bg) !important;
+      border-color: var(--glass-border) !important;
+      color: rgba(255,255,255,.9) !important;
+      backdrop-filter: blur(8px);
+    }
+
+    .header-search input::placeholder { color: rgba(255,255,255,.4) !important; }
+    .header-search input:focus { background: rgba(255,255,255,.12) !important; border-color: rgba(0,230,118,.5) !important; box-shadow: 0 0 0 3px rgba(0,230,118,.1) !important; }
+    .header-search svg { color: rgba(255,255,255,.4) !important; }
+
+    .nav-link { color: rgba(255,255,255,.7) !important; }
+    .nav-link:hover { background: var(--glass-bg) !important; color: rgba(255,255,255,.95) !important; }
+
+    .cart-toggle {
+      background: rgba(0,230,118,.15) !important;
+      border: 1px solid rgba(0,230,118,.4) !important;
+      color: #00e676 !important;
+      backdrop-filter: blur(8px);
+      font-weight: 700 !important;
+    }
+
+    .cart-toggle:hover { background: rgba(0,230,118,.25) !important; box-shadow: 0 0 20px rgba(0,230,118,.25) !important; }
+
+    /* ── BANNER: Glass slides ── */
+    #banner-slider {
+      background: transparent !important;
+      height: clamp(320px, 55vw, 560px);
+    }
+
+    .banner-slide { background: transparent !important; }
+    .banner-slide::before { display: none !important; }
+
+    .banner-content {
+      background: var(--glass-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
+      padding: 3rem;
+      max-width: 580px;
+    }
+
+    .banner-tag { background: rgba(0,230,118,.15); border-color: rgba(0,230,118,.4); color: #00e676; font-weight: 700; }
+    .banner-title { color: #fff !important; font-size: clamp(1.6rem, 3.5vw, 2.8rem) !important; }
+    .banner-sub { color: rgba(255,255,255,.7) !important; }
+    .banner-btn {
+      background: rgba(255,255,255,.15) !important;
+      border: 1px solid rgba(255,255,255,.35) !important;
+      color: #fff !important;
+      backdrop-filter: blur(8px);
+      font-weight: 700 !important;
+    }
+    .banner-btn:hover { background: rgba(255,255,255,.25) !important; box-shadow: 0 8px 30px rgba(0,0,0,.3) !important; }
+    .banner-arrow { background: var(--glass-bg) !important; border-color: var(--glass-border) !important; }
+    .banner-arrow:hover { background: rgba(255,255,255,.2) !important; }
+    .banner-dot { background: rgba(255,255,255,.25) !important; }
+    .banner-dot.active { background: #00e676 !important; }
+
+    /* ── CATEGORIAS ── */
+    #categorias {
+      background: transparent !important;
+      padding: 3rem 0 !important;
+    }
+
+    .section-tag { background: rgba(0,230,118,.15); color: #00e676; border: 1px solid rgba(0,230,118,.3); }
+    .section-title { color: #fff !important; }
+    .section-sub { color: rgba(255,255,255,.6) !important; }
+
+    #categorias-grid {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    .categoria-card {
+      background: var(--glass-card) !important;
+      border: 1px solid var(--glass-border) !important;
+      backdrop-filter: blur(12px) !important;
+      -webkit-backdrop-filter: blur(12px) !important;
+      border-radius: 16px !important;
+    }
+
+    .categoria-card:hover, .categoria-card.active {
+      background: var(--glass-card-hover) !important;
+      border-color: rgba(0,230,118,.5) !important;
+      box-shadow: 0 8px 32px rgba(0,0,0,.3), 0 0 0 1px rgba(0,230,118,.3) !important;
+    }
+
+    .categoria-nome { color: rgba(255,255,255,.85) !important; }
+    .categoria-card.active .categoria-nome { color: #00e676 !important; }
+
+    /* ── PRODUTOS ── */
+    #produtos-section { background: transparent !important; padding: 3.5rem 0 !important; }
+
+    .filtro-btn {
+      background: var(--glass-bg) !important;
+      border-color: var(--glass-border) !important;
+      color: rgba(255,255,255,.75) !important;
+      backdrop-filter: blur(8px);
+    }
+
+    .filtro-btn:hover { border-color: rgba(0,230,118,.5) !important; color: #00e676 !important; background: rgba(0,230,118,.1) !important; }
+    .filtro-btn.active { background: rgba(0,230,118,.2) !important; border-color: rgba(0,230,118,.6) !important; color: #00e676 !important; font-weight: 700 !important; }
+
+    /* Glass product cards */
+    .produto-card {
+      background: var(--glass-card) !important;
+      border: 1px solid var(--glass-border) !important;
+      backdrop-filter: blur(16px) !important;
+      -webkit-backdrop-filter: blur(16px) !important;
+      box-shadow: none !important;
+      border-radius: 16px !important;
+    }
+
+    .produto-card:hover {
+      background: var(--glass-card-hover) !important;
+      border-color: rgba(0,230,118,.4) !important;
+      box-shadow: 0 16px 48px rgba(0,0,0,.4), 0 0 0 1px rgba(0,230,118,.2) !important;
+      transform: translateY(-5px) !important;
+    }
+
+    .produto-img { border-radius: 10px 10px 0 0 !important; }
+    .produto-ref { color: rgba(255,255,255,.45) !important; }
+    .produto-nome a { color: rgba(255,255,255,.95) !important; }
+    .produto-nome a:hover { color: #00e676 !important; }
+    .produto-desc { color: rgba(255,255,255,.6) !important; }
+    .badge-destaque { background: rgba(0,230,118,.25) !important; color: #00e676 !important; border: 1px solid rgba(0,230,118,.4) !important; font-weight: 700 !important; }
+    .qty-unit { color: rgba(255,255,255,.45) !important; }
+
+    .qty-btn {
+      background: var(--glass-bg) !important;
+      border-color: var(--glass-border) !important;
+      color: rgba(255,255,255,.8) !important;
+    }
+    .qty-btn:hover { background: rgba(0,230,118,.15) !important; border-color: rgba(0,230,118,.5) !important; color: #00e676 !important; }
+    .qty-input { background: var(--glass-bg) !important; border-color: var(--glass-border) !important; color: rgba(255,255,255,.9) !important; }
+
+    .btn-add-cart {
+      background: rgba(0,230,118,.18) !important;
+      border: 1px solid rgba(0,230,118,.4) !important;
+      color: #00e676 !important;
+      font-weight: 700 !important;
+    }
+    .btn-add-cart:hover { background: rgba(0,230,118,.3) !important; box-shadow: 0 4px 20px rgba(0,230,118,.3) !important; }
+    .btn-ver-mais { color: rgba(0,230,118,.8) !important; }
+
+    #nenhum-produto { color: rgba(255,255,255,.6) !important; }
+
+    /* ── FOOTER ── */
+    .site-footer {
+      background: rgba(5,15,10,.85) !important;
+      backdrop-filter: blur(20px) !important;
+      border-top: 1px solid var(--glass-border) !important;
+      margin-top: 4rem !important;
+    }
+
+    .footer-brand .logo-text { color: #fff !important; }
+    .footer-col h5 { color: rgba(255,255,255,.9) !important; }
+    .footer-col ul li a { color: rgba(255,255,255,.55) !important; }
+    .footer-col ul li a:hover { color: #00e676 !important; }
+    .footer-desc { color: rgba(255,255,255,.55) !important; }
+    .footer-bottom { border-color: rgba(255,255,255,.1) !important; color: rgba(255,255,255,.35) !important; }
+
+    /* ── GLASS FLOATING ELEMENTS ── */
+    .floating-orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(80px);
+      pointer-events: none;
+      z-index: 0;
+      animation: orbFloat 20s ease-in-out infinite;
+    }
+
+    .orb-1 { width: 400px; height: 400px; background: rgba(46,204,113,.12); top: 10%; left: -100px; animation-delay: 0s; }
+    .orb-2 { width: 300px; height: 300px; background: rgba(0,230,118,.08); bottom: 20%; right: -80px; animation-delay: -7s; }
+    .orb-3 { width: 250px; height: 250px; background: rgba(26,118,79,.15); top: 50%; left: 40%; animation-delay: -14s; }
+
+    @keyframes orbFloat {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33%       { transform: translate(30px, -40px) scale(1.1); }
+      66%       { transform: translate(-20px, 30px) scale(0.95); }
+    }
+
+    /* Glow on primary color */
+    .whatsapp-float { box-shadow: 0 4px 30px rgba(37,211,102,.5) !important; }
+  </style>
+</head>
+<body>
+  <!-- Floating orbs for depth -->
+  <div class="floating-orb orb-1"></div>
+  <div class="floating-orb orb-2"></div>
+  <div class="floating-orb orb-3"></div>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="index6.html" class="logo">
+        <div class="logo-icon">N</div>
+        <div class="logo-text">Nfog Catálogo<span>Glass Edition</span></div>
+      </a>
+      <div class="header-search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="search" id="search-input" placeholder="Buscar produto...">
+      </div>
+      <nav class="header-nav">
+        <a href="index.html" class="nav-link">← Original</a>
+        <button class="cart-toggle">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+          Orçamento
+          <span class="cart-badge">0</span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- BANNER -->
+  <section id="banner-slider">
+    <div class="banner-slide">
+      <div class="banner-content">
+        <span class="banner-tag">✨ Glass Edition</span>
+        <h1 class="banner-title">Qualidade premium com design moderno</h1>
+        <p class="banner-sub">Catálogo completo. Solicite orçamento via WhatsApp com facilidade.</p>
+        <a href="#produtos-section" class="banner-btn">Explorar catálogo →</a>
+      </div>
+    </div>
+    <div class="banner-slide">
+      <div class="banner-content">
+        <span class="banner-tag">⚙️ Equipamentos</span>
+        <h1 class="banner-title">Soluções de alta performance para sua empresa</h1>
+        <p class="banner-sub">Encontre os equipamentos certos para escalar seu negócio.</p>
+        <a href="#categorias" class="banner-btn">Ver categorias →</a>
+      </div>
+    </div>
+    <div class="banner-slide">
+      <div class="banner-content">
+        <span class="banner-tag">💬 Orçamento Express</span>
+        <h1 class="banner-title">Monte seu pedido e receba resposta no WhatsApp</h1>
+        <p class="banner-sub">Processo simples: adicione, preencha seus dados e envie.</p>
+        <a href="#produtos-section" class="banner-btn">Começar →</a>
+      </div>
+    </div>
+    <button id="banner-prev" class="banner-arrow prev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18"><polyline points="15 18 9 12 15 6"/></svg></button>
+    <button id="banner-next" class="banner-arrow next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18"><polyline points="9 18 15 12 9 6"/></svg></button>
+    <div class="banner-dots"><button class="banner-dot"></button><button class="banner-dot"></button><button class="banner-dot"></button></div>
+  </section>
+
+  <!-- CATEGORIAS -->
+  <section id="categorias">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Categorias</span>
+        <h2 class="section-title">Nossas Categorias</h2>
+        <p class="section-sub">Navegue pelo catálogo por categoria</p>
+      </div>
+    </div>
+    <div id="categorias-grid"></div>
+  </section>
+
+  <!-- PRODUTOS -->
+  <section id="produtos-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Catálogo</span>
+        <h2 class="section-title">Nossos Produtos</h2>
+        <p class="section-sub">Adicione ao orçamento e envie pelo WhatsApp</p>
+      </div>
+      <div id="filtros-bar"></div>
+      <div id="produtos-grid"></div>
+      <div id="nenhum-produto" style="display:none;text-align:center;padding:4rem"><p>Nenhum produto encontrado.</p><button onclick="filtrarPor('todos')" style="margin-top:1rem;padding:.7rem 1.75rem;background:rgba(0,230,118,.2);border:1px solid rgba(0,230,118,.5);color:#00e676;border-radius:8px;cursor:pointer;font-family:inherit;font-weight:600">Ver todos</button></div>
+    </div>
+  </section>
+
+  <!-- CART DRAWER -->
+  <div id="overlay"></div>
+  <aside id="cart-drawer">
+    <div class="drawer-header"><div class="drawer-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg> Meu Orçamento</div><button id="cart-close">✕</button></div>
+    <div id="cart-empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="56" height="56"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg><p>Seu orçamento está vazio.</p></div>
+    <div id="cart-items-list"></div>
+    <div id="cart-footer">
+      <div class="orcamento-form">
+        <h4 class="orcamento-form-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Seus Dados</h4>
+        <div class="form-row"><div class="form-group"><label for="f-nome">Nome <span class="req">*</span></label><input type="text" id="f-nome" placeholder="Seu nome completo" autocomplete="name"><span class="form-error-msg">Campo obrigatório</span></div></div>
+        <div class="form-row"><div class="form-group"><label for="f-tel">Telefone <span class="req">*</span></label><input type="tel" id="f-tel" placeholder="(00) 00000-0000" inputmode="numeric"><span class="form-error-msg">Campo obrigatório</span></div></div>
+        <div class="form-row form-row--2col">
+          <div class="form-group"><label for="f-cnpj">CNPJ <span class="opt">opcional</span></label><input type="text" id="f-cnpj" placeholder="00.000.000/0001-00" inputmode="numeric"></div>
+          <div class="form-group"><label for="f-vendedor">Vendedor <span class="opt">opcional</span></label><input type="text" id="f-vendedor" placeholder="Nome do vendedor"></div>
+        </div>
+      </div>
+      <div class="cart-summary"><span>Total:</span><strong><span id="cart-total-count">0</span> itens</strong></div>
+      <button class="btn-whatsapp" id="btn-whatsapp-send"><svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg> Solicitar Orçamento</button>
+      <button class="btn-limpar" id="btn-limpar">Limpar orçamento</button>
+    </div>
+  </aside>
+  <div id="cart-feedback"></div>
+
+  <a href="https://wa.me/5545999332563" target="_blank" class="whatsapp-float"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg></a>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo"><div class="logo-icon">N</div><div class="logo-text">Nfog Catálogo<span>Glass Edition</span></div></div>
+        <p class="footer-desc">Catálogo moderno com efeito glassmorphism. Solicite orçamento via WhatsApp.</p>
+      </div>
+      <div class="footer-col"><h5>Layouts</h5><ul>
+        <li><a href="index.html">Layout 1 — Original</a></li>
+        <li><a href="index2.html">Layout 2 — Dark Mode</a></li>
+        <li><a href="index3.html">Layout 3 — Dashboard</a></li>
+        <li><a href="index4.html">Layout 4 — Editorial</a></li>
+        <li><a href="index5.html">Layout 5 — Colorido</a></li>
+        <li><a href="index6.html">Layout 6 — Glass</a></li>
+      </ul></div>
+    </div>
+    <div class="footer-bottom"><p>© 2025 Nfog Catálogo.</p></div>
+  </footer>
+
+  <script src="js/produtos.js"></script>
+  <script src="js/carrinho.js"></script>
+  <script src="js/home.js"></script>
+</body>
+</html>

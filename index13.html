@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nfog Catálogo — Bento Tech Edition</title>
+  <link rel="stylesheet" href="css/template13.css">
+</head>
+<body>
+
+  <main class="bento-container">
+
+    <!-- NAVBAR -->
+    <header class="bento-nav">
+      <div class="bento-logo">
+        <div class="bento-logo-dot"></div>
+        <span>NFOG CATÁLOGO</span>
+      </div>
+
+      <div class="bento-nav-search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="search" id="search-input" placeholder="Buscar produtos de alta performance...">
+      </div>
+
+      <button class="bento-cta-btn cart-toggle" style="padding:0.5rem 1.1rem; font-size:0.8rem;">
+        Orçamento <span class="cart-badge" style="background:#10b981; color:#000; padding:0.1rem 0.4rem; border-radius:10px; font-weight:800; margin-left:0.3rem;">0</span>
+      </button>
+    </header>
+
+    <!-- BENTO HERO GRID -->
+    <section class="bento-hero-grid">
+      <!-- Spotlight Tile -->
+      <div class="bento-tile tile-spotlight">
+        <div>
+          <div class="bento-pill">✨ PRODUTOS DE ÚLTIMA GERAÇÃO</div>
+          <h1 class="tile-title-huge">
+            Engenharia e robustez<br><span>em cada aplicação.</span>
+          </h1>
+          <p class="tile-desc">
+            Explore nossa linha completa com especificações detalhadas e solicite seu orçamento de forma descomplicada.
+          </p>
+        </div>
+        <div>
+          <a href="#produtos-bento" class="bento-cta-btn">
+            Explorar Catálogo →
+          </a>
+        </div>
+      </div>
+
+      <!-- Stat Tile 1 -->
+      <div class="bento-tile tile-stat">
+        <div class="tile-stat-num">12+</div>
+        <div class="tile-stat-label">Produtos de alta durabilidade e pronta entrega</div>
+      </div>
+
+      <!-- Stat Tile 2 -->
+      <div class="bento-tile tile-stat">
+        <div class="tile-stat-num">100%</div>
+        <div class="tile-stat-label">Cotações personalizadas e enviadas diretamente ao WhatsApp</div>
+      </div>
+    </section>
+
+    <!-- CATEGORIES PILLS -->
+    <section id="produtos-bento">
+      <div class="bento-categories-bar" id="categorias-bar">
+        <!-- Rendered by JS -->
+      </div>
+
+      <!-- BENTO PRODUCTS GRID -->
+      <div class="bento-products-grid" id="produtos-grid">
+        <!-- Rendered by JS -->
+      </div>
+
+      <div id="nenhum-produto" style="display:none; text-align:center; padding: 4rem; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:20px;">
+        <h3 style="color:#fff; margin-bottom:0.5rem;">Nenhum produto correspondente</h3>
+        <p style="color:#888; margin-bottom:1.5rem;">Tente pesquisar com outro termo ou redefinir os filtros.</p>
+        <button onclick="filtrarPor('todos')" class="bento-cta-btn">Ver Todos os Produtos</button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FLOATING BOTTOM DOCK -->
+  <div class="bento-dock">
+    <div class="bento-dock-count">
+      <span>🎒 Itens:</span>
+      <span class="bento-dock-badge" id="dock-count">0</span>
+    </div>
+    <div style="width:1px; height:20px; background:rgba(255,255,255,0.15);"></div>
+    <button class="bento-dock-cta cart-toggle">
+      Ver Orçamento ⚡
+    </button>
+  </div>
+
+  <!-- CART DRAWER -->
+  <div class="bento-overlay" id="overlay"></div>
+  <aside class="bento-drawer" id="cart-drawer">
+    <div class="bento-drawer-header">
+      <div class="bento-drawer-title">Meu Orçamento</div>
+      <button class="bento-drawer-close" id="cart-close">✕</button>
+    </div>
+
+    <div id="cart-empty" style="padding:3rem 1.5rem; text-align:center; color:#777;">
+      <div style="font-size:2.5rem; margin-bottom:0.5rem;">📦</div>
+      <p>Nenhum item adicionado ainda.<br>Escolha produtos no catálogo.</p>
+    </div>
+
+    <div class="bento-cart-items" id="cart-items-list"></div>
+
+    <div class="bento-drawer-footer" id="cart-footer">
+      <div class="bento-form-box">
+        <div style="font-weight:700; font-size:0.8rem; color:#fff; margin-bottom:0.6rem;">Dados para Contato</div>
+        <div style="margin-bottom:0.4rem;">
+          <label>Nome *</label>
+          <input type="text" id="f-nome" placeholder="Seu nome completo">
+        </div>
+        <div style="margin-bottom:0.4rem;">
+          <label>WhatsApp *</label>
+          <input type="tel" id="f-tel" placeholder="(00) 00000-0000">
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.4rem;">
+          <div>
+            <label>CNPJ</label>
+            <input type="text" id="f-cnpj" placeholder="00.000.000/0001-00">
+          </div>
+          <div>
+            <label>Vendedor</label>
+            <input type="text" id="f-vendedor" placeholder="Nome">
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex; justify-content:space-between; color:#fff; font-weight:700; font-size:0.88rem; margin-bottom:0.8rem;">
+        <span>Total de itens:</span>
+        <span id="cart-total-count">0</span>
+      </div>
+
+      <button class="bento-wa-btn" id="btn-whatsapp-send">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+        Enviar Orçamento no WhatsApp
+      </button>
+      <button id="btn-limpar" style="width:100%; text-align:center; background:none; border:none; margin-top:0.6rem; font-size:0.75rem; color:#666; cursor:pointer;">Limpar Itens</button>
+    </div>
+  </aside>
+
+  <div id="cart-feedback" style="display:none"></div>
+
+  <!-- Compatibility hooks -->
+  <div id="banner-slider" style="display:none"><div class="banner-slide"></div><button id="banner-prev"></button><button id="banner-next"></button><div class="banner-dots"><button class="banner-dot"></button></div></div>
+  <div id="categorias-grid" style="display:none"></div>
+  <div id="filtros-bar" style="display:none"></div>
+  <div id="produtos-section" style="display:none"></div>
+
+  <script src="js/produtos.js"></script>
+  <script src="js/carrinho.js"></script>
+  <script>
+    function renderProdutos(catId, termoBusca = '') {
+      const grid = document.getElementById('produtos-grid');
+      const empty = document.getElementById('nenhum-produto');
+      if (!grid) return;
+
+      let lista = PRODUTOS;
+      if (catId && catId !== 'todos') {
+        lista = lista.filter(p => p.categoria === catId);
+      }
+      if (termoBusca) {
+        const t = termoBusca.toLowerCase();
+        lista = lista.filter(p =>
+          p.nome.toLowerCase().includes(t) ||
+          p.referencia.toLowerCase().includes(t) ||
+          p.descricao.toLowerCase().includes(t)
+        );
+      }
+
+      if (lista.length === 0) {
+        grid.innerHTML = '';
+        if (empty) empty.style.display = 'block';
+        return;
+      }
+      if (empty) empty.style.display = 'none';
+
+      grid.innerHTML = lista.map(p => `
+        <div class="bento-card">
+          <div class="bento-img-box">
+            ${p.destaque ? '<span class="bento-card-badge">★ DESTAQUE</span>' : ''}
+            <a href="produto.html?id=${p.id}">
+              <img src="${p.imagens[0]}" alt="${p.nome}" loading="lazy"
+                onerror="this.src='https://picsum.photos/seed/bento${p.id}/400/300'">
+            </a>
+          </div>
+          <div class="bento-card-ref">REF: ${p.referencia}</div>
+          <div class="bento-card-name"><a href="produto.html?id=${p.id}">${p.nome}</a></div>
+          <div class="bento-card-desc">${p.descricao}</div>
+          <div class="bento-card-footer">
+            <div class="bento-qty-pill">
+              <button class="bento-qty-btn" onclick="decrementarCard(${p.id})">−</button>
+              <input type="number" id="qty-${p.id}" value="1" min="1" class="bento-qty-num" readonly>
+              <button class="bento-qty-btn" onclick="incrementarCard(${p.id})">+</button>
+            </div>
+            <button class="bento-add-btn" onclick="adicionarAoOrcamento(${p.id})">
+              <span>+</span> Adicionar
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function initCategorias() {
+      const bar = document.getElementById('categorias-bar');
+      if (bar) {
+        bar.innerHTML = CATEGORIAS.map(c => `
+          <div class="bento-cat-pill ${c.id === 'todos' ? 'active' : ''}" onclick="filtrarPor('${c.id}')">
+            <span>${c.icone}</span>
+            <span>${c.nome}</span>
+          </div>
+        `).join('');
+      }
+    }
+
+    function filtrarPor(catId) {
+      document.querySelectorAll('.bento-cat-pill').forEach(pill => {
+        pill.classList.toggle('active', pill.getAttribute('onclick')?.includes(`'${catId}'`));
+      });
+      renderProdutos(catId, document.getElementById('search-input')?.value || '');
+    }
+
+    function incrementarCard(id) {
+      const input = document.getElementById(`qty-${id}`);
+      if (input) input.value = parseInt(input.value) + 1;
+    }
+
+    function decrementarCard(id) {
+      const input = document.getElementById(`qty-${id}`);
+      if (input && parseInt(input.value) > 1) input.value = parseInt(input.value) - 1;
+    }
+
+    function adicionarAoOrcamento(id) {
+      const input = document.getElementById(`qty-${id}`);
+      const qty = parseInt(input?.value) || 1;
+      Carrinho.adicionar(id, qty);
+      updateDock();
+    }
+
+    function updateDock() {
+      const dock = document.getElementById('dock-count');
+      if (dock) dock.textContent = Carrinho.total();
+    }
+
+    function initSearch() {
+      const input = document.getElementById('search-input');
+      if (input) {
+        input.addEventListener('input', (e) => {
+          renderProdutos('todos', e.target.value);
+        });
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      initCategorias();
+      renderProdutos('todos');
+      initSearch();
+      updateDock();
+    });
+  </script>
+</body>
+</html>

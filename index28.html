@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nfog Catálogo — Enterprise B2B Distributor</title>
+  <link rel="stylesheet" href="css/template28-hubspot-b2b.css">
+</head>
+<body>
+
+  <header class="ent-header">
+    <div class="ent-wrap ent-header-inner">
+      <a href="index28.html" class="ent-brand">
+        <div class="ent-brand-badge">N</div>
+        <span>NFOG ENTERPRISE</span>
+      </a>
+
+      <div class="ent-search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="search" id="search-input" placeholder="Buscar por código SKU, especificação ou aplicação...">
+      </div>
+
+      <button class="ent-cart-btn cart-toggle">
+        <span>Cotação Corporativa</span>
+        <span class="cart-badge" style="background:#10b981; color:#fff; padding:0.1rem 0.4rem; border-radius:4px; font-size:0.75rem;">0</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="ent-wrap">
+    <section class="ent-hero">
+      <div class="ent-hero-main">
+        <div>
+          <span style="background:rgba(16,185,129,0.2); color:#34d399; font-size:0.75rem; font-weight:800; padding:0.25rem 0.75rem; border-radius:4px; display:inline-block; margin-bottom:0.75rem;">PORTAL CORPORATIVO B2B</span>
+          <h1 class="ent-hero-title">Fornecimento Direto &amp; Cotação para Empresas</h1>
+          <p class="ent-hero-desc">Consulte nosso catálogo técnico com especificações completas e solicite propostas em lote diretamente com o departamento comercial.</p>
+        </div>
+        <a href="#catalogo" style="background:#10b981; color:#fff; padding:0.75rem 1.6rem; border-radius:6px; font-weight:700; width:fit-content;">Ver Linhas de Produtos ↓</a>
+      </div>
+
+      <div class="ent-consultant-card">
+        <div class="ent-consultant-avatar">👨‍💼</div>
+        <strong style="font-size:1.05rem; color:var(--b2b-navy); margin-bottom:0.2rem;">Engenheiro Comercial</strong>
+        <span style="font-size:0.8rem; color:var(--b2b-muted); margin-bottom:0.8rem;">Atendimento Técnico Especializado</span>
+        <a href="https://wa.me/5545999332563" target="_blank" style="background:#25D366; color:#fff; padding:0.6rem; border-radius:6px; font-weight:700; font-size:0.85rem;">
+          Falar no WhatsApp
+        </a>
+      </div>
+    </section>
+
+    <section id="catalogo">
+      <div class="ent-cats" id="ent-cats"></div>
+      <div class="ent-grid" id="produtos-grid"></div>
+      <div id="nenhum-produto" style="display:none; text-align:center; padding:4rem; background:#fff; border-radius:10px;">
+        <p style="color:var(--b2b-muted);">Nenhum produto atende a estes critérios de pesquisa.</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- CART DRAWER -->
+  <div id="overlay" style="position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:1999; opacity:0; pointer-events:none; transition:0.2s;"></div>
+  <aside id="cart-drawer" style="position:fixed; top:0; right:0; height:100%; width:min(440px, 100vw); background:#fff; z-index:2000; transform:translateX(100%); transition:0.25s; display:flex; flex-direction:column; box-shadow:-5px 0 25px rgba(0,0,0,0.15);">
+    <div style="padding:1.25rem; background:var(--b2b-navy); color:#fff; display:flex; justify-content:space-between; align-items:center;">
+      <h3 style="font-size:1.1rem; font-weight:800;">Solicitação de Cotação B2B</h3>
+      <button id="cart-close" style="background:none; border:none; color:#fff; font-size:1.2rem; cursor:pointer;">✕</button>
+    </div>
+    <div id="cart-empty" style="padding:3rem 1.5rem; text-align:center; color:var(--b2b-muted);"><p>Nenhum item adicionado à cotação.</p></div>
+    <div id="cart-items-list" style="flex:1; overflow-y:auto; padding:1.25rem; display:flex; flex-direction:column; gap:0.75rem;"></div>
+    <div id="cart-footer" style="padding:1.25rem; border-top:1px solid var(--b2b-border); background:#f8fafc;">
+      <div class="orcamento-form" style="background:#fff; border:1px solid var(--b2b-border); border-radius:8px; padding:0.9rem; margin-bottom:1rem;">
+        <div style="font-weight:700; font-size:0.8rem; color:var(--b2b-navy); margin-bottom:0.5rem;">DADOS CADASTRAIS</div>
+        <input type="text" id="f-nome" placeholder="Nome Completo *" style="width:100%; border:1px solid var(--b2b-border); padding:0.45rem; border-radius:4px; margin-bottom:0.4rem; font-size:0.85rem;">
+        <input type="tel" id="f-tel" placeholder="WhatsApp / Telefone *" style="width:100%; border:1px solid var(--b2b-border); padding:0.45rem; border-radius:4px; margin-bottom:0.4rem; font-size:0.85rem;">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.4rem;">
+          <input type="text" id="f-cnpj" placeholder="CNPJ" style="border:1px solid var(--b2b-border); padding:0.45rem; border-radius:4px; font-size:0.85rem;">
+          <input type="text" id="f-vendedor" placeholder="Vendedor" style="border:1px solid var(--b2b-border); padding:0.45rem; border-radius:4px; font-size:0.85rem;">
+        </div>
+      </div>
+      <div style="display:flex; justify-content:space-between; font-weight:700; margin-bottom:0.8rem; font-size:0.9rem;">
+        <span>Total Itens:</span><span id="cart-total-count">0</span>
+      </div>
+      <button id="btn-whatsapp-send" style="width:100%; background:#10b981; color:#fff; border:none; border-radius:6px; padding:0.8rem; font-weight:800; font-size:0.95rem; cursor:pointer;">
+        Enviar Cotação pelo WhatsApp
+      </button>
+      <button id="btn-limpar" style="width:100%; text-align:center; background:none; border:none; margin-top:0.5rem; color:var(--b2b-muted); font-size:0.75rem; cursor:pointer;">Limpar Lista</button>
+    </div>
+  </aside>
+
+  <div id="cart-feedback" style="display:none"></div>
+
+  <!-- COMPATIBILITY HOOKS -->
+  <div id="banner-slider" style="display:none"><div class="banner-slide"></div><button id="banner-prev"></button><button id="banner-next"></button><div class="banner-dots"><button class="banner-dot"></button></div></div>
+  <div id="categorias-grid" style="display:none"></div>
+  <div id="filtros-bar" style="display:none"></div>
+  <div id="produtos-section" style="display:none"></div>
+
+  <script src="js/produtos.js"></script>
+  <script src="js/carrinho.js"></script>
+  <script>
+    function renderProdutos(catId, termoBusca = '') {
+      const grid = document.getElementById('produtos-grid');
+      const empty = document.getElementById('nenhum-produto');
+      if (!grid) return;
+      let lista = PRODUTOS;
+      if (catId && catId !== 'todos') lista = lista.filter(p => p.categoria === catId);
+      if (termoBusca) {
+        const t = termoBusca.toLowerCase();
+        lista = lista.filter(p => p.nome.toLowerCase().includes(t) || p.referencia.toLowerCase().includes(t) || p.descricao.toLowerCase().includes(t));
+      }
+      if (lista.length === 0) { grid.innerHTML = ''; if (empty) empty.style.display = 'block'; return; }
+      if (empty) empty.style.display = 'none';
+      grid.innerHTML = lista.map(p => `
+        <div class="ent-card">
+          <div class="ent-card-img-wrap">
+            <a href="produto.html?id=${p.id}"><img src="${p.imagens[0]}" alt="${p.nome}" class="ent-card-img" onerror="this.src='https://picsum.photos/seed/ent${p.id}/400/300'"></a>
+          </div>
+          <div class="ent-card-body">
+            <div class="ent-card-sku">SKU: ${p.referencia}</div>
+            <h3 class="ent-card-title"><a href="produto.html?id=${p.id}">${p.nome}</a></h3>
+            <p class="ent-card-desc">${p.descricao}</p>
+            <div class="ent-spec-box">
+              <span>Unidade: <strong>${p.unidade}</strong></span>
+              <span style="color:#10b981; font-weight:700;">✓ Pronta Entrega</span>
+            </div>
+            <div class="ent-card-footer">
+              <div class="ent-qty">
+                <button onclick="decrementarCard(${p.id})">−</button>
+                <input type="number" id="qty-${p.id}" value="1" min="1" readonly>
+                <button onclick="incrementarCard(${p.id})">+</button>
+              </div>
+              <button class="ent-add-btn" onclick="adicionarAoOrcamento(${p.id})">+ Cotar Lote</button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+    function initCategorias() {
+      const row = document.getElementById('ent-cats');
+      if (row) {
+        row.innerHTML = CATEGORIAS.map(c => `
+          <button class="ent-cat-pill ${c.id === 'todos' ? 'active' : ''}" onclick="filtrarPor('${c.id}')">
+            ${c.icone} ${c.nome}
+          </button>
+        `).join('');
+      }
+    }
+    function filtrarPor(catId) {
+      document.querySelectorAll('.ent-cat-pill').forEach(p => p.classList.toggle('active', p.getAttribute('onclick')?.includes(`'${catId}'`)));
+      renderProdutos(catId, document.getElementById('search-input')?.value || '');
+    }
+    function incrementarCard(id) { const i = document.getElementById(`qty-${id}`); if(i) i.value = parseInt(i.value)+1; }
+    function decrementarCard(id) { const i = document.getElementById(`qty-${id}`); if(i && parseInt(i.value)>1) i.value = parseInt(i.value)-1; }
+    function adicionarAoOrcamento(id) { const i = document.getElementById(`qty-${id}`); Carrinho.adicionar(id, parseInt(i?.value)||1); }
+    function initSearch() { document.getElementById('search-input')?.addEventListener('input', e => renderProdutos('todos', e.target.value)); }
+    document.addEventListener('DOMContentLoaded', () => { initCategorias(); renderProdutos('todos'); initSearch(); });
+  </script>
+</body>
+</html>
