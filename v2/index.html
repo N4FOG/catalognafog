@@ -1915,6 +1915,29 @@ html {
   box-shadow: 0 6px 20px rgba(37, 211, 102, 0.45);
 }
 
+.btn-share-link {
+  width: 100%;
+  height: 42px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-card-sub);
+  color: var(--text-2);
+  border: 1px dashed var(--border);
+  font-size: 0.88rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all var(--transition);
+  margin-top: 8px;
+}
+.btn-share-link:hover {
+  background: var(--brand-pale);
+  color: var(--brand-mid);
+  border-color: var(--brand-light);
+}
+
 /* ═══════════════════════════════════════════════════════════════
    BOTTOM NAVIGATION BAR MOBILE
 ═══════════════════════════════════════════════════════════════ */
@@ -2440,6 +2463,9 @@ mark {
     <button class="btn-send-whatsapp" onclick="sendQuoteToWhatsApp()">
       <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
       Enviar Cotação pelo WhatsApp
+    </button>
+    <button class="btn-share-link" onclick="copyCartShareLink()">
+      <span>🔗</span> Copiar Link do Orçamento
     </button>
   </div>
 </div>
@@ -3300,6 +3326,89 @@ function clearVendedorSelection() {
 }
 
 // ═══════════════════════════════════════════════════════════════
+//  COMPARTILHAMENTO DE ORÇAMENTO (LINK MÁGICO)
+// ═══════════════════════════════════════════════════════════════
+function generateCartShareUrl() {
+  if (!cartItems || !cartItems.length) return window.location.href.split('?')[0];
+  const itemsParam = cartItems.map(i => `${i.id}:${i.quantidade}`).join(',');
+  const cleanBase = window.location.href.split('?')[0].split('#')[0];
+  const url = new URL(cleanBase);
+  url.searchParams.set('orcamento', itemsParam);
+  return url.toString();
+}
+
+function copyCartShareLink() {
+  hapticFeedback(25);
+  if (!cartItems.length) {
+    showToast('⚠️ Seu orçamento está vazio.');
+    return;
+  }
+  const shareUrl = generateCartShareUrl();
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(shareUrl).then(() => {
+      showToast('🔗 Link do orçamento copiado com sucesso!');
+    }).catch(() => {
+      prompt('Copie o link do orçamento:', shareUrl);
+    });
+  } else {
+    prompt('Copie o link do orçamento:', shareUrl);
+  }
+}
+
+function loadCartFromUrl() {
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const orcamentoParam = params.get('orcamento') || params.get('pedido') || params.get('cart');
+    if (!orcamentoParam) return false;
+
+    // Formato esperado: 1:2,4:1,32:1
+    const entries = orcamentoParam.split(',');
+    const newItems = [];
+
+    entries.forEach(entry => {
+      const parts = entry.trim().split(':');
+      const prodId = parseInt(parts[0], 10);
+      const qty = parseInt(parts[1], 10) || 1;
+
+      if (!isNaN(prodId)) {
+        const p = PRODUTOS.find(item => item.id === prodId);
+        if (p) {
+          newItems.push({
+            id: p.id,
+            nome: p.nome,
+            referencia: p.referencia,
+            unidade: p.unidade,
+            imagem: p.imagens[0],
+            quantidade: Math.max(1, Math.min(999, qty))
+          });
+        }
+      }
+    });
+
+    if (newItems.length > 0) {
+      cartItems = newItems;
+      saveCart();
+      renderProductList();
+      updateBadges();
+
+      // Limpa os parâmetros da barra de endereço sem recarregar
+      const cleanUrl = window.location.origin + window.location.pathname;
+      window.history.replaceState({}, document.title, cleanUrl);
+
+      setTimeout(() => {
+        showToast(`🎉 Orçamento com ${newItems.length} ite${newItems.length === 1 ? 'm' : 'ns'} carregado!`);
+        openCartSheet();
+      }, 400);
+
+      return true;
+    }
+  } catch (err) {
+    console.warn('Erro ao carregar orçamento da URL:', err);
+  }
+  return false;
+}
+
+// ═══════════════════════════════════════════════════════════════
 //  ENVIO DO ORÇAMENTO PARA O WHATSAPP
 // ═══════════════════════════════════════════════════════════════
 function sendQuoteToWhatsApp() {
@@ -3327,6 +3436,9 @@ function sendQuoteToWhatsApp() {
   // Salva no perfil local para agilizar próximos orçamentos
   localStorage.setItem(CLIENT_STORAGE_KEY, JSON.stringify({ nome, vendedor: vendedorId, doc }));
 
+  // Link mágico para edição/recompra
+  const shareUrl = generateCartShareUrl();
+
   // Formata Mensagem
   let msg = `🌿 *${CONFIG.empresa}*\n`;
   msg += `━━━━━━━━━━━━━━━━━━━━━\n`;
@@ -3345,6 +3457,7 @@ function sendQuoteToWhatsApp() {
   }
   if (doc) msg += `🏢 *Documento/Local:* ${doc}\n`;
   msg += `━━━━━━━━━━━━━━━━━━━━━\n\n`;
+  msg += `🔗 *Abrir / Recomprar este pedido no Catálogo:*\n${shareUrl}\n\n`;
   msg += `${CONFIG.mensagem_fim}`;
 
   const waUrl = `https://api.whatsapp.com/send?phone=${destWhatsapp}&text=${encodeURIComponent(msg)}`;
@@ -3425,6 +3538,7 @@ window.addEventListener('appinstalled', () => {
 document.addEventListener('DOMContentLoaded', () => {
   initTheme();
   loadCart();
+  loadCartFromUrl();
   renderStoriesCategories();
   renderProductList();
 
