@@ -1,8 +1,10 @@
 {
-  "name": "Rawell Química — Catálogo 2026",
-  "short_name": "Rawell",
-  "description": "Catálogo oficial de produtos Rawell Química. Monte orçamentos e solicite via WhatsApp.",
+  "id": "rawell-quimica-catalogo-2026",
+  "name": "Rawell Química — Catálogo Oficial 2026",
+  "short_name": "Rawell 2026",
+  "description": "Catálogo de defensivos seletivos, desinfestantes e saneantes Rawell Química. Monte orçamentos e envie pelo WhatsApp.",
   "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#0f4531",
   "theme_color": "#0f4531",
@@ -12,15 +14,42 @@
       "src": "img/icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
       "src": "img/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "img/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "img/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
     }
   ],
-  "categories": ["shopping", "business"],
+  "shortcuts": [
+    {
+      "name": "Ver Catálogo",
+      "short_name": "Catálogo",
+      "description": "Acessar catálogo completo com os 32 produtos",
+      "url": "./index.html#products-section",
+      "icons": [{ "src": "img/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "WhatsApp Comercial",
+      "short_name": "WhatsApp",
+      "description": "Atendimento comercial direto",
+      "url": "https://api.whatsapp.com/send?phone=5545999332563",
+      "icons": [{ "src": "img/icon-192.png", "sizes": "192x192" }]
+    }
+  ],
+  "categories": ["shopping", "business", "productivity"],
   "lang": "pt-BR"
 }
