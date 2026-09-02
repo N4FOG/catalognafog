@@ -1678,10 +1678,12 @@ html {
    CARRINHO / ORÇAMENTO DRAWER (Slide Right no Desktop)
 ═══════════════════════════════════════════════════════════════ */
 .cart-sheet-body {
-  flex: 1;
+  flex: 1 1 auto;
+  min-height: 0;
   overflow-y: auto;
-  padding: 16px 20px 120px;
+  padding: 16px 20px 24px;
   -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain;
 }
 
 .cart-items-wrap {
@@ -1783,6 +1785,39 @@ html {
   color: var(--danger);
 }
 
+/* Botões Rápidos de Desconto no Carrinho */
+.cart-quick-discount-btns {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex-wrap: wrap;
+  margin-top: 6px;
+  padding-top: 6px;
+  border-top: 1px dashed var(--border);
+}
+.btn-quick-disc {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-2);
+  border-radius: var(--radius-xs);
+  padding: 3px 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+.btn-quick-disc:hover {
+  background: var(--brand-pale);
+  border-color: var(--brand-light);
+  color: var(--brand-mid);
+}
+.btn-quick-disc.active {
+  background: #059669;
+  border-color: #059669;
+  color: #fff;
+  box-shadow: 0 2px 6px rgba(5, 150, 105, 0.3);
+}
+
 /* Formulário de Dados */
 .client-form-card {
   background: var(--bg-card-sub);
@@ -1864,78 +1899,152 @@ html {
   gap: 3px;
   padding: 0;
 }
+.btn-clear-payment {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--danger);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: none;
+  align-items: center;
+  gap: 3px;
+  padding: 0;
+}
+.btn-clear-payment.show {
+  display: inline-flex;
+}
+
 .btn-clear-vendedor.show {
   display: inline-flex;
 }
 
+/* ═══════════════════════════════════════════════════════════════
+   RODAPÉ DO CARRINHO (CART FOOTER BAR - DESIGN PREMIUM UNIFICADO)
+═══════════════════════════════════════════════════════════════ */
 .cart-footer-bar {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  position: relative;
+  flex-shrink: 0;
+  width: 100%;
   background: var(--bg-sheet);
   border-top: 1px solid var(--border);
-  padding: 14px 20px calc(14px + var(--safe-bottom));
+  padding: 10px 16px calc(12px + var(--safe-bottom));
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  box-shadow: 0 -6px 24px rgba(0,0,0,0.1);
+  gap: 7px;
+  box-shadow: 0 -8px 20px rgba(0, 0, 0, 0.06);
+  z-index: 10;
+}
+
+.cart-share-actions-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
 }
 
 .cart-summary-line {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   font-weight: 700;
   color: var(--text-2);
+  padding: 0 2px 2px;
 }
+
 .cart-summary-line strong {
-  font-size: 1.1rem;
+  font-size: 1.05rem;
+  color: var(--brand);
+}
+
+[data-theme="dark"] .cart-summary-line strong {
   color: var(--brand-light);
 }
 
 .btn-send-whatsapp {
   width: 100%;
-  height: 50px;
+  height: 46px;
   border-radius: var(--radius-sm);
-  background: linear-gradient(135deg, #25D366, #1da851);
-  color: #fff;
-  font-size: 1rem;
+  background: linear-gradient(135deg, #25D366, #128C7E);
+  color: #ffffff;
+  font-size: 0.95rem;
   font-weight: 800;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  box-shadow: 0 4px 16px var(--wa-glow);
-  transition: transform 0.15s ease;
-}
-.btn-send-whatsapp:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(37, 211, 102, 0.45);
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(37, 211, 102, 0.35);
+  transition: all 0.15s ease;
 }
 
-.btn-share-link {
+.btn-send-whatsapp:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(37, 211, 102, 0.45);
+}
+
+.btn-send-whatsapp:active {
+  transform: translateY(0);
+}
+
+/* Grade de Ações Secundárias */
+.cart-secondary-actions-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
   width: 100%;
-  height: 42px;
+}
+
+.btn-cart-secondary {
+  height: 38px;
   border-radius: var(--radius-sm);
-  background: var(--bg-card-sub);
+  background: var(--bg-card);
   color: var(--text-2);
-  border: 1px dashed var(--border);
-  font-size: 0.88rem;
+  border: 1px solid var(--border);
+  font-size: 0.78rem;
   font-weight: 700;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 5px;
   cursor: pointer;
   transition: all var(--transition);
-  margin-top: 8px;
+  text-align: center;
+  white-space: nowrap;
 }
-.btn-share-link:hover {
+
+.btn-cart-secondary:hover {
   background: var(--brand-pale);
   color: var(--brand-mid);
   border-color: var(--brand-light);
+}
+
+.btn-cart-secondary.btn-pdf-style {
+  background: rgba(15, 69, 49, 0.08);
+  border-color: rgba(15, 69, 49, 0.25);
+  color: var(--brand);
+}
+
+[data-theme="dark"] .btn-cart-secondary.btn-pdf-style {
+  background: rgba(52, 211, 153, 0.12);
+  border-color: rgba(52, 211, 153, 0.3);
+  color: #34d399;
+}
+
+.btn-cart-secondary.btn-price-share-style {
+  background: rgba(16, 185, 129, 0.08);
+  border-color: rgba(16, 185, 129, 0.3);
+  color: #059669;
+}
+
+[data-theme="dark"] .btn-cart-secondary.btn-price-share-style {
+  color: #34d399;
+}
+
+.btn-cart-secondary.btn-full-width {
+  width: 100%;
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -2146,22 +2255,23 @@ html {
     gap: 16px;
   }
 
-  /* Split Modal de Produto no Desktop (Centralizado perfeitamente com scale + opacity) */
+  /* Split Modal de Produto no Desktop (Amplo, Arejado e de Alta Definição) */
   #product-bottom-sheet {
-    max-width: 860px;
-    width: 90vw;
+    max-width: 1080px;
+    width: 92vw;
     left: 50%;
     right: auto;
     bottom: auto;
     top: 50%;
     margin-top: 0;
     height: auto;
-    max-height: 85vh;
-    border-radius: var(--radius-xl);
+    max-height: 90vh;
+    border-radius: var(--radius-2xl, 24px);
     transform: translate(-50%, -50%) scale(0.95);
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
+    box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.4), 0 0 0 1px var(--border);
     transition: transform 0.25s cubic-bezier(0.33, 1, 0.68, 1), opacity 0.25s ease, visibility 0.25s ease;
   }
   #product-bottom-sheet.show {
@@ -2173,13 +2283,37 @@ html {
 
   #product-sheet-body {
     display: grid;
-    grid-template-columns: 1fr 1.2fr;
-    gap: 24px;
-    padding: 20px 24px 80px;
+    grid-template-columns: 1.05fr 1.35fr;
+    gap: 32px;
+    padding: 26px 32px 85px;
+    max-height: calc(90vh - 130px);
+    overflow-y: auto;
   }
+
+  .sheet-gallery-wrap {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .sheet-main-img-viewport {
+    height: 440px;
+    min-height: 420px;
+    padding: 22px;
+    border-radius: var(--radius-2xl, 20px);
+  }
+
+  .sheet-prod-name {
+    font-size: 1.65rem;
+    line-height: 1.25;
+  }
+
   .sheet-prod-img-box {
     height: 100%;
-    max-height: 380px;
+    max-height: 440px;
     margin-bottom: 0;
   }
 
@@ -2193,6 +2327,9 @@ html {
     height: 100vh;
     max-height: 100vh;
     border-radius: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
     transform: translateX(105%);
     opacity: 0;
     visibility: hidden;
@@ -2206,7 +2343,7 @@ html {
     pointer-events: auto;
   }
   .cart-sheet-body {
-    padding: 20px 20px 130px;
+    padding: 20px 20px 24px;
   }
 }
 
@@ -2380,16 +2517,23 @@ mark {
 
 .sheet-main-img-viewport {
   width: 100%;
-  height: 250px;
+  height: 300px;
   background: var(--bg-card-sub);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-xl);
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
   overflow: hidden;
-  padding: 12px;
+  padding: 16px;
+  box-shadow: var(--shadow-sm);
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.sheet-main-img-viewport:hover {
+  border-color: var(--brand-light);
+  box-shadow: var(--shadow-md);
 }
 
 .sheet-main-img-viewport img {
@@ -2535,6 +2679,28 @@ mark {
   transform: scale(1.04);
 }
 
+.btn-seller-history-pill {
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  color: #fff;
+  border-radius: var(--radius-full);
+  padding: 2px 8px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all var(--transition);
+  white-space: nowrap;
+}
+.btn-seller-history-pill:hover {
+  background: var(--brand-light);
+  color: #fff;
+  border-color: var(--brand-light);
+  transform: scale(1.03);
+}
+
 /* Badge de Atendimento (para o Cliente com link ?vendedor=carlos) */
 .seller-client-pill {
   display: inline-flex;
@@ -2615,88 +2781,6 @@ mark {
   color: var(--brand-mid);
   font-size: 0.9rem;
   font-weight: 800;
-}
-
-/* Total Geral da Proposta no Rodapé do Carrinho */
-.cart-total-proposal-card {
-  background: linear-gradient(135deg, rgba(15, 69, 49, 0.08), rgba(9, 38, 27, 0.12));
-  border: 1.5px solid var(--brand-light);
-  border-radius: var(--radius-sm);
-  padding: 10px 14px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 10px;
-}
-.cart-total-proposal-label {
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: var(--text-2);
-}
-.cart-total-proposal-num {
-  font-size: 1.15rem;
-  font-weight: 800;
-  color: var(--brand-mid);
-}
-
-/* Botões Duplos de Compartilhamento no Carrinho */
-.cart-share-btns-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  margin-top: 8px;
-}
-.btn-share-link {
-  height: 42px;
-  border-radius: var(--radius-sm);
-  background: var(--bg-card-sub);
-  color: var(--text-2);
-  border: 1px dashed var(--border);
-  font-size: 0.84rem;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  cursor: pointer;
-  transition: all var(--transition);
-}
-.btn-share-link:hover {
-  background: var(--brand-pale);
-  color: var(--brand-mid);
-  border-color: var(--brand-light);
-}
-.btn-share-price {
-  background: rgba(16, 185, 129, 0.1);
-  border: 1px solid rgba(16, 185, 129, 0.4);
-  color: var(--brand-mid);
-}
-.btn-share-price:hover {
-  background: var(--brand);
-  color: #fff;
-  border-color: var(--brand);
-}
-
-.btn-gen-pdf {
-  width: 100%;
-  height: 44px;
-  border-radius: var(--radius-sm);
-  background: var(--brand-dark);
-  color: #fff;
-  font-size: 0.9rem;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  cursor: pointer;
-  margin-top: 8px;
-  border: 1px solid var(--border);
-  transition: all var(--transition);
-}
-.btn-gen-pdf:hover {
-  background: var(--brand-mid);
-  transform: translateY(-1px);
 }
 
 /* Botão de Histórico no Header */
@@ -3080,6 +3164,299 @@ mark {
   }
 }
 
+/* ── Estilos de Desconto por Item e Desconto no Pedido ── */
+.cart-item-price-section {
+  margin-top: 8px;
+  background: var(--bg-card-sub);
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.cart-item-price-edit-row,
+.cart-item-discount-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.cart-price-input-wrap,
+.cart-discount-input-wrap {
+  display: inline-flex;
+  align-items: center;
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-xs);
+  padding: 2px 6px;
+  transition: border-color var(--transition);
+}
+.cart-price-input-wrap:focus-within,
+.cart-discount-input-wrap:focus-within {
+  border-color: var(--brand-light);
+  box-shadow: 0 0 0 2px var(--brand-pale);
+}
+.cart-price-symbol,
+.cart-discount-symbol {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-3);
+  margin-right: 2px;
+}
+.cart-discount-symbol {
+  margin-right: 0;
+  margin-left: 2px;
+}
+.cart-price-input-field,
+.cart-discount-input-field {
+  width: 74px;
+  border: none;
+  background: transparent;
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--text);
+  outline: none;
+  text-align: right;
+}
+.cart-discount-input-field {
+  width: 54px;
+  color: #059669;
+}
+.cart-base-price-ref {
+  font-size: 0.72rem;
+  color: var(--text-3);
+  white-space: nowrap;
+}
+.cart-item-subtotal-line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 4px;
+  border-top: 1px solid var(--border-subtle);
+  font-size: 0.8rem;
+}
+.cart-item-discounted-total-line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 4px;
+  border-top: 1px dashed var(--border-subtle);
+  font-size: 0.85rem;
+}
+.subtotal-val {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--brand);
+}
+[data-theme="dark"] .subtotal-val {
+  color: var(--brand-light);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   TOTALIZADOR MODO VENDEDOR (Clean, Compacto e Responsivo)
+═══════════════════════════════════════════════════════════════ */
+.cart-total-proposal-card,
+#cart-seller-total-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 4px;
+}
+
+[data-theme="dark"] #cart-seller-total-box,
+[data-theme="dark"] .cart-total-proposal-card {
+  background: var(--bg-card-sub);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.seller-total-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding-bottom: 6px;
+  border-bottom: 1px dashed var(--border);
+}
+
+.seller-subtotal-info {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.78rem;
+  color: var(--text-3);
+}
+
+.seller-subtotal-val {
+  font-weight: 700;
+  color: var(--text-2);
+  font-size: 0.82rem;
+}
+
+.seller-discount-strip {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.seller-disc-tag {
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #059669;
+  text-transform: uppercase;
+}
+
+[data-theme="dark"] .seller-disc-tag {
+  color: #34d399;
+}
+
+.seller-quick-pills {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.btn-disc-pill {
+  background: var(--bg-card-sub);
+  border: 1px solid var(--border);
+  color: var(--text-2);
+  border-radius: var(--radius-xs);
+  padding: 2px 6px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  line-height: 1.2;
+}
+
+.btn-disc-pill:hover {
+  border-color: #059669;
+  color: #059669;
+}
+
+.btn-disc-pill.active {
+  background: #059669;
+  border-color: #059669;
+  color: #ffffff;
+  font-weight: 800;
+  box-shadow: 0 1px 4px rgba(5, 150, 105, 0.3);
+}
+
+[data-theme="dark"] .btn-disc-pill.active {
+  background: #10b981;
+  border-color: #10b981;
+  color: #064e3b;
+}
+
+.seller-disc-input-wrap {
+  display: inline-flex;
+  align-items: center;
+  background: var(--bg-card-sub);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xs);
+  height: 22px;
+  width: 38px;
+  padding: 0 2px;
+}
+
+.seller-disc-input {
+  width: 100%;
+  border: none;
+  background: transparent;
+  color: var(--text);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-align: center;
+  outline: none;
+  padding: 0;
+}
+
+.seller-total-main-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.seller-total-title {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.seller-total-title > span:first-child {
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.seller-disc-badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #059669;
+  background: rgba(5, 150, 105, 0.1);
+  padding: 1px 5px;
+  border-radius: 4px;
+  align-self: flex-start;
+}
+
+[data-theme="dark"] .seller-disc-badge {
+  color: #34d399;
+  background: rgba(52, 211, 153, 0.15);
+}
+
+.seller-total-price {
+  font-size: 1.25rem;
+  font-weight: 900;
+  color: #059669;
+  letter-spacing: -0.02em;
+}
+
+[data-theme="dark"] .seller-total-price {
+  color: #34d399;
+}
+
+.seller-breakdown-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.78rem;
+  color: var(--text-2);
+}
+.seller-savings-banner {
+  background: rgba(5, 150, 105, 0.1);
+  border: 1px dashed rgba(5, 150, 105, 0.3);
+  border-radius: var(--radius-xs);
+  padding: 4px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.76rem;
+  color: #059669;
+  font-weight: 700;
+  margin-top: 2px;
+}
+[data-theme="dark"] .seller-savings-banner {
+  background: rgba(52, 211, 153, 0.12);
+  border-color: rgba(52, 211, 153, 0.35);
+  color: #34d399;
+}
+
+.cart-total-proposal-num {
+  font-size: 1.28rem;
+  font-weight: 800;
+  color: var(--brand);
+}
+[data-theme="dark"] .cart-total-proposal-num {
+  color: var(--brand-light);
+}
+
 </style>
 </head>
 <body>
@@ -3320,18 +3697,15 @@ mark {
       <span>Total Selecionado:</span>
       <strong id="cart-summary-qty">0 itens</strong>
     </div>
-    <button class="btn-send-whatsapp" onclick="sendQuoteToWhatsApp()">
-      <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
-      Enviar Cotação pelo WhatsApp
-    </button>
-    <div id="cart-share-btns-container">
-      <button class="btn-share-link" onclick="copyCartShareLink(false)">
-        <span>🔗</span> Copiar Link do Orçamento
+    
+    <!-- Bloco de Ações e Compartilhamento -->
+    <div class="cart-share-actions-wrap" id="cart-share-actions-wrap">
+      <button class="btn-send-whatsapp" onclick="sendQuoteToWhatsApp()">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+        Enviar Cotação pelo WhatsApp
       </button>
+      <div class="cart-secondary-actions-container" id="cart-actions-dynamic-container"></div>
     </div>
-    <button class="btn-gen-pdf" onclick="openPdfProposalModal()">
-      <span>📄</span> Gerar Proposta Comercial (PDF)
-    </button>
   </div>
 </div>
 
@@ -3345,7 +3719,11 @@ mark {
     <span class="nav-tab-icon">🔍</span>
     <span>Buscar</span>
   </button>
-  <button class="nav-tab-btn" id="tab-nav-history" onclick="openQuoteHistoryModal()">
+  <button class="nav-tab-btn" id="tab-nav-cats" onclick="scrollToCategories()">
+    <span class="nav-tab-icon">📑</span>
+    <span>Categorias</span>
+  </button>
+  <button class="nav-tab-btn" id="tab-nav-history" onclick="openQuoteHistoryModal()" style="display:none;">
     <span class="nav-tab-icon">📋</span>
     <span>Histórico</span>
     <span class="nav-cart-badge" id="bottom-history-badge" style="display:none;">0</span>
@@ -4749,7 +5127,9 @@ let appState = {
 };
 
 let cartItems = [];
+let cartGlobalDiscountPercent = 0;
 const CART_STORAGE_KEY = 'rawell_cart_v2';
+const CART_GLOBAL_DISCOUNT_KEY = 'rawell_cart_global_discount_v2';
 const CLIENT_STORAGE_KEY = 'rawell_client_profile_v2';
 
 // ═══════════════════════════════════════════════════════════════
@@ -4909,17 +5289,20 @@ function renderProductList() {
   const emptyBox = document.getElementById('empty-state-box');
   const countLabel = document.getElementById('products-count-label');
   const filterIndicator = document.getElementById('filter-active-indicator');
+  const isSeller = isSellerLoggedIn();
+
+  if (!container) return;
 
   if (!list.length) {
     container.innerHTML = '';
-    emptyBox.classList.add('show');
-    countLabel.innerHTML = 'Nenhum resultado encontrado';
+    if (emptyBox) emptyBox.classList.add('show');
+    if (countLabel) countLabel.innerHTML = 'Nenhum resultado encontrado';
     if (filterIndicator) filterIndicator.innerHTML = '';
     return;
   }
 
-  emptyBox.classList.remove('show');
-  countLabel.innerHTML = `Exibindo <span>${list.length}</span> de ${PRODUTOS.length} produtos`;
+  if (emptyBox) emptyBox.classList.remove('show');
+  if (countLabel) countLabel.innerHTML = `Exibindo <span>${list.length}</span> de ${PRODUTOS.length} produtos`;
 
   // Indicador de Filtro Ativo
   if (filterIndicator) {
@@ -4947,7 +5330,7 @@ function renderProductList() {
   const isGrid = appState.viewMode === 'grid';
   container.className = `products-layout ${isGrid ? 'grid-mode' : 'list-mode'}`;
 
-  const term = appState.search;
+  const term = (appState.search || appState.searchTerm || '').trim();
 
   container.innerHTML = list.map(p => {
     const cartItem = cartItems.find(i => i.id === p.id);
@@ -4956,18 +5339,24 @@ function renderProductList() {
     const formObj = FORMULACOES.find(f => f.id === p.tipo_formulacao);
     
     // Identifica embalagem
-    const packFeature = p.caracteristicas.find(c => c.toLowerCase().includes('frasco') || c.toLowerCase().includes('caixa') || c.toLowerCase().includes('sachê') || c.toLowerCase().includes('display') || c.toLowerCase().includes('seringa') || c.toLowerCase().includes('balde') || c.toLowerCase().includes('envelope'));
+    const packFeature = p.caracteristicas ? p.caracteristicas.find(c => c.toLowerCase().includes('frasco') || c.toLowerCase().includes('caixa') || c.toLowerCase().includes('sachê') || c.toLowerCase().includes('display') || c.toLowerCase().includes('seringa') || c.toLowerCase().includes('balde') || c.toLowerCase().includes('envelope')) : null;
     const packTag = packFeature ? packFeature.split('(')[0].trim() : (p.unidade ? p.unidade.toUpperCase() : 'UN');
 
     // Alvos principais (até 2 no grid, até 3 no list)
-    const targetsGrid = p.alvos.slice(0, 2);
-    const moreGridCount = p.alvos.length - targetsGrid.length;
+    const targetsGrid = (p.alvos || []).slice(0, 2);
+    const moreGridCount = (p.alvos || []).length - targetsGrid.length;
 
-    const targetsList = p.alvos.slice(0, 4);
-    const moreListCount = p.alvos.length - targetsList.length;
+    const targetsList = (p.alvos || []).slice(0, 4);
+    const moreListCount = (p.alvos || []).length - targetsList.length;
 
-    // Benefício Chave
-    const keyBenefit = p.caracteristicas[0] || p.descricao;
+    // Preço do vendedor (se logado)
+    const precoBase = p.preco_base || 0;
+    const sellerPriceHtml = (isSeller && precoBase > 0) ? `
+      <div style="display:inline-flex; align-items:center; gap:5px; background:rgba(16, 185, 129, 0.1); border:1px solid rgba(16, 185, 129, 0.35); border-radius:var(--radius-xs); padding:2px 8px; margin:4px 0 2px; font-size:0.75rem;">
+        <span style="color:#059669; font-weight:800;">💰 Tabela:</span>
+        <strong style="color:var(--text); font-weight:800;">R$ ${precoBase.toFixed(2).replace('.', ',')}</strong>
+      </div>
+    ` : '';
 
     if (isGrid) {
       return `
@@ -4981,12 +5370,12 @@ function renderProductList() {
           <div class="prod-info-box">
             <div>
               <div class="prod-meta-top">
-                
                 <span class="prod-pack-tag">📦 ${packTag}</span>
               </div>
-	      <span class="prod-ref">Ref: ${p.referencia}</span>
+	            <span class="prod-ref">Ref: ${p.referencia}</span>
               <h3 class="prod-name">${highlightSearch(p.nome, term)}</h3>
               <p class="prod-desc-line">${highlightSearch(p.descricao, term)}</p>
+              ${sellerPriceHtml}
             </div>
 
             <div>
@@ -4998,7 +5387,7 @@ function renderProductList() {
               <div class="prod-action-row" onclick="event.stopPropagation();">
                 <div class="card-stepper-box">
                   <button class="card-step-btn" onclick="adjustCardQty(${p.id}, -1)" title="Diminuir">−</button>
-                  <input type="number" id="card-qty-${p.id}" class="card-step-input" value="1" min="1" max="999" onclick="this.select()" onchange="validateCardInput(this)">
+                  <input type="number" id="card-qty-${p.id}" class="card-step-input" value="${inCart ? cartItem.quantidade : 1}" min="1" max="999" onclick="this.select()" onchange="validateCardInput(this)">
                   <button class="card-step-btn" onclick="adjustCardQty(${p.id}, 1)" title="Aumentar">+</button>
                 </div>
                 <button class="btn-card-quote ${inCart ? 'in-cart' : ''}" onclick="addFromCard(${p.id})" title="Adicionar à cotação">
@@ -5025,6 +5414,7 @@ function renderProductList() {
               </div>
               <h3 class="prod-name">${highlightSearch(p.nome, term)}</h3>
               <p class="prod-desc-line">${highlightSearch(p.descricao, term)}</p>
+              ${sellerPriceHtml}
             </div>
 
             <div class="prod-targets-row">
@@ -5039,7 +5429,7 @@ function renderProductList() {
               <div style="display:flex; align-items:center; gap:8px;">
                 <div class="card-stepper-box">
                   <button class="card-step-btn" onclick="adjustCardQty(${p.id}, -1)" title="Diminuir">−</button>
-                  <input type="number" id="card-qty-list-${p.id}" class="card-step-input" value="1" min="1" max="999" onclick="this.select()" onchange="validateCardInput(this)">
+                  <input type="number" id="card-qty-list-${p.id}" class="card-step-input" value="${inCart ? cartItem.quantidade : 1}" min="1" max="999" onclick="this.select()" onchange="validateCardInput(this)">
                   <button class="card-step-btn" onclick="adjustCardQty(${p.id}, 1, 'card-qty-list-')" title="Aumentar">+</button>
                 </div>
                 <button class="btn-card-quote ${inCart ? 'in-cart' : ''}" onclick="addFromCard(${p.id}, 'card-qty-list-')" style="padding: 0 16px;">
@@ -5279,14 +5669,25 @@ function shareCurrentProduct() {
 function loadCart() {
   try {
     cartItems = JSON.parse(localStorage.getItem(CART_STORAGE_KEY)) || [];
+    cartItems.forEach(item => {
+      const p = PRODUTOS.find(prod => prod.id === item.id);
+      if (p) {
+        if (item.preco_base === undefined) item.preco_base = p.preco_base || 0;
+        if (item.preco_unitario === undefined) item.preco_unitario = p.preco_base || 0;
+      }
+      if (item.desconto_percent === undefined) item.desconto_percent = 0;
+    });
+    cartGlobalDiscountPercent = parseFloat(localStorage.getItem(CART_GLOBAL_DISCOUNT_KEY)) || 0;
   } catch {
     cartItems = [];
+    cartGlobalDiscountPercent = 0;
   }
   updateBadges();
 }
 
 function saveCart() {
   localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cartItems));
+  localStorage.setItem(CART_GLOBAL_DISCOUNT_KEY, cartGlobalDiscountPercent.toString());
   updateBadges();
 }
 
@@ -5304,13 +5705,21 @@ function addToCart(id, qty = 1) {
       referencia: p.referencia,
       unidade: p.unidade,
       imagem: p.imagens[0],
-      quantidade: qty
+      quantidade: qty,
+      preco_base: p.preco_base || 0,
+      preco_unitario: p.preco_base || 0,
+      desconto_percent: 0
     });
   }
 
   saveCart();
   renderProductList();
   showToast(`✅ ${p.nome} adicionado ao orçamento!`);
+  logSellerActivity('Adicionou ao Orçamento', {
+    total_itens: qty,
+    resumo_itens: `${qty}x ${p.nome} (Ref: ${p.referencia})`,
+    detalhes_extras: `Produto: ${p.nome} | Qtd: ${qty}`
+  });
 }
 
 function adjustCardQty(id, delta, prefix = 'card-qty-') {
@@ -5365,6 +5774,9 @@ function removeCartItem(id) {
   renderCartSheet();
   renderProductList();
   showToast('🗑️ Item removido do orçamento');
+  logSellerActivity('Removeu do Orçamento', {
+    detalhes_extras: `Item ID removido: ${id}`
+  });
 }
 
 function updateBadges() {
@@ -5393,241 +5805,6 @@ function closeCartSheet() {
   document.getElementById('cart-sheet-backdrop').classList.remove('show');
   document.getElementById('cart-bottom-sheet').classList.remove('show');
   document.body.style.overflow = '';
-}
-
-function renderCartSheet() {
-  const area = document.getElementById('cart-content-area');
-  const footerBar = document.getElementById('cart-footer-bar');
-  const summaryQty = document.getElementById('cart-summary-qty');
-
-  if (!cartItems.length) {
-    area.innerHTML = `
-      <div style="text-align:center; padding:50px 10px;">
-        <div style="font-size:3.8rem; margin-bottom:12px;">🛒</div>
-        <h3 style="font-size:1.15rem; font-weight:800; color:var(--text); margin-bottom:6px;">Seu orçamento está vazio</h3>
-        <p style="font-size:0.88rem; color:var(--text-3); margin-bottom:20px;">Navegue pelo catálogo e clique em "+ Adicionar" nos produtos.</p>
-        <button class="hero-btn-primary" style="margin:0 auto; padding:0 24px; height:42px;" onclick="closeCartSheet(); scrollToProducts();">
-          Ver Catálogo de Produtos
-        </button>
-      </div>
-    `;
-    footerBar.style.display = 'none';
-    return;
-  }
-
-  footerBar.style.display = 'flex';
-  const totalQty = cartItems.reduce((acc, i) => acc + i.quantidade, 0);
-  summaryQty.textContent = `${totalQty} ite${totalQty === 1 ? 'm' : 'ns'} selecionado${totalQty === 1 ? '' : 's'}`;
-
-  let savedClient = {};
-  try {
-    savedClient = JSON.parse(localStorage.getItem(CLIENT_STORAGE_KEY)) || {};
-  } catch (e) {}
-
-  area.innerHTML = `
-    <!-- Lista de Itens -->
-    <div class="cart-items-wrap">
-      ${cartItems.map(item => `
-        <div class="cart-item-card">
-          <div class="cart-item-pic">
-            <img src="${item.imagem}" alt="${item.nome}">
-          </div>
-          <div class="cart-item-details">
-            <h4 class="cart-item-title">${item.nome}</h4>
-            <div class="cart-item-subtitle">Ref: ${item.referencia}</div>
-            <div class="cart-item-stepper">
-              <button class="cart-step-btn" onclick="updateCartQty(${item.id}, -1)">−</button>
-              <span class="cart-step-num">${item.quantidade}</span>
-              <button class="cart-step-btn" onclick="updateCartQty(${item.id}, 1)">+</button>
-            </div>
-          </div>
-          <button class="cart-del-btn" onclick="removeCartItem(${item.id})" title="Remover produto">🗑️</button>
-        </div>
-      `).join('')}
-    </div>
-
-    <!-- Formulário Rápido com Autocomplete do localStorage -->
-    <div class="client-form-card">
-      <div class="form-head-title">
-        <span>👤</span> Dados para Contato Comercial
-      </div>
-      <div class="form-field-group">
-        <label class="form-field-label">Nome Completo / Empresa <span class="req">*</span></label>
-        <input type="text" id="client-name" class="form-field-input" placeholder="Ex: João da Silva ou Fazenda Primavera" value="${savedClient.nome || ''}">
-      </div>
-      <div class="form-field-group">
-        <label class="form-field-label">Vendedor Responsável (opcional)</label>
-        <div class="vendedor-select-wrap">
-          <select id="client-vendedor" class="form-field-input" onchange="handleVendedorChange(this.value)">
-            <option value="">Nenhum vendedor selecionado (Geral)</option>
-            <option value="vendedor-1" ${savedClient.vendedor === 'vendedor-1' ? 'selected' : ''}>Vendedor 1</option>
-            <option value="vendedor-2" ${savedClient.vendedor === 'vendedor-2' ? 'selected' : ''}>Vendedor 2</option>
-          </select>
-          <span class="vendedor-select-arrow">▼</span>
-        </div>
-        <button type="button" class="btn-clear-vendedor ${savedClient.vendedor ? 'show' : ''}" id="btn-clear-vendedor" onclick="clearVendedorSelection()">
-          ✕ Desmarcar vendedor
-        </button>
-      </div>
-      <div class="form-field-group">
-        <label class="form-field-label">CNPJ / Cidade / Estado (opcional)</label>
-        <input type="text" id="client-doc" class="form-field-input" placeholder="00.000.000/0001-00 ou Cascavel - PR" value="${savedClient.doc || ''}">
-      </div>
-    </div>
-  `;
-}
-
-function handleVendedorChange(val) {
-  const clearBtn = document.getElementById('btn-clear-vendedor');
-  if (clearBtn) {
-    clearBtn.classList.toggle('show', !!val);
-  }
-}
-
-function clearVendedorSelection() {
-  hapticFeedback(10);
-  const sel = document.getElementById('client-vendedor');
-  if (sel) sel.value = '';
-  document.getElementById('btn-clear-vendedor')?.classList.remove('show');
-}
-
-// ═══════════════════════════════════════════════════════════════
-//  COMPARTILHAMENTO DE ORÇAMENTO (LINK MÁGICO)
-// ═══════════════════════════════════════════════════════════════
-function generateCartShareUrl() {
-  if (!cartItems || !cartItems.length) return window.location.href.split('?')[0];
-  const itemsParam = cartItems.map(i => `${i.id}:${i.quantidade}`).join(',');
-  const cleanBase = window.location.href.split('?')[0].split('#')[0];
-  const url = new URL(cleanBase);
-  url.searchParams.set('orcamento', itemsParam);
-  return url.toString();
-}
-
-function copyCartShareLink() {
-  hapticFeedback(25);
-  if (!cartItems.length) {
-    showToast('⚠️ Seu orçamento está vazio.');
-    return;
-  }
-  const shareUrl = generateCartShareUrl();
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(shareUrl).then(() => {
-      showToast('🔗 Link do orçamento copiado com sucesso!');
-    }).catch(() => {
-      prompt('Copie o link do orçamento:', shareUrl);
-    });
-  } else {
-    prompt('Copie o link do orçamento:', shareUrl);
-  }
-}
-
-function loadCartFromUrl() {
-  try {
-    const params = new URLSearchParams(window.location.search);
-    const orcamentoParam = params.get('orcamento') || params.get('pedido') || params.get('cart');
-    if (!orcamentoParam) return false;
-
-    // Formato esperado: 1:2,4:1,32:1
-    const entries = orcamentoParam.split(',');
-    const newItems = [];
-
-    entries.forEach(entry => {
-      const parts = entry.trim().split(':');
-      const prodId = parseInt(parts[0], 10);
-      const qty = parseInt(parts[1], 10) || 1;
-
-      if (!isNaN(prodId)) {
-        const p = PRODUTOS.find(item => item.id === prodId);
-        if (p) {
-          newItems.push({
-            id: p.id,
-            nome: p.nome,
-            referencia: p.referencia,
-            unidade: p.unidade,
-            imagem: p.imagens[0],
-            quantidade: Math.max(1, Math.min(999, qty))
-          });
-        }
-      }
-    });
-
-    if (newItems.length > 0) {
-      cartItems = newItems;
-      saveCart();
-      renderProductList();
-      updateBadges();
-
-      // Limpa os parâmetros da barra de endereço sem recarregar
-      const cleanUrl = window.location.origin + window.location.pathname;
-      window.history.replaceState({}, document.title, cleanUrl);
-
-      setTimeout(() => {
-        showToast(`🎉 Orçamento com ${newItems.length} ite${newItems.length === 1 ? 'm' : 'ns'} carregado!`);
-        openCartSheet();
-      }, 400);
-
-      return true;
-    }
-  } catch (err) {
-    console.warn('Erro ao carregar orçamento da URL:', err);
-  }
-  return false;
-}
-
-// ═══════════════════════════════════════════════════════════════
-//  ENVIO DO ORÇAMENTO PARA O WHATSAPP
-// ═══════════════════════════════════════════════════════════════
-function sendQuoteToWhatsApp() {
-  hapticFeedback(35);
-  const nameInput = document.getElementById('client-name');
-  const vendedorSelect = document.getElementById('client-vendedor');
-  const docInput = document.getElementById('client-doc');
-
-  const nome = nameInput ? nameInput.value.trim() : '';
-  const vendedorId = vendedorSelect ? vendedorSelect.value : '';
-  const doc = docInput ? docInput.value.trim() : '';
-
-  if (!nome) {
-    nameInput?.classList.add('has-error');
-    showToast('⚠️ Por favor, informe seu Nome ou Empresa');
-    nameInput?.focus();
-    return;
-  }
-  nameInput?.classList.remove('has-error');
-
-  // Roteamento inteligente de WhatsApp por vendedor
-  const vendedorObj = VENDEDORES.find(v => v.id === vendedorId) || VENDEDORES[0];
-  const destWhatsapp = (vendedorObj && vendedorObj.whatsapp) ? vendedorObj.whatsapp : CONFIG.whatsapp;
-
-  // Salva no perfil local para agilizar próximos orçamentos
-  localStorage.setItem(CLIENT_STORAGE_KEY, JSON.stringify({ nome, vendedor: vendedorId, doc }));
-
-  // Link mágico para edição/recompra
-  const shareUrl = generateCartShareUrl();
-
-  // Formata Mensagem
-  let msg = `🌿 *${CONFIG.empresa}*\n`;
-  msg += `━━━━━━━━━━━━━━━━━━━━━\n`;
-  msg += `📋 *SOLICITAÇÃO DE ORÇAMENTO*\n\n`;
-
-  cartItems.forEach((item, index) => {
-    msg += `*${index + 1}. ${item.nome}*\n`;
-    msg += `   • Ref: \`${item.referencia}\`\n`;
-    msg += `   • Quantidade: *${item.quantidade} ${item.unidade || 'unidade'}(s)*\n\n`;
-  });
-
-  msg += `━━━━━━━━━━━━━━━━━━━━━\n`;
-  msg += `👤 *Cliente:* ${nome}\n`;
-  if (vendedorObj && vendedorObj.id) {
-    msg += `👔 *Vendedor:* ${vendedorObj.nome}\n`;
-  }
-  if (doc) msg += `🏢 *Documento/Local:* ${doc}\n`;
-  msg += `━━━━━━━━━━━━━━━━━━━━━\n\n`;
-  msg += `🔗 *Abrir / Recomprar este pedido no Catálogo:*\n${shareUrl}\n\n`;
-  msg += `${CONFIG.mensagem_fim}`;
-
-  const waUrl = `https://api.whatsapp.com/send?phone=${destWhatsapp}&text=${encodeURIComponent(msg)}`;
-  window.open(waUrl, '_blank');
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -5824,7 +6001,9 @@ function handleSellerLogin(event) {
   showToast(`🎉 Bem-vindo(a), ${vendedorNome}! Modo Vendedor ativado com preços e propostas.`);
   
   logSellerActivity('Login no Modo Vendedor', {
-    vendedorNome: vendedorNome,
+    origem_canal: `🟢👔 Vendedor Entrou (${vendedorNome})`,
+    vendedor: vendedorNome,
+    vendedor_nome: vendedorNome,
     detalhes_extras: 'Representante autenticou-se via PIN'
   });
 }
@@ -5832,8 +6011,11 @@ function handleSellerLogin(event) {
 function handleSellerLogout() {
   hapticFeedback(20);
   const session = getSellerSession();
+  const vNome = (session && session.vendedorNome) ? session.vendedorNome : 'Representante';
   logSellerActivity('Logout do Modo Vendedor', {
-    vendedorNome: session?.vendedorNome || 'Representante',
+    origem_canal: `🔴👔 Vendedor Saiu (${vNome})`,
+    vendedor: vNome,
+    vendedor_nome: vNome,
     detalhes_extras: 'Modo vendedor desconectado'
   });
   localStorage.removeItem(SELLER_STORAGE_KEY);
@@ -5848,9 +6030,12 @@ function handleSellerLogout() {
 function updateSellerUI() {
   const isLogged = isSellerLoggedIn();
   const session = getSellerSession();
+  const quoteCount = getQuoteHistory().length;
 
   // 1. Header: Se logado como vendedor vs deslogado
   const headerContainer = document.getElementById('seller-status-header');
+  const historyHeaderBtn = document.getElementById('btn-header-history');
+
   if (headerContainer) {
     if (isLogged && session) {
       const shortName = (session.vendedorNome || 'Vendedor').split(' ')[0];
@@ -5858,12 +6043,17 @@ function updateSellerUI() {
         <div class="seller-status-header">
           <span title="Modo Vendedor Ativo">👔</span>
           <span><span class="seller-label-text">Vendedor: </span><span class="seller-name" title="${session.vendedorNome}">${shortName}</span></span>
+          <button type="button" class="btn-seller-history-pill" onclick="openQuoteHistoryModal()" title="Ver Meus Orçamentos Recentes">
+            <span>📋 Orçamentos</span>
+            <span class="history-pill-count">${quoteCount}</span>
+          </button>
           <button type="button" class="btn-logout-seller" onclick="handleSellerLogout()" title="Sair do modo vendedor">
             <span>Sair</span> 🚪
           </button>
         </div>
       `;
       headerContainer.style.display = 'block';
+      if (historyHeaderBtn) historyHeaderBtn.style.display = 'none'; // Já embutido dentro da barra do vendedor
     } else {
       headerContainer.innerHTML = `
         <button type="button" class="btn-seller-login-header" onclick="openSellerLoginModal()" title="Acesso Restrito do Vendedor">
@@ -5871,6 +6061,7 @@ function updateSellerUI() {
         </button>
       `;
       headerContainer.style.display = 'block';
+      if (historyHeaderBtn) historyHeaderBtn.style.display = 'none'; // Oculto para cliente comum
     }
   }
 
@@ -5890,13 +6081,16 @@ function updateSellerUI() {
     }
   }
 
-  // 3. Rodapé: Status do Vendedor
+  // 3. Rodapé: Status e Acesso ao Dashboard do Vendedor
   const footerContainer = document.getElementById('footer-seller-container');
   if (footerContainer) {
     if (isLogged && session) {
       footerContainer.innerHTML = `
         <div class="footer-seller-logged-box">
           <span class="footer-seller-tag">👔 <strong>${session.vendedorNome}</strong> (Logado)</span>
+          <button type="button" class="footer-secret-seller-btn" style="background:rgba(16,185,129,0.25);" onclick="openQuoteHistoryModal()" title="Abrir Dashboard de Orçamentos">
+            📋 Meus Orçamentos (${quoteCount})
+          </button>
           <button type="button" class="footer-btn-logout" onclick="handleSellerLogout()" title="Encerrar sessão">
             🚪 Sair
           </button>
@@ -5910,6 +6104,18 @@ function updateSellerUI() {
       `;
     }
   }
+
+  // 4. Bottom Nav Mobile: Mostra aba Histórico se vendedor logado, senão mostra Categorias
+  const tabHistory = document.getElementById('tab-nav-history');
+  const tabCats = document.getElementById('tab-nav-cats');
+  if (tabHistory) {
+    tabHistory.style.display = isLogged ? 'inline-flex' : 'none';
+  }
+  if (tabCats) {
+    tabCats.style.display = isLogged ? 'none' : 'inline-flex';
+  }
+
+  updateHistoryBadges();
 }
 
 function getActiveSellerObj() {
@@ -5940,9 +6146,9 @@ function logSellerActivity(tipoEvento, dadosExtras = {}) {
     const sellerObj = getActiveSellerObj();
     const isAttributed = !!(clientAttributedSeller && !isSeller);
 
-    const origemCanal = isSeller 
+    const origemCanal = dadosExtras.origem_canal || (isSeller 
       ? `👔 Vendedor Logado (${session.vendedorNome})`
-      : (isAttributed ? `🟢 Vendedor (${sellerObj.nome})` : '🔵 Base / Central (Orgânico)');
+      : (isAttributed ? `🟢 Vendedor (${sellerObj.nome})` : '🔵 Base / Central (Orgânico)'));
 
     let resumoItens = dadosExtras.resumo_itens || '-';
     let totalQtd = dadosExtras.total_itens || 0;
@@ -5966,8 +6172,8 @@ function logSellerActivity(tipoEvento, dadosExtras = {}) {
     const payload = {
       timestamp: new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' }) + ' ' + new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', second: '2-digit' }),
       origem_canal: origemCanal,
-      vendedor: isSeller ? session.vendedorNome : (sellerObj ? sellerObj.nome : 'Atendimento Geral'),
-      vendedor_nome: isSeller ? session.vendedorNome : (sellerObj ? sellerObj.nome : 'Atendimento Geral'),
+      vendedor: dadosExtras.vendedor || dadosExtras.vendedor_nome || (isSeller ? session.vendedorNome : (sellerObj ? sellerObj.nome : 'Atendimento Geral')),
+      vendedor_nome: dadosExtras.vendedor || dadosExtras.vendedor_nome || (isSeller ? session.vendedorNome : (sellerObj ? sellerObj.nome : 'Atendimento Geral')),
       evento: tipoEvento,
       num_proposta: dadosExtras.num_proposta || dadosExtras.numProposta || '-',
       cliente_nome: dadosExtras.cliente_nome || dadosExtras.clienteNome || document.getElementById('client-name')?.value?.trim() || '-',
@@ -6009,135 +6215,282 @@ function trackInitialSession() {
 }
 
 // ═══════════════════════════════════════════════════════════════
-//  RENDERIZAÇÃO DOS PRODUTOS COM PREÇO NO MODO VENDEDOR
+//  CARRINHO & CONTROLE DE PREÇOS UNITÁRIOS E DESCONTOS
 // ═══════════════════════════════════════════════════════════════
-function renderProductList() {
-  const container = document.getElementById('products-layout');
-  const countLabel = document.getElementById('products-count-label');
-  const emptyBox = document.getElementById('empty-state-box');
-  const isSeller = isSellerLoggedIn();
 
-  if (!container) return;
+function calculateCartTotals() {
+  let subtotalTabelaBruto = 0;
+  let subtotalItensSemDesconto = 0;
+  let subtotalItensComDesconto = 0;
+  let baseItensSemDesconto = 0;
+  let qtdItensSemDesconto = 0;
+  let qtdTiposSemDesconto = 0;
+  let totalQtd = 0;
 
-  const filtered = getFilteredProducts();
+  cartItems.forEach(item => {
+    const pUnit = (item.preco_unitario !== undefined) ? item.preco_unitario : (item.preco_base || 0);
+    const pBase = (item.preco_base !== undefined) ? item.preco_base : pUnit;
+    const discPercent = Math.max(0, Math.min(100, item.desconto_percent || 0));
+    const pUnitDesc = pUnit * (1 - (discPercent / 100));
 
-  if (countLabel) {
-    countLabel.textContent = `Exibindo ${filtered.length} de ${PRODUTOS.length} produtos`;
-  }
+    subtotalTabelaBruto += (item.quantidade * pBase);
+    subtotalItensSemDesconto += (item.quantidade * pUnit);
+    subtotalItensComDesconto += (item.quantidade * pUnitDesc);
+    totalQtd += item.quantidade;
 
-  if (filtered.length === 0) {
-    container.innerHTML = '';
-    emptyBox.style.display = 'block';
-    return;
-  }
-  emptyBox.style.display = 'none';
-
-  const isGrid = appState.viewMode === 'grid';
-  const term = (appState.searchTerm || appState.search || '').trim();
-
-  container.innerHTML = filtered.map(p => {
-    const catObj = CATEGORIAS.find(c => c.id === p.categoria);
-    const formObj = FORMULACOES.find(f => f.id === p.tipo_formulacao);
-    const inCart = cartItems.find(i => i.id === p.id);
-    const qty = inCart ? inCart.quantidade : 0;
-    const precoBase = p.preco_base || 0;
-
-    const sellerPriceHtml = (isSeller && precoBase > 0) ? `
-      <div class="card-seller-price-tag" title="Preço de tabela de fábrica">
-        <span>💰 Tabela:</span> <strong>R$ ${precoBase.toFixed(2).replace('.', ',')}</strong>
-      </div>
-    ` : '';
-
-    if (isGrid) {
-      return `
-        <article class="prod-card ${qty > 0 ? 'in-cart' : ''}" id="prod-card-${p.id}">
-          <div class="prod-card-top" onclick="openProductSheet(${p.id})">
-            <div class="prod-pic-wrap">
-              <img src="${p.imagens[0]}" alt="${p.nome}" loading="lazy">
-              ${p.destaque ? '<span class="prod-pill-star">⭐ Destaque</span>' : ''}
-            </div>
-            <div class="prod-info-block">
-              <div class="prod-ref-line">CÓD: ${p.referencia}</div>
-              <h3 class="prod-name">${highlightSearch(p.nome, term)}</h3>
-              <div class="prod-action-headline">
-                <span class="action-bolt">⚡</span>
-                <span>${p.o_que_faz || p.descricao}</span>
-              </div>
-              <p class="prod-desc-line">${highlightSearch(p.descricao, term)}</p>
-              ${sellerPriceHtml}
-              <div class="prod-tags-row">
-                <span class="prod-tag">${catObj ? catObj.icone + ' ' + catObj.nome : 'Geral'}</span>
-                <span class="prod-tag">${formObj ? formObj.icone + ' ' + formObj.nome : 'Forma'}</span>
-              </div>
-            </div>
-          </div>
-          <div class="prod-card-actions">
-            ${qty === 0 ? `
-              <button class="btn-card-add" onclick="addToCart(${p.id})">
-                <span>+ Adicionar ao Orçamento</span>
-              </button>
-            ` : `
-              <div class="card-stepper-wrap">
-                <button class="card-step-btn" onclick="updateCartQty(${p.id}, -1)">−</button>
-                <input type="number" class="card-step-input" value="${qty}" min="1" max="999" onchange="setCartQty(${p.id}, this.value)">
-                <button class="card-step-btn" onclick="updateCartQty(${p.id}, 1)">+</button>
-              </div>
-            `}
-            <button class="btn-card-more" onclick="openProductSheet(${p.id})" title="Ver bula e guia prático">
-              <span>Bula</span> ℹ️
-            </button>
-          </div>
-        </article>
-      `;
-    } else {
-      return `
-        <article class="prod-card-list ${qty > 0 ? 'in-cart' : ''}" id="prod-card-${p.id}">
-          <div class="list-pic-col" onclick="openProductSheet(${p.id})">
-            <img src="${p.imagens[0]}" alt="${p.nome}" loading="lazy">
-          </div>
-          <div class="list-info-col" onclick="openProductSheet(${p.id})">
-            <div class="prod-ref-line">CÓD: ${p.referencia}</div>
-            <h3 class="prod-name">${highlightSearch(p.nome, term)}</h3>
-            <div class="prod-action-headline">
-              <span class="action-bolt">⚡</span>
-              <span>${p.o_que_faz || p.descricao}</span>
-            </div>
-            <p class="prod-desc-line">${highlightSearch(p.descricao, term)}</p>
-            ${sellerPriceHtml}
-            <div class="prod-tags-row">
-              <span class="prod-tag">${catObj ? catObj.icone + ' ' + catObj.nome : 'Geral'}</span>
-              <span class="prod-tag">${formObj ? formObj.icone + ' ' + formObj.nome : 'Forma'}</span>
-            </div>
-          </div>
-          <div class="list-actions-col">
-            ${qty === 0 ? `
-              <button class="btn-card-add" onclick="addToCart(${p.id})">
-                <span>+ Orçamento</span>
-              </button>
-            ` : `
-              <div class="card-stepper-wrap">
-                <button class="card-step-btn" onclick="updateCartQty(${p.id}, -1)">−</button>
-                <span class="card-step-input">${qty}</span>
-                <button class="card-step-btn" onclick="updateCartQty(${p.id}, 1)">+</button>
-              </div>
-            `}
-            <button class="btn-card-more" onclick="openProductSheet(${p.id})">
-              <span>Bula</span> ℹ️
-            </button>
-          </div>
-        </article>
-      `;
+    // Itens que NÃO possuem desconto individual (base elegível para desconto no pedido)
+    if (discPercent <= 0) {
+      baseItensSemDesconto += (item.quantidade * pUnit);
+      qtdItensSemDesconto += item.quantidade;
+      qtdTiposSemDesconto += 1;
     }
-  }).join('');
+  });
+
+  const descontoTotalItens = Math.max(0, subtotalItensSemDesconto - subtotalItensComDesconto);
+  const discGlobalPercent = Math.max(0, Math.min(100, cartGlobalDiscountPercent || 0));
+
+  // REGRA OPÇÃO 1: Desconto no pedido incide APENAS sobre a base dos itens sem desconto individual
+  const valorDescontoGlobal = (baseItensSemDesconto * discGlobalPercent) / 100;
+  const totalFinalLiquido = Math.max(0, subtotalItensComDesconto - valorDescontoGlobal);
+  const economiaTotalReal = descontoTotalItens + valorDescontoGlobal;
+  const percentualEconomiaTotal = subtotalItensSemDesconto > 0 ? ((economiaTotalReal / subtotalItensSemDesconto) * 100) : 0;
+
+  return {
+    subtotalTabelaBruto,
+    subtotalItensSemDesconto,
+    subtotalItensComDesconto,
+    descontoTotalItens,
+    baseItensSemDesconto,
+    qtdItensSemDesconto,
+    qtdTiposSemDesconto,
+    discGlobalPercent,
+    valorDescontoGlobal,
+    totalFinalLiquido,
+    economiaTotalReal,
+    percentualEconomiaTotal,
+    totalQtd
+  };
 }
 
-// ═══════════════════════════════════════════════════════════════
-//  CARRINHO & CONTROLE DE PREÇOS UNITÁRIOS NEGOCIADOS
-// ═══════════════════════════════════════════════════════════════
+function updateCartTotalsUI() {
+  const {
+    subtotalItensSemDesconto,
+    subtotalItensComDesconto,
+    descontoTotalItens,
+    baseItensSemDesconto,
+    qtdTiposSemDesconto,
+    discGlobalPercent,
+    valorDescontoGlobal,
+    totalFinalLiquido,
+    economiaTotalReal,
+    percentualEconomiaTotal
+  } = calculateCartTotals();
+
+  const subtotalSemDescEl = document.getElementById('cart-seller-subtotal-sem-desc');
+  if (subtotalSemDescEl) {
+    subtotalSemDescEl.textContent = `R$ ${subtotalItensSemDesconto.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  }
+
+  const itemsDescRow = document.getElementById('cart-seller-items-desc-row');
+  const itemsDescVal = document.getElementById('cart-seller-items-desc-val');
+  if (itemsDescRow && itemsDescVal) {
+    if (descontoTotalItens > 0.01) {
+      itemsDescRow.style.display = 'flex';
+      itemsDescVal.textContent = `-R$ ${descontoTotalItens.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    } else {
+      itemsDescRow.style.display = 'none';
+    }
+  }
+
+  const globalDescValEl = document.getElementById('cart-seller-global-disc-val');
+  if (globalDescValEl) {
+    if (baseItensSemDesconto > 0) {
+      globalDescValEl.textContent = discGlobalPercent > 0 
+        ? `-R$ ${valorDescontoGlobal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} (s/ ${qtdTiposSemDesconto} item${qtdTiposSemDesconto > 1 ? 's' : ''})` 
+        : '-';
+    } else {
+      globalDescValEl.textContent = '(Itens c/ desc. indiv.)';
+    }
+  }
+
+  const globalDescNoticeEl = document.getElementById('cart-seller-global-desc-notice');
+  if (globalDescNoticeEl) {
+    if (baseItensSemDesconto <= 0 && cartItems.length > 0) {
+      globalDescNoticeEl.style.display = 'block';
+      globalDescNoticeEl.textContent = 'ℹ️ Todos os produtos já possuem desconto individual negociado.';
+    } else {
+      globalDescNoticeEl.style.display = 'none';
+    }
+  }
+
+  const savingsBanner = document.getElementById('cart-seller-savings-banner');
+  const savingsVal = document.getElementById('cart-seller-savings-val');
+  if (savingsBanner && savingsVal) {
+    if (economiaTotalReal > 0.01) {
+      savingsBanner.style.display = 'flex';
+      savingsVal.innerHTML = `R$ ${economiaTotalReal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} <span style="font-size:0.75rem; font-weight:600;">(${percentualEconomiaTotal.toFixed(1)}% OFF)</span>`;
+    } else {
+      savingsBanner.style.display = 'none';
+    }
+  }
+
+  const badgeEl = document.getElementById('cart-seller-discount-badge');
+  if (badgeEl) {
+    if (economiaTotalReal > 0.01) {
+      badgeEl.style.display = 'inline-flex';
+      badgeEl.textContent = `Economia Total: R$ ${economiaTotalReal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    } else {
+      badgeEl.style.display = 'none';
+    }
+  }
+
+  const totalEl = document.getElementById('cart-seller-total-num');
+  if (totalEl) {
+    totalEl.textContent = `R$ ${totalFinalLiquido.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  }
+
+  document.querySelectorAll('.btn-disc-pill').forEach(btn => {
+    btn.classList.toggle('active', parseFloat(btn.dataset.percent) === discGlobalPercent);
+  });
+}
+
+function updateCartItemCardUI(itemId) {
+  const item = cartItems.find(i => i.id === itemId);
+  if (!item) return;
+
+  const pUnit = (item.preco_unitario !== undefined) ? item.preco_unitario : (item.preco_base || 0);
+  const discItemPercent = Math.max(0, Math.min(100, item.desconto_percent || 0));
+  const pUnitDesc = pUnit * (1 - (discItemPercent / 100));
+  const subtotalSemDesconto = item.quantidade * pUnit;
+  const subtotalComDesconto = item.quantidade * pUnitDesc;
+  const valorDescUnit = pUnit * (discItemPercent / 100);
+
+  const subtotalBaseEl = document.getElementById(`cart-subtotal-base-${itemId}`);
+  if (subtotalBaseEl) {
+    subtotalBaseEl.textContent = `R$ ${subtotalSemDesconto.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  }
+
+  const descValEl = document.getElementById(`cart-item-desc-val-${itemId}`);
+  if (descValEl) {
+    descValEl.textContent = discItemPercent > 0 ? `-R$ ${valorDescUnit.toFixed(2).replace('.', ',')}/un` : '';
+  }
+
+  const unitDescRow = document.getElementById(`cart-unit-desc-row-${itemId}`);
+  const unitDescVal = document.getElementById(`cart-unit-desc-val-${itemId}`);
+  if (unitDescRow && unitDescVal) {
+    if (discItemPercent > 0) {
+      unitDescRow.style.display = 'flex';
+      unitDescVal.textContent = `R$ ${pUnitDesc.toFixed(2).replace('.', ',')}`;
+    } else {
+      unitDescRow.style.display = 'none';
+      unitDescVal.textContent = '';
+    }
+  }
+
+  const subtotalEl = document.getElementById(`cart-subtotal-${itemId}`);
+  if (subtotalEl) {
+    subtotalEl.textContent = `R$ ${subtotalComDesconto.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  }
+}
+
+function updateCartItemPrice(itemId, rawValue) {
+  const item = cartItems.find(i => i.id === itemId);
+  if (!item) return;
+
+  const parsed = parseFloat(rawValue);
+  if (!isNaN(parsed) && parsed >= 0) {
+    item.preco_unitario = parsed;
+  }
+  saveCart();
+
+  updateCartItemCardUI(itemId);
+  updateCartTotalsUI();
+}
+
+function updateCartItemDiscountPercent(itemId, rawPercent) {
+  const item = cartItems.find(i => i.id === itemId);
+  if (!item) return;
+
+  const parsedPercent = parseFloat(rawPercent);
+  if (!isNaN(parsedPercent) && parsedPercent >= 0) {
+    item.desconto_percent = Math.min(100, parsedPercent);
+  } else {
+    item.desconto_percent = 0;
+  }
+  saveCart();
+
+  updateCartItemCardUI(itemId);
+  updateCartTotalsUI();
+}
+
+function updateGlobalDiscountPercent(rawPercent) {
+  const parsed = parseFloat(rawPercent);
+  if (!isNaN(parsed) && parsed >= 0) {
+    cartGlobalDiscountPercent = Math.min(100, parsed);
+  } else {
+    cartGlobalDiscountPercent = 0;
+  }
+  saveCart();
+  updateCartTotalsUI();
+}
+
+function applyQuickGlobalDiscount(percentage) {
+  hapticFeedback(20);
+  const p = Math.max(0, Math.min(100, parseFloat(percentage) || 0));
+  updateGlobalDiscountPercent(p);
+  const input = document.getElementById('cart-input-global-discount');
+  if (input) {
+    input.value = p > 0 ? p.toFixed(1) : '';
+  }
+  document.querySelectorAll('.btn-disc-pill').forEach(btn => {
+    btn.classList.toggle('active', parseFloat(btn.dataset.percent) === p);
+  });
+}
+
+function getCommercialTerms() {
+  try {
+    const saved = JSON.parse(localStorage.getItem('rawell_commercial_terms')) || {};
+    const paymentEl = document.getElementById('client-payment-terms');
+    const payment = paymentEl ? paymentEl.value : (saved.pagamento !== undefined ? saved.pagamento : '');
+    const validityEl = document.getElementById('client-proposal-validity');
+    const validity = validityEl ? validityEl.value : (saved.validade || '10 dias');
+    return { pagamento: payment, validade: validity };
+  } catch (e) {
+    return { pagamento: '', validade: '10 dias' };
+  }
+}
+
+function saveCommercialTerms() {
+  const terms = getCommercialTerms();
+  localStorage.setItem('rawell_commercial_terms', JSON.stringify(terms));
+}
+
+function handlePaymentTermsChange(val) {
+  saveCommercialTerms();
+  const clearBtn = document.getElementById('btn-clear-payment');
+  if (clearBtn) {
+    clearBtn.classList.toggle('show', !!val);
+  }
+}
+
+function clearPaymentSelection() {
+  hapticFeedback(10);
+  const sel = document.getElementById('client-payment-terms');
+  if (sel) {
+    sel.value = '';
+    handlePaymentTermsChange('');
+  }
+}
+
 function renderCartSheet() {
+  const isSeller = isSellerLoggedIn();
   const area = document.getElementById('cart-content-area');
   const footerBar = document.getElementById('cart-footer-bar');
   const summaryQty = document.getElementById('cart-summary-qty');
+  const summaryLine = document.querySelector('.cart-summary-line');
+  if (summaryLine) {
+    summaryLine.style.display = isSeller ? 'none' : 'flex';
+  }
 
   if (!cartItems.length) {
     area.innerHTML = `
@@ -6158,16 +6511,25 @@ function renderCartSheet() {
   const totalQty = cartItems.reduce((acc, i) => acc + i.quantidade, 0);
   summaryQty.textContent = `${totalQty} ite${totalQty === 1 ? 'm' : 'ns'} selecionado${totalQty === 1 ? '' : 's'}`;
 
-  const isSeller = isSellerLoggedIn();
-  let totalGeral = 0;
-  cartItems.forEach(i => {
-    const pUnit = (i.preco_unitario !== undefined) ? i.preco_unitario : (i.preco_base || 0);
-    totalGeral += (i.quantidade * pUnit);
-  });
+  const {
+    subtotalTabelaBruto,
+    subtotalItensSemDesconto,
+    subtotalItensComDesconto,
+    descontoTotalItens,
+    baseItensSemDesconto,
+    qtdTiposSemDesconto,
+    discGlobalPercent,
+    valorDescontoGlobal,
+    totalFinalLiquido,
+    economiaTotalReal,
+    percentualEconomiaTotal
+  } = calculateCartTotals();
 
   let savedClient = {};
+  let savedTerms = {};
   try {
     savedClient = JSON.parse(localStorage.getItem(CLIENT_STORAGE_KEY)) || {};
+    savedTerms = JSON.parse(localStorage.getItem('rawell_commercial_terms')) || {};
   } catch (e) {}
 
   area.innerHTML = `
@@ -6175,7 +6537,11 @@ function renderCartSheet() {
       ${cartItems.map(item => {
         const pUnit = (item.preco_unitario !== undefined) ? item.preco_unitario : (item.preco_base || 0);
         const pBase = (item.preco_base !== undefined) ? item.preco_base : pUnit;
-        const subtotal = item.quantidade * pUnit;
+        const discItemPercent = Math.max(0, Math.min(100, item.desconto_percent || 0));
+        const pUnitDesc = pUnit * (1 - (discItemPercent / 100));
+        const subtotalSemDesconto = item.quantidade * pUnit;
+        const subtotalComDesconto = item.quantidade * pUnitDesc;
+        const valorDescUnit = pUnit * (discItemPercent / 100);
 
         return `
           <div class="cart-item-card">
@@ -6196,16 +6562,44 @@ function renderCartSheet() {
 
               ${isSeller ? `
                 <div class="cart-item-price-section">
+                  <!-- Linha 1: Preço Unitário -->
                   <div class="cart-item-price-edit-row">
-                    <div class="cart-item-price-input-wrap" title="Alterar valor unitário negociado">
-                      <span class="cart-price-symbol">R$</span>
-                      <input type="number" step="0.01" min="0" class="cart-price-input-field" id="cart-input-price-${item.id}" value="${pUnit.toFixed(2)}" oninput="updateCartItemPrice(${item.id}, this.value)" onclick="this.select()">
+                    <div style="display:flex; align-items:center; gap:6px;">
+                      <span style="font-size:0.75rem; font-weight:700; color:var(--text-2);">Valor Unit.:</span>
+                      <div class="cart-price-input-wrap" title="Alterar valor unitário base do item">
+                        <span class="cart-price-symbol">R$</span>
+                        <input type="number" step="0.01" min="0" class="cart-price-input-field" id="cart-input-price-${item.id}" value="${pUnit.toFixed(2)}" oninput="updateCartItemPrice(${item.id}, this.value)" onclick="this.select()">
+                      </div>
                     </div>
                     <span class="cart-base-price-ref" title="Valor base da tabela">Tabela: R$ ${pBase.toFixed(2).replace('.', ',')}</span>
+                    <div style="display:flex; align-items:center; gap:6px;">
+                      <span style="font-size:0.78rem; color:var(--text-3);">Subtotal (${item.quantidade}x):</span>
+                      <span style="font-size:0.85rem; font-weight:600; color:var(--text-2);" id="cart-subtotal-base-${item.id}">R$ ${subtotalSemDesconto.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                    </div>
                   </div>
-                  <div class="cart-item-subtotal-line">
-                    <span style="font-size:0.78rem; color:var(--text-3);">Subtotal:</span>
-                    <strong class="subtotal-val" id="cart-subtotal-${item.id}">R$ ${subtotal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong>
+
+                  <!-- Linha 3 (Abaixo do Subtotal): Desconto % -->
+                  <div class="cart-item-discount-row">
+                    <div style="display:flex; align-items:center; gap:6px;">
+                      <span style="font-size:0.78rem; font-weight:700; color:#059669;">Desconto %:</span>
+                      <div class="cart-discount-input-wrap" title="Aplicar desconto percentual neste produto">
+                        <input type="number" step="0.1" min="0" max="100" class="cart-discount-input-field" id="cart-input-discount-${item.id}" value="${discItemPercent > 0 ? discItemPercent.toFixed(1) : ''}" placeholder="0" oninput="updateCartItemDiscountPercent(${item.id}, this.value)" onclick="this.select()">
+                        <span class="cart-discount-symbol">%</span>
+                      </div>
+                    </div>
+                    <span style="font-size:0.75rem; color:#059669; font-weight:700;" id="cart-item-desc-val-${item.id}">${discItemPercent > 0 ? `-R$ ${valorDescUnit.toFixed(2).replace('.', ',')}/un` : ''}</span>
+                  </div>
+
+                  <!-- Linha 4: Total Com Desconto -->
+                  <div class="cart-item-discounted-total-line" style="flex-direction:column; align-items:stretch; gap:2px;">
+                    <div style="display:${discItemPercent > 0 ? 'flex' : 'none'}; justify-content:space-between; font-size:0.78rem; color:#059669;" id="cart-unit-desc-row-${item.id}">
+                      <span>Valor Unit. c/ Desconto:</span>
+                      <strong id="cart-unit-desc-val-${item.id}">R$ ${pUnitDesc.toFixed(2).replace('.', ',')}</strong>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-top:2px;">
+                      <span style="font-size:0.82rem; font-weight:700; color:#0f4531;">Total Com Desconto:</span>
+                      <strong class="subtotal-val" id="cart-subtotal-${item.id}" style="color:#059669; font-size:0.95rem;">R$ ${subtotalComDesconto.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong>
+                    </div>
                   </div>
                 </div>
               ` : ''}
@@ -6240,6 +6634,36 @@ function renderCartSheet() {
         <label class="form-field-label">CNPJ / Cidade / Estado (opcional)</label>
         <input type="text" id="client-doc" class="form-field-input" placeholder="00.000.000/0001-00 ou Cascavel - PR" value="${savedClient.doc || ''}">
       </div>
+
+      ${isSeller ? `
+        <!-- Condições Comerciais Exclusivas do Vendedor -->
+        <div class="form-field-group">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+            <label class="form-field-label" style="margin-bottom:0;">Condição de Pagamento</label>
+            <button type="button" class="btn-clear-payment ${savedTerms.pagamento ? 'show' : ''}" id="btn-clear-payment" onclick="clearPaymentSelection()">
+              ✕ Limpar
+            </button>
+          </div>
+          <div class="vendedor-select-wrap">
+            <select id="client-payment-terms" class="form-field-input" onchange="handlePaymentTermsChange(this.value)">
+              <option value="" ${!savedTerms.pagamento ? 'selected' : ''}>Nenhuma / A Combinar (Não definir)</option>
+              <option value="PIX / À Vista (À vista c/ desconto)" ${savedTerms.pagamento === 'PIX / À Vista (À vista c/ desconto)' ? 'selected' : ''}>⚡ PIX / À Vista (À vista c/ desconto)</option>
+              <option value="Boleto 30 Dias" ${savedTerms.pagamento === 'Boleto 30 Dias' ? 'selected' : ''}>📄 Boleto 30 Dias</option>
+              <option value="Boleto 30 / 60 Dias" ${savedTerms.pagamento === 'Boleto 30 / 60 Dias' ? 'selected' : ''}>📄 Boleto 30 / 60 Dias</option>
+              <option value="Boleto 30 / 60 / 90 Dias" ${savedTerms.pagamento === 'Boleto 30 / 60 / 90 Dias' ? 'selected' : ''}>📄 Boleto 30 / 60 / 90 Dias</option>
+              <option value="Cartão em até 3x" ${savedTerms.pagamento === 'Cartão em até 3x' ? 'selected' : ''}>💳 Cartão em até 3x</option>
+              <option value="A Combinar com Vendedor" ${savedTerms.pagamento === 'A Combinar com Vendedor' ? 'selected' : ''}>🤝 A Combinar c/ Representante</option>
+            </select>
+            <span class="vendedor-select-arrow">▼</span>
+          </div>
+        </div>
+
+        <div class="form-field-group">
+          <label class="form-field-label">Validade da Proposta</label>
+          <input type="text" id="client-proposal-validity" class="form-field-input" value="${savedTerms.validade || '10 dias'}" placeholder="10 dias" oninput="saveCommercialTerms()">
+        </div>
+      ` : ''}
+
       ${!isSeller ? `
         <div style="text-align:center; padding:10px 4px 2px; font-size:0.78rem; color:var(--text-3);">
           💼 É representante comercial? <button type="button" onclick="openSellerLoginModal()" style="color:var(--brand-light); font-weight:700; text-decoration:underline; cursor:pointer;">Acessar Modo Vendedor 🔒</button>
@@ -6251,41 +6675,105 @@ function renderCartSheet() {
   // Totalizador no rodapé do drawer se logado como vendedor
   let totalBox = document.getElementById('cart-seller-total-box');
   if (isSeller) {
+    const totalBoxHtml = `
+      <!-- Detalhamento de Subtotais e Descontos Concedidos -->
+      <div style="display:flex; flex-direction:column; gap:4px; margin-bottom:6px;">
+        <!-- Linha 1: Subtotal dos Produtos -->
+        <div class="seller-breakdown-row">
+          <span style="font-size:0.8rem; font-weight:600; color:var(--text-2);">Subtotal dos Produtos:</span>
+          <strong id="cart-seller-subtotal-sem-desc" style="font-size:0.88rem; color:var(--text);">R$ ${subtotalItensSemDesconto.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong>
+        </div>
+
+        <!-- Linha 2: Desconto nos Produtos (se houver) -->
+        <div class="seller-breakdown-row" id="cart-seller-items-desc-row" style="display:${descontoTotalItens > 0.01 ? 'flex' : 'none'}; color:#059669;">
+          <span style="font-size:0.78rem; font-weight:700;">🏷️ Desconto nos Produtos:</span>
+          <strong id="cart-seller-items-desc-val" style="font-size:0.82rem;">-R$ ${descontoTotalItens.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong>
+        </div>
+
+        <!-- Linha 3: Desconto no Pedido / Fechamento com Atalhos -->
+        <div class="seller-breakdown-row" style="margin-top:2px; flex-wrap:wrap; gap:4px;">
+          <div style="display:flex; align-items:center; gap:6px;">
+            <span style="font-size:0.8rem; font-weight:700; color:#059669;">Desconto no Pedido:</span>
+            <div class="seller-quick-pills">
+              <button type="button" class="btn-disc-pill ${discGlobalPercent === 0 ? 'active' : ''}" data-percent="0" onclick="applyQuickGlobalDiscount(0)">0%</button>
+              <button type="button" class="btn-disc-pill ${discGlobalPercent === 5 ? 'active' : ''}" data-percent="5" onclick="applyQuickGlobalDiscount(5)">-5%</button>
+              <button type="button" class="btn-disc-pill ${discGlobalPercent === 10 ? 'active' : ''}" data-percent="10" onclick="applyQuickGlobalDiscount(10)">-10%</button>
+              <button type="button" class="btn-disc-pill ${discGlobalPercent === 15 ? 'active' : ''}" data-percent="15" onclick="applyQuickGlobalDiscount(15)">-15%</button>
+            </div>
+            <div class="seller-disc-input-wrap" title="Desconto % sobre itens sem desconto individual">
+              <input type="number" step="0.1" min="0" max="100" class="seller-disc-input" id="cart-input-global-discount" value="${discGlobalPercent > 0 ? discGlobalPercent.toFixed(1) : ''}" placeholder="%" oninput="updateGlobalDiscountPercent(this.value)" onclick="this.select()">
+            </div>
+          </div>
+          <span id="cart-seller-global-disc-val" style="color:#059669; font-weight:700; font-size:0.82rem;">
+            ${baseItensSemDesconto > 0 
+              ? (discGlobalPercent > 0 ? `-R$ ${valorDescontoGlobal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} (s/ ${qtdTiposSemDesconto} item${qtdTiposSemDesconto > 1 ? 's' : ''})` : '-')
+              : '(Itens c/ desc. indiv.)'
+            }
+          </span>
+        </div>
+
+        <div id="cart-seller-global-desc-notice" style="display:${(baseItensSemDesconto <= 0 && cartItems.length > 0) ? 'block' : 'none'}; font-size:0.72rem; color:var(--text-3); font-style:italic;">
+          ℹ️ Todos os produtos já possuem desconto individual negociado.
+        </div>
+
+        <!-- Linha 4: Banner de Economia Total Real do Cliente -->
+        <div class="seller-savings-banner" id="cart-seller-savings-banner" style="display:${economiaTotalReal > 0.01 ? 'flex' : 'none'};">
+          <span>🎉 Economia Total do Cliente:</span>
+          <strong id="cart-seller-savings-val">R$ ${economiaTotalReal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} <span style="font-size:0.75rem; font-weight:600;">(${percentualEconomiaTotal.toFixed(1)}% OFF)</span></strong>
+        </div>
+      </div>
+
+      <div style="height:1px; background:var(--border); margin:4px 0 6px;"></div>
+
+      <!-- Linha Principal: Total Líquido da Proposta -->
+      <div class="seller-total-main-row">
+        <div class="seller-total-title">
+          <span>Total Líquido da Proposta:</span>
+          <span class="seller-disc-badge" id="cart-seller-discount-badge" style="display:${economiaTotalReal > 0.01 ? 'inline-flex' : 'none'};">
+            Economia Total: R$ ${economiaTotalReal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+          </span>
+        </div>
+        <div class="seller-total-price" id="cart-seller-total-num">
+          R$ ${totalFinalLiquido.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+        </div>
+      </div>
+    `;
+
     if (!totalBox) {
       totalBox = document.createElement('div');
       totalBox.id = 'cart-seller-total-box';
       totalBox.className = 'cart-total-proposal-card';
-      totalBox.innerHTML = `
-        <span class="cart-total-proposal-label">Total da Proposta:</span>
-        <strong class="cart-total-proposal-num" id="cart-seller-total-num">R$ ${totalGeral.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong>
-      `;
+      totalBox.innerHTML = totalBoxHtml;
       footerBar.insertBefore(totalBox, footerBar.firstChild);
     } else {
       totalBox.style.display = 'flex';
-      const totalNum = document.getElementById('cart-seller-total-num');
-      if (totalNum) totalNum.textContent = `R$ ${totalGeral.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+      totalBox.className = 'cart-total-proposal-card';
+      totalBox.innerHTML = totalBoxHtml;
     }
   } else if (totalBox) {
     totalBox.style.display = 'none';
   }
 
-  // Botões de compartilhamento
-  const shareContainer = document.getElementById('cart-share-btns-container');
-  if (shareContainer) {
+  // Ações secundárias no rodapé
+  const actionsContainer = document.getElementById('cart-actions-dynamic-container');
+  if (actionsContainer) {
     if (isSeller) {
-      shareContainer.innerHTML = `
-        <div class="cart-share-btns-row">
-          <button class="btn-share-link" onclick="copyCartShareLink(false)" title="Copiar link sem preços">
-            <span>🔗</span> Link s/ Preço
+      actionsContainer.innerHTML = `
+        <div class="cart-secondary-actions-grid">
+          <button type="button" class="btn-cart-secondary btn-pdf-style" onclick="openPdfProposalModal()" title="Gerar Proposta Comercial PDF">
+            <span>📄</span> Proposta PDF
           </button>
-          <button class="btn-share-link btn-share-price" onclick="copyCartShareLink(true)" title="Copiar link com valores travados">
-            <span>💰</span> Link Com Preço
+          <button type="button" class="btn-cart-secondary btn-price-share-style" onclick="copyCartShareLink(true)" title="Copiar link com valores fixados">
+            <span>💰</span> Link c/ Preço
           </button>
         </div>
+        <button type="button" class="btn-cart-secondary btn-full-width" style="margin-top:6px; font-size:0.75rem;" onclick="copyCartShareLink(false)" title="Copiar link sem preços para o cliente">
+          <span>🔗</span> Copiar Link s/ Preço
+        </button>
       `;
     } else {
-      shareContainer.innerHTML = `
-        <button class="btn-share-link" onclick="copyCartShareLink(false)" title="Copiar link do orçamento">
+      actionsContainer.innerHTML = `
+        <button type="button" class="btn-cart-secondary btn-full-width" onclick="copyCartShareLink(false)" title="Copiar link do orçamento">
           <span>🔗</span> Copiar Link do Orçamento
         </button>
       `;
@@ -6293,37 +6781,6 @@ function renderCartSheet() {
   }
 }
 
-function updateCartItemPrice(itemId, rawValue) {
-  const item = cartItems.find(i => i.id === itemId);
-  if (!item) return;
-
-  const newPrice = parseFloat(rawValue);
-  if (!isNaN(newPrice) && newPrice >= 0) {
-    item.preco_unitario = newPrice;
-    saveCart();
-
-    const subtotalEl = document.getElementById(`cart-subtotal-${itemId}`);
-    if (subtotalEl) {
-      const subtotal = item.quantidade * newPrice;
-      subtotalEl.textContent = `R$ ${subtotal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-    }
-
-    let totalGeral = 0;
-    cartItems.forEach(i => {
-      const pUnit = (i.preco_unitario !== undefined) ? i.preco_unitario : (i.preco_base || 0);
-      totalGeral += (i.quantidade * pUnit);
-    });
-
-    const totalNumEl = document.getElementById('cart-seller-total-num');
-    if (totalNumEl) {
-      totalNumEl.textContent = `R$ ${totalGeral.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-    }
-  }
-}
-
-// ═══════════════════════════════════════════════════════════════
-//  COMPARTILHAMENTO DE ORÇAMENTO (LINK MÁGICO COM / SEM PREÇO)
-// ═══════════════════════════════════════════════════════════════
 function generateCartShareUrl(includePrices = false) {
   if (!cartItems || !cartItems.length) return window.location.href.split('?')[0];
 
@@ -6331,7 +6788,8 @@ function generateCartShareUrl(includePrices = false) {
   if (includePrices) {
     itemsParam = cartItems.map(i => {
       const price = (i.preco_unitario !== undefined) ? i.preco_unitario : (i.preco_base || 0);
-      return `${i.id}:${i.quantidade}:${price.toFixed(2)}`;
+      const disc = (i.desconto_percent !== undefined) ? i.desconto_percent : 0;
+      return `${i.id}:${i.quantidade}:${price.toFixed(2)}:${disc.toFixed(1)}`;
     }).join(',');
   } else {
     itemsParam = cartItems.map(i => `${i.id}:${i.quantidade}`).join(',');
@@ -6347,6 +6805,9 @@ function generateCartShareUrl(includePrices = false) {
   }
   if (includePrices) {
     url.searchParams.set('com_precos', '1');
+    if (cartGlobalDiscountPercent > 0) {
+      url.searchParams.set('desc_global', cartGlobalDiscountPercent.toFixed(1));
+    }
   }
 
   return url.toString();
@@ -6359,13 +6820,31 @@ function copyCartShareLink(includePrices = false) {
     return;
   }
   const shareUrl = generateCartShareUrl(includePrices);
+  const {
+    subtotalItensSemDesconto,
+    subtotalItensComDesconto,
+    descontoTotalItens,
+    discGlobalPercent,
+    valorDescontoGlobal,
+    totalFinalLiquido,
+    economiaTotalReal,
+    percentualEconomiaTotal,
+    totalQtd
+  } = calculateCartTotals();
+
+  const totalFormatado = totalFinalLiquido > 0 ? `R$ ${totalFinalLiquido.toFixed(2).replace('.', ',')}` : 'Tabela Padrão';
+  const economiaStr = economiaTotalReal > 0.01 ? ` | Economia: R$ ${economiaTotalReal.toFixed(2).replace('.', ',')} (${percentualEconomiaTotal.toFixed(0)}% OFF)` : '';
+
   const toastMsg = includePrices 
-    ? '💰 Link com PREÇOS NEGOCIADOS copiado com sucesso!' 
+    ? `💰 Link copiado! (${totalFormatado}${economiaStr})` 
     : '🔗 Link do orçamento copiado com sucesso!';
 
-  logSellerActivity(includePrices ? 'Cópia de Link COM PREÇO' : 'Cópia de Link do Orçamento', {
+  logSellerActivity(includePrices ? `💰 Copiou Link COM PREÇO (Total: ${totalFormatado})` : '🔗 Copiou Link do Orçamento', {
     link_proposta: shareUrl,
-    detalhes_extras: includePrices ? 'Link com preços negociados embutidos' : 'Link padrão'
+    link_com_preco: shareUrl,
+    total_itens: totalQtd,
+    valor_total: totalFormatado,
+    detalhes_extras: includePrices ? `Total Líquido: ${totalFormatado} | Economia: R$ ${economiaTotalReal.toFixed(2)} (Itens: -R$ ${descontoTotalItens.toFixed(2)}, Pedido: -R$ ${valorDescontoGlobal.toFixed(2)})` : 'Link padrão'
   });
 
   if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -6385,7 +6864,7 @@ function loadCartFromUrl() {
     const orcamentoParam = params.get('orcamento') || params.get('pedido') || params.get('cart');
     if (!orcamentoParam) return false;
 
-    // Formato: 1:2 ou 1:2:85.00
+    // Formato: 1:2 ou 1:2:85.00 ou 1:2:85.00:10.0
     const entries = orcamentoParam.split(',');
     const newItems = [];
     let hasCustomPrices = false;
@@ -6395,6 +6874,7 @@ function loadCartFromUrl() {
       const prodId = parseInt(parts[0], 10);
       const qty = parseInt(parts[1], 10) || 1;
       const customPrice = parts[2] ? parseFloat(parts[2]) : null;
+      const customDiscount = parts[3] ? parseFloat(parts[3]) : 0;
 
       if (!isNaN(prodId)) {
         const p = PRODUTOS.find(item => item.id === prodId);
@@ -6404,6 +6884,9 @@ function loadCartFromUrl() {
             unitPrice = customPrice;
             hasCustomPrices = true;
           }
+          const itemDisc = (!isNaN(customDiscount) && customDiscount >= 0) ? customDiscount : 0;
+          if (itemDisc > 0) hasCustomPrices = true;
+
           newItems.push({
             id: p.id,
             nome: p.nome,
@@ -6412,11 +6895,21 @@ function loadCartFromUrl() {
             imagem: p.imagens[0],
             quantidade: Math.max(1, Math.min(999, qty)),
             preco_base: p.preco_base || 0,
-            preco_unitario: unitPrice
+            preco_unitario: unitPrice,
+            desconto_percent: itemDisc
           });
         }
       }
     });
+
+    const descGlobalParam = params.get('desc_global') || params.get('desconto_global');
+    if (descGlobalParam) {
+      const parsedDesc = parseFloat(descGlobalParam);
+      if (!isNaN(parsedDesc) && parsedDesc >= 0) {
+        cartGlobalDiscountPercent = Math.min(100, parsedDesc);
+        hasCustomPrices = true;
+      }
+    }
 
     if (newItems.length > 0) {
       cartItems = newItems;
@@ -6533,8 +7026,11 @@ function loadQuoteIntoCart(quoteId) {
     imagem: i.imagem,
     quantidade: i.quantidade,
     preco_base: i.preco_base || 0,
-    preco_unitario: (i.preco_unitario !== undefined) ? i.preco_unitario : (i.preco_base || 0)
+    preco_unitario: (i.preco_unitario !== undefined) ? i.preco_unitario : (i.preco_base || 0),
+    desconto_percent: (i.desconto_percent !== undefined) ? i.desconto_percent : 0
   }));
+
+  cartGlobalDiscountPercent = q.discPercent || q.discGlobalPercent || 0;
 
   saveCart();
   renderProductList();
@@ -6574,6 +7070,11 @@ function updateHistoryBadges() {
 
 function openQuoteHistoryModal() {
   hapticFeedback(25);
+  if (!isSellerLoggedIn()) {
+    openSellerLoginModal();
+    showToast('🔒 Faça login no Modo Vendedor para acessar seus orçamentos.');
+    return;
+  }
   renderQuoteHistoryModal();
   document.getElementById('history-modal-backdrop')?.classList.add('show');
 }
@@ -6583,9 +7084,16 @@ function closeQuoteHistoryModal() {
 }
 
 function renderQuoteHistoryModal() {
+  const session = getSellerSession();
+  const sellerName = session ? session.vendedorNome : 'Vendedor';
   const list = getQuoteHistory();
   const body = document.getElementById('history-modal-body');
   const subTitle = document.getElementById('history-count-subtitle');
+
+  const titleEl = document.querySelector('.history-modal-title');
+  if (titleEl) {
+    titleEl.innerHTML = `📋 Meus Orçamentos Recentes <span style="font-size:0.8rem; font-weight:600; color:var(--text-3);">(${sellerName})</span>`;
+  }
 
   if (subTitle) {
     subTitle.textContent = `${list.length} cotaç${list.length === 1 ? 'ão salva' : 'ões salvas'} no seu aparelho`;
@@ -6665,6 +7173,22 @@ function openPdfProposalFromHistory(quoteId) {
   const q = list.find(item => item.id === quoteId);
   if (!q) return;
 
+  const subtotalItensSemDesconto = q.subtotalItensSemDesconto || (q.itens ? q.itens.reduce((acc, i) => acc + (i.quantidade * (i.preco_unitario !== undefined ? i.preco_unitario : (i.preco_base || 0))), 0) : 0);
+  const subtotalItensComDesconto = q.subtotalItensComDesconto || (q.itens ? q.itens.reduce((acc, i) => {
+    const pUnit = (i.preco_unitario !== undefined) ? i.preco_unitario : (i.preco_base || 0);
+    const disc = (i.desconto_percent || 0);
+    return acc + (i.quantidade * pUnit * (1 - disc / 100));
+  }, 0) : subtotalItensSemDesconto);
+  const baseItensSemDesconto = q.baseItensSemDesconto !== undefined ? q.baseItensSemDesconto : (q.itens ? q.itens.reduce((acc, i) => {
+    return (!i.desconto_percent || i.desconto_percent <= 0) ? acc + (i.quantidade * (i.preco_unitario !== undefined ? i.preco_unitario : (i.preco_base || 0))) : acc;
+  }, 0) : 0);
+  const descontoTotalItens = q.descontoTotalItens !== undefined ? q.descontoTotalItens : Math.max(0, subtotalItensSemDesconto - subtotalItensComDesconto);
+  const discGlobalPercent = q.discGlobalPercent || q.discPercent || 0;
+  const valorDescontoGlobal = q.valorDescontoGlobal !== undefined ? q.valorDescontoGlobal : ((baseItensSemDesconto * discGlobalPercent) / 100);
+  const totalFinalLiquido = q.totalFinalLiquido || Math.max(0, subtotalItensComDesconto - valorDescontoGlobal);
+  const economiaTotalReal = q.economiaTotalReal !== undefined ? q.economiaTotalReal : (descontoTotalItens + valorDescontoGlobal);
+  const percentualEconomiaTotal = subtotalItensSemDesconto > 0 ? ((economiaTotalReal / subtotalItensSemDesconto) * 100) : 0;
+
   renderPdfPaperContent({
     orcNum: q.id,
     dataAtual: q.data ? q.data.split(' ')[0] : 'Recente',
@@ -6674,7 +7198,16 @@ function openPdfProposalFromHistory(quoteId) {
     vendedorNome: q.vendedorNome || 'Atendimento Geral',
     itemsList: q.itens,
     shareUrl: q.shareUrl || generateCartShareUrl(),
-    isSeller: isSellerLoggedIn()
+    isSeller: isSellerLoggedIn(),
+    subtotalItensSemDesconto,
+    subtotalItensComDesconto,
+    descontoTotalItens,
+    baseItensSemDesconto,
+    discGlobalPercent,
+    valorDescontoGlobal,
+    totalFinalLiquido,
+    economiaTotalReal,
+    percentualEconomiaTotal
   });
 
   document.getElementById('pdf-modal-backdrop')?.classList.add('show');
@@ -6688,11 +7221,21 @@ function renderPdfPaperContent(data) {
   if (!paper) return;
 
   const showPrices = data.isSeller;
-  let totalGeral = 0;
-  data.itemsList.forEach(i => {
+  const subtotalItensSemDesconto = data.subtotalItensSemDesconto !== undefined ? data.subtotalItensSemDesconto : data.itemsList.reduce((acc, i) => acc + (i.quantidade * (i.preco_unitario !== undefined ? i.preco_unitario : (i.preco_base || 0))), 0);
+  const subtotalItensComDesconto = data.subtotalItensComDesconto !== undefined ? data.subtotalItensComDesconto : data.itemsList.reduce((acc, i) => {
     const pUnit = (i.preco_unitario !== undefined) ? i.preco_unitario : (i.preco_base || 0);
-    totalGeral += (i.quantidade * pUnit);
-  });
+    const disc = (i.desconto_percent || 0);
+    return acc + (i.quantidade * pUnit * (1 - disc / 100));
+  }, 0);
+  const baseItensSemDesconto = data.baseItensSemDesconto !== undefined ? data.baseItensSemDesconto : data.itemsList.reduce((acc, i) => {
+    return (!i.desconto_percent || i.desconto_percent <= 0) ? acc + (i.quantidade * (i.preco_unitario !== undefined ? i.preco_unitario : (i.preco_base || 0))) : acc;
+  }, 0);
+  const descontoTotalItens = data.descontoTotalItens !== undefined ? data.descontoTotalItens : Math.max(0, subtotalItensSemDesconto - subtotalItensComDesconto);
+  const discGlobalPercent = data.discGlobalPercent || 0;
+  const valorDescontoGlobal = data.valorDescontoGlobal !== undefined ? data.valorDescontoGlobal : ((baseItensSemDesconto * discGlobalPercent) / 100);
+  const totalFinalLiquido = data.totalFinalLiquido !== undefined ? data.totalFinalLiquido : Math.max(0, subtotalItensComDesconto - valorDescontoGlobal);
+  const economiaTotalReal = data.economiaTotalReal !== undefined ? data.economiaTotalReal : (descontoTotalItens + valorDescontoGlobal);
+  const percentualEconomiaTotal = subtotalItensSemDesconto > 0 ? ((economiaTotalReal / subtotalItensSemDesconto) * 100) : 0;
 
   paper.innerHTML = `
     <div class="pdf-doc-head">
@@ -6734,8 +7277,8 @@ function renderPdfPaperContent(data) {
           <th style="width:90px;">Embalagem</th>
           <th style="width:60px; text-align:center;">Qtd.</th>
           ${showPrices ? `
-            <th style="width:105px; text-align:right;">Valor Unit.</th>
-            <th style="width:115px; text-align:right;">Subtotal</th>
+            <th style="width:125px; text-align:right;">Valor Unit.</th>
+            <th style="width:115px; text-align:right;">Total Líquido</th>
           ` : ''}
         </tr>
       </thead>
@@ -6745,7 +7288,9 @@ function renderPdfPaperContent(data) {
           const packTag = (p && p.unidade) ? p.unidade.toUpperCase() : 'UN';
           const oQueFaz = (p && p.o_que_faz) ? p.o_que_faz : '';
           const pUnit = (item.preco_unitario !== undefined) ? item.preco_unitario : (item.preco_base || (p ? p.preco_base : 0) || 0);
-          const subtotal = item.quantidade * pUnit;
+          const discItemPercent = Math.max(0, Math.min(100, item.desconto_percent || 0));
+          const pUnitDesc = pUnit * (1 - (discItemPercent / 100));
+          const subtotalItem = item.quantidade * pUnitDesc;
 
           return `
             <tr>
@@ -6758,8 +7303,15 @@ function renderPdfPaperContent(data) {
               <td>${packTag}</td>
               <td style="text-align:center; font-weight:800; font-size:13.5px; color:#0f4531;">${item.quantidade}</td>
               ${showPrices ? `
-                <td style="text-align:right; font-weight:700; font-size:13px; color:#334155;">R$ ${pUnit.toFixed(2).replace('.', ',')}</td>
-                <td style="text-align:right; font-weight:800; font-size:13.5px; color:#0f4531;">R$ ${subtotal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                <td style="text-align:right; font-size:12.5px; color:#334155;">
+                  ${discItemPercent > 0 ? `
+                    <div style="font-size:11px; text-decoration:line-through; color:#94a3b8;">R$ ${pUnit.toFixed(2).replace('.', ',')}</div>
+                    <div style="color:#059669; font-weight:800;">R$ ${pUnitDesc.toFixed(2).replace('.', ',')} <span style="font-size:10px;">(-${discItemPercent.toFixed(0)}%)</span></div>
+                  ` : `
+                    <span style="font-weight:700;">R$ ${pUnit.toFixed(2).replace('.', ',')}</span>
+                  `}
+                </td>
+                <td style="text-align:right; font-weight:800; font-size:13.5px; color:#0f4531;">R$ ${subtotalItem.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
               ` : ''}
             </tr>
           `;
@@ -6769,19 +7321,71 @@ function renderPdfPaperContent(data) {
 
     <!-- Resumo & Observações -->
     <div class="pdf-footer-terms">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:8px;">
-        <span style="font-weight:700; color:#0f1f17;">Total de Itens: <strong>${data.itemsList.reduce((acc, i) => acc + i.quantidade, 0)} unidades</strong></span>
-        ${showPrices ? `
-          <div style="font-size:16px; font-weight:800; color:#0f4531;">
-            VALOR TOTAL: R$ ${totalGeral.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+      <div style="background:#f8fafc; padding:12px 16px; border-radius:8px; border:1px solid #e2e8f0; margin-bottom:12px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: ${showPrices && economiaTotalReal > 0.01 ? '8px' : '0'}; flex-wrap:wrap; gap:8px;">
+          <span style="font-weight:700; color:#0f1f17;">Total de Itens: <strong>${data.itemsList.reduce((acc, i) => acc + i.quantidade, 0)} unidades</strong></span>
+          ${showPrices && economiaTotalReal <= 0.01 ? `
+            <div style="font-size:16px; font-weight:800; color:#0f4531;">
+              VALOR TOTAL DA PROPOSTA: R$ ${totalFinalLiquido.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+            </div>
+          ` : ''}
+        </div>
+
+        ${showPrices && economiaTotalReal > 0.01 ? `
+          <div style="border-top:1px dashed #cbd5e1; padding-top:8px; display:flex; flex-direction:column; gap:4px;">
+            <div style="display:flex; justify-content:space-between; font-size:12px; color:#475569;">
+              <span>Subtotal dos Produtos:</span>
+              <strong>R$ ${subtotalItensSemDesconto.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong>
+            </div>
+            ${descontoTotalItens > 0.01 ? `
+              <div style="display:flex; justify-content:space-between; font-size:12px; color:#059669; font-weight:600;">
+                <span>Desconto Aplicado nos Produtos:</span>
+                <span>-R$ ${descontoTotalItens.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+              </div>
+              <div style="display:flex; justify-content:space-between; font-size:12px; color:#475569;">
+                <span>Subtotal c/ Desconto dos Itens:</span>
+                <strong>R$ ${subtotalItensComDesconto.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong>
+              </div>
+            ` : ''}
+            ${discGlobalPercent > 0 && valorDescontoGlobal > 0 ? `
+              <div style="display:flex; justify-content:space-between; font-size:12px; color:#059669; font-weight:700;">
+                <span>Desconto Comercial no Fechamento (${discGlobalPercent.toFixed(1)}% sobre itens s/ desc.):</span>
+                <span>-R$ ${valorDescontoGlobal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+              </div>
+            ` : ''}
+            <div style="display:flex; justify-content:space-between; font-size:12.5px; color:#0f4531; font-weight:800; background:#dcfce7; padding:5px 10px; border-radius:6px; margin:4px 0;">
+              <span>🎉 ECONOMIA TOTAL DO CLIENTE:</span>
+              <span>R$ ${economiaTotalReal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} (${percentualEconomiaTotal.toFixed(1)}% OFF)</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; border-top:1.5px solid #0f4531; padding-top:6px; margin-top:3px;">
+              <span style="font-size:13px; font-weight:800; color:#0f1f17;">VALOR TOTAL LÍQUIDO DA PROPOSTA:</span>
+              <strong style="font-size:18px; color:#0f4531; font-weight:800;">R$ ${totalFinalLiquido.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong>
+            </div>
           </div>
         ` : ''}
       </div>
+
+      ${showPrices ? `
+        <!-- Caixa de Destaque das Condições Comerciais -->
+        <div style="background:#ecfdf5; border:1px solid #a7f3d0; border-radius:6px; padding:10px 14px; margin-bottom:12px; display:grid; grid-template-columns: ${data.pagamento ? '1.5fr 1fr' : '1fr'}; gap:10px; font-size:12px;">
+          ${data.pagamento ? `
+            <div>
+              <span style="color:#065f46; font-weight:700; font-size:11px; text-transform:uppercase;">Condição de Pagamento</span>
+              <div style="font-weight:800; color:#0f4531; margin-top:1px;">💳 ${data.pagamento}</div>
+            </div>
+          ` : ''}
+          <div>
+            <span style="color:#065f46; font-weight:700; font-size:11px; text-transform:uppercase;">Validade da Proposta</span>
+            <div style="font-weight:800; color:#0f4531; margin-top:1px;">📅 ${data.validade || '10 dias'}</div>
+          </div>
+        </div>
+      ` : ''}
+
       <div style="background:#f1f5f9; padding:10px 14px; border-radius:6px; margin-bottom:12px; font-size:11.5px; color:#334155;">
-        <strong>📌 Termos &amp; Condições da Proposta:</strong><br>
-        1. Validade desta proposta: <strong>7 (sete) dias úteis</strong> a partir da data de emissão.<br>
-        2. Valores, condições de pagamento, frete e faturamento sujeitos a confirmação comercial conforme o volume do pedido.<br>
-        3. Para pedidos de caixas fechadas, consulte descontos por volume com o representante.
+        <strong>📌 Termos &amp; Condições Gerais:</strong><br>
+        1. Proposta comercial gerada eletronicamente pelo Catálogo Oficial Rawell Química.<br>
+        2. Faturamento direto ou via distribuidor autorizado conforme disponibilidade logística regional.<br>
+        3. Para pedidos de caixas fechadas ou cargas completas, consulte bonificações por volume.
       </div>
       <div style="font-size:11px; color:#64748b; word-break:break-all;">
         🔗 <strong>Link Direto deste Orçamento:</strong> <a href="${data.shareUrl}" target="_blank" style="color:#2563eb;">${data.shareUrl}</a>
@@ -6812,11 +7416,19 @@ function openPdfProposalModal() {
   const isSeller = isSellerLoggedIn();
   const shareUrl = generateCartShareUrl(isSeller);
 
-  let totalGeral = 0;
-  cartItems.forEach(i => {
-    const pUnit = (i.preco_unitario !== undefined) ? i.preco_unitario : (i.preco_base || 0);
-    totalGeral += (i.quantidade * pUnit);
-  });
+  const {
+    subtotalItensSemDesconto,
+    subtotalItensComDesconto,
+    descontoTotalItens,
+    baseItensSemDesconto,
+    qtdTiposSemDesconto,
+    discGlobalPercent,
+    valorDescontoGlobal,
+    totalFinalLiquido,
+    economiaTotalReal,
+    percentualEconomiaTotal,
+    totalQtd
+  } = calculateCartTotals();
 
   saveQuoteToHistory({
     id: orcNum,
@@ -6834,10 +7446,20 @@ function openPdfProposalModal() {
       imagem: i.imagem,
       quantidade: i.quantidade,
       preco_base: i.preco_base || 0,
-      preco_unitario: (i.preco_unitario !== undefined) ? i.preco_unitario : (i.preco_base || 0)
+      preco_unitario: (i.preco_unitario !== undefined) ? i.preco_unitario : (i.preco_base || 0),
+      desconto_percent: i.desconto_percent || 0
     })),
-    totalQtd: cartItems.reduce((acc, i) => acc + i.quantidade, 0),
-    valorTotal: isSeller ? `R$ ${totalGeral.toFixed(2).replace('.', ',')}` : '',
+    totalQtd: totalQtd,
+    valorTotal: isSeller ? `R$ ${totalFinalLiquido.toFixed(2).replace('.', ',')}` : '',
+    subtotalItensSemDesconto,
+    subtotalItensComDesconto,
+    descontoTotalItens,
+    baseItensSemDesconto,
+    discGlobalPercent,
+    valorDescontoGlobal,
+    totalFinalLiquido,
+    economiaTotalReal,
+    percentualEconomiaTotal,
     status: 'aguardando',
     shareUrl: shareUrl
   });
@@ -6846,11 +7468,14 @@ function openPdfProposalModal() {
     num_proposta: orcNum,
     cliente_nome: clienteNome,
     cliente_doc: clienteDoc,
-    total_itens: cartItems.reduce((acc, i) => acc + i.quantidade, 0),
+    total_itens: totalQtd,
+    valor_total: isSeller ? `R$ ${totalFinalLiquido.toFixed(2).replace('.', ',')}` : '-',
     resumo_itens: cartItems.map(i => `${i.quantidade}x ${i.nome}`).join(', '),
-    link_proposta: shareUrl
+    link_proposta: shareUrl,
+    detalhes_extras: `Total Líquido: R$ ${totalFinalLiquido.toFixed(2)} | Economia: R$ ${economiaTotalReal.toFixed(2)}`
   });
 
+  const { pagamento, validade } = isSeller ? getCommercialTerms() : {};
   renderPdfPaperContent({
     orcNum,
     dataAtual,
@@ -6860,7 +7485,18 @@ function openPdfProposalModal() {
     vendedorNome,
     itemsList: cartItems,
     shareUrl,
-    isSeller
+    isSeller,
+    pagamento,
+    validade,
+    subtotalItensSemDesconto,
+    subtotalItensComDesconto,
+    descontoTotalItens,
+    baseItensSemDesconto,
+    discGlobalPercent,
+    valorDescontoGlobal,
+    totalFinalLiquido,
+    economiaTotalReal,
+    percentualEconomiaTotal
   });
 
   document.getElementById('pdf-modal-backdrop')?.classList.add('show');
@@ -6904,11 +7540,18 @@ function sendQuoteToWhatsApp() {
   const horaAtual = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
   const orcNum = 'RQ-2026-' + Math.floor(1000 + Math.random() * 9000);
 
-  let totalGeral = 0;
-  cartItems.forEach(i => {
-    const pUnit = (i.preco_unitario !== undefined) ? i.preco_unitario : (i.preco_base || 0);
-    totalGeral += (i.quantidade * pUnit);
-  });
+  const {
+    subtotalItensSemDesconto,
+    subtotalItensComDesconto,
+    descontoTotalItens,
+    baseItensSemDesconto,
+    discGlobalPercent,
+    valorDescontoGlobal,
+    totalFinalLiquido,
+    economiaTotalReal,
+    percentualEconomiaTotal,
+    totalQtd
+  } = calculateCartTotals();
 
   saveQuoteToHistory({
     id: orcNum,
@@ -6926,10 +7569,20 @@ function sendQuoteToWhatsApp() {
       imagem: i.imagem,
       quantidade: i.quantidade,
       preco_base: i.preco_base || 0,
-      preco_unitario: (i.preco_unitario !== undefined) ? i.preco_unitario : (i.preco_base || 0)
+      preco_unitario: (i.preco_unitario !== undefined) ? i.preco_unitario : (i.preco_base || 0),
+      desconto_percent: i.desconto_percent || 0
     })),
-    totalQtd: cartItems.reduce((acc, i) => acc + i.quantidade, 0),
-    valorTotal: isSeller ? `R$ ${totalGeral.toFixed(2).replace('.', ',')}` : '',
+    totalQtd: totalQtd,
+    valorTotal: isSeller ? `R$ ${totalFinalLiquido.toFixed(2).replace('.', ',')}` : '',
+    subtotalItensSemDesconto,
+    subtotalItensComDesconto,
+    descontoTotalItens,
+    baseItensSemDesconto,
+    discGlobalPercent,
+    valorDescontoGlobal,
+    totalFinalLiquido,
+    economiaTotalReal,
+    percentualEconomiaTotal,
     status: 'aguardando',
     shareUrl: shareUrl
   });
@@ -6938,10 +7591,11 @@ function sendQuoteToWhatsApp() {
     num_proposta: orcNum,
     cliente_nome: nome,
     cliente_doc: doc,
-    total_itens: cartItems.reduce((acc, i) => acc + i.quantidade, 0),
+    total_itens: totalQtd,
+    valor_total: isSeller ? `R$ ${totalFinalLiquido.toFixed(2).replace('.', ',')}` : '-',
     resumo_itens: cartItems.map(i => `${i.quantidade}x ${i.nome}`).join(', '),
     link_proposta: shareUrl,
-    detalhes_extras: `Destino WhatsApp: ${destWhatsapp}`
+    detalhes_extras: `Destino WhatsApp: ${destWhatsapp} | Total Líquido: R$ ${totalFinalLiquido.toFixed(2)} | Economia Total: R$ ${economiaTotalReal.toFixed(2)}`
   });
 
   let msg = `🌿 *${CONFIG.empresa}*\n`;
@@ -6950,27 +7604,61 @@ function sendQuoteToWhatsApp() {
 
   cartItems.forEach((item, index) => {
     const pUnit = (item.preco_unitario !== undefined) ? item.preco_unitario : (item.preco_base || 0);
-    const subtotal = item.quantidade * pUnit;
+    const discItemPercent = Math.max(0, Math.min(100, item.desconto_percent || 0));
+    const pUnitDesc = pUnit * (1 - (discItemPercent / 100));
+    const subtotalItem = item.quantidade * pUnitDesc;
 
     msg += `*${index + 1}. ${item.nome}*\n`;
     msg += `   • Ref: \`${item.referencia}\`\n`;
     msg += `   • Quantidade: *${item.quantidade} ${item.unidade || 'unidade'}(s)*\n`;
+
     if (isSeller && pUnit > 0) {
-      msg += `   • Valor Unit.: R$ ${pUnit.toFixed(2).replace('.', ',')} (Subtotal: R$ ${subtotal.toFixed(2).replace('.', ',')})\n`;
+      if (discItemPercent > 0) {
+        msg += `   • Valor Unit.: R$ ${pUnit.toFixed(2).replace('.', ',')}\n`;
+        msg += `   • Desconto no Item: *${discItemPercent.toFixed(1)}%* (-R$ ${(pUnit * (discItemPercent / 100)).toFixed(2).replace('.', ',')}/un)\n`;
+        msg += `   • Valor Unit. c/ Desconto: *R$ ${pUnitDesc.toFixed(2).replace('.', ',')}* (Subtotal: *R$ ${subtotalItem.toFixed(2).replace('.', ',')}*)\n`;
+      } else {
+        msg += `   • Valor Unit.: R$ ${pUnit.toFixed(2).replace('.', ',')} (Subtotal: R$ ${subtotalItem.toFixed(2).replace('.', ',')})\n`;
+      }
     }
     msg += `\n`;
   });
 
-  if (isSeller && totalGeral > 0) {
-    msg += `💰 *VALOR TOTAL DA PROPOSTA: R$ ${totalGeral.toFixed(2).replace('.', ',')}*\n\n`;
+  msg += `━━━━━━━━━━━━━━━━━━━━━\n`;
+  if (isSeller) {
+    if (economiaTotalReal > 0.01) {
+      msg += `💰 *Subtotal dos Produtos:* R$ ${subtotalItensSemDesconto.toFixed(2).replace('.', ',')}\n`;
+      if (descontoTotalItens > 0.01) {
+        msg += `🏷️ *Descontos nos Produtos:* -R$ ${descontoTotalItens.toFixed(2).replace('.', ',')}\n`;
+        msg += `📦 *Subtotal c/ Desc. dos Itens:* R$ ${subtotalItensComDesconto.toFixed(2).replace('.', ',')}\n`;
+      }
+      if (discGlobalPercent > 0 && valorDescontoGlobal > 0) {
+        msg += `🏷️ *Desconto no Pedido (${discGlobalPercent.toFixed(1)}% s/ itens s/ desc.):* -R$ ${valorDescontoGlobal.toFixed(2).replace('.', ',')}\n`;
+      }
+      msg += `🎉 *ECONOMIA TOTAL DO CLIENTE:* *R$ ${economiaTotalReal.toFixed(2).replace('.', ',')} (${percentualEconomiaTotal.toFixed(1)}% OFF)*\n`;
+      msg += `💳 *TOTAL FINAL DA PROPOSTA:* *R$ ${totalFinalLiquido.toFixed(2).replace('.', ',')}*\n`;
+    } else {
+      msg += `💳 *TOTAL DA PROPOSTA:* *R$ ${totalFinalLiquido.toFixed(2).replace('.', ',')}*\n`;
+    }
+    msg += `━━━━━━━━━━━━━━━━━━━━━\n`;
   }
 
-  msg += `━━━━━━━━━━━━━━━━━━━━━\n`;
   msg += `👤 *Cliente:* ${nome}\n`;
   if (vendedorObj && vendedorObj.id) {
     msg += `👔 *Vendedor:* ${vendedorObj.nome}\n`;
   }
   if (doc) msg += `🏢 *Documento/Local:* ${doc}\n`;
+
+  if (isSeller) {
+    const { pagamento, validade } = getCommercialTerms();
+    msg += `━━━━━━━━━━━━━━━━━━━━━\n`;
+    if (pagamento) {
+      msg += `💳 *Condição de Pagamento:* ${pagamento}\n`;
+    }
+    if (validade) {
+      msg += `📅 *Validade da Proposta:* ${validade}\n`;
+    }
+  }
   msg += `━━━━━━━━━━━━━━━━━━━━━\n\n`;
   msg += `🔗 *Abrir / Recomprar este pedido no Catálogo:*\n${shareUrl}\n\n`;
   msg += `${CONFIG.mensagem_fim}`;
