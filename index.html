@@ -185,6 +185,15 @@
   <script>
     let categoriaSelecionada = 'todos';
 
+    function normalizarTexto(str) {
+      return (str || '')
+        .toString()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase()
+        .trim();
+    }
+
     function renderProdutos(catId, termoBusca = '') {
       const grid = document.getElementById('produtos-grid');
       const empty = document.getElementById('nenhum-produto');
@@ -200,12 +209,21 @@
       }
 
       if (termoBusca) {
-        const t = termoBusca.toLowerCase();
-        lista = lista.filter(p =>
-          p.nome.toLowerCase().includes(t) ||
-          p.referencia.toLowerCase().includes(t) ||
-          p.descricao.toLowerCase().includes(t)
-        );
+        const termos = normalizarTexto(termoBusca).split(/\s+/).filter(Boolean);
+        lista = lista.filter(p => {
+          const textoIndex = [
+            p.nome,
+            p.referencia,
+            p.descricao,
+            p.descricao_longa,
+            (p.caracteristicas || []).join(' '),
+            (p.alvos || []).join(' '),
+            p.tipo_formulacao,
+            p.segmento
+          ].map(normalizarTexto).join(' ');
+
+          return termos.every(t => textoIndex.includes(t));
+        });
       }
 
       const catObj = CATEGORIAS.find(c => c.id === catId);
@@ -220,30 +238,35 @@
       }
       if (empty) empty.style.display = 'none';
 
-      grid.innerHTML = lista.map(p => `
-        <article class="mob-card">
-          <a href="produto.html?id=${p.id}" class="mob-card-img-link">
-            ${p.destaque ? '<span class="mob-badge-feat">★ Destaque</span>' : ''}
-            <img src="${p.imagens[0]}" alt="${p.nome}" class="mob-card-img" loading="lazy"
-              onerror="this.src='https://picsum.photos/seed/raw${p.id}/400/300'">
-          </a>
-          <div class="mob-card-body">
-            <span class="mob-card-sku">Ref: ${p.referencia}</span>
-            <h3 class="mob-card-title"><a href="produto.html?id=${p.id}">${p.nome}</a></h3>
-            <p class="mob-card-desc">${p.descricao}</p>
-            <div class="mob-card-row">
-              <div class="mob-qty">
-                <button class="mob-qty-btn" onclick="decrementarCard(${p.id})">−</button>
-                <input type="number" id="qty-${p.id}" value="1" min="1" class="mob-qty-input" readonly>
-                <button class="mob-qty-btn" onclick="incrementarCard(${p.id})">+</button>
+      grid.innerHTML = lista.map(p => {
+        const alvosTags = (p.alvos || []).slice(0, 2).map(a => `<span class="tag-alvo" style="font-size:0.65rem; background:#f1f5f9; padding:0.1rem 0.35rem; border-radius:4px; margin-right:0.25rem; color:#475569; display:inline-block; margin-top:0.25rem;">${a}</span>`).join('');
+
+        return `
+          <article class="mob-card">
+            <a href="produto.html?id=${p.id}" class="mob-card-img-link">
+              ${p.destaque ? '<span class="mob-badge-feat">★ Destaque</span>' : ''}
+              <img src="${p.imagens[0]}" alt="${p.nome}" class="mob-card-img" loading="lazy"
+                onerror="this.src='https://picsum.photos/seed/raw${p.id}/400/300'">
+            </a>
+            <div class="mob-card-body">
+              <span class="mob-card-sku">Ref: ${p.referencia}</span>
+              <h3 class="mob-card-title"><a href="produto.html?id=${p.id}">${p.nome}</a></h3>
+              <p class="mob-card-desc">${p.descricao}</p>
+              ${alvosTags ? `<div style="margin-bottom:0.4rem;">${alvosTags}</div>` : ''}
+              <div class="mob-card-row">
+                <div class="mob-qty">
+                  <button class="mob-qty-btn" onclick="decrementarCard(${p.id})">−</button>
+                  <input type="number" id="qty-${p.id}" value="1" min="1" class="mob-qty-input" readonly>
+                  <button class="mob-qty-btn" onclick="incrementarCard(${p.id})">+</button>
+                </div>
+                <button class="mob-add-btn" onclick="adicionarAoOrcamento(${p.id})">
+                  <span>+ Cotar</span>
+                </button>
               </div>
-              <button class="mob-add-btn" onclick="adicionarAoOrcamento(${p.id})">
-                <span>+ Cotar</span>
-              </button>
             </div>
-          </div>
-        </article>
-      `).join('');
+          </article>
+        `;
+      }).join('');
     }
 
     function initCategorias() {

@@ -482,7 +482,7 @@ img { max-width: 100%; display: block; }
 }
 .mob-qty-input {
   width: 30px;
-  text-align: end;
+  text-align: center;
   border: none;
   background: transparent;
   font-weight: 800;
