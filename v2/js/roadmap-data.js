@@ -45,6 +45,8 @@ const ROADMAP_DATA = {
       status: "Concluído",
       prioridade: "Alta",
       previsao: "Entregue (09/2026)",
+      dataCriacao: "2026-07-01",
+      dataEntrega: "2026-09-01",
       descricao: "Cadastro rigoroso dos 32 produtos oficiais da JCV Química/Rawell, organizados em 10 categorias técnicas (Herbicidas Seletivos, Inseticidas, Fungicidas, Raticidas, etc.) e 5 formulações (SC, WG, EC, Gel, Pó Molhável) com imagens WebP ultra-otimizadas.",
       tags: ["32 Produtos", "WebP", "Categorias", "Formulações"],
       checklist: [
@@ -63,6 +65,8 @@ const ROADMAP_DATA = {
       status: "Concluído",
       prioridade: "Alta",
       previsao: "Entregue (09/2026)",
+      dataCriacao: "2026-07-10",
+      dataEntrega: "2026-09-01",
       descricao: "Buscador instantâneo com atalho de teclado global (/), realce dinâmico (highlight) dos termos pesquisados e busca simultânea por nome do produto, praga-alvo, referência e princípio ativo.",
       tags: ["Busca", "Highlight", "Atalhos", "Quick Tags"],
       checklist: [
@@ -80,6 +84,8 @@ const ROADMAP_DATA = {
       status: "Concluído",
       prioridade: "Alta",
       previsao: "Entregue (09/2026)",
+      dataCriacao: "2026-07-15",
+      dataEntrega: "2026-09-02",
       descricao: "Modal em bottom-sheet responsivo com galeria de fotos, abas de Guia de Aplicação, Dosagens Técnicas Recomendadas e Painel de Segurança (proteção de pets, tempo de secagem/chuva, EPIs e horários ideais).",
       tags: ["Ficha Técnica", "Segurança", "Dosagens", "Bottom-Sheet"],
       checklist: [
@@ -98,6 +104,8 @@ const ROADMAP_DATA = {
       status: "Concluído",
       prioridade: "Alta",
       previsao: "Entregue (09/2026)",
+      dataCriacao: "2026-07-20",
+      dataEntrega: "2026-09-02",
       descricao: "Sistema de orçamento flexível com controle de quantidades, persistência no navegador, desconto por item e desconto global no pedido com cálculo da Economia Total do Cliente e envio formatado ao WhatsApp.",
       tags: ["Carrinho", "Descontos", "WhatsApp", "Economia"],
       checklist: [
@@ -116,6 +124,8 @@ const ROADMAP_DATA = {
       status: "Concluído",
       prioridade: "Alta",
       previsao: "Entregue (09/2026)",
+      dataCriacao: "2026-08-01",
+      dataEntrega: "2026-09-03",
       descricao: "Painel protegido por senha/PIN para os vendedores da JCV Química ajustarem preços de tabela, gerarem links de comissão personalizados (?v=vendedor), consultarem histórico de cotações e reabrirem pedidos antigos.",
       tags: ["Modo Vendedor", "Login PIN", "Comissão", "Histórico"],
       checklist: [
@@ -134,6 +144,8 @@ const ROADMAP_DATA = {
       status: "Concluído",
       prioridade: "Alta",
       previsao: "Entregue (09/2026)",
+      dataCriacao: "2026-08-05",
+      dataEntrega: "2026-09-03",
       descricao: "Gerador de propostas comerciais no padrão oficial timbrado da JCV Química/Rawell com dados do cliente (Nome, Fazenda/Empresa, Cidade/UF), número da proposta, modo com valores ou orçamento aberto (@media print).",
       tags: ["PDF", "Proposta Timbrada", "Impressão", "Vendas"],
       checklist: [
@@ -152,6 +164,8 @@ const ROADMAP_DATA = {
       status: "Concluído",
       prioridade: "Alta",
       previsao: "Entregue (09/2026)",
+      dataCriacao: "2026-08-15",
+      dataEntrega: "2026-09-04",
       descricao: "Transformação do catálogo em Progressive Web App instalável no Android, iOS e Windows sem lojas de apps. Fontes Inter e Plus Jakarta Sans hospedadas localmente em WOFF2 com zero dependência externa e cache de alta velocidade.",
       tags: ["PWA", "Service Worker", "Cache Offline", "Fontes WOFF2"],
       checklist: [
@@ -170,6 +184,8 @@ const ROADMAP_DATA = {
       status: "Em Testes",
       prioridade: "Alta",
       previsao: "Setembro / 2026",
+      dataCriacao: "2026-08-20",
+      dataPrevisao: "2026-09-08",
       descricao: "Rastreamento silencioso e assíncrono (sendBeacon/fetch) conectado via Webhook ao Google Apps Script. Grava na planilha do Google: Data/Hora, Vendedor, Proposta, Cliente, Total, Preço Praticado vs Tabela e Link de Garantia com Preço Travado.",
       tags: ["Google Sheets", "Auditoria", "Anti-Fraude", "Apps Script"],
       checklist: [
@@ -188,6 +204,8 @@ const ROADMAP_DATA = {
       status: "Concluído",
       prioridade: "Alta",
       previsao: "Entregue (09/2026)",
+      dataCriacao: "2026-09-01",
+      dataEntrega: "2026-09-05",
       descricao: "Dashboard exclusivo e protegido contra indexação (noindex, nofollow) para o cliente acompanhar em tempo real todas as implementações, progresso de 0% a 100%, histórico de versões e contato direto com os desenvolvedores.",
       tags: ["Roadmap", "Dashboard", "Transparência", "Changelog"],
       checklist: [
@@ -206,6 +224,8 @@ const ROADMAP_DATA = {
       status: "Concluído",
       prioridade: "Alta",
       previsao: "Entregue (09/2026)",
+      dataCriacao: "2026-09-05",
+      dataEntrega: "2026-09-05",
       descricao: "Módulo administrativo protegido por PIN com toolbar de ferramentas, CRUD completo de features, checklist interativo com reordenação por Drag & Drop, gerenciador de lançamentos (Changelog) e exportação com 1 clique.",
       tags: ["Admin", "Drag & Drop", "Checklist", "Exportação", "Gestão"],
       checklist: [
@@ -225,6 +245,8 @@ const ROADMAP_DATA = {
       status: "Em Desenvolvimento",
       prioridade: "Alta",
       previsao: "Outubro / 2026",
+      dataCriacao: "2026-09-01",
+      dataPrevisao: "2026-10-15",
       descricao: "Permitirá à diretoria da JCV Química alterar preços de tabela e status de estoque (Disponível/Esgotado) diretamente em uma aba do Google Sheets, refletindo automaticamente no catálogo sem necessidade de novo deploy.",
       tags: ["Sincronização", "Nuvem", "Tabela Preços", "Estoque"],
       checklist: [
@@ -242,6 +264,8 @@ const ROADMAP_DATA = {
       status: "Planejado",
       prioridade: "Média",
       previsao: "Novembro / 2026",
+      dataCriacao: "2026-09-01",
+      dataPrevisao: "2026-11-20",
       descricao: "Fluxo interativo passo a passo onde o agricultor/jardineiro seleciona o ambiente (Gramado, Jardinagem, Pastagem, Ambiente Urbano), o tipo de praga/doença identificada e recebe a recomendação exata do defensivo e diluição correta.",
       tags: ["Diagnóstico", "Assistente", "Dosagem", "Recomendação"],
       checklist: [
@@ -259,6 +283,8 @@ const ROADMAP_DATA = {
       status: "Planejado",
       prioridade: "Normal",
       previsao: "Dezembro / 2026",
+      dataCriacao: "2026-09-01",
+      dataPrevisao: "2026-12-10",
       descricao: "Geração de relatórios consolidados das cotações emitidas por vendedor, produtos mais demandados e volume financeiro orçado para conferência gerencial e faturamento.",
       tags: ["Relatórios", "Exportação", "CSV", "Excel", "Gestão"],
       checklist: [
@@ -275,6 +301,8 @@ const ROADMAP_DATA = {
       status: "Concluído",
       prioridade: "Alta",
       previsao: "Entregue (09/2026)",
+      dataCriacao: "2026-09-05",
+      dataEntrega: "2026-09-05",
       descricao: "Seletor interativo de prioridade (Alta, Média, Normal, Baixa) com 1 clique diretamente na badge do card em modo Admin, acompanhado por faixa superior em degradê, ambientação luminosa e tematização reativa em tempo real.",
       tags: ["Prioridade", "Tematização", "Glow", "Tempo Real"],
       checklist: [
@@ -293,6 +321,8 @@ const ROADMAP_DATA = {
       status: "Concluído",
       prioridade: "Normal",
       previsao: "Entregue (09/2026)",
+      dataCriacao: "2026-09-05",
+      dataEntrega: "2026-09-05",
       descricao: "Redesenho ergonômico do rodapé dos cards com micro-chips técnicos (10px com cantos suaves), eliminação de campos redundantes e agrupador inteligente (+N com tooltip) para manter nivelamento perfeito no grid.",
       tags: ["Micro-Tags", "UX Design", "Acumulador +N", "Layout Grid"],
       checklist: [
@@ -311,6 +341,8 @@ const ROADMAP_DATA = {
       status: "Em Desenvolvimento",
       prioridade: "Média",
       previsao: "Em Breve (09/2026)",
+      dataCriacao: "2026-09-05",
+      dataPrevisao: "2026-09-10",
       descricao: "Funcionalidade de teste criada para validar a inserção de novos cards, cálculo dinâmico de métricas globais, tematização por prioridade e checklists interativos no dashboard.",
       tags: ["Teste", "Validação", "Roadmap", "Dashboard"],
       checklist: [
@@ -324,6 +356,21 @@ const ROADMAP_DATA = {
 
   // ── 4. Linha do Tempo & Changelog Oficial (Histórico de Versões) ────
   changelog: [
+    {
+      versao: "v3.1.0 (Atualização Recente)",
+      data: "05 de Setembro de 2026",
+      titulo: "Painel de Gestão do Roadmap, Tematização de Prioridades e Filtros Avançados de Datas",
+      resumo: "Evolução do ecossistema de transparência com ferramentas completas de administração, controles de prioridade reativos nos cards, reordenação Drag & Drop de etapas, design de micro-tags ergonômicas e novos filtros por período temporal e intervalo de datas.",
+      itens: [
+        { tipo: "novo", texto: "Painel Administrativo protegido por PIN com CRUD completo de features e lançamentos." },
+        { tipo: "novo", texto: "Seletor dinâmico de Prioridades nos cards com ambientação luminosa e faixa superior em degradê." },
+        { tipo: "novo", texto: "Filtro avançado por períodos rápidos (24h, 7d, 15d, 30d, 90d, 2026) e seletor De/Até personalizado." },
+        { tipo: "melhoria", texto: "Reordenação dinâmica de etapas do checklist via Drag & Drop nativo e botões de ordenação." },
+        { tipo: "performance", texto: "Redesenho ergonômico das tags no rodapé com micro-chips técnicos (10px) e agrupador inteligente (+N)." },
+        { tipo: "seguranca", texto: "Persistência inteligente em localStorage com rastreamento permanente de exclusões de cards." },
+        { tipo: "melhoria", texto: "Filtro inicial padrão do Roadmap configurado para exibir funcionalidades 'Em Andamento'." }
+      ]
+    },
     {
       versao: "v3.0.0 (Baseline Estável)",
       data: "05 de Setembro de 2026",

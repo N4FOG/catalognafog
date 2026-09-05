@@ -164,13 +164,10 @@
       <!-- Filtros e Busca -->
       <div class="dash-filter-bar">
         <div class="filter-pills-wrap">
-          <button class="filter-pill active" data-filter="todos">
-            Todas as Features <span class="filter-pill-count" id="count-pill-todos">0</span>
+          <button class="filter-pill" data-filter="todos">
+            Todas <span class="filter-pill-count" id="count-pill-todos">0</span>
           </button>
-          <button class="filter-pill" data-filter="concluido">
-            ✅ Concluídas <span class="filter-pill-count" id="count-pill-concluido">0</span>
-          </button>
-          <button class="filter-pill" data-filter="desenvolvimento">
+          <button class="filter-pill active" data-filter="desenvolvimento">
             ⚡ Em Andamento <span class="filter-pill-count" id="count-pill-desenvolvimento">0</span>
           </button>
           <button class="filter-pill" data-filter="testes">
@@ -179,11 +176,43 @@
           <button class="filter-pill" data-filter="planejado">
             💡 Planejadas <span class="filter-pill-count" id="count-pill-planejado">0</span>
           </button>
+          <button class="filter-pill" data-filter="concluido">
+            ✅ Concluídas <span class="filter-pill-count" id="count-pill-concluido">0</span>
+          </button>
         </div>
 
         <div class="filter-search-box">
           <span class="filter-search-icon">🔍</span>
           <input type="search" id="dash-search-input" placeholder="Buscar funcionalidade..." autocomplete="off">
+        </div>
+      </div>
+
+      <!-- Filtros por Período de Datas & Intervalo Personalizado -->
+      <div class="dash-date-filter-bar">
+        <div class="date-presets-wrap">
+          <span class="date-filter-label">📅 Período:</span>
+          <button class="date-preset-btn active" data-period="todos">Todos</button>
+          <button class="date-preset-btn" data-period="1d">Últimas 24h</button>
+          <button class="date-preset-btn" data-period="7d">Últimos 7 dias</button>
+          <button class="date-preset-btn" data-period="15d">Últimos 15 dias</button>
+          <button class="date-preset-btn" data-period="30d">Últimos 30 dias</button>
+          <button class="date-preset-btn" data-period="90d">Últimos 90 dias</button>
+          <button class="date-preset-btn" data-period="2026">Ano 2026</button>
+          <button class="date-preset-btn btn-date-custom-toggle" data-period="custom-toggle" id="btn-toggle-custom-date">Personalizado ▾</button>
+        </div>
+
+        <!-- Seletor de Intervalo Personalizado (De / Até) -->
+        <div class="custom-date-range-wrap" id="custom-date-range-wrap" style="display: none;">
+          <div class="custom-date-field">
+            <label for="date-filter-from">De:</label>
+            <input type="date" id="date-filter-from" class="date-input-custom">
+          </div>
+          <div class="custom-date-field">
+            <label for="date-filter-to">Até:</label>
+            <input type="date" id="date-filter-to" class="date-input-custom">
+          </div>
+          <button type="button" class="btn-date-apply" id="btn-apply-date-range" title="Aplicar filtro por intervalo">Filtrar Datas</button>
+          <button type="button" class="btn-date-clear" id="btn-clear-date-range" title="Limpar filtro de datas">✕ Limpar</button>
         </div>
       </div>
 

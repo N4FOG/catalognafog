@@ -159,8 +159,31 @@ function renderModulesBar() {
 }
 
 // ── 4. Renderização dos Cards do Roadmap (0% a 100%) ──────────────────
-let activeStatusFilter = 'todos';
+let activeStatusFilter = 'desenvolvimento';
 let activeSearchQuery = '';
+let activePeriodFilter = 'todos'; // 'todos', '1d', '7d', '15d', '30d', '90d', '2026', 'custom'
+let customDateFrom = null; // 'YYYY-MM-DD'
+let customDateTo = null;   // 'YYYY-MM-DD'
+
+function getFeatureTimestamp(feat) {
+  if (feat.dataEntrega) {
+    const d = new Date(feat.dataEntrega + 'T00:00:00');
+    if (!isNaN(d.getTime())) return d.getTime();
+  }
+  if (feat.dataCriacao) {
+    const d = new Date(feat.dataCriacao + 'T00:00:00');
+    if (!isNaN(d.getTime())) return d.getTime();
+  }
+  if (feat.dataPrevisao) {
+    const d = new Date(feat.dataPrevisao + 'T00:00:00');
+    if (!isNaN(d.getTime())) return d.getTime();
+  }
+  if (feat.dataAtualizacao) {
+    const d = new Date(feat.dataAtualizacao);
+    if (!isNaN(d.getTime())) return d.getTime();
+  }
+  return new Date('2026-09-05T00:00:00').getTime();
+}
 
 function renderRoadmapCards() {
   const data = getData();
@@ -172,7 +195,7 @@ function renderRoadmapCards() {
   const isAdmin = typeof window.isAdminAuthenticated === 'function' && window.isAdminAuthenticated();
 
   const filtered = data.features.filter(feat => {
-    // Filtro por Status
+    // 1. Filtro por Status
     if (activeStatusFilter !== 'todos') {
       if (activeStatusFilter === 'concluido' && feat.status !== 'Concluído') return false;
       if (activeStatusFilter === 'testes' && feat.status !== 'Em Testes') return false;
@@ -180,7 +203,7 @@ function renderRoadmapCards() {
       if (activeStatusFilter === 'planejado' && feat.status !== 'Planejado') return false;
     }
 
-    // Filtro por Busca de Texto
+    // 2. Filtro por Busca de Texto
     if (activeSearchQuery) {
       const q = activeSearchQuery.toLowerCase();
       const matchTitle = (feat.titulo || '').toLowerCase().includes(q);
@@ -191,6 +214,43 @@ function renderRoadmapCards() {
       if (!matchTitle && !matchDesc && !matchCat && !matchTags && !matchPriority) return false;
     }
 
+    // 3. Filtro por Período / Datas
+    if (activePeriodFilter !== 'todos') {
+      const featTime = getFeatureTimestamp(feat);
+      const now = new Date('2026-09-05T23:59:59').getTime();
+      const refNow = Math.max(Date.now(), now);
+
+      if (activePeriodFilter === '1d') {
+        const cutoff = refNow - (1 * 24 * 60 * 60 * 1000);
+        if (featTime < cutoff) return false;
+      } else if (activePeriodFilter === '7d') {
+        const cutoff = refNow - (7 * 24 * 60 * 60 * 1000);
+        if (featTime < cutoff) return false;
+      } else if (activePeriodFilter === '15d') {
+        const cutoff = refNow - (15 * 24 * 60 * 60 * 1000);
+        if (featTime < cutoff) return false;
+      } else if (activePeriodFilter === '30d') {
+        const cutoff = refNow - (30 * 24 * 60 * 60 * 1000);
+        if (featTime < cutoff) return false;
+      } else if (activePeriodFilter === '90d') {
+        const cutoff = refNow - (90 * 24 * 60 * 60 * 1000);
+        if (featTime < cutoff) return false;
+      } else if (activePeriodFilter === '2026') {
+        const start2026 = new Date('2026-01-01T00:00:00').getTime();
+        const end2026 = new Date('2026-12-31T23:59:59').getTime();
+        if (featTime < start2026 || featTime > end2026) return false;
+      } else if (activePeriodFilter === 'custom') {
+        if (customDateFrom) {
+          const fromTime = new Date(customDateFrom + 'T00:00:00').getTime();
+          if (featTime < fromTime) return false;
+        }
+        if (customDateTo) {
+          const toTime = new Date(customDateTo + 'T23:59:59').getTime();
+          if (featTime > toTime) return false;
+        }
+      }
+    }
+
     return true;
   });
 
@@ -199,7 +259,7 @@ function renderRoadmapCards() {
       <div style="grid-column: 1 / -1; text-align: center; padding: 48px 20px; background: var(--bg-card); border-radius: var(--radius-md); border: 1px dashed var(--border);">
         <div style="font-size: 2.5rem; margin-bottom: 12px;">🔍</div>
         <h3 style="margin: 0 0 6px 0; font-size: 1.1rem; color: var(--text);">Nenhuma funcionalidade encontrada</h3>
-        <p style="margin: 0; font-size: 0.88rem; color: var(--text-3);">Tente alterar o filtro ou limpar o campo de busca.</p>
+        <p style="margin: 0; font-size: 0.88rem; color: var(--text-3);">Tente alterar o período, status ou limpar o campo de busca.</p>
       </div>
     `;
     return;
@@ -458,6 +518,97 @@ function setupEventListeners() {
       renderRoadmapCards();
     });
   });
+
+  // Filtros de Período e Intervalo de Datas
+  const datePresetBtns = document.querySelectorAll('.date-preset-btn');
+  const customRangeWrap = document.getElementById('custom-date-range-wrap');
+  const fromInput = document.getElementById('date-filter-from');
+  const toInput = document.getElementById('date-filter-to');
+  const applyDateBtn = document.getElementById('btn-apply-date-range');
+  const clearDateBtn = document.getElementById('btn-clear-date-range');
+  const toggleDateBtn = document.getElementById('btn-toggle-custom-date');
+
+  datePresetBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const period = btn.getAttribute('data-period');
+      if (period === 'custom-toggle') {
+        if (customRangeWrap) {
+          const isHidden = customRangeWrap.style.display === 'none' || !customRangeWrap.style.display;
+          customRangeWrap.style.display = isHidden ? 'flex' : 'none';
+          btn.classList.toggle('active', isHidden);
+        }
+        return;
+      }
+
+      datePresetBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activePeriodFilter = period;
+      if (customRangeWrap) customRangeWrap.style.display = 'none';
+      renderRoadmapCards();
+    });
+  });
+
+  if (applyDateBtn) {
+    applyDateBtn.addEventListener('click', () => {
+      const fromVal = fromInput ? fromInput.value : '';
+      const toVal = toInput ? toInput.value : '';
+      if (!fromVal && !toVal) {
+        alert('Por favor, selecione ao menos uma data inicial ou final.');
+        return;
+      }
+      activePeriodFilter = 'custom';
+      customDateFrom = fromVal || null;
+      customDateTo = toVal || null;
+
+      datePresetBtns.forEach(b => b.classList.remove('active'));
+      if (toggleDateBtn) toggleDateBtn.classList.add('active');
+
+      renderRoadmapCards();
+    });
+  }
+
+  if (clearDateBtn) {
+    clearDateBtn.addEventListener('click', () => {
+      if (fromInput) fromInput.value = '';
+      if (toInput) toInput.value = '';
+      customDateFrom = null;
+      customDateTo = null;
+      activePeriodFilter = 'todos';
+
+      datePresetBtns.forEach(b => b.classList.remove('active'));
+      const defaultBtn = document.querySelector('.date-preset-btn[data-period="todos"]');
+      if (defaultBtn) defaultBtn.classList.add('active');
+      if (customRangeWrap) customRangeWrap.style.display = 'none';
+
+      renderRoadmapCards();
+    });
+  }
+
+  if (fromInput) {
+    fromInput.addEventListener('change', () => {
+      if (fromInput.value && toInput && toInput.value) {
+        activePeriodFilter = 'custom';
+        customDateFrom = fromInput.value;
+        customDateTo = toInput.value;
+        datePresetBtns.forEach(b => b.classList.remove('active'));
+        if (toggleDateBtn) toggleDateBtn.classList.add('active');
+        renderRoadmapCards();
+      }
+    });
+  }
+
+  if (toInput) {
+    toInput.addEventListener('change', () => {
+      if (toInput.value) {
+        activePeriodFilter = 'custom';
+        customDateFrom = fromInput ? fromInput.value || null : null;
+        customDateTo = toInput.value;
+        datePresetBtns.forEach(b => b.classList.remove('active'));
+        if (toggleDateBtn) toggleDateBtn.classList.add('active');
+        renderRoadmapCards();
+      }
+    });
+  }
 
   // Busca em Tempo Real
   const searchInput = document.getElementById('dash-search-input');

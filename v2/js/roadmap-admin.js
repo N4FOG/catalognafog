@@ -47,13 +47,31 @@ function getActiveData() {
     const saved = localStorage.getItem(ADMIN_CONFIG.storageKeyData);
     if (saved) {
       const parsed = JSON.parse(saved);
+      const deletedIds = new Set(parsed.deletedIds || []);
+      let hasUpdates = false;
+
+      // Sincroniza novas features
       if (window.ROADMAP_DATA && window.ROADMAP_DATA.features && parsed.features) {
         const existingIds = new Set(parsed.features.map(f => f.id));
-        const newFeatures = window.ROADMAP_DATA.features.filter(f => !existingIds.has(f.id));
+        const newFeatures = window.ROADMAP_DATA.features.filter(f => !existingIds.has(f.id) && !deletedIds.has(f.id));
         if (newFeatures.length > 0) {
           parsed.features.push(...newFeatures);
-          localStorage.setItem(ADMIN_CONFIG.storageKeyData, JSON.stringify(parsed));
+          hasUpdates = true;
         }
+      }
+
+      // Sincroniza novos lançamentos no changelog
+      if (window.ROADMAP_DATA && window.ROADMAP_DATA.changelog && parsed.changelog) {
+        const existingVersions = new Set(parsed.changelog.map(c => c.versao));
+        const newReleases = window.ROADMAP_DATA.changelog.filter(c => !existingVersions.has(c.versao));
+        if (newReleases.length > 0) {
+          parsed.changelog.unshift(...newReleases);
+          hasUpdates = true;
+        }
+      }
+
+      if (hasUpdates) {
+        localStorage.setItem(ADMIN_CONFIG.storageKeyData, JSON.stringify(parsed));
       }
       return parsed;
     }
@@ -211,12 +229,24 @@ function injectAdminModalsAndToolbar() {
               </div>
 
               <div class="admin-form-group flex-1">
-                <label class="admin-form-label">Previsão / Data</label>
-                <input type="text" id="feat-eta" class="admin-form-input" placeholder="Ex: Outubro / 2026">
+                <label class="admin-form-label">Previsão / Data (Texto)</label>
+                <input type="text" id="feat-eta" class="admin-form-input" placeholder="Ex: Entregue (09/2026)">
               </div>
             </div>
 
-            <!-- Slider de Progresso (0% a 100%) -->
+            <!-- Linha de Datas Específicas de Registro e Entrega -->
+            <div class="admin-form-row">
+              <div class="admin-form-group flex-1">
+                <label class="admin-form-label">📅 Data de Registro / Início</label>
+                <input type="date" id="feat-date-created" class="admin-form-input">
+              </div>
+              <div class="admin-form-group flex-1">
+                <label class="admin-form-label">🏁 Data de Entrega / Conclusão</label>
+                <input type="date" id="feat-date-delivered" class="admin-form-input">
+              </div>
+            </div>
+
+            <!-- Slider de Progresso (0% a 100%) Automatizado -->
             <div class="admin-form-group">
               <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
                 <label class="admin-form-label" style="margin:0;">Progresso de Implementação:</label>
@@ -226,6 +256,9 @@ function injectAdminModalsAndToolbar() {
                 <input type="range" id="feat-progress" class="admin-range-slider" min="0" max="100" value="0" step="5" oninput="updateProgressLiveValue(this.value)">
                 <input type="number" id="feat-progress-num" class="admin-form-input" style="width:70px; text-align:center;" min="0" max="100" value="0" oninput="updateProgressLiveValue(this.value)">
               </div>
+              <span id="feat-progress-auto-info" style="font-size:0.74rem; color:var(--brand-light); font-weight:700; margin-top:5px; display:block;">
+                ⚡ Automatizado via Checklist (calcula % automaticamente pelas etapas marcadas)
+              </span>
             </div>
 
             <div class="admin-form-group">
@@ -420,6 +453,9 @@ function openCreateFeatureModal() {
   document.getElementById('edit-feature-id').value = '';
   document.getElementById('form-feature-editor').reset();
   
+  document.getElementById('feat-date-created').value = new Date().toISOString().split('T')[0];
+  document.getElementById('feat-date-delivered').value = '';
+  
   updateProgressLiveValue(0);
   renderChecklistInputs([]);
   
@@ -439,6 +475,8 @@ function openEditFeatureModal(featureId) {
   document.getElementById('feat-status').value = feat.status || 'Planejado';
   document.getElementById('feat-priority').value = feat.prioridade || 'Média';
   document.getElementById('feat-eta').value = feat.previsao || '';
+  document.getElementById('feat-date-created').value = feat.dataCriacao || '';
+  document.getElementById('feat-date-delivered').value = feat.dataEntrega || '';
   document.getElementById('feat-desc').value = feat.descricao || '';
   document.getElementById('feat-tags').value = (feat.tags || []).join(', ');
 
@@ -472,9 +510,64 @@ function syncProgressWithStatus(status) {
     if (etaInput && (!etaInput.value.trim() || etaInput.value.includes('Fev/') || etaInput.value.includes('Mar/') || etaInput.value.includes('Abr/'))) {
       etaInput.value = 'Entregue (09/2026)';
     }
+    const delivInput = document.getElementById('feat-date-delivered');
+    if (delivInput && !delivInput.value) {
+      delivInput.value = new Date().toISOString().split('T')[0];
+    }
   } else if (status === 'Planejado') {
     const cur = parseInt(document.getElementById('feat-progress')?.value, 10) || 0;
     if (cur > 30) updateProgressLiveValue(0);
+  }
+}
+
+function recalculateModalProgressFromChecklist() {
+  const container = document.getElementById('feat-checklist-container');
+  if (!container) return;
+
+  const rows = container.querySelectorAll('.admin-checklist-input-row');
+  const total = rows.length;
+  const done = Array.from(rows).filter(r => r.querySelector('.admin-chk-toggle')?.checked).length;
+  const autoInfoEl = document.getElementById('feat-progress-auto-info');
+  const statusSelect = document.getElementById('feat-status');
+
+  if (total > 0) {
+    const percent = Math.round((done / total) * 100);
+    updateProgressLiveValue(percent);
+
+    if (autoInfoEl) {
+      autoInfoEl.textContent = `⚡ Automatizado: ${done} de ${total} etapas concluídas (${percent}%)`;
+      autoInfoEl.style.color = percent === 100 ? '#10b981' : (percent > 0 ? '#f59e0b' : 'var(--text-3)');
+    }
+
+    // Sincronização inteligente com o Status
+    if (statusSelect) {
+      if (percent === 100 && statusSelect.value !== 'Concluído') {
+        statusSelect.value = 'Concluído';
+        const etaInput = document.getElementById('feat-eta');
+        if (etaInput && (!etaInput.value.trim() || etaInput.value.includes('Fev/') || etaInput.value.includes('Mar/') || etaInput.value.includes('Abr/'))) {
+          etaInput.value = 'Entregue (09/2026)';
+        }
+        const delivInput = document.getElementById('feat-date-delivered');
+        if (delivInput && !delivInput.value) {
+          delivInput.value = new Date().toISOString().split('T')[0];
+        }
+      } else if (percent < 100 && statusSelect.value === 'Concluído') {
+        statusSelect.value = percent > 0 ? 'Em Desenvolvimento' : 'Planejado';
+      }
+    }
+  } else {
+    if (autoInfoEl) {
+      autoInfoEl.textContent = '💡 Nenhuma etapa cadastrada no checklist (Progresso manual).';
+      autoInfoEl.style.color = 'var(--text-3)';
+    }
+  }
+}
+
+function removeChecklistRow(btn) {
+  const row = btn.closest('.admin-checklist-input-row');
+  if (row) {
+    row.remove();
+    recalculateModalProgressFromChecklist();
   }
 }
 
@@ -485,12 +578,14 @@ function renderChecklistInputs(checklist) {
 
   initDraggableList('feat-checklist-container');
 
-  checklist.forEach((item, idx) => {
-    addChecklistItemInput(item.item, item.feito);
+  (checklist || []).forEach((item) => {
+    addChecklistItemInput(item.item, item.feito, false);
   });
+
+  recalculateModalProgressFromChecklist();
 }
 
-function addChecklistItemInput(text = '', feito = false) {
+function addChecklistItemInput(text = '', feito = false, autoRecalc = true) {
   const container = document.getElementById('feat-checklist-container');
   if (!container) return;
 
@@ -501,17 +596,21 @@ function addChecklistItemInput(text = '', feito = false) {
   row.draggable = true;
   row.innerHTML = `
     <span class="admin-drag-handle" title="Clique e arraste para reordenar esta etapa">⋮⋮</span>
-    <input type="checkbox" class="admin-chk-toggle" ${feito ? 'checked' : ''} title="Marcar como concluída">
+    <input type="checkbox" class="admin-chk-toggle" ${feito ? 'checked' : ''} onchange="recalculateModalProgressFromChecklist()" title="Marcar como concluída">
     <input type="text" class="admin-form-input admin-chk-text" placeholder="Descrição da etapa..." value="${escapeHtml(text)}" required>
     <div class="admin-row-quick-sort">
       <button type="button" class="btn-sort-arrow" onclick="moveRowUp(this)" title="Mover para cima">▲</button>
       <button type="button" class="btn-sort-arrow" onclick="moveRowDown(this)" title="Mover para baixo">▼</button>
     </div>
-    <button type="button" class="btn-admin-act btn-admin-danger btn-admin-icon-only" onclick="this.closest('.admin-checklist-input-row').remove()" title="Excluir etapa">✕</button>
+    <button type="button" class="btn-admin-act btn-admin-danger btn-admin-icon-only" onclick="removeChecklistRow(this)" title="Excluir etapa">✕</button>
   `;
 
   attachDragEventsToRow(row);
   container.appendChild(row);
+
+  if (autoRecalc) {
+    recalculateModalProgressFromChecklist();
+  }
 }
 
 function handleSaveFeature(e) {
@@ -522,6 +621,8 @@ function handleSaveFeature(e) {
   const status = document.getElementById('feat-status').value;
   const priority = document.getElementById('feat-priority').value;
   const eta = document.getElementById('feat-eta').value.trim();
+  const dateCreated = document.getElementById('feat-date-created').value || new Date().toISOString().split('T')[0];
+  const dateDelivered = document.getElementById('feat-date-delivered').value || (status === 'Concluído' ? new Date().toISOString().split('T')[0] : null);
   const desc = document.getElementById('feat-desc').value.trim();
   const progresso = parseInt(document.getElementById('feat-progress').value, 10) || 0;
   
@@ -553,6 +654,9 @@ function handleSaveFeature(e) {
         status: status,
         prioridade: priority,
         previsao: eta,
+        dataCriacao: dateCreated,
+        dataEntrega: dateDelivered,
+        dataAtualizacao: new Date().toISOString(),
         descricao: desc,
         progresso: progresso,
         tags: tags,
@@ -562,13 +666,16 @@ function handleSaveFeature(e) {
   } else {
     // Criação
     const newId = `feat-${String(data.features.length + 1).padStart(3, '0')}-${Date.now().toString(36)}`;
-    data.features.push({
+    data.features.unshift({
       id: newId,
       titulo: title,
       categoria: category,
       status: status,
       prioridade: priority,
-      previsao: eta,
+      previsao: eta || 'Em breve',
+      dataCriacao: dateCreated,
+      dataEntrega: dateDelivered,
+      dataAtualizacao: new Date().toISOString(),
       descricao: desc,
       progresso: progresso,
       tags: tags,
@@ -588,6 +695,10 @@ function deleteFeature(featureId) {
   if (!confirm('Deseja realmente excluir esta funcionalidade do roadmap?')) return;
 
   const data = getActiveData();
+  data.deletedIds = data.deletedIds || [];
+  if (!data.deletedIds.includes(featureId)) {
+    data.deletedIds.push(featureId);
+  }
   data.features = (data.features || []).filter(f => f.id !== featureId);
   saveActiveData(data);
   showAdminToast('🗑️ Funcionalidade excluída com sucesso!');

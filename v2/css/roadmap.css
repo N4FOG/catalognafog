@@ -573,6 +573,142 @@ html[data-theme="dark"] .filter-pill-count {
   pointer-events: none;
 }
 
+/* ── Filtros por Período e Intervalo de Datas ─────────────── */
+.dash-date-filter-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  margin-bottom: 22px;
+  box-shadow: var(--shadow-xs);
+}
+
+.date-presets-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.date-filter-label {
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--text-3);
+  margin-right: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+}
+
+.date-preset-btn {
+  background: var(--bg-card-sub);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-2);
+  font-size: 0.74rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: var(--radius-xs);
+  cursor: pointer;
+  transition: all var(--transition);
+  white-space: nowrap;
+}
+
+.date-preset-btn:hover {
+  background: var(--bg);
+  color: var(--text);
+  border-color: var(--border);
+}
+
+.date-preset-btn.active {
+  background: rgba(16, 185, 129, 0.14);
+  color: var(--brand-light);
+  border-color: rgba(16, 185, 129, 0.35);
+  font-weight: 700;
+}
+
+.btn-date-custom-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.custom-date-range-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding-top: 8px;
+  border-top: 1px dashed var(--border-subtle);
+  margin-top: 2px;
+}
+
+.custom-date-field {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.custom-date-field label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-3);
+}
+
+.date-input-custom {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: var(--radius-xs);
+  outline: none;
+  transition: border-color var(--transition);
+  font-family: inherit;
+}
+
+.date-input-custom:focus {
+  border-color: var(--brand-light);
+}
+
+.btn-date-apply {
+  background: var(--brand);
+  color: #ffffff;
+  border: 1px solid var(--brand);
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: var(--radius-xs);
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.btn-date-apply:hover {
+  background: var(--brand-dark);
+}
+
+.btn-date-clear {
+  background: transparent;
+  color: var(--text-3);
+  border: 1px solid var(--border);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: var(--radius-xs);
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.btn-date-clear:hover {
+  color: #ef4444;
+  border-color: rgba(239, 68, 68, 0.4);
+  background: rgba(239, 68, 68, 0.05);
+}
+
 /* ── Grid de Cards do Roadmap ─────────────────────────────── */
 .roadmap-grid {
   display: grid;
