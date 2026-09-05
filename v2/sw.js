@@ -1,8 +1,8 @@
 // ═══════════════════════════════════════════════════════════════
-//  RAWELL QUÍMICA v3.0 — Service Worker (Cache Offline & PWA)
+//  JCV QUÍMICA v3.0 — Service Worker (Cache Offline & PWA)
 // ═══════════════════════════════════════════════════════════════
 
-const CACHE_NAME = 'rawell-v2-cache-v5';
+const CACHE_NAME = 'jcv-quimica-cache-v7';
 const STATIC_ASSETS = [
   './',
   './index.html',

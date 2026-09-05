@@ -419,7 +419,7 @@ function shareCurrentProduct() {
   const p = PRODUTOS.find(item => item.id === appState.currentSheetProdId);
   if (!p) return;
 
-  const text = `🌿 *Rawell Química — ${p.nome}*\n\nRef: ${p.referencia}\n${p.descricao}\n\n📱 Solicite cotação: WhatsApp (45) 99933-2563`;
+  const text = `🌿 *JCV Química — ${p.nome}*\n\nRef: ${p.referencia}\n${p.descricao}\n\n📱 Solicite cotação: WhatsApp (45) 9978-1407`;
 
   if (navigator.share) {
     navigator.share({

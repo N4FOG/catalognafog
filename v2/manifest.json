@@ -1,8 +1,8 @@
 {
-  "id": "rawell-quimica-catalogo-2026",
-  "name": "Rawell Química — Catálogo Oficial 2026",
-  "short_name": "Rawell 2026",
-  "description": "Catálogo de defensivos seletivos, desinfestantes e saneantes Rawell Química. Monte orçamentos e envie pelo WhatsApp.",
+  "id": "jcv-quimica-catalogo-2026",
+  "name": "JCV Química — Catálogo Oficial 2026",
+  "short_name": "JCV Química",
+  "description": "Catálogo de defensivos seletivos, desinfestantes e saneantes JCV Química. Monte orçamentos e envie pelo WhatsApp.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
@@ -46,7 +46,7 @@
       "name": "WhatsApp Comercial",
       "short_name": "WhatsApp",
       "description": "Atendimento comercial direto",
-      "url": "https://api.whatsapp.com/send?phone=5545999332563",
+      "url": "https://api.whatsapp.com/send?phone=554599781407",
       "icons": [{ "src": "img/icon-192.png", "sizes": "192x192" }]
     }
   ],

@@ -44,7 +44,7 @@ function dismissPWABanner() {
 }
 
 window.addEventListener('appinstalled', () => {
-  showToast('✅ App Rawell instalado na sua tela inicial!');
+  showToast('✅ App JCV Química instalado na sua tela inicial!');
   document.getElementById('btn-install-app')?.style.setProperty('display', 'none');
   document.getElementById('pwa-install-banner')?.classList.remove('show');
 });

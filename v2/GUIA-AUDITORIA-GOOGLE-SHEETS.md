@@ -55,7 +55,7 @@ Abra o arquivo index.html e, por volta da linha 3370, cole a sua URL no campo u
 
 `javascript
 const CONFIG = {
-  whatsapp: '5545999332563',
+  whatsapp: '554599781407',
   empresa: 'Rawell Química — Catálogo 2026',
   mensagem_intro: 'Olá! Gostaria de solicitar uma cotação dos seguintes produtos da Rawell Química:',
   mensagem_fim: '✅ Aguardo retorno sobre disponibilidade e condições de fornecimento. Obrigado!',

@@ -1,0 +1,493 @@
+/* ═══════════════════════════════════════════════════════════════
+   JCV / RAWELL QUÍMICA v3.0 — MOBILE APP EXPERIENCE ENHANCEMENTS
+   Otimizações de UX/UI, Gestos Touch, Safe Areas & Ergonomia Mobile
+═══════════════════════════════════════════════════════════════ */
+
+/* ── 1. SAFE AREAS & DISPLAY STANDALONE (PWA / APP NATIVO) ────── */
+:root {
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+  --touch-target-min: 44px;
+}
+
+@media all and (display-mode: standalone) {
+  /* Quando aberto como app instalado na tela inicial */
+  body {
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+  }
+  .app-header {
+    padding-top: max(var(--safe-top), 10px);
+    height: calc(var(--header-h) + max(var(--safe-top), 10px));
+  }
+}
+
+/* Prevenção de Auto-Zoom no Safari iOS (font-size >= 16px) */
+@media (max-width: 768px) {
+  input, select, textarea, .search-input, .desktop-search-input, .seller-form-input, .card-step-input {
+    font-size: 16px !important;
+  }
+}
+
+/* ── 2. HERO COMPACTO MOBILE (FOCO IMEDIATO NO CATÁLOGO) ─────── */
+@media (max-width: 767px) {
+  .hero-compact {
+    padding: 14px 16px !important;
+    margin-top: 10px !important;
+    margin-bottom: 12px !important;
+    border-radius: var(--radius-md) !important;
+    background: linear-gradient(135deg, rgba(15, 69, 49, 0.08), rgba(16, 185, 129, 0.05)) !important;
+  }
+
+  .hero-pill {
+    font-size: 0.72rem !important;
+    padding: 3px 9px !important;
+    margin-bottom: 6px !important;
+  }
+
+  .hero-title-m {
+    font-size: 1.15rem !important;
+    line-height: 1.25 !important;
+    margin-bottom: 4px !important;
+  }
+
+  .hero-sub-m {
+    font-size: 0.82rem !important;
+    line-height: 1.4 !important;
+    color: var(--text-2) !important;
+  }
+
+  .search-section {
+    padding-top: 4px !important;
+    margin-bottom: 8px !important;
+  }
+
+  .search-bar {
+    height: 46px !important;
+    border-radius: var(--radius-full) !important;
+    box-shadow: 0 2px 10px rgba(15, 69, 49, 0.08) !important;
+  }
+
+  .quick-tags-wrap {
+    margin-top: 8px !important;
+    padding-bottom: 4px !important;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .quick-tags-wrap::-webkit-scrollbar { display: none; }
+  
+  .quick-tag {
+    height: 32px !important;
+    padding: 0 12px !important;
+    font-size: 0.76rem !important;
+    flex-shrink: 0;
+  }
+}
+
+/* ── 3. CARROSSEL DE CATEGORIAS COM SNAP MAGNÉTICO ───────────── */
+.categories-slider-section {
+  margin-bottom: 16px !important;
+}
+
+.categories-story-track {
+  display: flex !important;
+  gap: 12px !important;
+  overflow-x: auto !important;
+  padding: 6px 12px 12px !important;
+  scroll-snap-type: x mandatory !important;
+  scroll-behavior: smooth !important;
+  -webkit-overflow-scrolling: touch !important;
+  scrollbar-width: none !important;
+}
+.categories-story-track::-webkit-scrollbar { display: none !important; }
+
+.story-item {
+  scroll-snap-align: start !important;
+  flex: 0 0 76px !important;
+  min-width: 76px !important;
+  transition: transform 0.18s cubic-bezier(0.33, 1, 0.68, 1) !important;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.story-item:active {
+  transform: scale(0.92) !important;
+}
+
+.story-avatar-wrap {
+  width: 62px !important;
+  height: 62px !important;
+  margin: 0 auto 6px !important;
+  border-radius: var(--radius-full) !important;
+  padding: 3px !important;
+  background: var(--border) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06) !important;
+  position: relative !important;
+}
+
+.story-avatar-inner {
+  font-size: 1.6rem !important;
+}
+
+.story-badge-count {
+  position: absolute !important;
+  bottom: -2px !important;
+  right: -2px !important;
+  background: var(--brand) !important;
+  color: #fff !important;
+  font-size: 0.62rem !important;
+  font-weight: 800 !important;
+  padding: 1px 6px !important;
+  border-radius: var(--radius-full) !important;
+  border: 1.5px solid var(--bg) !important;
+}
+
+/* ── 4. CARDS DE PRODUTO MOBILE (2 COLUNAS DE ALTA PRECISÃO) ─── */
+@media (max-width: 540px) {
+  .products-layout.grid-mode {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+  }
+
+  .prod-card {
+    border-radius: var(--radius-md) !important;
+    transition: transform 0.15s ease, box-shadow 0.15s ease !important;
+  }
+
+  .prod-card:active {
+    transform: scale(0.98) !important;
+  }
+
+  .grid-mode .prod-thumb-box {
+    aspect-ratio: 1.05 !important;
+    padding: 6px !important;
+  }
+
+  .grid-mode .prod-thumb-box img {
+    width: 90% !important;
+    height: 90% !important;
+  }
+
+  .grid-mode .prod-info-box {
+    padding: 10px !important;
+    gap: 4px !important;
+  }
+
+  .grid-mode .prod-name {
+    font-size: 0.88rem !important;
+    line-height: 1.25 !important;
+    min-height: 2.3em;
+  }
+
+  .prod-desc-line {
+    font-size: 0.74rem !important;
+    line-height: 1.35 !important;
+    margin: 2px 0 !important;
+  }
+
+  .target-tag-chip {
+    font-size: 0.62rem !important;
+    padding: 1.5px 5px !important;
+  }
+
+  .grid-mode .prod-action-row {
+    margin-top: 6px !important;
+    gap: 4px !important;
+  }
+
+  .card-stepper-box {
+    height: 36px !important;
+  }
+
+  .card-step-btn {
+    width: 28px !important;
+    font-size: 1.1rem !important;
+  }
+
+  .card-step-input {
+    width: 26px !important;
+    font-size: 0.88rem !important;
+  }
+
+  .btn-card-quote {
+    height: 36px !important;
+    font-size: 0.78rem !important;
+    padding: 0 8px !important;
+  }
+}
+
+/* Telas Muito Estreitas (<= 360px como Galaxy A0x, iPhone SE) */
+@media (max-width: 360px) {
+  .products-layout.grid-mode {
+    gap: 8px !important;
+  }
+  .grid-mode .prod-action-row {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+  .card-stepper-box {
+    width: 100% !important;
+    justify-content: space-between !important;
+  }
+  .btn-card-quote {
+    width: 100% !important;
+  }
+}
+
+/* ── 5. BOTTOM SHEET COM FÍSICA DE GESTOS (SWIPE-TO-CLOSE) ───── */
+.bottom-sheet {
+  touch-action: pan-y !important;
+  will-change: transform;
+}
+
+.bottom-sheet.dragging {
+  transition: none !important;
+}
+
+.sheet-handle-bar {
+  padding: 12px 0 8px !important;
+  touch-action: none;
+  cursor: grab;
+}
+
+.sheet-handle {
+  width: 48px !important;
+  height: 5px !important;
+  border-radius: var(--radius-full) !important;
+  background: var(--text-3) !important;
+  opacity: 0.4 !important;
+  transition: opacity 0.2s ease, width 0.2s ease;
+}
+
+.sheet-handle-bar:active .sheet-handle,
+.bottom-sheet.dragging .sheet-handle {
+  opacity: 0.8 !important;
+  width: 56px !important;
+}
+
+/* Floating Action Footer na Bottom Sheet */
+.sheet-floating-footer {
+  padding: 10px 16px calc(10px + var(--safe-bottom)) !important;
+  background: var(--bg-card) !important;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.12) !important;
+  gap: 8px !important;
+}
+
+.btn-sheet-cta {
+  height: 48px !important;
+  font-size: 0.92rem !important;
+  font-weight: 800 !important;
+}
+
+.stepper-box {
+  height: 48px !important;
+}
+
+.stepper-btn {
+  width: 42px !important;
+  font-size: 1.3rem !important;
+}
+
+/* ── 6. BOTTOM NAVIGATION ULTRA ERGONÔMICA ───────────────────── */
+.app-bottom-nav {
+  height: calc(62px + var(--safe-bottom)) !important;
+  padding-bottom: var(--safe-bottom) !important;
+  background: var(--bg-glass) !important;
+  backdrop-filter: blur(28px) saturate(190%) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(190%) !important;
+  border-top: 1px solid var(--border) !important;
+  box-shadow: 0 -3px 18px rgba(0, 0, 0, 0.08) !important;
+}
+
+.nav-tab-btn {
+  padding: 6px 0 !important;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.nav-tab-btn:active {
+  transform: scale(0.92) !important;
+}
+
+.nav-tab-icon {
+  font-size: 1.45rem !important;
+  margin-bottom: 2px !important;
+}
+
+.nav-cart-badge {
+  top: 4px !important;
+  right: calc(50% - 18px) !important;
+  min-width: 18px !important;
+  height: 18px !important;
+  font-size: 0.65rem !important;
+}
+
+/* ── 7. STICKY QUICK CART ACTION (BOTÃO FLUTUANTE DE RESUMO) ─── */
+.mobile-floating-cart-bar {
+  position: fixed;
+  bottom: calc(68px + var(--safe-bottom) + 10px);
+  left: 14px;
+  right: 14px;
+  z-index: 800;
+  background: linear-gradient(135deg, var(--brand), var(--brand-dark));
+  color: #fff;
+  border-radius: var(--radius-full);
+  padding: 10px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 8px 24px rgba(15, 69, 49, 0.45), 0 2px 6px rgba(0,0,0,0.2);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transform: translateY(120px);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.28s cubic-bezier(0.33, 1, 0.68, 1), opacity 0.2s ease;
+}
+
+.mobile-floating-cart-bar.show {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.mobile-floating-cart-bar:active {
+  transform: scale(0.98);
+}
+
+.m-float-cart-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.m-float-cart-count-pill {
+  background: var(--brand-light);
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 800;
+  padding: 3px 9px;
+  border-radius: var(--radius-full);
+}
+
+.m-float-cart-text {
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+.m-float-cart-btn-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: #a7f3d0;
+}
+
+@media (min-width: 768px) {
+  .mobile-floating-cart-bar {
+    display: none !important;
+  }
+}
+
+/* ── 8. OFFLINE STATUS PILL & TOAST FLUTUANTE ───────────────── */
+.offline-status-pill {
+  position: fixed;
+  top: calc(var(--header-h) + var(--safe-top) + 8px);
+  left: 50%;
+  transform: translateX(-50%) translateY(-60px);
+  z-index: 890;
+  background: rgba(30, 41, 59, 0.95);
+  backdrop-filter: blur(10px);
+  color: #f8fafc;
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  font-size: 0.76rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  pointer-events: none;
+  opacity: 0;
+  transition: transform 0.3s cubic-bezier(0.33, 1, 0.68, 1), opacity 0.25s ease;
+}
+
+.offline-status-pill.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+/* ── 9. MODAL DE INSTRUÇÃO DE INSTALAÇÃO NO IOS SAFARI ──────── */
+.ios-install-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1100;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.ios-install-modal-backdrop.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.ios-install-card {
+  background: var(--bg-sheet);
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  width: 100%;
+  max-width: 500px;
+  padding: 24px 20px calc(24px + var(--safe-bottom));
+  box-shadow: var(--shadow-sheet);
+  border-top: 1px solid var(--border);
+  transform: translateY(100%);
+  transition: transform 0.3s cubic-bezier(0.33, 1, 0.68, 1);
+  text-align: center;
+}
+
+.ios-install-modal-backdrop.show .ios-install-card {
+  transform: translateY(0);
+}
+
+.ios-install-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: left;
+  margin: 18px 0;
+}
+
+.ios-step-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--bg-card-sub);
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  color: var(--text);
+  font-weight: 600;
+}
+
+.ios-step-num {
+  width: 26px;
+  height: 26px;
+  border-radius: var(--radius-full);
+  background: var(--brand);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.78rem;
+  font-weight: 800;
+  flex-shrink: 0;
+}
