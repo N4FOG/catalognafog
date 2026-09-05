@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="auto">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  
+  <!-- Proteção Anti-Indexação para Manter Link Oculto e Exclusivo -->
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+
+  <title>Painel de Implementações & Roadmap v2 — JCV Química 2026 (Cloud & Kanban)</title>
+  <meta name="description" content="Dashboard interativo com sincronização em nuvem em tempo real, quadro Kanban dinâmico, modo apresentação e histórico de entregas.">
+  
+  <meta name="theme-color" content="#0f4531" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0a2318" media="(prefers-color-scheme: dark)">
+  <link rel="icon" type="image/png" sizes="192x192" href="img/icon-192.png">
+  <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+
+  <!-- Pré-carregamento de Fontes Locais (Zero Dependência Externa) -->
+  <link rel="preload" href="fonts/plus-jakarta-sans.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+
+  <!-- Inicialização Imediata do Tema (Anti-FOUC) -->
+  <script>
+    (function(){
+      try {
+        var t = localStorage.getItem('rawell_theme') || 'auto';
+        if (t !== 'auto') document.documentElement.setAttribute('data-theme', t);
+      } catch(e){}
+    })();
+  </script>
+
+  <!-- Estilos Isolados para o Roadmap 2.0 -->
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/roadmap2.css">
+</head>
+<body class="roadmap-page">
+
+  <!-- ══ TOP HEADER ══════════════════════════════════════════════ -->
+  <header class="dash-header">
+    <div class="roadmap-container dash-header-inner">
+      <!-- Marca / Logo -->
+      <a href="index.html" class="dash-brand" title="Ir para o Catálogo Oficial">
+        <div class="dash-brand-icon">🌿</div>
+        <div class="dash-brand-info">
+          <h1>
+            JCV Química
+            <span class="dash-brand-badge" id="dash-version-tag">v3.2 Cloud</span>
+          </h1>
+          <div class="dash-client-name">Painel Exclusivo de Implementações • <span id="dash-client-name">JCV Química / Valdecir</span></div>
+        </div>
+      </a>
+
+      <!-- Ações do Cabeçalho & Indicador Cloud -->
+      <div class="dash-header-actions">
+        <!-- Indicador de Status em Nuvem com clique para sincronizar -->
+        <div id="dash-cloud-badge" class="dash-cloud-status" onclick="fetchCloudRoadmap()" title="Clique para sincronizar com a nuvem agora">
+          <span class="cloud-pulse-dot"></span>
+          <span class="cloud-status-lbl">Nuvem Conectada</span>
+        </div>
+
+        <button class="btn-dash-action" id="btn-admin-toggle" onclick="openAdminLoginModal()" title="Acessar Modo Administrador">
+          🔒 Área Admin
+        </button>
+        <button class="btn-dash-action" id="btn-copy-link" title="Copiar link deste painel">
+          🔗 Compartilhar Link
+        </button>
+        <button class="btn-dash-action" id="theme-toggle-btn" onclick="toggleThemeMode()" title="Alternar Tema Claro/Escuro">
+          🌙
+        </button>
+        <a href="index.html" class="btn-dash-action btn-dash-primary" title="Abrir Catálogo">
+          🌿 Ver Catálogo Online
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ══ CONTEÚDO PRINCIPAL ══════════════════════════════════════ -->
+  <main class="roadmap-container">
+
+    <!-- Hero Card: Status Global & Progresso Geral -->
+    <section class="dash-hero">
+      <div class="dash-hero-card">
+        <div class="dash-hero-grid">
+          <div>
+            <div class="dash-status-pill">
+              <span class="pulse-dot"></span>
+              <span>Em Produção &amp; Sincronização Cloud Ativa</span>
+            </div>
+            <h2 class="dash-hero-title">Painel de Acompanhamento de Implementações</h2>
+            <p class="dash-hero-desc">
+              Acompanhe com total transparência o avanço em tempo real de cada funcionalidade, quadro Kanban de entregas, maturidade dos módulos e o histórico de todas as melhorias da JCV Química.
+            </p>
+          </div>
+
+          <!-- Widget de Progresso Circular -->
+          <div class="dash-progress-widget">
+            <div class="circle-progress-wrap">
+              <svg class="circle-progress-svg" viewBox="0 0 80 80">
+                <circle class="circle-bg" cx="40" cy="40" r="34"></circle>
+                <circle class="circle-fill" id="circle-fill-bar" cx="40" cy="40" r="34" stroke-dasharray="213.6" stroke-dashoffset="213.6"></circle>
+              </svg>
+              <div class="circle-progress-text">
+                <div class="circle-progress-val" id="circle-progress-val">0%</div>
+                <div class="circle-progress-lbl">Geral</div>
+              </div>
+            </div>
+
+            <div class="dash-stat-details">
+              <div class="stat-item">Versão: <strong id="dash-version-num">v3.2 Cloud</strong></div>
+              <div class="stat-item">Último Deploy: <strong id="dash-last-update">05/09/2026</strong></div>
+              <div class="stat-item">Ambiente: <strong>Oficial / Produção</strong></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Cards de Métricas Rápidas -->
+    <section class="dash-quick-stats">
+      <div class="dash-stat-card">
+        <div class="dash-stat-icon icon-done">✓</div>
+        <div class="dash-stat-content">
+          <h3 id="stat-done-count">0</h3>
+          <p>Concluídas / Entregues</p>
+        </div>
+      </div>
+
+      <div class="dash-stat-card">
+        <div class="dash-stat-icon icon-wip">⚡</div>
+        <div class="dash-stat-content">
+          <h3 id="stat-dev-count">0</h3>
+          <p>Em Desenvolvimento</p>
+        </div>
+      </div>
+
+      <div class="dash-stat-card">
+        <div class="dash-stat-icon icon-test">🧪</div>
+        <div class="dash-stat-content">
+          <h3 id="stat-test-count">0</h3>
+          <p>Em Homologação / Testes</p>
+        </div>
+      </div>
+
+      <div class="dash-stat-card">
+        <div class="dash-stat-icon icon-plan">💡</div>
+        <div class="dash-stat-content">
+          <h3 id="stat-plan-count">0</h3>
+          <p>Planejadas no Backlog</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tabs de Navegação -->
+    <section class="dash-tabs-nav">
+      <div class="dash-tabs-group">
+        <button class="dash-tab-btn active" data-tab="roadmap">
+          🚀 Roadmap &amp; Features
+          <span class="tab-badge-count" id="tab-roadmap-count">0</span>
+        </button>
+        <button class="dash-tab-btn" data-tab="changelog">
+          📜 Linha do Tempo / Changelog
+          <span class="tab-badge-count" id="tab-changelog-count">0</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ── CONTEÚDO TAB 1: ROADMAP & FEATURES ──────────────────── -->
+    <div class="dash-tab-content" id="tab-content-roadmap">
+
+      <!-- Seletor de Modo de Visualização (Grade vs Kanban + PDF) -->
+      <div class="dash-view-selector-bar">
+        <div class="view-toggle-group">
+          <button class="btn-view-toggle active" id="btn-view-grid" onclick="switchViewMode('grid')">
+            🔲 Visão em Grade
+          </button>
+          <button class="btn-view-toggle" id="btn-view-kanban" onclick="switchViewMode('kanban')">
+            📋 Quadro Kanban
+          </button>
+        </div>
+
+        <div style="display: flex; gap: 8px;">
+          <button class="btn-dash-action btn-quick-pdf" onclick="generateExecutivePdfReport()" title="Emitir Relatório Executivo Timbrado em PDF com 1 clique">
+            📄 Relatório PDF
+          </button>
+        </div>
+      </div>
+
+      <!-- Filtros e Busca -->
+      <div class="dash-filter-bar">
+        <div class="filter-pills-wrap">
+          <button class="filter-pill" data-filter="todos">
+            Todas <span class="filter-pill-count" id="count-pill-todos">0</span>
+          </button>
+          <button class="filter-pill active" data-filter="desenvolvimento">
+            ⚡ Em Andamento <span class="filter-pill-count" id="count-pill-desenvolvimento">0</span>
+          </button>
+          <button class="filter-pill" data-filter="testes">
+            🧪 Em Testes <span class="filter-pill-count" id="count-pill-testes">0</span>
+          </button>
+          <button class="filter-pill" data-filter="planejado">
+            💡 Planejadas <span class="filter-pill-count" id="count-pill-planejado">0</span>
+          </button>
+          <button class="filter-pill" data-filter="concluido">
+            ✅ Concluídas <span class="filter-pill-count" id="count-pill-concluido">0</span>
+          </button>
+        </div>
+
+        <div class="filter-search-box">
+          <span class="filter-search-icon">🔍</span>
+          <input type="search" id="dash-search-input" placeholder="Buscar funcionalidade..." autocomplete="off">
+        </div>
+      </div>
+
+      <!-- Filtros por Período de Datas & Intervalo Personalizado -->
+      <div class="dash-date-filter-bar">
+        <div class="date-presets-wrap">
+          <span class="date-filter-label">📅 Período:</span>
+          <button class="date-preset-btn active" data-period="todos">Todos</button>
+          <button class="date-preset-btn" data-period="1d">Últimas 24h</button>
+          <button class="date-preset-btn" data-period="7d">Últimos 7 dias</button>
+          <button class="date-preset-btn" data-period="15d">Últimos 15 dias</button>
+          <button class="date-preset-btn" data-period="30d">Últimos 30 dias</button>
+          <button class="date-preset-btn" data-period="90d">Últimos 90 dias</button>
+          <button class="date-preset-btn" data-period="2026">Ano 2026</button>
+          <button class="date-preset-btn btn-date-custom-toggle" data-period="custom-toggle" id="btn-toggle-custom-date">Personalizado ▾</button>
+        </div>
+
+        <!-- Seletor de Intervalo Personalizado (De / Até) -->
+        <div class="custom-date-range-wrap" id="custom-date-range-wrap" style="display: none;">
+          <div class="custom-date-field">
+            <label for="date-filter-from">De:</label>
+            <input type="date" id="date-filter-from" class="date-input-custom">
+          </div>
+          <div class="custom-date-field">
+            <label for="date-filter-to">Até:</label>
+            <input type="date" id="date-filter-to" class="date-input-custom">
+          </div>
+          <button type="button" class="btn-date-apply" id="btn-apply-date-range" title="Aplicar filtro por intervalo">Filtrar Datas</button>
+          <button type="button" class="btn-date-clear" id="btn-clear-date-range" title="Limpar filtro de datas">✕ Limpar</button>
+        </div>
+      </div>
+
+      <!-- 1. Grid Principal de Cards (Visão Grade) -->
+      <div class="roadmap-grid" id="roadmap-cards-grid">
+        <!-- Renderizado dinamicamente via JS -->
+      </div>
+
+      <!-- 2. Quadro Kanban Interativo (Visão Kanban) -->
+      <div class="kanban-board-container" id="kanban-board-grid" style="display: none;">
+        <!-- Renderizado dinamicamente via JS com 4 colunas -->
+      </div>
+
+    </div>
+
+    <!-- ── CONTEÚDO TAB 2: CHANGELOG / HISTÓRICO ────────────────── -->
+    <div class="dash-tab-content" id="tab-content-changelog" style="display: none;">
+      <div class="timeline-wrap" id="changelog-timeline-list">
+        <!-- Renderizado dinamicamente via JS -->
+      </div>
+    </div>
+
+    <!-- ══ CARD DE FEEDBACK & CONTATO DIRETO ═══════════════════════ -->
+    <section class="dash-footer-card">
+      <div class="footer-card-info">
+        <h2>Dúvidas, sugestões ou nova solicitação?</h2>
+        <p>Estamos disponíveis para alinhar qualquer detalhe técnico ou adicionar novos requisitos ao cronograma de desenvolvimento.</p>
+      </div>
+      <a href="#" id="btn-whatsapp-feedback" target="_blank" rel="noopener" class="btn-whatsapp-cta">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.694.062-2.18-.553-1.619-.669-2.677-2.316-2.757-2.423-.08-.106-.653-.87-0.653-1.662 0-.792.414-1.182.56-1.343.146-.162.32-.202.428-.202.107 0 .214.002.308.006.1.004.234-.038.366.279.136.327.464 1.132.506 1.217.042.086.07.186.012.3-.058.114-.088.186-.174.288-.086.101-.182.227-.26.305-.088.087-.18.182-.077.36.103.177.458.756.983 1.224.675.602 1.244.789 1.421.876.177.087.28.073.385-.047.105-.12.449-.523.57-.702.12-.18.24-.15.405-.089.164.06 1.042.492 1.22.582.179.089.298.134.341.209.043.074.043.433-.101.838z"/></svg>
+        <span>Falar com o Desenvolvedor</span>
+      </a>
+    </section>
+
+  </main>
+
+  <!-- Scripts Isolados do Roadmap 2.0 -->
+  <script src="js/roadmap2-data.js"></script>
+  <script src="js/roadmap2-admin.js"></script>
+  <script src="js/roadmap2.js"></script>
+</body>
+</html>

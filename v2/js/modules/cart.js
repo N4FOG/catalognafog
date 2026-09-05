@@ -517,6 +517,8 @@ function renderCartSheet() {
 
   if (!cartItems.length) {
     if (clearHeadBtn) clearHeadBtn.style.display = 'none';
+    const clientAccContainer = document.getElementById('cart-client-accordion-container');
+    if (clientAccContainer) clientAccContainer.innerHTML = '';
     area.innerHTML = `
       <div style="text-align:center; padding:50px 10px;">
         <div style="font-size:3.8rem; margin-bottom:12px;">🛒</div>
@@ -557,6 +559,7 @@ function renderCartSheet() {
     savedTerms = JSON.parse(localStorage.getItem('rawell_commercial_terms')) || {};
   } catch (e) {}
 
+  // 1. Área Rolável: Apenas a Lista de Produtos
   area.innerHTML = `
     <div class="cart-items-header-bar">
       <span class="cart-items-count-badge">📦 ${totalQty} ite${totalQty === 1 ? 'm' : 'ns'} no orçamento</span>
@@ -641,81 +644,86 @@ function renderCartSheet() {
         `;
       }).join('')}
     </div>
+  `;
 
-    <!-- Formulário do Cliente em Sanfona Inteligente -->
-    <div class="client-accordion-card ${clientFormExpanded ? 'expanded' : ''}" id="client-accordion-card">
-      <button type="button" class="client-accordion-head" id="client-accordion-head" onclick="toggleClientFormAccordion()" title="Clique para preencher ou alterar os dados do cliente">
-        <div class="client-accordion-title-wrap">
-          <span class="client-acc-icon">👤</span>
-          <div class="client-acc-text-box">
-            <strong class="client-acc-title">Dados para Contato Comercial</strong>
-            <span class="client-acc-status" id="client-acc-status-badge" style="color:${savedClient.nome ? '#059669' : 'var(--text-3)'};">
-              ${savedClient.nome ? `✓ ${savedClient.nome}` : 'Nome, CNPJ e Condições (Opcional)'}
-            </span>
-          </div>
-        </div>
-        <span class="toggle-arrow" id="client-acc-arrow">${clientFormExpanded ? '▲' : '▼'}</span>
-      </button>
-
-      <div class="client-accordion-body ${clientFormExpanded ? 'show' : ''}" id="client-accordion-body">
-        <div class="form-field-group" style="margin-top:8px;">
-          <label class="form-field-label">Nome Completo / Empresa <span class="req">*</span></label>
-          <input type="text" id="client-name" class="form-field-input" placeholder="Ex: João da Silva ou Fazenda Primavera" value="${savedClient.nome || ''}" oninput="onClientDataInput()">
-        </div>
-        <div class="form-field-group">
-          <label class="form-field-label">Vendedor Responsável (opcional)</label>
-          <div class="vendedor-select-wrap">
-            <select id="client-vendedor" class="form-field-input" onchange="onClientDataInput()">
-              <option value="">Nenhum vendedor selecionado (Geral)</option>
-              <option value="carlos" ${(savedClient.vendedor === 'carlos' || clientAttributedSeller === 'carlos') ? 'selected' : ''}>Carlos Silva</option>
-              <option value="vendedor-1" ${savedClient.vendedor === 'vendedor-1' ? 'selected' : ''}>Vendedor 1</option>
-              <option value="vendedor-2" ${savedClient.vendedor === 'vendedor-2' ? 'selected' : ''}>Vendedor 2</option>
-            </select>
-            <span class="vendedor-select-arrow">▼</span>
-          </div>
-        </div>
-        <div class="form-field-group">
-          <label class="form-field-label">CNPJ / Cidade / Estado (opcional)</label>
-          <input type="text" id="client-doc" class="form-field-input" placeholder="00.000.000/0001-00 ou Cascavel - PR" value="${savedClient.doc || ''}" oninput="onClientDataInput()">
-        </div>
-
-        ${isSeller ? `
-          <!-- Condições Comerciais Exclusivas do Vendedor -->
-          <div class="form-field-group">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
-              <label class="form-field-label" style="margin-bottom:0;">Condição de Pagamento</label>
-              <button type="button" class="btn-clear-payment ${savedTerms.pagamento ? 'show' : ''}" id="btn-clear-payment" onclick="clearPaymentSelection()">
-                ✕ Limpar
-              </button>
+  // 2. Card de Dados do Cliente / Proposta (Posicionado acima das Ações de Envio)
+  const clientAccContainer = document.getElementById('cart-client-accordion-container');
+  if (clientAccContainer) {
+    clientAccContainer.innerHTML = `
+      <div class="client-accordion-card ${clientFormExpanded ? 'expanded' : ''}" id="client-accordion-card">
+        <button type="button" class="client-accordion-head" id="client-accordion-head" onclick="toggleClientFormAccordion()" title="Clique para preencher ou alterar os dados do cliente">
+          <div class="client-accordion-title-wrap">
+            <span class="client-acc-icon">👤</span>
+            <div class="client-acc-text-box">
+              <strong class="client-acc-title">Dados para Contato Comercial</strong>
+              <span class="client-acc-status" id="client-acc-status-badge" style="color:${savedClient.nome ? '#059669' : 'var(--text-3)'};">
+                ${savedClient.nome ? `✓ ${savedClient.nome}` : 'Nome, CNPJ e Condições (Opcional)'}
+              </span>
             </div>
+          </div>
+          <span class="toggle-arrow" id="client-acc-arrow">${clientFormExpanded ? '▲' : '▼'}</span>
+        </button>
+
+        <div class="client-accordion-body ${clientFormExpanded ? 'show' : ''}" id="client-accordion-body">
+          <div class="form-field-group" style="margin-top:8px;">
+            <label class="form-field-label">Nome Completo / Empresa <span class="req">*</span></label>
+            <input type="text" id="client-name" class="form-field-input" placeholder="Ex: João da Silva ou Fazenda Primavera" value="${savedClient.nome || ''}" oninput="onClientDataInput()">
+          </div>
+          <div class="form-field-group">
+            <label class="form-field-label">Vendedor Responsável (opcional)</label>
             <div class="vendedor-select-wrap">
-              <select id="client-payment-terms" class="form-field-input" onchange="handlePaymentTermsChange(this.value)">
-                <option value="" ${!savedTerms.pagamento ? 'selected' : ''}>Nenhuma / A Combinar (Não definir)</option>
-                <option value="PIX / À Vista (À vista c/ desconto)" ${savedTerms.pagamento === 'PIX / À Vista (À vista c/ desconto)' ? 'selected' : ''}>⚡ PIX / À Vista (À vista c/ desconto)</option>
-                <option value="Boleto 30 Dias" ${savedTerms.pagamento === 'Boleto 30 Dias' ? 'selected' : ''}>📄 Boleto 30 Dias</option>
-                <option value="Boleto 30 / 60 Dias" ${savedTerms.pagamento === 'Boleto 30 / 60 Dias' ? 'selected' : ''}>📄 Boleto 30 / 60 Dias</option>
-                <option value="Boleto 30 / 60 / 90 Dias" ${savedTerms.pagamento === 'Boleto 30 / 60 / 90 Dias' ? 'selected' : ''}>📄 Boleto 30 / 60 / 90 Dias</option>
-                <option value="Cartão em até 3x" ${savedTerms.pagamento === 'Cartão em até 3x' ? 'selected' : ''}>💳 Cartão em até 3x</option>
-                <option value="A Combinar com Vendedor" ${savedTerms.pagamento === 'A Combinar com Vendedor' ? 'selected' : ''}>🤝 A Combinar c/ Representante</option>
+              <select id="client-vendedor" class="form-field-input" onchange="onClientDataInput()">
+                <option value="">Nenhum vendedor selecionado (Geral)</option>
+                <option value="carlos" ${(savedClient.vendedor === 'carlos' || clientAttributedSeller === 'carlos') ? 'selected' : ''}>Carlos Silva</option>
+                <option value="vendedor-1" ${savedClient.vendedor === 'vendedor-1' ? 'selected' : ''}>Vendedor 1</option>
+                <option value="vendedor-2" ${savedClient.vendedor === 'vendedor-2' ? 'selected' : ''}>Vendedor 2</option>
               </select>
               <span class="vendedor-select-arrow">▼</span>
             </div>
           </div>
-
           <div class="form-field-group">
-            <label class="form-field-label">Validade da Proposta</label>
-            <input type="text" id="client-proposal-validity" class="form-field-input" value="${savedTerms.validade || '10 dias'}" placeholder="10 dias" oninput="saveCommercialTerms()">
+            <label class="form-field-label">CNPJ / Cidade / Estado (opcional)</label>
+            <input type="text" id="client-doc" class="form-field-input" placeholder="00.000.000/0001-00 ou Cascavel - PR" value="${savedClient.doc || ''}" oninput="onClientDataInput()">
           </div>
-        ` : ''}
 
-        ${!isSeller ? `
-          <div style="text-align:center; padding:10px 4px 2px; font-size:0.78rem; color:var(--text-3);">
-            💼 É representante comercial? <button type="button" onclick="openSellerLoginModal()" style="color:var(--brand-light); font-weight:700; text-decoration:underline; cursor:pointer;">Acessar Modo Vendedor 🔒</button>
-          </div>
-        ` : ''}
+          ${isSeller ? `
+            <!-- Condições Comerciais Exclusivas do Vendedor -->
+            <div class="form-field-group">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                <label class="form-field-label" style="margin-bottom:0;">Condição de Pagamento</label>
+                <button type="button" class="btn-clear-payment ${savedTerms.pagamento ? 'show' : ''}" id="btn-clear-payment" onclick="clearPaymentSelection()">
+                  ✕ Limpar
+                </button>
+              </div>
+              <div class="vendedor-select-wrap">
+                <select id="client-payment-terms" class="form-field-input" onchange="handlePaymentTermsChange(this.value)">
+                  <option value="" ${!savedTerms.pagamento ? 'selected' : ''}>Nenhuma / A Combinar (Não definir)</option>
+                  <option value="PIX / À Vista (À vista c/ desconto)" ${savedTerms.pagamento === 'PIX / À Vista (À vista c/ desconto)' ? 'selected' : ''}>⚡ PIX / À Vista (À vista c/ desconto)</option>
+                  <option value="Boleto 30 Dias" ${savedTerms.pagamento === 'Boleto 30 Dias' ? 'selected' : ''}>📄 Boleto 30 Dias</option>
+                  <option value="Boleto 30 / 60 Dias" ${savedTerms.pagamento === 'Boleto 30 / 60 Dias' ? 'selected' : ''}>📄 Boleto 30 / 60 Dias</option>
+                  <option value="Boleto 30 / 60 / 90 Dias" ${savedTerms.pagamento === 'Boleto 30 / 60 / 90 Dias' ? 'selected' : ''}>📄 Boleto 30 / 60 / 90 Dias</option>
+                  <option value="Cartão em até 3x" ${savedTerms.pagamento === 'Cartão em até 3x' ? 'selected' : ''}>💳 Cartão em até 3x</option>
+                  <option value="A Combinar com Vendedor" ${savedTerms.pagamento === 'A Combinar com Vendedor' ? 'selected' : ''}>🤝 A Combinar c/ Representante</option>
+                </select>
+                <span class="vendedor-select-arrow">▼</span>
+              </div>
+            </div>
+
+            <div class="form-field-group">
+              <label class="form-field-label">Validade da Proposta</label>
+              <input type="text" id="client-proposal-validity" class="form-field-input" value="${savedTerms.validade || '10 dias'}" placeholder="10 dias" oninput="saveCommercialTerms()">
+            </div>
+          ` : ''}
+
+          ${!isSeller ? `
+            <div style="text-align:center; padding:10px 4px 2px; font-size:0.78rem; color:var(--text-3);">
+              💼 É representante comercial? <button type="button" onclick="openSellerLoginModal()" style="color:var(--brand-light); font-weight:700; text-decoration:underline; cursor:pointer;">Acessar Modo Vendedor 🔒</button>
+            </div>
+          ` : ''}
+        </div>
       </div>
-    </div>
-  `;
+    `;
+  }
 
   // Totalizador no rodapé do drawer se logado como vendedor
   let totalBox = document.getElementById('cart-seller-total-box');

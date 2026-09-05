@@ -211,7 +211,7 @@
   background: var(--bg-card-sub);
   border: 1.5px solid var(--border);
   border-radius: var(--radius-md);
-  margin-bottom: 16px;
+  margin-bottom: 0;
   overflow: hidden;
   transition: all var(--transition);
 }
@@ -223,7 +223,7 @@
 
 .client-accordion-head {
   width: 100%;
-  padding: 12px 14px;
+  padding: 10px 14px;
   background: transparent;
   border: none;
   display: flex;
@@ -277,9 +277,11 @@
 }
 
 .client-accordion-body.show {
-  max-height: 850px;
+  max-height: 380px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   opacity: 1;
-  padding: 4px 14px 14px;
+  padding: 8px 14px 14px;
   border-top: 1px solid var(--border-subtle);
 }
 
@@ -374,6 +376,9 @@
   position: relative;
   flex-shrink: 0;
   width: 100%;
+  max-height: 80vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   background: var(--bg-sheet);
   border-top: 1px solid var(--border);
   padding: 10px 16px calc(12px + var(--safe-bottom));
