@@ -1,4 +1,4 @@
-# 🌿 NAFOG — Catálogo Oficial & Sistema de Orçamentos 2026 (Rawell Química)
+# 🌿 JCV Química — Catálogo Oficial & Sistema de Orçamentos 2026 (Rawell Química)
 
 > **Versão Padrão Estável (Baseline v3.0)**  
 > Repositório Oficial: [https://github.com/N4FOG/catalognafog](https://github.com/N4FOG/catalognafog)

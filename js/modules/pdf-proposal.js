@@ -26,7 +26,7 @@ function renderPdfPaperContent(data) {
     <div class="pdf-doc-head">
       <div>
         <div style="font-size:22px; font-weight:800; color:#0f4531; display:flex; align-items:center; gap:8px;">
-          <span>🌿</span> NAFOG
+          <span>🌿</span> JCV Química
         </div>
         <div style="font-size:12px; color:#64748b; margin-top:2px;">Catálogo de Produtos &amp; Defensivos Especializados (Revenda Rawell)</div>
         <div style="font-size:11px; color:#64748b;">WhatsApp Comercial: (45) 99933-2563 • Paraná — Brasil</div>
@@ -168,7 +168,7 @@ function renderPdfPaperContent(data) {
 
       <div style="background:#f1f5f9; padding:10px 14px; border-radius:6px; margin-bottom:12px; font-size:11.5px; color:#334155;">
         <strong>📌 Termos &amp; Condições Gerais:</strong><br>
-        1. Proposta comercial gerada eletronicamente pelo Catálogo NAFOG (Revenda Autorizada Rawell Química).<br>
+        1. Proposta comercial gerada eletronicamente pelo Catálogo JCV Química (Revenda Autorizada Rawell Química).<br>
         2. Faturamento direto ou via distribuidor autorizado conforme disponibilidade logística regional.<br>
         3. Para pedidos de caixas fechadas ou cargas completas, consulte bonificações por volume.
       </div>
