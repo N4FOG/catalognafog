@@ -1,14 +1,14 @@
-﻿# 🌿 Rawell Química — Catálogo Digital & Plataforma Comercial V2.0
+﻿# 🌿 Rawell Química — Catálogo Digital & Plataforma Comercial V3.0 (Stable)
 
 <div align="center">
 
 ![Rawell Química](https://img.shields.io/badge/Rawell-Qu%C3%ADmica%202026-0f4531?style=for-the-badge&logo=leaf&logoColor=white)
-![Versão](https://img.shields.io/badge/Vers%C3%A3o-V2.0%20(Official)-10b981?style=for-the-badge)
+![Versão](https://img.shields.io/badge/Vers%C3%A3o-V3.0%20(Stable%20Official)-10b981?style=for-the-badge)
 ![PWA Ready](https://img.shields.io/badge/PWA-100%25%20Offline%20Ready-059669?style=for-the-badge&logo=pwa&logoColor=white)
-![Stack](https://img.shields.io/badge/Stack-Vanilla%20JS%20%7C%20HTML5%20%7C%20CSS3-1e293b?style=for-the-badge&logo=javascript&logoColor=F7DF1E)
+![Stack](https://img.shields.io/badge/Stack-Vanilla%20JS%20%7C%20HTML5%20%7C%20CSS3%20(Modular)-1e293b?style=for-the-badge&logo=javascript&logoColor=F7DF1E)
 ![Deploy](https://img.shields.io/badge/Deploy-Render%20%7C%20GitHub%20Pages-blue?style=for-the-badge)
 
-**Plataforma comercial e catálogo digital inteligente, desenvolvido para alta performance no campo e no desktop, com suporte a cotações em tempo real, propostas timbradas em PDF, motor de descontos dinâmico e rastreamento de auditoria antifraude.**
+**Plataforma comercial e catálogo digital inteligente, desenvolvido para alta performance no campo e no desktop, com suporte a cotações em tempo real, propostas timbradas em PDF, motor de descontos dinâmico, arquitetura modular e rastreamento de auditoria antifraude.**
 
 [🚀 Acessar Demonstração](#-deploy--hospedagem) • [📱 Recursos PWA](#-pwa--offline-first) • [💰 Motor Comercial](#-motor-comercial--sistema-de-descontos-dinâmicos) • [🛡️ Auditoria Antifraude](#-auditoria-antifraude--rastreamento-google-sheets) • [📋 Guia de Configuração](#-guia-de-configuração-rápida)
 
@@ -18,7 +18,7 @@
 
 ## 📑 Índice
 - [Visão Geral](#-visão-geral)
-- [Destaques da Versão 2.0](#-destaques-da-versão-20)
+- [Destaques da Versão 3.0 Estável](#-destaques-da-versão-30-estável)
 - [Arquitetura e Stack Tecnológica](#-arquitetura-e-stack-tecnológica)
 - [Mecânicas e Funcionalidades Detalhadas](#-mecânicas-e-funcionalidades-detalhadas)
   - [1. Progressive Web App (PWA) & Offline First](#1-progressive-web-app-pwa--offline-first)
@@ -49,14 +49,17 @@ Construído com foco em **zero dependências externas pesadas**, ele carrega ins
 
 ---
 
-## ⚡ Destaques da Versão 2.0
+## ⚡ Destaques da Versão 3.0 Estável
 
+* 🏗️ **Arquitetura 100% Modular**: Código desacoplado em 18 módulos especializados (`css/`, `js/data/`, `js/modules/`), com manutenção simplificada e carregamento ultra-rápido.
+* 💼 **App do Vendedor Master**: Painel completo do representante com histórico de cotações, filtros por status (*Aguardando, Negociação, Fechado, Perdido*) e gerador de links personalizados.
+* 📱 **Disparo Direto para Cliente**: Envio no WhatsApp direto para o número do cliente com validação de telefone.
+* ⚖️ **Ações Estratégicas em Pares**: Disparo no WhatsApp, Proposta PDF e Link Mágico com opções **COM Preço** e **SEM Preço**.
 * 🚀 **Motor de Descontos Dinâmicos**: Aplicação de descontos por item (%) e desconto global no pedido com chips de acesso rápido (5%, 10%, 15%).
 * 💰 **Edição de Preços em Tempo Real**: Vendedores autenticados podem personalizar valores unitários no carrinho com recálculo automático de margens.
 * 📄 **Proposta Comercial A4 Oficial**: Exportação instantânea de proposta timbrada, com numeração única (`RQ-2026-XXXX`), tabela de produtos, prazos e condições comerciais.
 * 🔍 **Split Modal no Desktop**: Visualização ampla em 2 colunas com galeria em alta definição e ficha técnica agronômica.
 * 🛡️ **Auditoria Google Apps Script Atualizada**: Discriminação de tráfego por canal (`Vendedor` vs `Base Orgânica`) e registro de links de garantia na planilha.
-* 📋 **Dashboard de Histórico**: Armazenamento local de cotações para rápida consulta, reenvio e recompra com 1 clique.
 
 ---
 
@@ -64,19 +67,19 @@ Construído com foco em **zero dependências externas pesadas**, ele carrega ins
 
 ```mermaid
 graph TD
-    A[Cliente / Representante] -->|Interação UX/UI| B(PWA App - Vanilla JS / HTML5 / CSS3)
-    B -->|Cache First / Stale While Revalidate| C[Service Worker - sw.js]
-    C -->|Offline Storage| D[Cache Storage - Imagens & Assets]
+    A[Cliente / Representante] -->|Interação UX/UI| B(PWA App - Vanilla JS Modular / HTML5 / CSS3)
+    B -->|Cache First / Stale While Revalidate| C[Service Worker - sw.js V5]
+    C -->|Offline Storage| D[Cache Storage - CSS, JS & Imagens]
     B -->|Persistência Local| E[LocalStorage - Carrinho & Histórico]
     B -->|Link Mágico Codificado| F[URL Query Params - Compartilhamento]
     B -->|Exportação Impressa / A4| G[CSS Print Engine - Proposta PDF]
     B -->|Webhook Assíncrono doPost| H[Google Apps Script Backend]
     H -->|Rastreamento em Tempo Real| I[Google Sheets - Planilha de Auditoria]
-    B -->|Mensagem Estruturada| J[WhatsApp API - Fechamento de Vendas]
+    B -->|Mensagem Estruturada| J[WhatsApp API - Fechamento Direto / Vendedor]
 ```
 
-* **Core Frontend**: HTML5 Semântico, CSS3 Moderno (Custom Properties, Flexbox, CSS Grid), Vanilla JavaScript (ES6+ modular).
-* **PWA & Offline**: Service Worker nativo com estratégias de cache para 32+ produtos e imagens WebP de alta fidelidade.
+* **Core Frontend**: HTML5 Semântico, CSS3 Modular (Custom Properties, Flexbox, CSS Grid), Vanilla JavaScript (ES6+ modular em `js/modules/`).
+* **PWA & Offline**: Service Worker nativo V5 com estratégias de cache para todos os módulos estáticos, 32+ produtos e imagens WebP.
 * **Backend Serverless**: Webhook em Google Apps Script (`doPost`/`doGet`) com lock de concorrência (`LockService`).
 * **Design & Tipografia**: Fontes *Plus Jakarta Sans* e *Inter*, ícones vetoriais SVG e microvibração tátil via `navigator.vibrate`.
 
@@ -125,10 +128,10 @@ graph TD
 ### 6. Carrinho Inteligente & Cart Footer Bar
 * **Drawer Lateral / Bottom Sheet**: Acesso rápido aos itens selecionados, controle de quantidade com incremento/decremento e exclusão intuitiva.
 * **Rodapé Fixo Unificado**: Resumo financeiro de fácil leitura com contraste de alta visibilidade.
-* **Grade de Ações Secundárias**:
-  - `📄 Gerar Proposta Comercial PDF`
-  - `🔗 Copiar Link Mágico de Compartilhamento`
-  - `💬 Enviar Cotação para o WhatsApp`
+* **Grade de Ações Secundárias em Pares**:
+  - `💬 WhatsApp COM Preço` vs `💬 WhatsApp SEM Preço`
+  - `📄 PDF COM Preço` vs `📄 PDF SEM Preço`
+  - `🔗 Link COM Preço` vs `🔗 Link SEM Preço`
   - `🗑️ Limpar Carrinho`
 
 ### 7. Proposta Comercial em PDF Timbrado Oficial
@@ -168,16 +171,15 @@ graph TD
 ```text
 VALDECIR/
 ├── nfog-catalogo/                   # 🌿 Repositório Principal (Git)
-│   ├── v2/                          # 🚀 Versão 2.0 (Plataforma Comercial Completa)
-│   │   ├── img/                     # Imagens dos produtos, ícones PWA e logos
+│   ├── v2/                          # 🚀 Versão 3.0 Estável (Arquitetura Modular)
+│   │   ├── css/                     # Estilos Modulares (base, layout, catalog, sheet-modal, cart, seller)
+│   │   ├── js/                      # JavaScript Modular (data/, modules/, app.js)
+│   │   ├── img/                     # Imagens dos produtos, marketing e ícones PWA
 │   │   ├── GUIA-AUDITORIA-GOOGLE-SHEETS.md  # Manual de ativação do webhook
 │   │   ├── google-apps-script.js    # Código fonte do backend para Google Sheets
-│   │   ├── index.html               # Aplicação Principal V2.0
-│   │   ├── manifest.json            # Manifesto PWA da Versão 2
-│   │   └── sw.js                    # Service Worker V2 com cache offline
-│   ├── css/                         # Folhas de estilo modulares
-│   ├── js/                          # Scripts auxiliares e dados de catálogo
-│   ├── img/                         # Assets globais de imagens
+│   │   ├── index.html               # Aplicação Principal V3.0
+│   │   ├── manifest.json            # Manifesto PWA da Versão 3
+│   │   └── sw.js                    # Service Worker V5 com cache offline modular
 │   ├── index.html                   # Entrada principal do catálogo
 │   ├── manifest.json                # Manifesto PWA raiz
 │   ├── sw.js                        # Service Worker raiz
@@ -189,7 +191,7 @@ VALDECIR/
 ## ⚙️ Guia de Configuração Rápida
 
 ### 1. Configurar Dados da Empresa e WhatsApp
-No arquivo `v2/index.html`, localize o bloco de configuração:
+No arquivo `v2/js/data/config.js`, personalize os parâmetros centrais:
 
 ```javascript
 const CONFIG = {
@@ -200,14 +202,6 @@ const CONFIG = {
   auditWebhookUrl: 'https://script.google.com/macros/s/SEU_SCRIPT_ID/exec' // URL do Google Apps Script
 };
 ```
-
-### 2. Ativar a Planilha de Auditoria (Google Sheets)
-1. Crie uma nova planilha no [Google Sheets](https://sheets.new).
-2. Vá em **Extensões** > **Apps Script** e cole o código de `v2/google-apps-script.js`.
-3. Clique em **Implantar** > **Nova Implantação** > Tipo: **App da Web**.
-4. Configure *Quem pode acessar* como **Qualquer pessoa** e confirme a autorização.
-5. Copie a URL gerada e insira no campo `auditWebhookUrl` do `CONFIG`.
-6. *(Para o guia detalhado, consulte o arquivo `v2/GUIA-AUDITORIA-GOOGLE-SHEETS.md`)*.
 
 ---
 
@@ -224,27 +218,27 @@ O projeto é 100% estático e pode ser hospedado gratuitamente e com deploy cont
 - Vá nas configurações do repositório no GitHub > **Pages**.
 - Selecione a branch `main` e a pasta `/ (root)` e salve.
 
-### Opção 3: Vercel / Netlify / Cloudflare Pages
-- Basta conectar o repositório GitHub e realizar o deploy automático sem necessidade de build.
-
 ---
 
 ## 📜 Changelog
 
-### [v2.0.0] - 2026-09-02
-* ✨ **Motor de Descontos Dinâmicos**: Desconto individual por item (%) e desconto global no pedido com chips de 5%, 10% e 15%.
-* 💰 **Negociação em Tempo Real**: Edição de valor unitário no carrinho para representantes.
-* 📄 **Proposta Comercial em PDF Timbrado**: Exportação formal com layout A4 timbrado e numeração `RQ-2026-XXXX`.
-* 🛡️ **Auditoria Anti-Fraude Aprimorada**: Rastreamento por canal (`Vendedor` vs `Base Orgânica`) e links de garantia na planilha.
-* 📋 **Dashboard de Histórico**: Gestão local de orçamentos gerados com reabertura de carrinho em 1 clique.
-* 🔍 **Split Modal no Desktop**: Visualização ampla de galeria HD + ficha agronômica em 2 colunas.
+### [v3.0.0] - 2026-09-04 (🏆 Versão Estável Oficial)
+* 🏗️ **Arquitetura 100% Modular**: Desacoplamento completo do código em 18 módulos (`v2/css/` e `v2/js/modules/`).
+* 💼 **App do Vendedor Master**: Painel do representante com abas de gestão de cotações, status e links exclusivos.
+* 📱 **Disparo Direto para Cliente**: Modal com validação de telefone para envio direto no WhatsApp.
+* ⚖️ **Ações em Pares (Com vs Sem Preço)**: WhatsApp, Proposta PDF e Links Mágicos estruturados.
+* ⚡ **Service Worker V5**: Cache offline automatizado para toda a estrutura modular.
+* 🖼️ **Assets de Marketing**: Artes nos formatos Stories 9:16 para campanhas e status.
 
-### [v1.2.0] - 2026-09-02
-* 🌾 **Ficha Consultiva 3 Pilares**: Recomendações técnicas, modo de ação e segurança para todos os produtos.
-* 🔒 **Modo Representante com PIN**: Acesso restrito a preços de tabela e margens.
+### [v2.1.0] - 2026-09-04
+* 💼 **App do Vendedor**: Primeira versão do painel de orçamentos e ações duplas.
+
+### [v2.0.0] - 2026-09-02
+* ✨ **Motor de Descontos Dinâmicos**: Desconto por item (%) e desconto global no pedido.
+* 📄 **Proposta Comercial A4 Timbrada**: Layout timbrado com numeração única.
 
 ### [v1.0.0] - 2026-08-28
-* 📱 **Lançamento Inicial**: Catálogo digital responsivo, PWA com cache offline, galeria interativa e cotação via WhatsApp.
+* 📱 **Lançamento Inicial**: Catálogo digital responsivo, PWA e cotação via WhatsApp.
 
 ---
 
