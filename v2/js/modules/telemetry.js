@@ -1,7 +1,22 @@
 // ═══════════════════════════════════════════════════════════════
 //  SISTEMA DE AUDITORIA & TELEMETRIA GOOGLE SHEETS
 // ═══════════════════════════════════════════════════════════════
+let _telemetryDebounceTimer = null;
+
 function logSellerActivity(tipoEvento, dadosExtras = {}) {
+  const isHighFrequency = tipoEvento.includes('Orçamento') || tipoEvento.includes('Visualização');
+  
+  if (isHighFrequency) {
+    clearTimeout(_telemetryDebounceTimer);
+    _telemetryDebounceTimer = setTimeout(() => {
+      _dispatchTelemetryPayload(tipoEvento, dadosExtras);
+    }, 1200);
+  } else {
+    _dispatchTelemetryPayload(tipoEvento, dadosExtras);
+  }
+}
+
+function _dispatchTelemetryPayload(tipoEvento, dadosExtras = {}) {
   try {
     const webhookUrl = CONFIG.auditWebhookUrl || '';
     if (!webhookUrl || !webhookUrl.startsWith('http')) return;

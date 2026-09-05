@@ -133,7 +133,7 @@ function renderProductList() {
       return `
         <div class="prod-card" onclick="openProductSheet(${p.id})">
           <div class="prod-thumb-box">
-            <img src="${p.imagens[0]}" alt="${p.nome}" loading="lazy">
+            <img src="${p.imagens[0]}" alt="${p.nome}" width="200" height="200" loading="lazy" decoding="async">
             ${p.destaque ? '<span class="badge-star">⭐ Top Vendas</span>' : ''}
             <span class="badge-cat-emoji" title="${catObj ? catObj.nome : ''}">${catObj ? catObj.icone : '🌿'}</span>
             <span class="badge-form-pill">${formObj ? formObj.icone + ' ' + formObj.nome.split(' ')[0] : '⚡'}</span>
@@ -162,7 +162,7 @@ function renderProductList() {
                   <button class="card-step-btn" onclick="adjustCardQty(${p.id}, 1)" title="Aumentar">+</button>
                 </div>
                 <button class="btn-card-quote ${inCart ? 'in-cart' : ''}" onclick="addFromCard(${p.id})" title="Adicionar à cotação">
-                  ${inCart ? `✓ Cotar (${cartItem.quantidade})` : '+ Cotar'}
+                  ${inCart ? `Cotar (${cartItem.quantidade})` : '+ Cotar'}
                 </button>
               </div>
             </div>
@@ -173,7 +173,7 @@ function renderProductList() {
       return `
         <div class="prod-card" onclick="openProductSheet(${p.id})">
           <div class="prod-thumb-box">
-            <img src="${p.imagens[0]}" alt="${p.nome}" loading="lazy">
+            <img src="${p.imagens[0]}" alt="${p.nome}" width="200" height="200" loading="lazy" decoding="async">
             ${p.destaque ? '<span class="badge-star">⭐ Top Vendas</span>' : ''}
             <span class="badge-form-pill">${formObj ? formObj.icone + ' ' + formObj.nome : '⚡'}</span>
           </div>
@@ -204,7 +204,7 @@ function renderProductList() {
                   <button class="card-step-btn" onclick="adjustCardQty(${p.id}, 1, 'card-qty-list-')" title="Aumentar">+</button>
                 </div>
                 <button class="btn-card-quote ${inCart ? 'in-cart' : ''}" onclick="addFromCard(${p.id}, 'card-qty-list-')" style="padding: 0 16px;">
-                  ${inCart ? `✓ Cotar (${cartItem.quantidade})` : '+ Cotar'}
+                  ${inCart ? `Cotar (${cartItem.quantidade})` : '+ Cotar'}
                 </button>
               </div>
             </div>
@@ -324,67 +324,8 @@ document.addEventListener('keydown', (e) => {
 });
 
 // ═══════════════════════════════════════════════════════════════
-//  MODAL / BOTTOM SHEET DE DETALHES DO PRODUTO
+//  MODAL / BOTTOM SHEET DE DETALHES DO PRODUTO (UTILITÁRIOS & ESTADO)
 // ═══════════════════════════════════════════════════════════════
-function openProductSheet(id) {
-  hapticFeedback(20);
-  const p = PRODUTOS.find(item => item.id === id);
-  if (!p) return;
-
-  appState.currentSheetProdId = id;
-  appState.sheetQty = 1;
-  document.getElementById('sheet-qty-val').textContent = '1';
-
-  const catObj = CATEGORIAS.find(c => c.id === p.categoria);
-  const formObj = FORMULACOES.find(f => f.id === p.tipo_formulacao);
-
-  const body = document.getElementById('product-sheet-body');
-  body.innerHTML = `
-    <div class="sheet-prod-img-box">
-      <img src="${p.imagens[0]}" alt="${p.nome}">
-    </div>
-
-    <div>
-      <div class="sheet-prod-meta">
-        <div class="sheet-prod-ref">CÓDIGO: ${p.referencia}</div>
-        <h2 class="sheet-prod-name">${p.nome}</h2>
-        <div class="sheet-badges-row">
-          ${p.destaque ? '<span class="sheet-pill star">⭐ Mais Vendido</span>' : ''}
-          <span class="sheet-pill cat">${catObj ? catObj.icone + ' ' + catObj.nome : 'Geral'}</span>
-          <span class="sheet-pill form">${formObj ? formObj.icone + ' ' + formObj.nome : 'Formulação'}</span>
-        </div>
-      </div>
-
-      <!-- Tabs Nav -->
-      <div class="sheet-tabs-nav">
-        <button class="sheet-tab-btn active" onclick="switchSheetTab(this, 'st-desc')">Descrição</button>
-        <button class="sheet-tab-btn" onclick="switchSheetTab(this, 'st-chars')">Vantagens</button>
-        <button class="sheet-tab-btn" onclick="switchSheetTab(this, 'st-alvos')">Alvos (${p.alvos.length})</button>
-      </div>
-
-      <!-- Tabs Content -->
-      <div class="sheet-tab-content active" id="st-desc">
-        <div class="sheet-desc-text">${p.descricao_longa}</div>
-      </div>
-
-      <div class="sheet-tab-content" id="st-chars">
-        <div class="sheet-list-items">
-          ${p.caracteristicas.map(c => `<div class="sheet-list-item">${c}</div>`).join('')}
-        </div>
-      </div>
-
-      <div class="sheet-tab-content" id="st-alvos">
-        <div class="sheet-alvos-cloud">
-          ${p.alvos.map(a => `<span class="alvo-chip">🎯 ${a}</span>`).join('')}
-        </div>
-      </div>
-    </div>
-  `;
-
-  document.getElementById('product-sheet-backdrop').classList.add('show');
-  document.getElementById('product-bottom-sheet').classList.add('show');
-  document.body.style.overflow = 'hidden';
-}
 
 function closeProductSheet() {
   document.getElementById('product-sheet-backdrop').classList.remove('show');

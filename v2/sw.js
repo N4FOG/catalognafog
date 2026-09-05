@@ -2,7 +2,7 @@
 //  JCV QUÍMICA v3.0 — Service Worker (Cache Offline & PWA)
 // ═══════════════════════════════════════════════════════════════
 
-const CACHE_NAME = 'jcv-quimica-cache-v8';
+const CACHE_NAME = 'jcv-quimica-cache-v9';
 const STATIC_ASSETS = [
   './',
   './index.html',
@@ -64,13 +64,15 @@ const STATIC_ASSETS = [
   './img/produtos/p32-oleo-mineral-parafinado-100ml.webp'
 ];
 
-// Install: cache static assets
+// Install: cache static assets de forma tolerante a falhas parciais
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME).then(cache => {
-      return cache.addAll(STATIC_ASSETS);
-    }).catch(err => {
-      console.warn('Cache pre-fetch partial:', err);
+      return Promise.allSettled(
+        STATIC_ASSETS.map(url =>
+          cache.add(url).catch(err => console.warn('Cache fetch skipped:', url, err))
+        )
+      );
     })
   );
   self.skipWaiting();

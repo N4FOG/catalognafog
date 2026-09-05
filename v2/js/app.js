@@ -11,16 +11,6 @@ document.addEventListener('DOMContentLoaded', () => {
   renderStoriesCategories();
   renderProductList();
 
-  // Sincronização dos campos de busca
-  const mSearchInput = document.getElementById('main-search-input');
-  const dSearchInput = document.getElementById('desktop-search-input');
-  if (mSearchInput) {
-    mSearchInput.addEventListener('input', (e) => handleSearchChange(e.target.value));
-  }
-  if (dSearchInput) {
-    dSearchInput.addEventListener('input', (e) => handleSearchChange(e.target.value));
-  }
-
   // Registro do Service Worker (Offline PWA)
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('sw.js').then(reg => {
