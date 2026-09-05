@@ -4,5 +4,11 @@ Thumbs.db
 *.tmp
 .vscode/
 .idea/
-
 *.bak
+
+# Node dependencies & cache
+node_modules/
+.vite/
+.tmp/
+dist-ssr/
+*.tsbuildinfo
