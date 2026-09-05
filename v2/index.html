@@ -271,7 +271,12 @@
   </div>
   <div class="sheet-head">
     <span class="sheet-title-tag">MEU ORÇAMENTO — JCV QUÍMICA</span>
-    <button class="sheet-close-btn" onclick="closeCartSheet()">✕</button>
+    <div style="display:flex; align-items:center; gap:8px;">
+      <button class="btn-clear-cart-head" id="btn-clear-cart-head" onclick="clearCart()" title="Limpar todos os produtos do orçamento" style="display:none;">
+        <span style="font-size:0.9rem;">🗑️</span> Limpar Carrinho
+      </button>
+      <button class="sheet-close-btn" onclick="closeCartSheet()">✕</button>
+    </div>
   </div>
 
   <div class="cart-sheet-body" id="cart-sheet-body">

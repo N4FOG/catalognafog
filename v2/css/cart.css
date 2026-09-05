@@ -14,6 +14,66 @@
   overscroll-behavior-y: contain;
 }
 
+/* Botão de Limpeza do Carrinho no Topo / Header */
+.btn-clear-cart-head {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: var(--danger);
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 5px 10px;
+  border-radius: var(--radius-xs);
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.btn-clear-cart-head:hover {
+  background: var(--danger);
+  color: #fff;
+  border-color: var(--danger);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.25);
+}
+
+/* Barra Superior da Lista de Itens */
+.cart-items-header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.cart-items-count-badge {
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: var(--text-2);
+}
+
+.btn-clear-cart-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  color: var(--danger);
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: var(--radius-xs);
+  transition: all var(--transition);
+}
+
+.btn-clear-cart-link:hover {
+  background: rgba(239, 68, 68, 0.12);
+  text-decoration: underline;
+}
+
 .cart-items-wrap {
   display: flex;
   flex-direction: column;
@@ -146,22 +206,81 @@
   box-shadow: 0 2px 6px rgba(5, 150, 105, 0.3);
 }
 
-/* Formulário de Dados */
-.client-form-card {
+/* Card Expansível de Dados do Cliente / Proposta */
+.client-accordion-card {
   background: var(--bg-card-sub);
-  border: 1px solid var(--border);
+  border: 1.5px solid var(--border);
   border-radius: var(--radius-md);
-  padding: 16px;
+  margin-bottom: 16px;
+  overflow: hidden;
+  transition: all var(--transition);
 }
 
-.form-head-title {
-  font-size: 0.9rem;
-  font-weight: 800;
-  color: var(--text);
-  margin-bottom: 14px;
+.client-accordion-card.expanded {
+  border-color: var(--brand-light);
+  box-shadow: 0 4px 16px rgba(15, 69, 49, 0.08);
+}
+
+.client-accordion-head {
+  width: 100%;
+  padding: 12px 14px;
+  background: transparent;
+  border: none;
   display: flex;
   align-items: center;
-  gap: 6px;
+  justify-content: space-between;
+  cursor: pointer;
+  text-align: left;
+  transition: background var(--transition);
+}
+
+.client-accordion-head:hover {
+  background: var(--brand-pale);
+}
+
+.client-accordion-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.client-acc-icon {
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.client-acc-text-box {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.client-acc-title {
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.client-acc-status {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text-3);
+  transition: color var(--transition);
+}
+
+.client-accordion-body {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  padding: 0 14px;
+  transition: max-height 0.3s cubic-bezier(0.33, 1, 0.68, 1), opacity 0.22s ease, padding 0.22s ease;
+}
+
+.client-accordion-body.show {
+  max-height: 850px;
+  opacity: 1;
+  padding: 4px 14px 14px;
+  border-top: 1px solid var(--border-subtle);
 }
 
 .form-field-group {
@@ -268,10 +387,64 @@
 .cart-share-actions-wrap {
   display: flex;
   flex-direction: column;
-  gap: 7px;
+  gap: 6px;
   width: 100%;
 }
 
+/* Botão de Expansão / Sanfona de Ações Secundárias */
+.btn-toggle-cart-actions {
+  width: 100%;
+  height: 36px;
+  background: var(--bg-card-sub);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-2);
+  font-size: 0.78rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.btn-toggle-cart-actions:hover {
+  background: var(--brand-pale);
+  border-color: var(--brand-light);
+  color: var(--brand-mid);
+}
+
+.btn-toggle-cart-actions.expanded {
+  background: var(--bg-card);
+  border-color: var(--brand-light);
+  color: var(--brand-mid);
+}
+
+.toggle-arrow {
+  font-size: 0.72rem;
+  color: var(--text-3);
+  transition: transform 0.2s ease;
+}
+
+.btn-toggle-cart-actions.expanded .toggle-arrow {
+  color: var(--brand-mid);
+}
+
+/* Área Expansível com Transição Suave */
+.cart-secondary-actions-collapse {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.28s cubic-bezier(0.33, 1, 0.68, 1), opacity 0.2s ease, margin 0.2s ease;
+  margin-top: 0;
+}
+
+.cart-secondary-actions-collapse.show {
+  max-height: 450px;
+  opacity: 1;
+  margin-top: 4px;
+}
 
 /* ═══════════════════════════════════════════════════════════════
    PARES DE AÇÕES DE COMPARTILHAMENTO (WHATSAPP, PDF, LINK)

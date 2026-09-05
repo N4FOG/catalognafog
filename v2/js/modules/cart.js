@@ -120,13 +120,36 @@ function removeCartItem(id) {
   });
 }
 
+function clearCart() {
+  if (!cartItems || !cartItems.length) return;
+  hapticFeedback(25);
+
+  const confirmed = confirm('Deseja realmente remover todos os produtos do orçamento?');
+  if (!confirmed) return;
+
+  const totalRemoved = cartItems.reduce((acc, i) => acc + i.quantidade, 0);
+  cartItems = [];
+  cartGlobalDiscountPercent = 0;
+  saveCart();
+  renderCartSheet();
+  renderProductList();
+  showToast('🗑️ Orçamento esvaziado com sucesso!');
+  logSellerActivity('Limpou o Orçamento', {
+    total_itens: totalRemoved,
+    detalhes_extras: 'Todos os produtos foram removidos do orçamento'
+  });
+}
+
 function updateBadges() {
   const total = cartItems.reduce((acc, item) => acc + item.quantidade, 0);
   const headBadge = document.getElementById('header-cart-badge');
   const btmBadge = document.getElementById('bottom-cart-badge');
   const headPill = document.getElementById('header-cart-pill');
+  const clearHeadBtn = document.getElementById('btn-clear-cart-head');
 
   if (headPill) headPill.textContent = total;
+  if (clearHeadBtn) clearHeadBtn.style.display = total > 0 ? 'inline-flex' : 'none';
+
   [headBadge, btmBadge].forEach(b => {
     if (!b) return;
     b.textContent = total;
@@ -412,17 +435,88 @@ function clearPaymentSelection() {
   }
 }
 
+let cartSecondaryActionsExpanded = false;
+
+function toggleCartSecondaryActions() {
+  hapticFeedback(12);
+  cartSecondaryActionsExpanded = !cartSecondaryActionsExpanded;
+  const collapseEl = document.getElementById('cart-secondary-actions-collapse');
+  const toggleBtn = document.getElementById('btn-toggle-cart-actions');
+  const arrowEl = document.getElementById('toggle-cart-actions-arrow');
+  const labelEl = document.getElementById('toggle-cart-actions-label');
+
+  if (collapseEl) {
+    collapseEl.classList.toggle('show', cartSecondaryActionsExpanded);
+  }
+  if (toggleBtn) {
+    toggleBtn.classList.toggle('expanded', cartSecondaryActionsExpanded);
+  }
+  if (arrowEl) {
+    arrowEl.textContent = cartSecondaryActionsExpanded ? '▲' : '▼';
+  }
+  if (labelEl) {
+    const isSeller = isSellerLoggedIn();
+    if (isSeller) {
+      labelEl.textContent = cartSecondaryActionsExpanded ? 'Ocultar opções de envio' : '⚡ Mais Opções de Envio (PDF, Links, Whats)';
+    } else {
+      labelEl.textContent = cartSecondaryActionsExpanded ? 'Ocultar opções' : '⚡ Mais Opções (PDF / Link)';
+    }
+  }
+}
+
+let clientFormExpanded = false;
+
+function toggleClientFormAccordion(forcedState) {
+  hapticFeedback(10);
+  if (typeof forcedState === 'boolean') {
+    clientFormExpanded = forcedState;
+  } else {
+    clientFormExpanded = !clientFormExpanded;
+  }
+
+  const card = document.getElementById('client-accordion-card');
+  const body = document.getElementById('client-accordion-body');
+  const arrow = document.getElementById('client-acc-arrow');
+
+  if (card) card.classList.toggle('expanded', clientFormExpanded);
+  if (body) body.classList.toggle('show', clientFormExpanded);
+  if (arrow) arrow.textContent = clientFormExpanded ? '▲' : '▼';
+}
+
+function onClientDataInput() {
+  const nameInput = document.getElementById('client-name');
+  const docInput = document.getElementById('client-doc');
+  const vendSelect = document.getElementById('client-vendedor');
+  const statusBadge = document.getElementById('client-acc-status-badge');
+
+  const nome = nameInput ? nameInput.value.trim() : '';
+  const doc = docInput ? docInput.value.trim() : '';
+  const vendedor = vendSelect ? vendSelect.value : '';
+
+  try {
+    localStorage.setItem(CLIENT_STORAGE_KEY, JSON.stringify({ nome, vendedor, doc }));
+  } catch(e) {}
+
+  if (statusBadge) {
+    statusBadge.textContent = nome ? `✓ ${nome}` : 'Nome, CNPJ e Condições';
+    statusBadge.style.color = nome ? '#059669' : 'var(--text-3)';
+  }
+}
+
 function renderCartSheet() {
   const isSeller = isSellerLoggedIn();
   const area = document.getElementById('cart-content-area');
   const footerBar = document.getElementById('cart-footer-bar');
   const summaryQty = document.getElementById('cart-summary-qty');
   const summaryLine = document.querySelector('.cart-summary-line');
+  const clearHeadBtn = document.getElementById('btn-clear-cart-head');
+
   if (summaryLine) {
     summaryLine.style.display = isSeller ? 'none' : 'flex';
   }
 
   if (!cartItems.length) {
+    if (clearHeadBtn) clearHeadBtn.style.display = 'none';
     area.innerHTML = `
       <div style="text-align:center; padding:50px 10px;">
         <div style="font-size:3.8rem; margin-bottom:12px;">🛒</div>
@@ -437,6 +531,7 @@ function renderCartSheet() {
     return;
   }
 
+  if (clearHeadBtn) clearHeadBtn.style.display = 'inline-flex';
   footerBar.style.display = 'flex';
   const totalQty = cartItems.reduce((acc, i) => acc + i.quantidade, 0);
   summaryQty.textContent = `${totalQty} ite${totalQty === 1 ? 'm' : 'ns'} selecionado${totalQty === 1 ? '' : 's'}`;
@@ -463,6 +558,13 @@ function renderCartSheet() {
   } catch (e) {}
 
   area.innerHTML = `
+    <div class="cart-items-header-bar">
+      <span class="cart-items-count-badge">📦 ${totalQty} ite${totalQty === 1 ? 'm' : 'ns'} no orçamento</span>
+      <button type="button" class="btn-clear-cart-link" onclick="clearCart()" title="Limpar todos os produtos do orçamento">
+        <span>🗑️</span> Limpar Orçamento
+      </button>
+    </div>
+
     <div class="cart-items-wrap">
       ${cartItems.map(item => {
         const pUnit = (item.preco_unitario !== undefined) ? item.preco_unitario : (item.preco_base || 0);
@@ -540,65 +642,78 @@ function renderCartSheet() {
       }).join('')}
     </div>
 
-    <!-- Formulário do Cliente -->
-    <div class="client-form-card">
-      <div class="form-head-title">
-        <span>👤</span> Dados para Contato Comercial
-      </div>
-      <div class="form-field-group">
-        <label class="form-field-label">Nome Completo / Empresa <span class="req">*</span></label>
-        <input type="text" id="client-name" class="form-field-input" placeholder="Ex: João da Silva ou Fazenda Primavera" value="${savedClient.nome || ''}">
-      </div>
-      <div class="form-field-group">
-        <label class="form-field-label">Vendedor Responsável (opcional)</label>
-        <div class="vendedor-select-wrap">
-          <select id="client-vendedor" class="form-field-input">
-            <option value="">Nenhum vendedor selecionado (Geral)</option>
-            <option value="carlos" ${(savedClient.vendedor === 'carlos' || clientAttributedSeller === 'carlos') ? 'selected' : ''}>Carlos Silva</option>
-            <option value="vendedor-1" ${savedClient.vendedor === 'vendedor-1' ? 'selected' : ''}>Vendedor 1</option>
-            <option value="vendedor-2" ${savedClient.vendedor === 'vendedor-2' ? 'selected' : ''}>Vendedor 2</option>
-          </select>
-        </div>
-      </div>
-      <div class="form-field-group">
-        <label class="form-field-label">CNPJ / Cidade / Estado (opcional)</label>
-        <input type="text" id="client-doc" class="form-field-input" placeholder="00.000.000/0001-00 ou Cascavel - PR" value="${savedClient.doc || ''}">
-      </div>
-
-      ${isSeller ? `
-        <!-- Condições Comerciais Exclusivas do Vendedor -->
-        <div class="form-field-group">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
-            <label class="form-field-label" style="margin-bottom:0;">Condição de Pagamento</label>
-            <button type="button" class="btn-clear-payment ${savedTerms.pagamento ? 'show' : ''}" id="btn-clear-payment" onclick="clearPaymentSelection()">
-              ✕ Limpar
-            </button>
+    <!-- Formulário do Cliente em Sanfona Inteligente -->
+    <div class="client-accordion-card ${clientFormExpanded ? 'expanded' : ''}" id="client-accordion-card">
+      <button type="button" class="client-accordion-head" id="client-accordion-head" onclick="toggleClientFormAccordion()" title="Clique para preencher ou alterar os dados do cliente">
+        <div class="client-accordion-title-wrap">
+          <span class="client-acc-icon">👤</span>
+          <div class="client-acc-text-box">
+            <strong class="client-acc-title">Dados para Contato Comercial</strong>
+            <span class="client-acc-status" id="client-acc-status-badge" style="color:${savedClient.nome ? '#059669' : 'var(--text-3)'};">
+              ${savedClient.nome ? `✓ ${savedClient.nome}` : 'Nome, CNPJ e Condições (Opcional)'}
+            </span>
           </div>
+        </div>
+        <span class="toggle-arrow" id="client-acc-arrow">${clientFormExpanded ? '▲' : '▼'}</span>
+      </button>
+
+      <div class="client-accordion-body ${clientFormExpanded ? 'show' : ''}" id="client-accordion-body">
+        <div class="form-field-group" style="margin-top:8px;">
+          <label class="form-field-label">Nome Completo / Empresa <span class="req">*</span></label>
+          <input type="text" id="client-name" class="form-field-input" placeholder="Ex: João da Silva ou Fazenda Primavera" value="${savedClient.nome || ''}" oninput="onClientDataInput()">
+        </div>
+        <div class="form-field-group">
+          <label class="form-field-label">Vendedor Responsável (opcional)</label>
           <div class="vendedor-select-wrap">
-            <select id="client-payment-terms" class="form-field-input" onchange="handlePaymentTermsChange(this.value)">
-              <option value="" ${!savedTerms.pagamento ? 'selected' : ''}>Nenhuma / A Combinar (Não definir)</option>
-              <option value="PIX / À Vista (À vista c/ desconto)" ${savedTerms.pagamento === 'PIX / À Vista (À vista c/ desconto)' ? 'selected' : ''}>⚡ PIX / À Vista (À vista c/ desconto)</option>
-              <option value="Boleto 30 Dias" ${savedTerms.pagamento === 'Boleto 30 Dias' ? 'selected' : ''}>📄 Boleto 30 Dias</option>
-              <option value="Boleto 30 / 60 Dias" ${savedTerms.pagamento === 'Boleto 30 / 60 Dias' ? 'selected' : ''}>📄 Boleto 30 / 60 Dias</option>
-              <option value="Boleto 30 / 60 / 90 Dias" ${savedTerms.pagamento === 'Boleto 30 / 60 / 90 Dias' ? 'selected' : ''}>📄 Boleto 30 / 60 / 90 Dias</option>
-              <option value="Cartão em até 3x" ${savedTerms.pagamento === 'Cartão em até 3x' ? 'selected' : ''}>💳 Cartão em até 3x</option>
-              <option value="A Combinar com Vendedor" ${savedTerms.pagamento === 'A Combinar com Vendedor' ? 'selected' : ''}>🤝 A Combinar c/ Representante</option>
+            <select id="client-vendedor" class="form-field-input" onchange="onClientDataInput()">
+              <option value="">Nenhum vendedor selecionado (Geral)</option>
+              <option value="carlos" ${(savedClient.vendedor === 'carlos' || clientAttributedSeller === 'carlos') ? 'selected' : ''}>Carlos Silva</option>
+              <option value="vendedor-1" ${savedClient.vendedor === 'vendedor-1' ? 'selected' : ''}>Vendedor 1</option>
+              <option value="vendedor-2" ${savedClient.vendedor === 'vendedor-2' ? 'selected' : ''}>Vendedor 2</option>
             </select>
             <span class="vendedor-select-arrow">▼</span>
           </div>
         </div>
-
         <div class="form-field-group">
-          <label class="form-field-label">Validade da Proposta</label>
-          <input type="text" id="client-proposal-validity" class="form-field-input" value="${savedTerms.validade || '10 dias'}" placeholder="10 dias" oninput="saveCommercialTerms()">
+          <label class="form-field-label">CNPJ / Cidade / Estado (opcional)</label>
+          <input type="text" id="client-doc" class="form-field-input" placeholder="00.000.000/0001-00 ou Cascavel - PR" value="${savedClient.doc || ''}" oninput="onClientDataInput()">
         </div>
-      ` : ''}
 
-      ${!isSeller ? `
-        <div style="text-align:center; padding:10px 4px 2px; font-size:0.78rem; color:var(--text-3);">
-          💼 É representante comercial? <button type="button" onclick="openSellerLoginModal()" style="color:var(--brand-light); font-weight:700; text-decoration:underline; cursor:pointer;">Acessar Modo Vendedor 🔒</button>
-        </div>
-      ` : ''}
+        ${isSeller ? `
+          <!-- Condições Comerciais Exclusivas do Vendedor -->
+          <div class="form-field-group">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+              <label class="form-field-label" style="margin-bottom:0;">Condição de Pagamento</label>
+              <button type="button" class="btn-clear-payment ${savedTerms.pagamento ? 'show' : ''}" id="btn-clear-payment" onclick="clearPaymentSelection()">
+                ✕ Limpar
+              </button>
+            </div>
+            <div class="vendedor-select-wrap">
+              <select id="client-payment-terms" class="form-field-input" onchange="handlePaymentTermsChange(this.value)">
+                <option value="" ${!savedTerms.pagamento ? 'selected' : ''}>Nenhuma / A Combinar (Não definir)</option>
+                <option value="PIX / À Vista (À vista c/ desconto)" ${savedTerms.pagamento === 'PIX / À Vista (À vista c/ desconto)' ? 'selected' : ''}>⚡ PIX / À Vista (À vista c/ desconto)</option>
+                <option value="Boleto 30 Dias" ${savedTerms.pagamento === 'Boleto 30 Dias' ? 'selected' : ''}>📄 Boleto 30 Dias</option>
+                <option value="Boleto 30 / 60 Dias" ${savedTerms.pagamento === 'Boleto 30 / 60 Dias' ? 'selected' : ''}>📄 Boleto 30 / 60 Dias</option>
+                <option value="Boleto 30 / 60 / 90 Dias" ${savedTerms.pagamento === 'Boleto 30 / 60 / 90 Dias' ? 'selected' : ''}>📄 Boleto 30 / 60 / 90 Dias</option>
+                <option value="Cartão em até 3x" ${savedTerms.pagamento === 'Cartão em até 3x' ? 'selected' : ''}>💳 Cartão em até 3x</option>
+                <option value="A Combinar com Vendedor" ${savedTerms.pagamento === 'A Combinar com Vendedor' ? 'selected' : ''}>🤝 A Combinar c/ Representante</option>
+              </select>
+              <span class="vendedor-select-arrow">▼</span>
+            </div>
+          </div>
+
+          <div class="form-field-group">
+            <label class="form-field-label">Validade da Proposta</label>
+            <input type="text" id="client-proposal-validity" class="form-field-input" value="${savedTerms.validade || '10 dias'}" placeholder="10 dias" oninput="saveCommercialTerms()">
+          </div>
+        ` : ''}
+
+        ${!isSeller ? `
+          <div style="text-align:center; padding:10px 4px 2px; font-size:0.78rem; color:var(--text-3);">
+            💼 É representante comercial? <button type="button" onclick="openSellerLoginModal()" style="color:var(--brand-light); font-weight:700; text-decoration:underline; cursor:pointer;">Acessar Modo Vendedor 🔒</button>
+          </div>
+        ` : ''}
+      </div>
     </div>
   `;
 
@@ -684,61 +799,75 @@ function renderCartSheet() {
     totalBox.style.display = 'none';
   }
 
-  // Ações secundárias no rodapé organizadas em pares
+  // Ações secundárias no rodapé organizadas em pares (recolhidas por padrão para economia de tela no mobile)
   const actionsContainer = document.getElementById('cart-actions-dynamic-container');
   if (actionsContainer) {
     if (isSeller) {
       actionsContainer.innerHTML = `
-        <div class="cart-actions-grid-pairs">
-          <!-- Par 1: WhatsApp Direto p/ Cliente -->
-          <div class="cart-actions-pair-block">
-            <div class="cart-action-pair-title"><span>📱</span> WhatsApp Direto p/ Cliente:</div>
-            <div class="cart-actions-2col">
-              <button type="button" class="btn-cart-action btn-wa-price" onclick="openClientWhatsAppModal(true)" title="Enviar para o WhatsApp do cliente com valores e descontos">
-                <span>💬</span> Whats c/ Preço
-              </button>
-              <button type="button" class="btn-cart-action btn-wa-noprice" onclick="openClientWhatsAppModal(false)" title="Enviar para o WhatsApp do cliente apenas a lista de produtos">
-                <span>💬</span> Whats s/ Preço
-              </button>
-            </div>
-          </div>
+        <button type="button" class="btn-toggle-cart-actions ${cartSecondaryActionsExpanded ? 'expanded' : ''}" id="btn-toggle-cart-actions" onclick="toggleCartSecondaryActions()" title="Expandir/recolher opções adicionais de envio e PDF">
+          <span id="toggle-cart-actions-label">${cartSecondaryActionsExpanded ? 'Ocultar opções de envio' : '⚡ Mais Opções de Envio (PDF, Links, Whats)'}</span>
+          <span class="toggle-arrow" id="toggle-cart-actions-arrow">${cartSecondaryActionsExpanded ? '▲' : '▼'}</span>
+        </button>
 
-          <!-- Par 2: Proposta em PDF -->
-          <div class="cart-actions-pair-block">
-            <div class="cart-action-pair-title"><span>📄</span> Proposta Comercial em PDF:</div>
-            <div class="cart-actions-2col">
-              <button type="button" class="btn-cart-action btn-pdf-price" onclick="openPdfProposalModal(true)" title="Gerar proposta PDF com tabela de preços e condições">
-                <span>📄</span> PDF c/ Preço
-              </button>
-              <button type="button" class="btn-cart-action btn-pdf-noprice" onclick="openPdfProposalModal(false)" title="Gerar espelho do pedido em PDF sem valores">
-                <span>📄</span> PDF s/ Preço
-              </button>
+        <div class="cart-secondary-actions-collapse ${cartSecondaryActionsExpanded ? 'show' : ''}" id="cart-secondary-actions-collapse">
+          <div class="cart-actions-grid-pairs">
+            <!-- Par 1: WhatsApp Direto p/ Cliente -->
+            <div class="cart-actions-pair-block">
+              <div class="cart-action-pair-title"><span>📱</span> WhatsApp Direto p/ Cliente:</div>
+              <div class="cart-actions-2col">
+                <button type="button" class="btn-cart-action btn-wa-price" onclick="openClientWhatsAppModal(true)" title="Enviar para o WhatsApp do cliente com valores e descontos">
+                  <span>💬</span> Whats c/ Preço
+                </button>
+                <button type="button" class="btn-cart-action btn-wa-noprice" onclick="openClientWhatsAppModal(false)" title="Enviar para o WhatsApp do cliente apenas a lista de produtos">
+                  <span>💬</span> Whats s/ Preço
+                </button>
+              </div>
             </div>
-          </div>
 
-          <!-- Par 3: Links Diretos do Catálogo -->
-          <div class="cart-actions-pair-block">
-            <div class="cart-action-pair-title"><span>🔗</span> Links Diretos do Catálogo:</div>
-            <div class="cart-actions-2col">
-              <button type="button" class="btn-cart-action btn-link-price" onclick="copyCartShareLink(true)" title="Copiar link com preços e descontos fixados">
-                <span>💰</span> Link c/ Preço
-              </button>
-              <button type="button" class="btn-cart-action btn-link-noprice" onclick="copyCartShareLink(false)" title="Copiar link padrão sem preços">
-                <span>🔗</span> Link s/ Preço
-              </button>
+            <!-- Par 2: Proposta em PDF -->
+            <div class="cart-actions-pair-block">
+              <div class="cart-action-pair-title"><span>📄</span> Proposta Comercial em PDF:</div>
+              <div class="cart-actions-2col">
+                <button type="button" class="btn-cart-action btn-pdf-price" onclick="openPdfProposalModal(true)" title="Gerar proposta PDF com tabela de preços e condições">
+                  <span>📄</span> PDF c/ Preço
+                </button>
+                <button type="button" class="btn-cart-action btn-pdf-noprice" onclick="openPdfProposalModal(false)" title="Gerar espelho do pedido em PDF sem valores">
+                  <span>📄</span> PDF s/ Preço
+                </button>
+              </div>
+            </div>
+
+            <!-- Par 3: Links Diretos do Catálogo -->
+            <div class="cart-actions-pair-block">
+              <div class="cart-action-pair-title"><span>🔗</span> Links Diretos do Catálogo:</div>
+              <div class="cart-actions-2col">
+                <button type="button" class="btn-cart-action btn-link-price" onclick="copyCartShareLink(true)" title="Copiar link com preços e descontos fixados">
+                  <span>💰</span> Link c/ Preço
+                </button>
+                <button type="button" class="btn-cart-action btn-link-noprice" onclick="copyCartShareLink(false)" title="Copiar link padrão sem preços">
+                  <span>🔗</span> Link s/ Preço
+                </button>
+              </div>
             </div>
           </div>
         </div>
       `;
     } else {
       actionsContainer.innerHTML = `
-        <div class="cart-actions-2col" style="margin-top:2px;">
-          <button type="button" class="btn-cart-action btn-pdf-noprice" onclick="openPdfProposalModal(false)" title="Visualizar e Imprimir Lista em PDF">
-            <span>📄</span> Visualizar PDF
-          </button>
-          <button type="button" class="btn-cart-action btn-link-noprice" onclick="copyCartShareLink(false)" title="Copiar Link do Orçamento">
-            <span>🔗</span> Copiar Link
-          </button>
+        <button type="button" class="btn-toggle-cart-actions ${cartSecondaryActionsExpanded ? 'expanded' : ''}" id="btn-toggle-cart-actions" onclick="toggleCartSecondaryActions()" title="Mais opções de compartilhamento">
+          <span id="toggle-cart-actions-label">${cartSecondaryActionsExpanded ? 'Ocultar opções' : '⚡ Mais Opções (PDF / Link)'}</span>
+          <span class="toggle-arrow" id="toggle-cart-actions-arrow">${cartSecondaryActionsExpanded ? '▲' : '▼'}</span>
+        </button>
+
+        <div class="cart-secondary-actions-collapse ${cartSecondaryActionsExpanded ? 'show' : ''}" id="cart-secondary-actions-collapse">
+          <div class="cart-actions-2col" style="margin-top:4px;">
+            <button type="button" class="btn-cart-action btn-pdf-noprice" onclick="openPdfProposalModal(false)" title="Visualizar e Imprimir Lista em PDF">
+              <span>📄</span> Visualizar PDF
+            </button>
+            <button type="button" class="btn-cart-action btn-link-noprice" onclick="copyCartShareLink(false)" title="Copiar Link do Orçamento">
+              <span>🔗</span> Copiar Link
+            </button>
+          </div>
         </div>
       `;
     }

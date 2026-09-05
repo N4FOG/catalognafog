@@ -1,249 +1,259 @@
-﻿# 🌿 Rawell Química — Catálogo Digital & Plataforma Comercial V3.0 (Stable)
+﻿# 🌿 JCV Química — Catálogo Digital & Plataforma Comercial Inteligente 2026
 
 <div align="center">
 
-![Rawell Química](https://img.shields.io/badge/Rawell-Qu%C3%ADmica%202026-0f4531?style=for-the-badge&logo=leaf&logoColor=white)
-![Versão](https://img.shields.io/badge/Vers%C3%A3o-V3.0%20(Stable%20Official)-10b981?style=for-the-badge)
-![PWA Ready](https://img.shields.io/badge/PWA-100%25%20Offline%20Ready-059669?style=for-the-badge&logo=pwa&logoColor=white)
-![Stack](https://img.shields.io/badge/Stack-Vanilla%20JS%20%7C%20HTML5%20%7C%20CSS3%20(Modular)-1e293b?style=for-the-badge&logo=javascript&logoColor=F7DF1E)
-![Deploy](https://img.shields.io/badge/Deploy-Render%20%7C%20GitHub%20Pages-blue?style=for-the-badge)
+![JCV Química](https://img.shields.io/badge/JCV-Qu%C3%ADmica%202026-0f4531?style=for-the-badge&logo=leaf&logoColor=white)
+![Versão](https://img.shields.io/badge/Vers%C3%A3o-V3.0%20(Dual%20Architecture)-10b981?style=for-the-badge)
+![PWA Ready](https://img.shields.io/badge/PWA-100%25%20Offline%20First-059669?style=for-the-badge&logo=pwa&logoColor=white)
+![Arquitetura](https://img.shields.io/badge/Stack-Vanilla%20JS%20Modular%20%2B%20React%2019%20TS%20SPA-1e293b?style=for-the-badge&logo=react&logoColor=61DAFB)
+![Deploy](https://img.shields.io/badge/Deploy-Render%20%7C%20GitHub%20Pages%20%7C%20Vercel-blue?style=for-the-badge)
 
-**Plataforma comercial e catálogo digital inteligente, desenvolvido para alta performance no campo e no desktop, com suporte a cotações em tempo real, propostas timbradas em PDF, motor de descontos dinâmico, arquitetura modular e rastreamento de auditoria antifraude.**
+**Plataforma comercial e catálogo digital inteligente, desenvolvido para alta performance no campo e no desktop. Inclui suporte a cotações em tempo real, emissão de propostas timbradas em PDF, motor de descontos dinâmico, física de gestos mobile, painel interativo de roadmap e auditoria antifraude via Google Sheets.**
 
-[🚀 Acessar Demonstração](#-deploy--hospedagem) • [📱 Recursos PWA](#-pwa--offline-first) • [💰 Motor Comercial](#-motor-comercial--sistema-de-descontos-dinâmicos) • [🛡️ Auditoria Antifraude](#-auditoria-antifraude--rastreamento-google-sheets) • [📋 Guia de Configuração](#-guia-de-configuração-rápida)
+[🚀 Acessar Catálogo V2 (Modular)](#-versão-20-modular-vanilla-js) • [⚡ Acessar Catálogo V3 (React SPA)](#-versão-30-react-19--typescript-spa) • [📊 Painel de Implementações / Roadmap](#-painel-de-implementações--roadmap-interativo) • [💰 Motor Comercial](#-motor-comercial--descontos-dinâmicos) • [🛡️ Auditoria](#-auditoria-antifraude--rastreamento-google-sheets)
 
 ---
 
 </div>
 
 ## 📑 Índice
-- [Visão Geral](#-visão-geral)
-- [Destaques da Versão 3.0 Estável](#-destaques-da-versão-30-estável)
-- [Arquitetura e Stack Tecnológica](#-arquitetura-e-stack-tecnológica)
+- [Visão Geral & Proposta de Valor](#-visão-geral--proposta-de-valor)
+- [Arquitetura Dupla (Dual Architecture)](#-arquitetura-dupla-dual-architecture)
+  - [Versão 2.0 (Modular Vanilla JS — Ultra Leve & Zero Dependências)](#-versão-20-modular-vanilla-js)
+  - [Versão 3.0 (React 19 + TypeScript + Tailwind CSS v4 + Zustand)](#-versão-30-react-19--typescript-spa)
+- [Painel de Implementações & Roadmap Interativo](#-painel-de-implementações--roadmap-interativo)
 - [Mecânicas e Funcionalidades Detalhadas](#-mecânicas-e-funcionalidades-detalhadas)
   - [1. Progressive Web App (PWA) & Offline First](#1-progressive-web-app-pwa--offline-first)
-  - [2. Design System Premium & UX Mobile-First](#2-design-system-premium--ux-mobile-first)
-  - [3. Motor de Busca e Filtragem Inteligente](#3-motor-de-busca-e-filtragem-inteligente)
-  - [4. Ficha Consultiva Técnica (3 Pilares do Especialista)](#4-ficha-consultiva-técnica-3-pilares-do-especialista)
-  - [5. Motor Comercial & Descontos Dinâmicos](#5-motor-comercial--descontos-dinâmicos)
-  - [6. Carrinho Inteligente & Cart Footer Bar](#6-carrinho-inteligente--cart-footer-bar)
-  - [7. Proposta Comercial em PDF Timbrado Oficial](#7-proposta-comercial-em-pdf-timbrado-oficial)
-  - [8. Link Mágico de Compartilhamento & Recompra](#8-link-mágico-de-compartilhamento--recompra)
-  - [9. Histórico de Orçamentos & Dashboard Local](#9-histórico-de-orçamentos--dashboard-local)
-  - [10. Modo Representante com Acesso Seguro por PIN](#10-modo-representante-com-acesso-seguro-por-pin)
-  - [11. Auditoria Antifraude e Rastreamento em Tempo Real](#11-auditoria-antifraude-e-rastreamento-em-tempo-real)
-  - [12. Estúdio de Flyers e Stories para Redes Sociais](#12-estúdio-de-flyers-e-stories-para-redes-sociais)
-- [Estrutura de Pastas do Repositório](#-estrutura-de-pastas-do-repositório)
-- [Guia de Configuração Rápida](#-guia-de-configuração-rápida)
+  - [2. Física de Gestos Touch & UX Mobile App](#2-física-de-gestos-touch--ux-mobile-app)
+  - [3. Motor Comercial & Descontos Dinâmicos](#3-motor-comercial--descontos-dinâmicos)
+  - [4. App do Vendedor Master & Gestão de Cotações](#4-app-do-vendedor-master--gestão-de-cotações)
+  - [5. Matriz de Ações Estratégicas (Com vs Sem Preço)](#5-matriz-de-ações-estratégicas-com-vs-sem-preço)
+  - [6. Proposta Comercial em PDF Timbrado Oficial (A4)](#6-proposta-comercial-em-pdf-timbrado-oficial-a4)
+  - [7. Ficha Consultiva Técnica (3 Pilares do Especialista)](#7-ficha-consultiva-técnica-3-pilares-do-especialista)
+  - [8. Motor de Busca Preditivo & Filtros Cruzados](#8-motor-de-busca-preditivo--filtros-cruzados)
+  - [9. Auditoria Antifraude e Rastreamento em Tempo Real](#9-auditoria-antifraude-e-rastreamento-em-tempo-real)
+  - [10. Estúdio de Marketing & Stories](#10-estúdio-de-marketing--stories)
+- [Estrutura de Diretórios do Repositório](#-estrutura-de-diretórios-do-repositório)
+- [Guia de Configuração e Instalação](#-guia-de-configuração-e-instalação)
 - [Deploy e Hospedagem](#-deploy--hospedagem)
-- [Changelog](#-changelog)
+- [Changelog Histórico](#-changelog-histórico)
 - [Licença e Direitos](#-licença-e-direitos)
 
 ---
 
-## 🎯 Visão Geral
+## 🎯 Visão Geral & Proposta de Valor
 
-O **Catálogo Digital Rawell Química 2026** é uma aplicação web progressiva desenvolvida para atender as necessidades de representantes comerciais, agrônomos, revendas agropecuárias e clientes finais. 
+O **Ecossistema Digital JCV Química 2026** é uma solução corporativa desenvolvida sob medida para representantes técnicos de vendas, agrônomos, revendas agropecuárias e produtores rurais.
 
-Construído com foco em **zero dependências externas pesadas**, ele carrega instantaneamente mesmo em conexões rurais 2G/3G ou completamente offline, permitindo a consulta completa de defensivos seletivos, desinfestantes, fungicidas, inseticidas e raticidas, além da elaboração imediata de pedidos com envio formatado para o WhatsApp e emissão de propostas formais em PDF.
-
----
-
-## ⚡ Destaques da Versão 3.0 Estável
-
-* 🏗️ **Arquitetura 100% Modular**: Código desacoplado em 18 módulos especializados (`css/`, `js/data/`, `js/modules/`), com manutenção simplificada e carregamento ultra-rápido.
-* 💼 **App do Vendedor Master**: Painel completo do representante com histórico de cotações, filtros por status (*Aguardando, Negociação, Fechado, Perdido*) e gerador de links personalizados.
-* 📱 **Disparo Direto para Cliente**: Envio no WhatsApp direto para o número do cliente com validação de telefone.
-* ⚖️ **Ações Estratégicas em Pares**: Disparo no WhatsApp, Proposta PDF e Link Mágico com opções **COM Preço** e **SEM Preço**.
-* 🚀 **Motor de Descontos Dinâmicos**: Aplicação de descontos por item (%) e desconto global no pedido com chips de acesso rápido (5%, 10%, 15%).
-* 💰 **Edição de Preços em Tempo Real**: Vendedores autenticados podem personalizar valores unitários no carrinho com recálculo automático de margens.
-* 📄 **Proposta Comercial A4 Oficial**: Exportação instantânea de proposta timbrada, com numeração única (`RQ-2026-XXXX`), tabela de produtos, prazos e condições comerciais.
-* 🔍 **Split Modal no Desktop**: Visualização ampla em 2 colunas com galeria em alta definição e ficha técnica agronômica.
-* 🛡️ **Auditoria Google Apps Script Atualizada**: Discriminação de tráfego por canal (`Vendedor` vs `Base Orgânica`) e registro de links de garantia na planilha.
+O projeto foi arquitetado para resolver o principal gargalo do setor agroquímico: **a falta de conectividade estável no campo**. Com tecnologia **Offline-First**, a plataforma permite consultar 32+ formulações, calcular dosagens, simular margens financeiras, gerar propostas timbradas e disparar orçamentos via WhatsApp mesmo sem sinal de internet.
 
 ---
 
-## 🛠️ Arquitetura e Stack Tecnológica
+## 🏛️ Arquitetura Dupla (Dual Architecture)
+
+O repositório oferece **duas implementações de alto padrão**, atendendo tanto a cenários de máxima simplicidade e velocidade estática quanto a ecossistemas corporativos reativos com TypeScript:
 
 ```mermaid
 graph TD
-    A[Cliente / Representante] -->|Interação UX/UI| B(PWA App - Vanilla JS Modular / HTML5 / CSS3)
-    B -->|Cache First / Stale While Revalidate| C[Service Worker - sw.js V5]
-    C -->|Offline Storage| D[Cache Storage - CSS, JS & Imagens]
-    B -->|Persistência Local| E[LocalStorage - Carrinho & Histórico]
-    B -->|Link Mágico Codificado| F[URL Query Params - Compartilhamento]
-    B -->|Exportação Impressa / A4| G[CSS Print Engine - Proposta PDF]
-    B -->|Webhook Assíncrono doPost| H[Google Apps Script Backend]
-    H -->|Rastreamento em Tempo Real| I[Google Sheets - Planilha de Auditoria]
-    B -->|Mensagem Estruturada| J[WhatsApp API - Fechamento Direto / Vendedor]
+    A[Usuário / Representante] --> B{Ponto de Entrada}
+    B -->|v2/index.html| C[Versão 2.0: Modular Vanilla JS]
+    B -->|v3/index.html| D[Versão 3.0: React 19 + TypeScript SPA]
+    
+    C --> C1[CSS Modular: base, layout, catalog, cart, seller, mobile]
+    C --> C2[JS Modular: data, modules, mobile-gestures]
+    C --> C3[Fontes Locais WOFF2 - Zero CDN]
+    C --> C4[roadmap.html - Painel de Implementações]
+
+    D --> D1[Vite 6 + React 19 + Tailwind CSS v4]
+    D --> D2[Zustand: useCartStore, useSellerStore, useCatalogStore]
+    D --> D3[Lucide React Icons + Strict TypeScript Types]
+    D --> D4[Build Otimizado: v3/dist/]
+
+    C --> E[Service Worker V5 Offline]
+    D --> E
+    E --> F[Cache Storage: WebP Assets & App Shell]
+    C --> G[Google Apps Script Webhook]
+    D --> G
+    G --> H[Google Sheets - Planilha de Auditoria em Tempo Real]
 ```
 
-* **Core Frontend**: HTML5 Semântico, CSS3 Modular (Custom Properties, Flexbox, CSS Grid), Vanilla JavaScript (ES6+ modular em `js/modules/`).
-* **PWA & Offline**: Service Worker nativo V5 com estratégias de cache para todos os módulos estáticos, 32+ produtos e imagens WebP.
-* **Backend Serverless**: Webhook em Google Apps Script (`doPost`/`doGet`) com lock de concorrência (`LockService`).
-* **Design & Tipografia**: Fontes *Plus Jakarta Sans* e *Inter*, ícones vetoriais SVG e microvibração tátil via `navigator.vibrate`.
+### 🌿 Versão 2.0 (Modular Vanilla JS)
+* **Diretório:** [`v2/`](file:///c:/Users/n4fog/Pictures/VALDECIR/nfog-catalogo/v2)
+* **Stack:** Vanilla JavaScript ES6+ Modular, HTML5 Semântico, CSS3 com Custom Properties.
+* **Autonomia Total:** Inclui fontes locais WOFF2 (`Inter` e `Plus Jakarta Sans`), eliminando dependências de CDNs ou conexões externas.
+* **Vantagem:** Carregamento em menos de 0.3s, compatível com qualquer servidor estático ou Webview móvel.
+
+### ⚡ Versão 3.0 (React 19 + TypeScript SPA)
+* **Diretório:** [`v3/`](file:///c:/Users/n4fog/Pictures/VALDECIR/nfog-catalogo/v3)
+* **Stack:** Vite 6, React 19, TypeScript 5.7, Tailwind CSS v4, Zustand e Lucide Icons.
+* **Tipagem Estrita:** Interfaces TypeScript para produtos, itens de carrinho, sessões de vendedor e payloads de telemetria.
+* **Vantagem:** Altamente escalável, componentes tipados e build pré-compilado em `v3/dist/`.
+
+---
+
+## 📊 Painel de Implementações & Roadmap Interativo
+
+Localizado em [`v2/roadmap.html`](file:///c:/Users/n4fog/Pictures/VALDECIR/nfog-catalogo/v2/roadmap.html) (atalho em [`v2/status.html`](file:///c:/Users/n4fog/Pictures/VALDECIR/nfog-catalogo/v2/status.html)):
+
+* **Dashboard Visual em Tempo Real**: Métricas de progresso global circular (%), contadores por status e timeline cronológica.
+* **Filtros e Busca de Funcionalidades**: Filtragem por *Concluído*, *Em Andamento*, *Homologação* e *Planejado*.
+* **Área Administrativa Segura com PIN**: Permite cadastrar, editar status e adicionar novas entregas diretamente pela interface.
+* **Transparência Corporativa**: Link compartilhável para acompanhamento direto da diretoria e clientes.
 
 ---
 
 ## 💎 Mecânicas e Funcionalidades Detalhadas
 
 ### 1. Progressive Web App (PWA) & Offline First
-* **Instalação Nativa**: Compatível com Android (WebAPK), iOS (Adicionar à Tela de Início com meta tags dedicadas) e Desktop (Chrome/Edge).
-* **Operação em Modo Avião / Sem Sinal**: O `sw.js` realiza o pré-cache de todo o catálogo, imagens de produtos, folhas de estilo e ícones. Se o usuário estiver no campo sem sinal de internet, o catálogo abre instantaneamente com todas as informações e fotos.
-* **Atualização em Segundo Plano**: Estratégia inteligente que serve a versão em cache imediatamente e atualiza silenciosamente quando houver conexão.
+* **Instalação Nativa**: Suporte a WebAPK no Android, prompt para desktop (Chrome/Edge) e guia inteligente ilustrado para Safari no iOS.
+* **Cache Storage Inteligente (`sw.js`)**: Pré-carregamento automático de todos os módulos CSS, JS, fontes locais e imagens WebP dos 32 produtos.
+* **Operação no Campo / Modo Avião**: Abertura instantânea do catálogo e montagem de pedidos mesmo sem qualquer conexão à internet.
 
-### 2. Design System Premium & UX Mobile-First
-* **Suporte a Dark Mode / Light Mode**: Detecção automática de preferência de sistema (`prefers-color-scheme`) e alternador manual com persistência de tema.
-* **Alternador de Layouts**: Alternância com um clique entre visualização em **Grade (Cards)** ou **Lista Compacta**.
-* **Microinterações Hápticas**: Feedback vibratório tátil ao adicionar itens, alterar quantidades, aplicar descontos ou alternar abas.
-* **Safe Area Insets**: Totalmente adaptado para entalhes de tela, bordas curvas e barras de navegação de iPhones e smartphones modernos.
+### 2. Física de Gestos Touch & UX Mobile App
+* **Swipe-to-Close com Resistência Elástica**: Fechamento por gesto de arrasto para baixo nas Bottom Sheets com física realista e vibração háptica (`v2/js/modules/mobile-gestures.js`).
+* **Botão Flutuante Dinâmico de Orçamento**: Barra inferior com animação fluida que surge ao adicionar itens no mobile.
+* **Monitor de Conectividade**: Indicador visual automático de status Online / Offline no topo da aplicação.
 
-### 3. Motor de Busca e Filtragem Inteligente
-* **Busca Preditiva Instantânea**: Pesquisa em tempo real com debounce por:
-  - Nome comercial do produto;
-  - Princípio Ativo e Formulação;
-  - Praga / Alvo biológico (ex: *Tiririca, Lagarta, Formiga, Barata, Rato, Broca*);
-  - Cultura indicada (ex: *Gramados, Soja, Milho, Hortaliças, Jardinagem*);
-  - Registro no MAPA / Ministério da Saúde / Anvisa.
-* **Filtros Independentes por Categoria**: Gramados, Jardinagem Amadora, Saúde Pública, Linha Profissional, Raticidas e Inseticidas.
-* **Chips "Mais Buscados"**: Atalhos rápidos para os produtos mais procurados.
-* **Estado Vazio Inteligente**: Exibição amigável quando nenhum item é encontrado com botão para resetar filtros com 1 toque.
+### 3. Motor Comercial & Descontos Dinâmicos
+* **Edição de Preços Unitários Base**: Representantes logados podem personalizar valores unitários no carrinho em tempo real.
+* **Desconto Individual por Item (%)**: Desconto exclusivo para itens específicos com chips rápidos de 5%, 10% e 15%.
+* **Desconto Global no Pedido (%)**: Aplicação de desconto geral incidente sobre a base de itens sem desconto exclusivo.
+* **Transparência Contábil**: Resumo detalhado com Subtotal Bruto de Tabela, (-) Desconto nos Itens, (-) Desconto Global e (=) Total Líquido Final.
 
-### 4. Ficha Consultiva Técnica (3 Pilares do Especialista)
-* **Pilar 1 — Recomendação Agronômica**: Instruções práticas de aplicação, espectro de ação e dosagens por área ou volume de calda.
-* **Pilar 2 — Modo de Ação e Formulação**: Comportamento químico, sistêmico vs. contato, tipo de formulação (SC, WG, CE, Pellets, Gel).
-* **Pilar 3 — Segurança e Manejo**: Cartões visuais de EPI, carência, toxicologia e instruções de descarte.
-* **Galeria de Fotos Multi-Ângulo**: Visualizador HD com miniaturas clicáveis e transições fluidas sem pulo de layout (*zero layout shift*).
+### 4. App do Vendedor Master & Gestão de Cotações
+* **Acesso Seguro por PIN**: Painel exclusivo para representantes comerciais.
+* **Aba Meus Orçamentos**: Histórico completo com filtros por status (*Todos, Aguardando, Em Negociação, Fechado, Perdido*).
+* **Aba Ferramentas & Links**: Gerador de link exclusivo do vendedor com comissão embutida e calculadora de margens.
+* **Navegação Móvel Adaptativa**: Atalho "Área do Vendedor" integrado à barra inferior após autenticação.
 
-### 5. Motor Comercial & Descontos Dinâmicos
-* **Edição Unitária de Preços**: Representantes logados podem alterar o valor base unitário de qualquer item diretamente no carrinho.
-* **Descontos por Item (%)**: Desconto percentual exclusivo para produtos específicos, com botões de atalho rápido (5%, 10%, 15%) e botão de remoção rápida.
-* **Desconto Global no Pedido (%)**: Aplicação de desconto geral incidente com precisão sobre o saldo elegível de itens que não possuem desconto individual.
-* **Transparência Contábil**: Exibição detalhada de:
-  - `Subtotal Bruto (Preço de Tabela)`
-  - `(-) Desconto nos Itens`
-  - `(-) Desconto Global do Pedido`
-  - `(=) Total Líquido Final da Negociação`
+### 5. Matriz de Ações Estratégicas (Com vs Sem Preço)
+* **WhatsApp**: Disparo com discriminação de preços OU apenas lista de produtos e quantidades.
+* **Disparo Direto para Cliente**: Modal com campo para digitar o número de telefone do cliente e enviar sem passar pela central.
+* **Links Mágicos de Recompra**: Links diretos com preços negociados travados OU com catálogo padrão.
+* **Proposta Comercial em PDF**: Geração de documento timbrado com ou sem valores.
 
-### 6. Carrinho Inteligente & Cart Footer Bar
-* **Drawer Lateral / Bottom Sheet**: Acesso rápido aos itens selecionados, controle de quantidade com incremento/decremento e exclusão intuitiva.
-* **Rodapé Fixo Unificado**: Resumo financeiro de fácil leitura com contraste de alta visibilidade.
-* **Grade de Ações Secundárias em Pares**:
-  - `💬 WhatsApp COM Preço` vs `💬 WhatsApp SEM Preço`
-  - `📄 PDF COM Preço` vs `📄 PDF SEM Preço`
-  - `🔗 Link COM Preço` vs `🔗 Link SEM Preço`
-  - `🗑️ Limpar Carrinho`
+### 6. Proposta Comercial em PDF Timbrado Oficial (A4)
+* **Documento Corporativo Timbrado**: Layout oficial formatado para impressão (`window.print()`) e exportação em alta resolução.
+* **Estrutura Completa**: Logotipo oficial JCV Química, CNPJ, numeração única (`RQ-2026-XXXX`), dados do cliente e representante, tabela detalhada de defensivos, condições de pagamento, validade de 10 dias e QR Code de reabertura.
 
-### 7. Proposta Comercial em PDF Timbrado Oficial
-* **Documento Corporativo A4**: Geração instantânea de documento comercial formal diretamente pelo navegador (`window.print()`).
-* **Estrutura da Proposta**:
-  - Cabeçalho timbrado com logo oficial da Rawell Química, CNPJ, Razão Social e canais de atendimento;
-  - Número de identificação único (`RQ-2026-XXXX`);
-  - Dados do Cliente e Representante Responsável;
-  - Tabela organizada com Código, Referência, Nome, Dosagem, Quantidade, Valor Unitário e Subtotais;
-  - Condições de Pagamento, Prazo de Validade (10 dias) e Prazos de Entrega;
-  - QR Code e Link Direto para reabertura digital da proposta.
+### 7. Ficha Consultiva Técnica (3 Pilares do Especialista)
+* **Pilar 1 — Recomendação Agronômica**: Alvos biológicos, pragas controladas e dosagens recomendadas por hectare ou calda.
+* **Pilar 2 — Modo de Ação e Formulação**: Comportamento químico (sistêmico, contato, residual) e tipo de formulação (SC, WG, CE, Pellets, Gel).
+* **Pilar 3 — Segurança e Manejo**: Cartões visuais de EPI, classe toxicológica, intervalo de segurança/carência e descarte de embalagens.
+* **Galeria Multi-Ângulo HD**: Visualizador de imagens com transição suave e zero layout shift.
 
-### 8. Link Mágico de Compartilhamento & Recompra
-* **Serialização de Estado via URL**: Toda a montagem do carrinho, quantidades, preços customizados, descontos e vendedor selecionado são compactados em parâmetros de URL.
-* **Recompra e Reabertura Imediata**: Qualquer pessoa que abrir o link tem o carrinho exatamente reconstruído no seu próprio navegador, sem precisar de banco de dados ou login prévio.
+### 8. Motor de Busca Preditivo & Filtros Cruzados
+* **Busca Preditiva Instantânea**: Pesquisa por Nome comercial, Princípio Ativo, Praga Alvo, Cultura indicada e Registro MAPA/Anvisa.
+* **Filtros por Categoria Independentes**: Gramados, Jardinagem Amadora, Saúde Pública, Linha Profissional, Raticidas e Inseticidas.
+* **Atalhos Rápidos**: Chips de busca rápida para os alvos mais procurados (*Tiririca, Roseta, Baratas, Moscas, Cupins, Fungos, Formigas*).
 
-### 9. Histórico de Orçamentos & Dashboard Local
-* **Armazenamento Persistente**: Salva localmente cada cotação gerada com timestamp, nome do cliente, documento, lista de itens e link de recompra.
-* **Painel de Meus Orçamentos**: Permite que o representante ou cliente consulte cotações anteriores, verifique detalhes e recarregue o pedido com um único clique.
+### 9. Auditoria Antifraude e Rastreamento em Tempo Real
+* **Webhook Google Apps Script**: Código serverless pronto em [`v2/google-apps-script.js`](file:///c:/Users/n4fog/Pictures/VALDECIR/nfog-catalogo/v2/google-apps-script.js).
+* **Rastreamento por Canal**: Identificação automática de origem (*Vendedor Vinculado* vs *Base Orgânica*).
+* **Prova de Cotação Irrefutável**: Gravação de links diretos com os valores exatos cotados pelo vendedor na planilha.
 
-### 10. Modo Representante com Acesso Seguro por PIN
-* **Controle de Visualização**: Preços de tabela e campos de negociação financeira ficam ocultos por padrão para o público geral, sendo liberados apenas após a autenticação por PIN.
-* **Roteamento Dinâmico de Atendimento**: Se um vendedor estiver selecionado, os botões de envio direcionam a mensagem automaticamente para o WhatsApp direto do vendedor cadastrado.
-
-### 11. Auditoria Antifraude e Rastreamento em Tempo Real
-* **Integração Google Apps Script**: Webhook HTTP conectado ao Google Sheets para gravar todas as movimentações comerciais.
-* **Rastreamento de Origem de Vendas**: Discriminação automática entre solicitações originadas por representantes ou tráfego orgânico da base.
-* **Link de Backup com Preço**: Grava na planilha a URL com os preços exatos cotados, servindo como **comprovante auditável** de negociações.
-
-### 12. Estúdio de Flyers e Stories para Redes Sociais
-* **Gerador de Imagens Promocionais**: Ferramenta embutida para criação de banners no formato Stories (9:16) prontos para postagem no WhatsApp Status e Instagram, com foto do produto, características e identidade visual da Rawell Química.
+### 10. Estúdio de Marketing & Stories
+* **Artes Promocionais 9:16**: Conjunto de banners prontos em [`v2/img/marketing/`](file:///c:/Users/n4fog/Pictures/VALDECIR/nfog-catalogo/v2/img/marketing) para publicação no WhatsApp Status e redes sociais.
 
 ---
 
-## 📁 Estrutura de Pastas do Repositório
+## 📁 Estrutura de Diretórios do Repositório
 
 ```text
 VALDECIR/
 ├── nfog-catalogo/                   # 🌿 Repositório Principal (Git)
-│   ├── v2/                          # 🚀 Versão 3.0 Estável (Arquitetura Modular)
-│   │   ├── css/                     # Estilos Modulares (base, layout, catalog, sheet-modal, cart, seller)
-│   │   ├── js/                      # JavaScript Modular (data/, modules/, app.js)
-│   │   ├── img/                     # Imagens dos produtos, marketing e ícones PWA
-│   │   ├── GUIA-AUDITORIA-GOOGLE-SHEETS.md  # Manual de ativação do webhook
+│   ├── v2/                          # 🚀 Versão 2.0 (Modular Vanilla JS — Produção)
+│   │   ├── css/                     # Estilos Modulares (base, layout, catalog, sheet-modal, cart, seller, mobile-app, roadmap)
+│   │   ├── fonts/                   # Fontes Locais WOFF2 (Inter & Plus Jakarta Sans)
+│   │   ├── js/                      # JavaScript Modular (data/, modules/, roadmap*)
+│   │   ├── img/                     # Imagens dos 32 produtos, marketing e ícones PWA
+│   │   ├── GUIA-AUDITORIA-GOOGLE-SHEETS.md  # Manual do webhook Google Sheets
 │   │   ├── google-apps-script.js    # Código fonte do backend para Google Sheets
-│   │   ├── index.html               # Aplicação Principal V3.0
-│   │   ├── manifest.json            # Manifesto PWA da Versão 3
-│   │   └── sw.js                    # Service Worker V5 com cache offline modular
+│   │   ├── index.html               # Aplicação Principal V2.0
+│   │   ├── roadmap.html             # Painel Interativo de Implementações
+│   │   ├── status.html              # Redirecionador rápido para o roadmap
+│   │   ├── manifest.json            # Manifesto PWA
+│   │   └── sw.js                    # Service Worker V5 Offline
+│   │
+│   ├── v3/                          # ⚡ Versão 3.0 (React 19 + TypeScript + Vite)
+│   │   ├── src/                     # Código-fonte React, Componentes, Zustand Stores e Types
+│   │   ├── public/                  # Assets estáticos, manifest e sw.js da V3
+│   │   ├── dist/                    # Build de produção pré-compilado otimizado
+│   │   ├── vite.config.ts           # Configuração Vite com Tailwind v4
+│   │   ├── package.json             # Dependências e scripts
+│   │   └── README.md                # Manual técnico da Versão 3
+│   │
 │   ├── index.html                   # Entrada principal do catálogo
 │   ├── manifest.json                # Manifesto PWA raiz
 │   ├── sw.js                        # Service Worker raiz
-│   └── README.md                    # 📖 Documentação Oficial do Projeto
+│   └── README.md                    # 📖 Documentação Oficial Unificada
 ```
 
 ---
 
-## ⚙️ Guia de Configuração Rápida
+## ⚙️ Guia de Configuração e Instalação
 
 ### 1. Configurar Dados da Empresa e WhatsApp
-No arquivo `v2/js/data/config.js`, personalize os parâmetros centrais:
+No arquivo [`v2/js/data/config.js`](file:///c:/Users/n4fog/Pictures/VALDECIR/nfog-catalogo/v2/js/data/config.js) (ou `v3/src/data/config.ts`), personalize os dados corporativos:
 
 ```javascript
 const CONFIG = {
-  whatsapp: '5545999332563', // WhatsApp Central da Rawell Química
-  empresa: 'Rawell Química — Catálogo 2026',
-  mensagem_intro: 'Olá! Gostaria de solicitar uma cotação dos seguintes produtos da Rawell Química:',
+  whatsapp: '554599781407', // WhatsApp Comercial JCV Química
+  empresa: 'JCV Química — Catálogo de Produtos 2026',
+  mensagem_intro: 'Olá! Gostaria de solicitar uma cotação dos seguintes produtos através do catálogo JCV Química:',
   mensagem_fim: '✅ Aguardo retorno sobre disponibilidade e condições de fornecimento. Obrigado!',
-  auditWebhookUrl: 'https://script.google.com/macros/s/SEU_SCRIPT_ID/exec' // URL do Google Apps Script
+  auditWebhookUrl: 'https://script.google.com/macros/s/SEU_SCRIPT_ID/exec'
 };
 ```
+
+### 2. Executar Localmente
+* **Versão 2 (Vanilla):** Basta abrir o arquivo `v2/index.html` em qualquer navegador ou via extensão *Live Server*.
+* **Versão 3 (React SPA):**
+  ```bash
+  cd v3
+  npm install
+  npm run dev
+  ```
 
 ---
 
 ## 🌐 Deploy e Hospedagem
 
-O projeto é 100% estático e pode ser hospedado gratuitamente e com deploy contínuo em qualquer plataforma:
+O projeto é 100% estático e pode ser publicado instantaneamente:
 
 ### Opção 1: Render (Recomendado)
 - **Tipo de Serviço**: Static Site
 - **Build Command**: *(Deixe em branco)*
-- **Publish Directory**: `.` (ou `v2`)
+- **Publish Directory**: `v2` (para a versão Vanilla) ou `v3/dist` (para a versão React SPA).
 
 ### Opção 2: GitHub Pages
-- Vá nas configurações do repositório no GitHub > **Pages**.
-- Selecione a branch `main` e a pasta `/ (root)` e salve.
+- Configurações do Repositório > **Pages** > Branch: `main` > Pasta: `/ (root)` ou `/v2`.
+
+### Opção 3: Vercel / Netlify / Cloudflare Pages
+- Conecte o repositório GitHub e selecione o diretório raiz desejado.
 
 ---
 
-## 📜 Changelog
+## 📜 Changelog Histórico
 
-### [v3.0.0] - 2026-09-04 (🏆 Versão Estável Oficial)
-* 🏗️ **Arquitetura 100% Modular**: Desacoplamento completo do código em 18 módulos (`v2/css/` e `v2/js/modules/`).
-* 💼 **App do Vendedor Master**: Painel do representante com abas de gestão de cotações, status e links exclusivos.
-* 📱 **Disparo Direto para Cliente**: Modal com validação de telefone para envio direto no WhatsApp.
-* ⚖️ **Ações em Pares (Com vs Sem Preço)**: WhatsApp, Proposta PDF e Links Mágicos estruturados.
-* ⚡ **Service Worker V5**: Cache offline automatizado para toda a estrutura modular.
-* 🖼️ **Assets de Marketing**: Artes nos formatos Stories 9:16 para campanhas e status.
+### [v3.0.0] - 2026-09-05 (🏆 Lançamento Dual Architecture)
+* 🚀 **Integração V3 React SPA**: Vite 6, React 19, TypeScript, Tailwind CSS v4, Zustand e build pré-compilado em `v3/dist/`.
+* 📊 **Painel de Implementações & Roadmap**: `v2/roadmap.html` interativo com métricas de progresso, timeline e área administrativa.
+* 📱 **Física de Gestos Touch Mobile**: Swipe-to-close em Bottom Sheets, botão flutuante e monitor de conectividade online/offline.
+* 🔤 **Fontes Locais Self-Hosted**: Inclusão de `Inter` e `Plus Jakarta Sans` em WOFF2 para 100% de autonomia offline.
+* 🏢 **Identidade JCV Química**: Dados comerciais atualizados e roteamento de WhatsApp comercial.
 
 ### [v2.1.0] - 2026-09-04
-* 💼 **App do Vendedor**: Primeira versão do painel de orçamentos e ações duplas.
+* 💼 **App do Vendedor Master**: Painel interno de orçamentos, ações com/sem preço e disparo direto para WhatsApp de clientes.
 
 ### [v2.0.0] - 2026-09-02
-* ✨ **Motor de Descontos Dinâmicos**: Desconto por item (%) e desconto global no pedido.
-* 📄 **Proposta Comercial A4 Timbrada**: Layout timbrado com numeração única.
-
-### [v1.0.0] - 2026-08-28
-* 📱 **Lançamento Inicial**: Catálogo digital responsivo, PWA e cotação via WhatsApp.
+* ✨ **Motor de Descontos Dinâmicos**: Descontos por item (%) e desconto global no pedido.
+* 📄 **Proposta Comercial A4 Timbrada**: Exportação em PDF corporativo timbrado.
 
 ---
 
 <div align="center">
 
-**Rawell Química © 2026** — *Tecnologia e Inovação em Defensivos e Soluções Químicas.*
+**JCV Química © 2026** — *Tecnologia e Inovação em Defensivos e Soluções Químicas.*
 
 </div>

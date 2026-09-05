@@ -227,9 +227,15 @@ function sendQuoteToWhatsApp() {
   const doc = docInput ? docInput.value.trim() : '';
 
   if (!nome) {
+    if (typeof toggleClientFormAccordion === 'function') {
+      toggleClientFormAccordion(true);
+    }
     nameInput?.classList.add('has-error');
     showToast('⚠️ Por favor, informe seu Nome ou Empresa');
-    nameInput?.focus();
+    setTimeout(() => {
+      nameInput?.focus();
+      nameInput?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 120);
     return;
   }
   nameInput?.classList.remove('has-error');
