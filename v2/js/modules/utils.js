@@ -6,7 +6,8 @@ let appState = {
   form: 'todos',
   sort: 'destaque',
   search: '',
-  viewMode: 'grid',
+  viewMode: (typeof localStorage !== 'undefined' && localStorage.getItem('jcv_view_mode')) || 'grid',
+  gridCols: (typeof localStorage !== 'undefined' && parseInt(localStorage.getItem('jcv_grid_cols'))) || (typeof window !== 'undefined' && window.innerWidth >= 1080 ? 4 : (typeof window !== 'undefined' && window.innerWidth >= 768 ? 3 : 2)),
   currentSheetProdId: null,
   sheetQty: 1
 };

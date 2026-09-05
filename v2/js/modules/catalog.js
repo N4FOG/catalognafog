@@ -98,7 +98,8 @@ function renderProductList() {
   }
 
   const isGrid = appState.viewMode === 'grid';
-  container.className = `products-layout ${isGrid ? 'grid-mode' : 'list-mode'}`;
+  const cols = appState.gridCols || 2;
+  container.className = `products-layout ${isGrid ? `grid-mode cols-${cols}` : 'list-mode'}`;
 
   const term = (appState.search || appState.searchTerm || '').trim();
 
@@ -217,8 +218,10 @@ function renderProductList() {
 function setViewMode(mode) {
   hapticFeedback(15);
   appState.viewMode = mode;
-  document.getElementById('btn-view-grid')?.classList.toggle('active', mode === 'grid');
-  document.getElementById('btn-view-list')?.classList.toggle('active', mode === 'list');
+  const btnGrid = document.getElementById('btn-view-grid');
+  const btnList = document.getElementById('btn-view-list');
+  if (btnGrid) btnGrid.classList.toggle('active', mode === 'grid');
+  if (btnList) btnList.classList.toggle('active', mode === 'list');
   renderProductList();
 }
 
