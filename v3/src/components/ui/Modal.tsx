@@ -56,15 +56,18 @@ export const Modal: React.FC<ModalProps> = ({
         onClick={handleClose}
       />
 
-      {/* Modal Dialog */}
+      {/* Modal Dialog / Bottom Sheet */}
       <div
-        className={`relative w-full ${maxWidthClasses} bg-white dark:bg-slate-900 rounded-t-3xl sm:rounded-2xl shadow-2xl border border-slate-200/80 dark:border-slate-800 flex flex-col max-h-[90vh] sm:max-h-[85vh] z-10 overflow-hidden transform transition-transform duration-300 animate-in slide-in-from-bottom-5 sm:zoom-in-95`}
+        className={`relative w-full ${maxWidthClasses} bg-white dark:bg-slate-900 rounded-t-3xl sm:rounded-2xl shadow-2xl border border-slate-200/80 dark:border-slate-800 flex flex-col max-h-[92dvh] sm:max-h-[85vh] z-10 overflow-hidden transform transition-transform duration-300 animate-in slide-in-from-bottom-5 sm:zoom-in-95`}
       >
+        {/* Mobile Swipe Handle Indicator */}
+        <div className="w-12 h-1.5 bg-slate-300 dark:bg-slate-700 rounded-full mx-auto mt-2.5 mb-1 sm:hidden shrink-0" />
+
         {/* Header */}
         {(title || showCloseButton) && (
-          <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100 dark:border-slate-800/80 bg-slate-50/50 dark:bg-slate-900/50">
+          <div className="flex items-center justify-between px-5 py-3.5 border-b border-slate-100 dark:border-slate-800/80 bg-slate-50/50 dark:bg-slate-900/50 shrink-0">
             {typeof title === 'string' ? (
-              <h3 className="text-lg font-bold text-slate-800 dark:text-slate-100 tracking-tight">
+              <h3 className="text-base sm:text-lg font-bold text-slate-800 dark:text-slate-100 tracking-tight font-display">
                 {title}
               </h3>
             ) : (
@@ -83,7 +86,9 @@ export const Modal: React.FC<ModalProps> = ({
         )}
 
         {/* Content Body */}
-        <div className="overflow-y-auto p-5 space-y-4">{children}</div>
+        <div className="overflow-y-auto p-4 sm:p-5 space-y-4 pb-[max(20px,env(safe-area-inset-bottom,0px))] overscroll-contain">
+          {children}
+        </div>
       </div>
     </div>
   );

@@ -1,4 +1,5 @@
 export interface TelemetryPayload {
+  action?: string;
   evento?: string;
   origem_canal?: string;
   vendedor?: string;
@@ -14,4 +15,6 @@ export interface TelemetryPayload {
   detalhes_extras?: string;
   user_agent?: string;
   timestamp?: string;
+  termo?: string;
+  resultados_qtd?: number;
 }

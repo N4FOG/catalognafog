@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import type { Product } from '../../types/product';
+import { CATEGORIAS, FORMULACOES } from '../../data/categories';
 import { useCartStore } from '../../store/useCartStore';
 import { useSellerStore } from '../../store/useSellerStore';
 import { useCatalogStore } from '../../store/useCatalogStore';
 import { useToastStore } from '../../store/useToastStore';
-import { Stepper } from '../ui/Stepper';
 import { formatCurrency } from '../../utils/formatters';
 import { triggerHaptic } from '../../utils/haptics';
-import { Plus, Check, Eye, ShieldCheck } from 'lucide-react';
+import { highlightSearch } from '../../utils/searchHighlight';
 import { sendTelemetry } from '../../utils/telemetry';
 
 interface ProductCardProps {
@@ -18,11 +18,39 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const [qty, setQty] = useState(1);
   const { items, addToCart } = useCartStore();
   const { isSellerLoggedIn, getActiveSeller } = useSellerStore();
-  const { setSelectedProduct } = useCatalogStore();
+  const { searchQuery, setSelectedProduct } = useCatalogStore();
   const { addToast } = useToastStore();
 
   const cartItem = items.find((i) => i.id === product.id);
-  const isInCart = !!cartItem;
+  const inCart = !!cartItem;
+
+  const catObj = CATEGORIAS.find((c) => c.id === product.categoria);
+  const formObj = FORMULACOES.find((f) => f.id === product.tipo_formulacao);
+
+  // Pack Tag derivation
+  const packFeature = product.caracteristicas
+    ? product.caracteristicas.find((c) => {
+        const lower = c.toLowerCase();
+        return (
+          lower.includes('frasco') ||
+          lower.includes('caixa') ||
+          lower.includes('sachê') ||
+          lower.includes('display') ||
+          lower.includes('seringa') ||
+          lower.includes('balde') ||
+          lower.includes('envelope')
+        );
+      })
+    : null;
+  const packTag = packFeature ? packFeature.split('(')[0].trim() : (product.unidade ? product.unidade.toUpperCase() : 'UN');
+
+  const targetsGrid = (product.alvos || []).slice(0, 2);
+  const moreGridCount = (product.alvos || []).length - targetsGrid.length;
+
+  const handleCardClick = () => {
+    triggerHaptic(15);
+    setSelectedProduct(product);
+  };
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -41,114 +69,138 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     });
   };
 
-  const handleCardClick = () => {
-    triggerHaptic(15);
-    setSelectedProduct(product);
+  const handleAdjustQty = (e: React.MouseEvent, delta: number) => {
+    e.stopPropagation();
+    triggerHaptic(10);
+    setQty((prev) => Math.max(1, Math.min(999, prev + delta)));
   };
 
   return (
     <article
       onClick={handleCardClick}
-      className="group relative bg-white dark:bg-slate-900/90 rounded-2xl border border-slate-200/90 dark:border-slate-800 shadow-sm hover:shadow-xl hover:border-emerald-500/40 dark:hover:border-emerald-500/40 transition-all duration-300 flex flex-col justify-between overflow-hidden cursor-pointer"
+      className="bg-white dark:bg-[#0f1f17] rounded-2xl border border-[rgba(15,69,49,0.12)] dark:border-[rgba(16,185,129,0.18)] shadow-xs hover:shadow-md hover:border-[#10b981]/50 dark:hover:border-[#10b981]/50 transition-all duration-200 flex flex-col justify-between overflow-hidden cursor-pointer group"
     >
-      <div className="relative aspect-square p-4 bg-gradient-to-b from-slate-50 to-slate-100/60 dark:from-slate-800/40 dark:to-slate-900/40 flex items-center justify-center overflow-hidden">
-        <div className="absolute top-3 left-3 right-3 flex items-center justify-between gap-1 z-10">
-          <span className="inline-flex items-center px-2 py-0.5 rounded-lg text-[10px] font-bold bg-white/95 dark:bg-slate-900/95 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 shadow-sm backdrop-blur-sm truncate max-w-[120px]">
-            {product.referencia}
+      {/* Thumb Box with Badges */}
+      <div className="relative aspect-square p-3 bg-[#f8faf9] dark:bg-[#14281f] flex items-center justify-center overflow-hidden">
+        {/* Top Vendas Badge */}
+        {product.destaque && (
+          <span className="absolute top-2 left-2 z-10 px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-gradient-to-r from-amber-500 to-amber-600 text-white shadow-sm">
+            ⭐ Top Vendas
           </span>
-          {isInCart && (
-            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[10px] font-extrabold bg-emerald-600 text-white shadow-sm animate-in zoom-in">
-              <Check className="w-3 h-3 stroke-[3]" />
-              {cartItem.quantidade} no pedido
-            </span>
-          )}
-        </div>
+        )}
 
+        {/* Category Emoji Badge */}
+        <span
+          className="absolute top-2 right-2 z-10 w-7 h-7 rounded-full bg-white/90 dark:bg-[#0f1f17]/90 backdrop-blur-xs border border-slate-200 dark:border-slate-700 flex items-center justify-center text-sm shadow-xs"
+          title={catObj?.nome}
+        >
+          {catObj?.icone || '🌿'}
+        </span>
+
+        {/* Product Image */}
         <img
           src={product.imagens[0]}
           alt={product.nome}
-          className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
+          className="w-4/5 h-4/5 object-contain group-hover:scale-105 transition-transform duration-300"
           loading="lazy"
-          onError={(e) => {
-            (e.target as HTMLElement).style.opacity = '0.5';
-          }}
         />
 
-        <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/95 dark:bg-slate-900/95 text-slate-900 dark:text-white text-xs font-bold shadow-lg backdrop-blur-sm">
-            <Eye className="w-3.5 h-3.5" />
-            Ficha Técnica
-          </span>
-        </div>
+        {/* Formulation Pill Badge */}
+        <span className="absolute bottom-2 left-2 z-10 px-2 py-0.5 rounded-full text-[10px] font-bold bg-white/90 dark:bg-[#0f1f17]/90 backdrop-blur-xs border border-slate-200 dark:border-slate-700 text-[#334e40] dark:text-[#9cb8a9] shadow-xs">
+          {formObj ? `${formObj.icone} ${formObj.nome.split(' ')[0]}` : '⚡'}
+        </span>
       </div>
 
-      <div className="p-4 flex-1 flex flex-col justify-between space-y-3">
+      {/* Product Info Box */}
+      <div className="p-3 sm:p-4 flex-1 flex flex-col justify-between space-y-3">
         <div>
-          <div className="flex items-center gap-1 text-[11px] font-semibold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider mb-1">
-            <span>{product.categoria}</span>
-            <span>•</span>
-            <span className="truncate">{product.tipo_formulacao}</span>
+          {/* Packaging Tag & Reference */}
+          <div className="flex items-center justify-between gap-1 mb-1">
+            <span className="text-[10px] font-bold text-slate-500 dark:text-[#638573] uppercase tracking-wider">
+              Ref: {product.referencia}
+            </span>
+            <span className="px-1.5 py-0.2 rounded text-[10px] font-bold bg-slate-100 dark:bg-[#14281f] text-[#334e40] dark:text-[#9cb8a9]">
+              📦 {packTag}
+            </span>
           </div>
 
-          <h4 className="font-bold text-sm sm:text-base text-slate-900 dark:text-slate-100 group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition-colors line-clamp-2 leading-snug">
-            {product.nome}
-          </h4>
+          {/* Product Name */}
+          <h3 className="font-display font-extrabold text-xs sm:text-sm text-[#0f1f17] dark:text-[#edf5f0] group-hover:text-[#0f4531] dark:group-hover:text-[#10b981] transition-colors line-clamp-2 leading-snug">
+            {highlightSearch(product.nome, searchQuery)}
+          </h3>
 
-          <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-2 mt-1 leading-relaxed">
-            {product.o_que_faz || product.descricao}
+          {/* Description line */}
+          <p className="text-[11px] text-[#334e40] dark:text-[#9cb8a9] line-clamp-2 mt-1 leading-tight">
+            {highlightSearch(product.descricao, searchQuery)}
           </p>
+
+          {/* Seller Price Box */}
+          {isSellerLoggedIn && (
+            <div className="inline-flex items-center gap-1.5 bg-[#10b981]/10 border border-[#10b981]/35 rounded-lg px-2 py-0.5 mt-1.5 text-xs">
+              <span className="text-[#059669] font-black">💰 Tabela:</span>
+              <strong className="text-[#0f1f17] dark:text-[#edf5f0] font-mono font-black">
+                {formatCurrency(product.preco_base)}
+              </strong>
+            </div>
+          )}
         </div>
 
-        {product.alvos && product.alvos.length > 0 && (
-          <div className="flex flex-wrap gap-1">
-            {product.alvos.slice(0, 2).map((alvo, idx) => (
+        <div>
+          {/* Target Pest Chips */}
+          <div className="flex flex-wrap gap-1 mb-2.5">
+            {targetsGrid.map((alvo, idx) => (
               <span
                 key={idx}
-                className="px-1.5 py-0.5 rounded-md text-[10px] font-medium bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200/60 dark:border-slate-700/60 truncate max-w-[110px]"
+                className="px-1.5 py-0.5 rounded-md text-[10px] font-semibold bg-slate-100 dark:bg-[#14281f] text-[#334e40] dark:text-[#9cb8a9] border border-slate-200/60 dark:border-slate-700/60 truncate max-w-[110px]"
               >
-                {alvo}
+                🎯 {alvo}
               </span>
             ))}
-            {product.alvos.length > 2 && (
-              <span className="px-1.5 py-0.5 rounded-md text-[10px] font-medium bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500">
-                +{product.alvos.length - 2}
+            {moreGridCount > 0 && (
+              <span className="px-1.5 py-0.5 rounded-md text-[10px] font-bold bg-slate-100 dark:bg-[#14281f] text-slate-500">
+                +{moreGridCount}
               </span>
             )}
           </div>
-        )}
 
-        <div className="pt-2 border-t border-slate-100 dark:border-slate-800/80 space-y-3">
-          <div className="flex items-baseline justify-between">
-            {isSellerLoggedIn ? (
-              <div>
-                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
-                  Tabela Oficial
-                </span>
-                <span className="text-base sm:text-lg font-black text-emerald-700 dark:text-emerald-400 font-mono">
-                  {formatCurrency(product.preco_base)}
-                </span>
-                <span className="text-[10px] text-slate-400 ml-1">/{product.unidade}</span>
-              </div>
-            ) : (
-              <div className="flex items-center gap-1 text-slate-600 dark:text-slate-300 text-xs font-semibold">
-                <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-                <span>Cotação Direta</span>
-              </div>
-            )}
-          </div>
+          {/* Action Row: Stepper + Add Button */}
+          <div className="flex items-center gap-2 pt-2 border-t border-slate-100 dark:border-slate-800" onClick={(e) => e.stopPropagation()}>
+            <div className="inline-flex items-center bg-slate-100 dark:bg-[#14281f] rounded-xl p-0.5 border border-slate-200 dark:border-slate-700">
+              <button
+                type="button"
+                onClick={(e) => handleAdjustQty(e, -1)}
+                className="w-7 h-7 flex items-center justify-center rounded-lg bg-white dark:bg-[#0f1f17] text-[#0f1f17] dark:text-white font-bold text-xs shadow-xs hover:bg-slate-50 transition-colors"
+              >
+                −
+              </button>
+              <input
+                type="number"
+                value={inCart && cartItem ? cartItem.quantidade : qty}
+                onChange={(e) => {
+                  const val = parseInt(e.target.value, 10);
+                  if (!isNaN(val) && val >= 1) setQty(val);
+                }}
+                className="w-8 text-center text-xs font-bold bg-transparent border-none focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+              />
+              <button
+                type="button"
+                onClick={(e) => handleAdjustQty(e, 1)}
+                className="w-7 h-7 flex items-center justify-center rounded-lg bg-white dark:bg-[#0f1f17] text-[#0f1f17] dark:text-white font-bold text-xs shadow-xs hover:bg-slate-50 transition-colors"
+              >
+                +
+              </button>
+            </div>
 
-          <div className="flex items-center gap-2">
-            <Stepper value={qty} onChange={setQty} size="sm" />
             <button
+              type="button"
               onClick={handleAddToCart}
-              className={`flex-1 py-2 px-3 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm transition-all active:scale-95 ${
-                isInCart
-                  ? 'bg-slate-100 dark:bg-slate-800 hover:bg-emerald-50 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700'
-                  : 'bg-emerald-700 hover:bg-emerald-800 dark:bg-emerald-600 dark:hover:bg-emerald-500 text-white shadow-emerald-900/20'
+              className={`flex-1 h-8 px-2 rounded-xl text-xs font-black flex items-center justify-center gap-1 transition-all active:scale-95 shadow-sm ${
+                inCart
+                  ? 'bg-[#059669] text-white shadow-[#059669]/25'
+                  : 'bg-[#0f4531] hover:bg-[#176043] dark:bg-[#10b981] dark:hover:bg-[#059669] text-white'
               }`}
             >
-              <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
-              <span>{isInCart ? 'Adicionar +' : 'Adicionar'}</span>
+              <span>{inCart ? `Cotar (${cartItem.quantidade})` : '+ Cotar'}</span>
             </button>
           </div>
         </div>

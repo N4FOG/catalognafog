@@ -297,10 +297,12 @@
   height: calc(62px + var(--safe-bottom)) !important;
   padding-bottom: var(--safe-bottom) !important;
   background: var(--bg-glass) !important;
-  backdrop-filter: blur(28px) saturate(190%) !important;
-  -webkit-backdrop-filter: blur(28px) saturate(190%) !important;
   border-top: 1px solid var(--border) !important;
   box-shadow: 0 -3px 18px rgba(0, 0, 0, 0.08) !important;
+  transform: translateZ(0) !important;
+  -webkit-transform: translateZ(0) !important;
+  backface-visibility: hidden !important;
+  will-change: transform !important;
 }
 
 .nav-tab-btn {
@@ -399,8 +401,7 @@
   left: 50%;
   transform: translateX(-50%) translateY(-60px);
   z-index: 890;
-  background: rgba(30, 41, 59, 0.95);
-  backdrop-filter: blur(10px);
+  background: rgba(15, 23, 42, 0.97);
   color: #f8fafc;
   padding: 6px 14px;
   border-radius: var(--radius-full);
@@ -427,7 +428,6 @@
   inset: 0;
   z-index: 1100;
   background: rgba(0, 0, 0, 0.65);
-  backdrop-filter: blur(8px);
   display: flex;
   align-items: flex-end;
   justify-content: center;

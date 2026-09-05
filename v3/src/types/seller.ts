@@ -17,8 +17,8 @@ export interface SellerSession {
 }
 
 export interface QuoteHistoryItem extends Partial<CartTotals> {
-  id: string;
-  data: string;
+  id: string; // e.g. "RQ-2026-4892"
+  data: string; // "05/09/2026 às 14:30"
   timestamp: number;
   cliente: string;
   doc: string;
@@ -26,7 +26,9 @@ export interface QuoteHistoryItem extends Partial<CartTotals> {
   vendedorNome: string;
   itens: CartItem[];
   totalQtd: number;
-  valorTotal: string;
+  valorTotal: string; // "R$ 1.250,00"
   status: QuoteStatus;
+  pagamento?: string;
+  validade?: string;
   shareUrl?: string;
 }

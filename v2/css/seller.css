@@ -286,7 +286,6 @@
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.75);
-  backdrop-filter: blur(8px);
   z-index: 1200;
   display: none;
   align-items: center;
@@ -589,8 +588,6 @@
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.78);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
   z-index: 1200;
   display: none;
   align-items: center;

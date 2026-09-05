@@ -15,19 +15,32 @@ function getInitialTheme(): 'light' | 'dark' {
   return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 }
 
+function applyThemeToDOM(theme: 'light' | 'dark') {
+  if (typeof document === 'undefined') return;
+  const root = document.documentElement;
+  root.setAttribute('data-theme', theme);
+  if (theme === 'dark') {
+    root.classList.add('dark');
+    document.body?.classList.add('dark');
+  } else {
+    root.classList.remove('dark');
+    document.body?.classList.remove('dark');
+  }
+}
+
+const initialTheme = getInitialTheme();
+applyThemeToDOM(initialTheme);
+
 export const useThemeStore = create<ThemeState>((set, get) => ({
-  theme: getInitialTheme(),
+  theme: initialTheme,
   toggleTheme: () => {
     const nextTheme = get().theme === 'light' ? 'dark' : 'light';
     get().setTheme(nextTheme);
   },
   setTheme: (theme) => {
     localStorage.setItem(THEME_STORAGE_KEY, theme);
-    if (theme === 'dark') {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
+    applyThemeToDOM(theme);
     set({ theme });
   }
 }));
+

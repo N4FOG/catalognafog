@@ -8,13 +8,18 @@ export interface CartItem {
   preco_base: number;
   preco_unitario: number;
   desconto_percent: number;
+  packTag?: string;
 }
 
 export interface ClientInfo {
   nome: string;
-  doc: string; // CPF or CNPJ or City
+  doc: string; // CPF, CNPJ or City
   telefone: string;
+  vendedor?: string;
+  pagamento?: string;
+  validade?: string;
 }
+
 
 export interface CartTotals {
   subtotalItensSemDesconto: number;

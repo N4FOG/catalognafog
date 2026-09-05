@@ -12,6 +12,7 @@ function initSheetSwipeGestures(sheetElement, closeCallback) {
   let currentY = 0;
   let isDragging = false;
   let isAtTop = true;
+  let rafId = null;
 
   const handleBar = sheetElement.querySelector('.sheet-handle-bar') || sheetElement;
   const sheetBody = sheetElement.querySelector('.sheet-body, .cart-sheet-body');
@@ -27,14 +28,13 @@ function initSheetSwipeGestures(sheetElement, closeCallback) {
   }, { passive: true });
 
   sheetElement.addEventListener('touchstart', (e) => {
-    // Se o usuário está no topo da rolagem da sheet, permite o arrasto para fechar
     if (sheetBody) {
       isAtTop = sheetBody.scrollTop <= 0;
     }
     startY = getTouchY(e);
   }, { passive: true });
 
-  window.addEventListener('touchmove', (e) => {
+  sheetElement.addEventListener('touchmove', (e) => {
     if (!isDragging && !isAtTop) return;
 
     currentY = getTouchY(e);
@@ -44,13 +44,21 @@ function initSheetSwipeGestures(sheetElement, closeCallback) {
     if (deltaY > 5) {
       isDragging = true;
       sheetElement.classList.add('dragging');
-      // Adiciona leve resistência mecânica
-      const resistedDelta = Math.pow(deltaY, 0.95);
-      sheetElement.style.transform = `translateY(${resistedDelta}px)`;
+      if (!rafId) {
+        rafId = requestAnimationFrame(() => {
+          const resistedDelta = Math.pow(deltaY, 0.95);
+          sheetElement.style.transform = `translateY(${resistedDelta}px)`;
+          rafId = null;
+        });
+      }
     }
   }, { passive: true });
 
-  window.addEventListener('touchend', (e) => {
+  sheetElement.addEventListener('touchend', () => {
+    if (rafId) {
+      cancelAnimationFrame(rafId);
+      rafId = null;
+    }
     if (!isDragging) return;
     isDragging = false;
     sheetElement.classList.remove('dragging');
@@ -70,7 +78,7 @@ function initSheetSwipeGestures(sheetElement, closeCallback) {
     }
     startY = 0;
     currentY = 0;
-  });
+  }, { passive: true });
 }
 
 /**

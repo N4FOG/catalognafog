@@ -2,7 +2,7 @@
 //  JCV QUÍMICA v3.0 — Service Worker (Cache Offline & PWA)
 // ═══════════════════════════════════════════════════════════════
 
-const CACHE_NAME = 'jcv-quimica-cache-v19';
+const CACHE_NAME = 'jcv-quimica-cache-v20';
 const STATIC_ASSETS = [
   './',
   './index.html',

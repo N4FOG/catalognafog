@@ -39,7 +39,7 @@
   --bg:             #f4f7f5;
   --bg-card:        #ffffff;
   --bg-card-sub:    #f8faf9;
-  --bg-glass:       rgba(255, 255, 255, 0.88);
+  --bg-glass:       rgba(255, 255, 255, 0.96);
   --bg-sheet:       #ffffff;
   --text:           #0f1f17;
   --text-2:         #334e40;
@@ -72,7 +72,7 @@
     --bg:             #090d0b;
     --bg-card:        #121915;
     --bg-card-sub:    #16201b;
-    --bg-glass:       rgba(18, 25, 21, 0.90);
+    --bg-glass:       rgba(18, 25, 21, 0.96);
     --bg-sheet:       #121915;
     --text:           #f1f5f3;
     --text-2:         #9ab0a3;
@@ -92,7 +92,7 @@ html[data-theme="light"] {
   --bg:             #f4f7f5;
   --bg-card:        #ffffff;
   --bg-card-sub:    #f8faf9;
-  --bg-glass:       rgba(255, 255, 255, 0.88);
+  --bg-glass:       rgba(255, 255, 255, 0.96);
   --bg-sheet:       #ffffff;
   --text:           #0f1f17;
   --text-2:         #334e40;
@@ -106,7 +106,7 @@ html[data-theme="dark"] {
   --bg:             #090d0b;
   --bg-card:        #121915;
   --bg-card-sub:    #16201b;
-  --bg-glass:       rgba(18, 25, 21, 0.90);
+  --bg-glass:       rgba(18, 25, 21, 0.96);
   --bg-sheet:       #121915;
   --text:           #f1f5f3;
   --text-2:         #9ab0a3;

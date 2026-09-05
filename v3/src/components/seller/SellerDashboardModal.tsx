@@ -20,8 +20,8 @@ import {
 
 export const SellerDashboardModal: React.FC = () => {
   const {
-    isSellerDashboardOpen,
-    closeSellerDashboard,
+    isSellerAppModalOpen,
+    closeSellerAppModal,
     openCommissionModal
   } = useCatalogStore();
 
@@ -38,19 +38,19 @@ export const SellerDashboardModal: React.FC = () => {
 
   const [statusFilter, setStatusFilter] = useState<string>('todos');
 
-  if (!isSellerDashboardOpen) return null;
+  if (!isSellerAppModalOpen) return null;
 
   const handleLogout = () => {
     triggerHaptic(20);
     logout();
-    closeSellerDashboard();
+    closeSellerAppModal();
     addToast('👋 Sessão do vendedor encerrada.', 'info');
   };
 
   const handleLoadQuote = (quote: QuoteHistoryItem) => {
     triggerHaptic(20);
     loadSavedQuote(quote);
-    closeSellerDashboard();
+    closeSellerAppModal();
     setIsCartOpen(true);
     addToast(`📂 Proposta ${quote.id} carregada no carrinho!`, 'success');
   };
@@ -77,8 +77,8 @@ export const SellerDashboardModal: React.FC = () => {
 
   return (
     <Modal
-      isOpen={isSellerDashboardOpen}
-      onClose={closeSellerDashboard}
+      isOpen={isSellerAppModalOpen}
+      onClose={closeSellerAppModal}
       maxWidth="3xl"
       title={
         <div className="flex items-center gap-2 text-slate-800 dark:text-slate-100">
