@@ -1,0 +1,933 @@
+/* ═══════════════════════════════════════════════════════════════ */
+/* ROADMAP ADMIN PANEL & MODALS — JCV QUÍMICA 2026               */
+/* ═══════════════════════════════════════════════════════════════ */
+
+/* ═══════════════════════════════════════════════════════════════
+   PAINEL ADMINISTRATIVO & GESTÃO INTERATIVA (MODO ADMIN)
+═══════════════════════════════════════════════════════════════ */
+
+/* ── 1. Barra Flutuante de Ferramentas do Admin (Toolbar) ── */
+.admin-toolbar {
+  position: sticky;
+  top: 70px;
+  z-index: 99;
+  background: linear-gradient(135deg, rgba(15, 69, 49, 0.95), rgba(9, 38, 27, 0.98));
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 2px solid var(--brand-light);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  padding: 10px 0;
+  animation: slideDown 0.25s ease-out;
+}
+
+@keyframes slideDown {
+  from { transform: translateY(-100%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.admin-toolbar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.admin-toolbar-status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.admin-badge {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 800;
+  background: rgba(16, 185, 129, 0.2);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.admin-autosave-indicator {
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 600;
+}
+
+.admin-toolbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* ── 2. Botões Administrativos ────────────────────────────── */
+.btn-admin-act {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 12px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  cursor: pointer;
+  transition: all var(--transition);
+  outline: none;
+}
+
+.btn-admin-act:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+}
+
+.btn-admin-green { background: #059669; border-color: #10b981; color: #ffffff; }
+.btn-admin-green:hover { background: #10b981; }
+
+.btn-admin-blue { background: #2563eb; border-color: #3b82f6; color: #ffffff; }
+.btn-admin-blue:hover { background: #3b82f6; }
+
+.btn-admin-purple { background: #7c3aed; border-color: #8b5cf6; color: #ffffff; }
+.btn-admin-purple:hover { background: #8b5cf6; }
+
+.btn-admin-orange { background: #d97706; border-color: #f59e0b; color: #ffffff; }
+.btn-admin-orange:hover { background: #f59e0b; }
+
+.btn-admin-danger { background: #dc2626; border-color: #ef4444; color: #ffffff; }
+.btn-admin-danger:hover { background: #ef4444; }
+
+.btn-admin-gray { background: rgba(255, 255, 255, 0.12); color: #cbd5e1; }
+.btn-admin-gray:hover { background: rgba(255, 255, 255, 0.2); color: #ffffff; }
+
+.btn-admin-xs {
+  padding: 4px 8px;
+  font-size: 0.72rem;
+}
+
+.btn-admin-icon-only {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-xs);
+  flex-shrink: 0;
+}
+
+/* ── 3. Modais Administrativos (Backdrop e Caixas) ────────── */
+.admin-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  animation: fadeIn 0.18s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.admin-modal-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  width: 100%;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: zoomIn 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes zoomIn {
+  from { transform: scale(0.94); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.admin-modal-sm { max-width: 480px; width: 92%; }
+.admin-modal-md { max-width: 760px; width: 92%; }
+.admin-modal-lg { max-width: 1080px; width: 94%; }
+
+.admin-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 30px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-card-sub);
+}
+
+.admin-modal-title {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--text);
+  margin: 0;
+}
+
+.admin-modal-close {
+  background: none;
+  border: none;
+  font-size: 1.35rem;
+  color: var(--text-3);
+  cursor: pointer;
+  padding: 6px;
+  border-radius: var(--radius-xs);
+  transition: all var(--transition);
+}
+
+.admin-modal-close:hover {
+  color: var(--danger);
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.admin-modal-body {
+  padding: 26px 30px;
+  overflow-y: auto;
+}
+
+.admin-scrollable-body {
+  max-height: calc(88vh - 140px);
+}
+
+.admin-modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 14px;
+  padding: 18px 30px;
+  border-top: 1px solid var(--border);
+  background: var(--bg-card-sub);
+}
+
+/* ── 4. Formulários Administrativos ───────────────────────── */
+.admin-form-group {
+  margin-bottom: 20px;
+}
+
+.admin-form-group:last-child {
+  margin-bottom: 0;
+}
+
+.admin-form-row {
+  display: flex;
+  gap: 18px;
+  margin-bottom: 20px;
+}
+
+.flex-1 { flex: 1; }
+.flex-2 { flex: 2; }
+
+.admin-form-label {
+  display: block;
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: var(--text-2);
+  margin-bottom: 8px;
+}
+
+.admin-form-input,
+.admin-form-select,
+.admin-form-textarea {
+  width: 100%;
+  padding: 11px 15px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 0.92rem;
+  outline: none;
+  transition: border-color var(--transition), box-shadow var(--transition);
+  box-sizing: border-box;
+}
+
+.admin-form-input:focus,
+.admin-form-select:focus,
+.admin-form-textarea:focus {
+  border-color: var(--brand-light);
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.18);
+}
+
+.admin-form-textarea {
+  resize: vertical;
+  min-height: 90px;
+}
+
+/* Range Slider com Indicador Live */
+.admin-range-slider {
+  flex: 1;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 8px;
+  border-radius: var(--radius-full);
+  background: var(--border);
+  outline: none;
+  cursor: pointer;
+}
+
+.admin-range-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--brand-light);
+  border: 2px solid #ffffff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  cursor: pointer;
+  transition: transform 0.1s ease;
+}
+
+.admin-range-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+.admin-progress-live-badge {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: var(--brand-light);
+  background: rgba(16, 185, 129, 0.15);
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+}
+
+/* ── 5. Checklist Dinâmico & Linhas de Itens ──────────────── */
+.admin-checklist-inputs-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 6px;
+  max-height: 220px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.admin-checklist-input-row,
+.admin-changelog-input-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg-card-sub);
+  padding: 6px 8px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-subtle);
+  transition: transform 0.15s ease, background-color 0.2s ease, opacity 0.2s ease, border-color 0.2s ease;
+  position: relative;
+}
+
+.admin-draggable-row {
+  user-select: none;
+}
+
+.admin-drag-handle {
+  cursor: grab;
+  color: var(--text-3);
+  font-size: 1.15rem;
+  line-height: 1;
+  padding: 4px 6px;
+  border-radius: var(--radius-xs);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: -2px;
+  user-select: none;
+  touch-action: none;
+  transition: all var(--transition);
+  flex-shrink: 0;
+}
+
+.admin-drag-handle:hover {
+  color: var(--brand-light);
+  background: rgba(16, 185, 129, 0.15);
+}
+
+.admin-draggable-row.dragging {
+  opacity: 0.45;
+  background: var(--bg-card) !important;
+  border: 1px dashed var(--brand-light) !important;
+  box-shadow: 0 8px 24px rgba(16, 185, 129, 0.2);
+  transform: scale(0.98);
+}
+
+.admin-draggable-row.dragging .admin-drag-handle {
+  cursor: grabbing;
+}
+
+.admin-row-quick-sort {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.btn-sort-arrow {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--text-3);
+  font-size: 0.58rem;
+  line-height: 1;
+  padding: 3px 5px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.btn-sort-arrow:hover {
+  background: var(--bg-card);
+  color: var(--brand-light);
+  border-color: var(--brand-light);
+}
+
+.admin-row-highlight-anim {
+  animation: rowHighlight 0.4s ease-out;
+}
+
+@keyframes rowHighlight {
+  0% { background: rgba(16, 185, 129, 0.25); transform: scale(1.02); }
+  100% { background: var(--bg-card-sub); transform: scale(1); }
+}
+
+.admin-chk-toggle {
+  width: 18px;
+  height: 18px;
+  accent-color: #10b981;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.admin-module-edit-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.admin-module-edit-row:last-child {
+  border-bottom: none;
+}
+
+.admin-module-edit-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.admin-module-edit-control {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 220px;
+}
+
+/* ── 6. Controles Administrativos nos Cards do Roadmap ────── */
+.admin-card-highlight {
+  border-color: rgba(16, 185, 129, 0.22);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+}
+
+.admin-card-highlight.card-priority-alta {
+  border-color: rgba(239, 68, 68, 0.3) !important;
+  box-shadow: 0 2px 12px rgba(239, 68, 68, 0.08) !important;
+}
+.admin-card-highlight.card-priority-alta .card-admin-action-bar {
+  border-color: rgba(239, 68, 68, 0.25);
+  background: rgba(239, 68, 68, 0.025);
+}
+.admin-card-highlight.card-priority-alta .card-admin-badge {
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.1);
+  border-color: rgba(239, 68, 68, 0.25);
+}
+
+.admin-card-highlight.card-priority-media {
+  border-color: rgba(245, 158, 11, 0.3) !important;
+  box-shadow: 0 2px 12px rgba(245, 158, 11, 0.08) !important;
+}
+.admin-card-highlight.card-priority-media .card-admin-action-bar {
+  border-color: rgba(245, 158, 11, 0.25);
+  background: rgba(245, 158, 11, 0.025);
+}
+.admin-card-highlight.card-priority-media .card-admin-badge {
+  color: #f59e0b;
+  background: rgba(245, 158, 11, 0.1);
+  border-color: rgba(245, 158, 11, 0.25);
+}
+
+.admin-card-highlight.card-priority-normal {
+  border-color: rgba(16, 185, 129, 0.28) !important;
+  box-shadow: 0 2px 12px rgba(16, 185, 129, 0.06) !important;
+}
+.admin-card-highlight.card-priority-normal .card-admin-action-bar {
+  border-color: rgba(16, 185, 129, 0.25);
+  background: rgba(16, 185, 129, 0.025);
+}
+.admin-card-highlight.card-priority-normal .card-admin-badge {
+  color: #10b981;
+  background: rgba(16, 185, 129, 0.1);
+  border-color: rgba(16, 185, 129, 0.25);
+}
+
+.admin-card-highlight.card-priority-baixa {
+  border-color: rgba(100, 116, 139, 0.25) !important;
+  box-shadow: 0 2px 10px rgba(100, 116, 139, 0.05) !important;
+}
+.admin-card-highlight.card-priority-baixa .card-admin-action-bar {
+  border-color: rgba(100, 116, 139, 0.22);
+  background: rgba(100, 116, 139, 0.025);
+}
+.admin-card-highlight.card-priority-baixa .card-admin-badge {
+  color: var(--text-3);
+  background: rgba(100, 116, 139, 0.1);
+  border-color: rgba(100, 116, 139, 0.22);
+}
+
+.card-admin-action-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  background: var(--bg-card-sub);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xs);
+  padding: 5px 8px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.card-admin-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  width: 100%;
+}
+
+.card-admin-badge {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.62rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: #059669;
+  background: rgba(16, 185, 129, 0.1);
+  padding: 1px 6px;
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  transition: all var(--transition);
+}
+
+html[data-theme="dark"] .card-admin-badge {
+  color: #34d399;
+}
+
+.card-admin-btn-group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.card-admin-bottom-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+}
+
+.card-admin-field {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+  min-width: 0;
+}
+
+.card-admin-select-label {
+  font-size: 0.66rem;
+  font-weight: 700;
+  color: var(--text-3);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.admin-quick-status-select,
+.admin-quick-priority-select {
+  flex: 1;
+  width: 100%;
+  min-width: 0;
+  padding: 3px 5px;
+  font-size: 0.70rem;
+  font-weight: 700;
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  outline: none;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.admin-quick-status-select:focus,
+.admin-quick-priority-select:focus {
+  border-color: var(--brand-light);
+}
+
+.btn-card-admin-act {
+  padding: 2px 6px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text-2);
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.btn-card-admin-act:hover {
+  background: var(--bg-card);
+  color: var(--brand-light);
+  border-color: var(--brand-light);
+}
+
+.btn-card-admin-del {
+  color: var(--danger);
+}
+
+.btn-card-admin-del:hover {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+.admin-clickable-chk {
+  cursor: pointer;
+  border-radius: var(--radius-xs);
+  padding: 2px 4px;
+  transition: background var(--transition);
+}
+
+.admin-clickable-chk:hover {
+  background: rgba(16, 185, 129, 0.12);
+}
+
+.timeline-admin-acts {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ── 7. Toast & Animações Extras ──────────────────────────── */
+.admin-toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 2000;
+  padding: 12px 20px;
+  border-radius: var(--radius-md);
+  color: #ffffff;
+  font-size: 0.88rem;
+  font-weight: 700;
+  box-shadow: 0 8px 28px rgba(0,0,0,0.35);
+  transform: translateY(100px);
+  opacity: 0;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  pointer-events: none;
+}
+
+.admin-toast.visible {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.admin-input-shake {
+  animation: inputShake 0.4s ease-in-out;
+  border-color: var(--danger) !important;
+}
+
+@keyframes inputShake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-6px); }
+  40%, 80% { transform: translateX(6px); }
+}
+
+@media (max-width: 768px) {
+  .admin-toolbar {
+    top: 60px;
+  }
+  .admin-toolbar-inner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .admin-toolbar-actions {
+    width: 100%;
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+  .admin-form-row {
+    flex-direction: column;
+    gap: 12px;
+  }
+  .admin-module-edit-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .admin-module-edit-control {
+    width: 100%;
+  }
+}
+
+
+
+/* ── 5. Templates Rápidos de Checklist no Admin ────────────── */
+.template-buttons-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.btn-chk-template {
+  background: var(--bg-card-sub);
+  border: 1px solid var(--border);
+  color: var(--text-2);
+  padding: 8px 14px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--transition);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-chk-template:hover {
+  background: var(--brand);
+  color: #ffffff;
+  border-color: var(--brand);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(15, 69, 49, 0.2);
+}
+
+/* ── 5.1 Editor de Checklist & UX de Etapas no Modal Admin ────── */
+.admin-checklist-editor {
+  background: var(--bg-card-sub);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 90px;
+}
+
+.checklist-summary-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 10px 16px;
+  margin-bottom: 10px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-2);
+}
+
+.chk-summary-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.chk-summary-pill {
+  font-size: 0.74rem;
+  font-weight: 800;
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  background: rgba(16, 185, 129, 0.15);
+  color: var(--brand-light);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.admin-chk-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  transition: all var(--transition);
+  position: relative;
+}
+
+.admin-chk-row:hover {
+  border-color: var(--brand-light);
+  box-shadow: var(--shadow-sm);
+  transform: translateY(-1px);
+}
+
+.admin-chk-row.row-done {
+  background: rgba(16, 185, 129, 0.04);
+  border-color: rgba(16, 185, 129, 0.3);
+}
+
+.admin-chk-row.row-done .chk-row-text {
+  color: var(--text-3);
+  text-decoration: line-through;
+}
+
+.admin-chk-row.is-dragging-row {
+  opacity: 0.4;
+  border: 2px dashed var(--brand-light);
+  background: var(--bg-card-sub);
+}
+
+.chk-drag-handle {
+  cursor: grab;
+  color: var(--text-3);
+  font-size: 1.1rem;
+  user-select: none;
+  padding: 0 4px;
+  display: flex;
+  align-items: center;
+  transition: color var(--transition);
+}
+
+.chk-drag-handle:hover {
+  color: var(--brand-light);
+}
+
+.chk-drag-handle:active {
+  cursor: grabbing;
+}
+
+.chk-step-num {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--text-3);
+  background: var(--bg-card-sub);
+  border: 1px solid var(--border-subtle);
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.admin-chk-row.row-done .chk-step-num {
+  background: var(--brand);
+  color: #ffffff;
+  border-color: var(--brand);
+}
+
+.chk-row-done {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--brand);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.chk-row-text {
+  flex: 1;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 6px 8px !important;
+  font-size: 0.92rem !important;
+  color: var(--text) !important;
+  font-weight: 500;
+  outline: none;
+}
+
+.chk-row-text:focus {
+  background: var(--bg-card-sub) !important;
+  border-radius: var(--radius-xs);
+}
+
+.chk-row-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-chk-move {
+  background: var(--bg-card-sub);
+  border: 1px solid var(--border);
+  color: var(--text-3);
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-xs);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.72rem;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.btn-chk-move:hover {
+  background: var(--brand);
+  color: #ffffff;
+  border-color: var(--brand);
+}
+
+.btn-chk-remove {
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-xs);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.btn-chk-remove:hover {
+  background: #ef4444;
+  color: #ffffff;
+  border-color: #ef4444;
+  transform: scale(1.08);
+}
+
+.chk-empty-placeholder {
+  text-align: center;
+  padding: 28px 18px;
+  color: var(--text-3);
+  font-size: 0.88rem;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-card);
+}

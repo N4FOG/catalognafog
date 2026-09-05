@@ -1,35 +1,48 @@
-// =============================================================
-//  RAWELL QUÍMICA — Service Worker PWA (Cache Offline Completo)
-// =============================================================
+// ═══════════════════════════════════════════════════════════════
+//  JCV QUÍMICA v3.0 — Service Worker (Cache Offline & PWA)
+// ═══════════════════════════════════════════════════════════════
 
-const CACHE_NAME = 'rawell-catalogo-2026-v1';
-
-// Lista de ativos estáticos essenciais para funcionamento 100% offline
+const CACHE_NAME = 'jcv-quimica-cache-v20';
 const STATIC_ASSETS = [
   './',
   './index.html',
-  './produto.html',
-  './teste-produto-gerador.html',
-  './img/ai-campaigns/story-kapina-plus-ai.jpg',
-  './img/ai-campaigns/story-rocada-capina-ai.jpg',
-  './img/ai-campaigns/story-mata-pragas-gel-ai.jpg',
-  './css/card-generator.css',
-  './js/contextos.js',
-  './js/card-generator.js',
+  './roadmap.html',
   './manifest.json',
-  './css/style.css',
-  './css/template30-app-mobile-first.css',
-  './js/produtos.js',
-  './js/carrinho.js',
-  './js/home.js',
-  './js/produto.js',
-  './js/pwa.js',
-  './img/icon.svg',
+  './fonts/inter.woff2',
+  './fonts/plus-jakarta-sans.woff2',
+  './css/base.css',
+  './css/layout.css',
+  './css/catalog.css',
+  './css/sheet-modal.css',
+  './css/cart.css',
+  './css/seller.css',
+  './css/roadmap.css',
+  './css/roadmap-layout.css',
+  './css/roadmap-grid.css',
+  './css/roadmap-kanban.css',
+  './css/roadmap-timeline.css',
+  './css/roadmap-admin.css',
+  './css/roadmap-print.css',
+  './js/data/config.js',
+  './js/data/categories.js',
+  './js/data/products.js',
+  './js/roadmap-data.js',
+  './js/roadmap-admin.js',
+  './js/roadmap.js',
+  './js/modules/utils.js',
+  './js/modules/theme.js',
+  './js/modules/catalog.js',
+  './js/modules/cart.js',
+  './js/modules/seller.js',
+  './js/modules/pdf-proposal.js',
+  './js/modules/whatsapp.js',
+  './js/modules/telemetry.js',
+  './js/modules/pwa.js',
+  './js/app.js',
   './img/icon-192.png',
   './img/icon-512.png',
-  './img/icon-maskable.png',
-
-  // Fotos oficiais de todos os 32 produtos (WebP)
+  './img/icon-maskable-512.png',
+  './img/apple-touch-icon.png',
   './img/produtos/p01-kapina-plus-60ml.webp',
   './img/produtos/p02-kapina-tradicional-60ml.webp',
   './img/produtos/p03-korsario-60ml.webp',
@@ -64,88 +77,84 @@ const STATIC_ASSETS = [
   './img/produtos/p32-oleo-mineral-parafinado-100ml.webp'
 ];
 
-// ── 1. Instalação: Pré-cacheia todos os arquivos essenciais ──
-self.addEventListener('install', (event) => {
-  self.skipWaiting();
+// Install: cache static assets de forma tolerante a falhas parciais
+self.addEventListener('install', event => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      console.log('[Service Worker] Armazenando catálogo completo no cache offline...');
-      return cache.addAll(STATIC_ASSETS);
-    }).catch(err => {
-      console.warn('[Service Worker] Aviso durante o pré-cache:', err);
+    caches.open(CACHE_NAME).then(cache => {
+      return Promise.allSettled(
+        STATIC_ASSETS.map(url =>
+          cache.add(url).catch(err => console.warn('Cache fetch skipped:', url, err))
+        )
+      );
     })
   );
+  self.skipWaiting();
 });
 
-// ── 2. Ativação: Limpa caches antigos e assume controle ─────
-self.addEventListener('activate', (event) => {
+// Activate: delete old caches
+self.addEventListener('activate', event => {
   event.waitUntil(
-    caches.keys().then((cacheNames) => {
-      return Promise.all(
-        cacheNames.map((cacheName) => {
-          if (cacheName !== CACHE_NAME) {
-            console.log('[Service Worker] Removendo cache antigo:', cacheName);
-            return caches.delete(cacheName);
-          }
-        })
-      );
-    }).then(() => self.clients.claim())
+    caches.keys().then(keys =>
+      Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)))
+    )
   );
+  self.clients.claim();
 });
 
-// ── 3. Interceptação de Requisições (Estratégia Stale-While-Revalidate / Cache-First) ──
-self.addEventListener('fetch', (event) => {
-  const request = event.request;
+// Fetch: cache-first para imagens/fontes, navegação tolerante a parâmetros, stale-while-revalidate para app shell
+self.addEventListener('fetch', event => {
+  const url = new URL(event.request.url);
 
-  // Ignorar requisições não-GET ou esquemas que não sejam http/https (ex: chrome-extension)
-  if (request.method !== 'GET' || !request.url.startsWith('http')) {
+  // 1. Assets Estáticos & Imagens/Fontes: Cache First
+  if (event.request.destination === 'image' || event.request.destination === 'font' || url.pathname.match(/\.(woff2|woff|ttf|webp|png|jpg|jpeg|gif|svg|ico)$/i)) {
+    event.respondWith(
+      caches.open(CACHE_NAME).then(cache =>
+        cache.match(event.request).then(cached => {
+          if (cached) return cached;
+          return fetch(event.request).then(response => {
+            if (response.ok) cache.put(event.request, response.clone());
+            return response;
+          }).catch(() => cached || new Response('', { status: 404 }));
+        })
+      )
+    );
     return;
   }
 
-  // Tratamento especial para URLs com parâmetros (ex: produto.html?id=12)
-  const url = new URL(request.url);
+  // 2. Navegação (HTML): Suporte a Links Parametrizados (?v=carlos, ?cart=...) em Modo Offline
+  if (event.request.mode === 'navigate') {
+    event.respondWith(
+      caches.match(event.request, { ignoreSearch: true }).then(cached => {
+        const fetchPromise = fetch(event.request)
+          .then(response => {
+            if (response.ok) {
+              const clone = response.clone();
+              caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
+            }
+            return response;
+          })
+          .catch(() => cached || caches.match('./index.html') || caches.match('./'));
 
+        return cached || fetchPromise;
+      })
+    );
+    return;
+  }
+
+  // 3. App Shell, CSS, JS: Stale While Revalidate
   event.respondWith(
-    caches.match(request).then((cachedResponse) => {
-      if (cachedResponse) {
-        // Se encontrou no cache, retorna imediatamente e atualiza em background se online
-        fetch(request).then((networkResponse) => {
-          if (networkResponse && networkResponse.status === 200) {
-            caches.open(CACHE_NAME).then((cache) => cache.put(request, networkResponse));
+    caches.match(event.request).then(cached => {
+      const fetchPromise = fetch(event.request)
+        .then(response => {
+          if (response.ok) {
+            const clone = response.clone();
+            caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
           }
-        }).catch(() => {
-          // Offline, ignora erro de rede em background
-        });
+          return response;
+        })
+        .catch(() => cached);
 
-        return cachedResponse;
-      }
-
-      // Se a requisição for para produto.html com query params (ex: produto.html?id=5)
-      if (url.pathname.endsWith('produto.html')) {
-        return caches.match('./produto.html').then((resp) => {
-          if (resp) return resp;
-          return fetch(request);
-        });
-      }
-
-      // Se não estava no cache, busca na rede e armazena cópia no cache
-      return fetch(request).then((networkResponse) => {
-        if (!networkResponse || networkResponse.status !== 200 || networkResponse.type !== 'basic') {
-          return networkResponse;
-        }
-
-        const responseToCache = networkResponse.clone();
-        caches.open(CACHE_NAME).then((cache) => {
-          cache.put(request, responseToCache);
-        });
-
-        return networkResponse;
-      }).catch(() => {
-        // Fallback offline se for navegação
-        if (request.mode === 'navigate') {
-          return caches.match('./index.html');
-        }
-      });
+      return cached || fetchPromise;
     })
   );
 });
