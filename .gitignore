@@ -1,0 +1,14 @@
+# Backups & Temporary Scraping Files
+*.bak
+*.backup-*
+*.original_monolith_backup
+page_*.png
+*.txt
+*.json
+!manifest.json
+produtos.html
+rawell_site_home.html
+sobre-a-empresa.html
+dicas-e-cuidados.html
+inseticidas-residuais-o-que-sao-e-quando-utilizar.html
+existing_produtos.js
