@@ -23,10 +23,19 @@
   <meta property="og:description" content="Linha completa de soluções para gramados, jardinagem, saúde pública e pragas. Faça sua cotação rápida.">
   <meta property="og:image" content="img/produtos/p01-kapina-plus-60ml.webp">
 
-  <!-- Google Fonts: Inter & Plus Jakarta Sans -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Pré-carregamento imediato das Fontes Locais (Self-Hosted WOFF2) -->
+  <link rel="preload" href="fonts/plus-jakarta-sans.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+
+  <!-- Inicialização Imediata do Tema (Anti-FOUC) -->
+  <script>
+    (function(){
+      try {
+        var t = localStorage.getItem('rawell_theme') || 'auto';
+        if (t !== 'auto') document.documentElement.setAttribute('data-theme', t);
+      } catch(e){}
+    })();
+  </script>
 
   <!-- Estilos Modulares (CSS) -->
   <link rel="stylesheet" href="css/base.css">

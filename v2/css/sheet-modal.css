@@ -166,11 +166,19 @@
   padding: 4px;
   border-radius: var(--radius-sm);
   margin: 16px 0 14px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.sheet-tabs-nav::-webkit-scrollbar {
+  display: none;
 }
 
 .sheet-tab-btn {
   flex: 1;
-  padding: 8px 6px;
+  min-width: fit-content;
+  white-space: nowrap;
+  padding: 8px 10px;
   border-radius: var(--radius-xs);
   font-size: 0.8rem;
   font-weight: 700;
@@ -608,3 +616,4 @@
     margin-bottom: 0;
   }
 }
+

@@ -16,6 +16,16 @@ function normText(str) {
   return (str || '').toString().normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();
 }
 
+function escapeHtml(str) {
+  if (str === null || str === undefined) return '';
+  return str.toString()
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
 function hapticFeedback(ms = 15) {
   if ('vibrate' in navigator) {
     try { navigator.vibrate(ms); } catch (e) {}

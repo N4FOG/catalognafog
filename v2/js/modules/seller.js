@@ -5,7 +5,7 @@ const SELLER_STORAGE_KEY = 'rawell_seller_session_auth_v2';
 const CLIENT_SELLER_STORAGE_KEY = 'rawell_client_attributed_seller_v2';
 const QUOTE_HISTORY_KEY = 'rawell_quote_history_v2';
 
-var clientAttributedSeller = null;
+let clientAttributedSeller = null;
 
 function initSellerAssignment() {
   try {

@@ -2,11 +2,13 @@
 //  JCV QUÍMICA v3.0 — Service Worker (Cache Offline & PWA)
 // ═══════════════════════════════════════════════════════════════
 
-const CACHE_NAME = 'jcv-quimica-cache-v9';
+const CACHE_NAME = 'jcv-quimica-cache-v11';
 const STATIC_ASSETS = [
   './',
   './index.html',
   './manifest.json',
+  './fonts/inter.woff2',
+  './fonts/plus-jakarta-sans.woff2',
   './css/base.css',
   './css/layout.css',
   './css/catalog.css',
@@ -88,12 +90,12 @@ self.addEventListener('activate', event => {
   self.clients.claim();
 });
 
-// Fetch: cache-first for images/assets, stale-while-revalidate for html/scripts/styles
+// Fetch: cache-first para imagens/fontes, navegação tolerante a parâmetros, stale-while-revalidate para app shell
 self.addEventListener('fetch', event => {
   const url = new URL(event.request.url);
 
-  // Images: Cache First
-  if (event.request.destination === 'image' || url.pathname.match(/\.(webp|png|jpg|jpeg|gif|svg|ico)$/i)) {
+  // 1. Assets Estáticos & Imagens/Fontes: Cache First
+  if (event.request.destination === 'image' || event.request.destination === 'font' || url.pathname.match(/\.(woff2|woff|ttf|webp|png|jpg|jpeg|gif|svg|ico)$/i)) {
     event.respondWith(
       caches.open(CACHE_NAME).then(cache =>
         cache.match(event.request).then(cached => {
@@ -108,7 +110,27 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  // App Shell, CSS, JS: Stale While Revalidate
+  // 2. Navegação (HTML): Suporte a Links Parametrizados (?v=carlos, ?cart=...) em Modo Offline
+  if (event.request.mode === 'navigate') {
+    event.respondWith(
+      caches.match(event.request, { ignoreSearch: true }).then(cached => {
+        const fetchPromise = fetch(event.request)
+          .then(response => {
+            if (response.ok) {
+              const clone = response.clone();
+              caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
+            }
+            return response;
+          })
+          .catch(() => cached || caches.match('./index.html') || caches.match('./'));
+
+        return cached || fetchPromise;
+      })
+    );
+    return;
+  }
+
+  // 3. App Shell, CSS, JS: Stale While Revalidate
   event.respondWith(
     caches.match(event.request).then(cached => {
       const fetchPromise = fetch(event.request)
