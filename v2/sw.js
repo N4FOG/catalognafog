@@ -2,10 +2,11 @@
 //  JCV QUÍMICA v3.0 — Service Worker (Cache Offline & PWA)
 // ═══════════════════════════════════════════════════════════════
 
-const CACHE_NAME = 'jcv-quimica-cache-v16';
+const CACHE_NAME = 'jcv-quimica-cache-v19';
 const STATIC_ASSETS = [
   './',
   './index.html',
+  './roadmap.html',
   './manifest.json',
   './fonts/inter.woff2',
   './fonts/plus-jakarta-sans.woff2',
@@ -15,9 +16,13 @@ const STATIC_ASSETS = [
   './css/sheet-modal.css',
   './css/cart.css',
   './css/seller.css',
+  './css/roadmap.css',
   './js/data/config.js',
   './js/data/categories.js',
   './js/data/products.js',
+  './js/roadmap-data.js',
+  './js/roadmap-admin.js',
+  './js/roadmap.js',
   './js/modules/utils.js',
   './js/modules/theme.js',
   './js/modules/catalog.js',

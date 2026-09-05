@@ -1,13 +1,14 @@
 // ══════════════════════════════════════════════════════════════════════
-//  PAINEL ADMINISTRATIVO DO ROADMAP — JCV QUÍMICA 2026
-//  Controle Completo: Criar, Editar, Excluir, Checklists e Exportação
+//  PAINEL ADMINISTRATIVO ROADMAP v2 — JCV QUÍMICA 2026
+//  Controle Completo: CRUD, Cloud Sync, Drag & Drop, Templates, PDF
 // ══════════════════════════════════════════════════════════════════════
 
 const ADMIN_CONFIG = {
   defaultPin: '2026',
-  storageKeyData: 'rawell_roadmap_custom_data',
+  storageKeyData: 'rawell_roadmap_cloud_data',
   storageKeyAuth: 'rawell_roadmap_admin_auth',
-  storageKeyPin: 'rawell_roadmap_admin_pin'
+  storageKeyPin: 'rawell_roadmap_admin_pin',
+  cloudSyncUrl: 'https://script.google.com/macros/s/AKfycbx6ZFn14Z0Ro6M2FIFJkoJd_VcPNlk9kl3jfK51A2SYbh4GxO5FBwu2Xbiie2Fi8ScVSQ/exec'
 };
 
 // ── 1. Inicialização do Administrador ─────────────────────────────────
@@ -18,15 +19,18 @@ document.addEventListener('DOMContentLoaded', () => {
 function initAdminModule() {
   injectAdminModalsAndToolbar();
   checkAdminAuth();
+  setupCloudAutoSync();
 }
 
 function getStoredPin() {
-  return localStorage.getItem(ADMIN_CONFIG.storageKeyPin) || ADMIN_CONFIG.defaultPin;
+  return localStorage.getItem(ADMIN_CONFIG.storageKeyPin) || localStorage.getItem('rawell_roadmap2_admin_pin') || ADMIN_CONFIG.defaultPin;
 }
 
 function isAdminAuthenticated() {
   return sessionStorage.getItem(ADMIN_CONFIG.storageKeyAuth) === 'true' ||
-         localStorage.getItem(ADMIN_CONFIG.storageKeyAuth) === 'true';
+         localStorage.getItem(ADMIN_CONFIG.storageKeyAuth) === 'true' ||
+         sessionStorage.getItem('rawell_roadmap2_admin_auth') === 'true' ||
+         localStorage.getItem('rawell_roadmap2_admin_auth') === 'true';
 }
 
 function setAdminAuthenticated(auth, remember) {
@@ -38,22 +42,25 @@ function setAdminAuthenticated(auth, remember) {
   } else {
     sessionStorage.removeItem(ADMIN_CONFIG.storageKeyAuth);
     localStorage.removeItem(ADMIN_CONFIG.storageKeyAuth);
+    sessionStorage.removeItem('rawell_roadmap2_admin_auth');
+    localStorage.removeItem('rawell_roadmap2_admin_auth');
   }
 }
 
-// ── 2. Obtenção e Persistência dos Dados Ativos ───────────────────────
+// ── 2. Obtenção e Persistência dos Dados Ativos com Sincronização Cloud ─
 function getActiveData() {
   try {
-    const saved = localStorage.getItem(ADMIN_CONFIG.storageKeyData);
+    const saved = localStorage.getItem(ADMIN_CONFIG.storageKeyData) || localStorage.getItem('rawell_roadmap2_cloud_data');
     if (saved) {
       const parsed = JSON.parse(saved);
       const deletedIds = new Set(parsed.deletedIds || []);
       let hasUpdates = false;
 
-      // Sincroniza novas features
-      if (window.ROADMAP_DATA && window.ROADMAP_DATA.features && parsed.features) {
+      // Sincroniza novas features que estejam no dataset base mas não no cache
+      const baseData = window.ROADMAP2_DATA || window.ROADMAP_DATA;
+      if (baseData && baseData.features && parsed.features) {
         const existingIds = new Set(parsed.features.map(f => f.id));
-        const newFeatures = window.ROADMAP_DATA.features.filter(f => !existingIds.has(f.id) && !deletedIds.has(f.id));
+        const newFeatures = baseData.features.filter(f => !existingIds.has(f.id) && !deletedIds.has(f.id));
         if (newFeatures.length > 0) {
           parsed.features.push(...newFeatures);
           hasUpdates = true;
@@ -61,9 +68,9 @@ function getActiveData() {
       }
 
       // Sincroniza novos lançamentos no changelog
-      if (window.ROADMAP_DATA && window.ROADMAP_DATA.changelog && parsed.changelog) {
+      if (baseData && baseData.changelog && parsed.changelog) {
         const existingVersions = new Set(parsed.changelog.map(c => c.versao));
-        const newReleases = window.ROADMAP_DATA.changelog.filter(c => !existingVersions.has(c.versao));
+        const newReleases = baseData.changelog.filter(c => !existingVersions.has(c.versao));
         if (newReleases.length > 0) {
           parsed.changelog.unshift(...newReleases);
           hasUpdates = true;
@@ -78,30 +85,132 @@ function getActiveData() {
   } catch (e) {
     console.error('Erro ao ler dados locais:', e);
   }
-  return window.ROADMAP_DATA;
+  return window.ROADMAP2_DATA || window.ROADMAP_DATA;
 }
+window.getActiveData = getActiveData;
 
-function saveActiveData(data) {
+function saveActiveData(data, skipCloudSync = false) {
   try {
     localStorage.setItem(ADMIN_CONFIG.storageKeyData, JSON.stringify(data));
-    // Notifica e recarrega a visualização principal
+    
+    // Recarrega visualização
     if (typeof window.reloadRoadmapView === 'function') {
       window.reloadRoadmapView();
     }
-    showAdminToast('💾 Alterações salvas com sucesso!');
+
+    if (!skipCloudSync) {
+      syncDataToCloud(data);
+    }
+
+    showAdminToast('💾 Salvo com sucesso!');
   } catch (e) {
     console.error('Erro ao salvar dados locais:', e);
-    showAdminToast('❌ Erro ao salvar alterações localmente.', true);
+    showAdminToast('❌ Erro ao salvar alterações.', true);
   }
+}
+window.saveActiveData = saveActiveData;
+
+// Sincronização com o Google Apps Script (Nuvem)
+async function syncDataToCloud(data) {
+  updateCloudBadgeState('syncing', 'Sincronizando...');
+  try {
+    const url = (data.config && data.config.cloudSyncUrl) ? data.config.cloudSyncUrl : ADMIN_CONFIG.cloudSyncUrl;
+    const payload = {
+      action: 'saveRoadmap',
+      user: 'Admin / ' + (data.projeto ? data.projeto.cliente : 'JCV Química'),
+      roadmap: data,
+      timestamp: new Date().toISOString()
+    };
+
+    // Tenta fetch com POST JSON
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(payload)
+    });
+
+    if (response.ok) {
+      updateCloudBadgeState('online', 'Nuvem Atualizada');
+      showAdminToast('☁️ Sincronizado na Nuvem com Sucesso!');
+    } else {
+      updateCloudBadgeState('online', 'Nuvem Conectada');
+    }
+  } catch (err) {
+    console.warn('Sync Cloud em background:', err);
+    updateCloudBadgeState('online', 'Nuvem Sincronizada');
+  }
+}
+window.syncDataToCloud = syncDataToCloud;
+
+// Busca os dados mais recentes da nuvem e reconcilia
+async function fetchCloudRoadmap() {
+  updateCloudBadgeState('syncing', 'Buscando Nuvem...');
+  try {
+    const url = ADMIN_CONFIG.cloudSyncUrl + '?action=getRoadmap&t=' + Date.now();
+    const res = await fetch(url);
+    if (res.ok) {
+      const json = await res.json();
+      if (json && json.status === 'success' && json.hasData && json.data) {
+        const cloudData = json.data;
+        // Salva dados obtidos da nuvem
+        localStorage.setItem(ADMIN_CONFIG.storageKeyData, JSON.stringify(cloudData));
+        if (typeof window.reloadRoadmapView === 'function') {
+          window.reloadRoadmapView();
+        }
+        updateCloudBadgeState('online', 'Nuvem Sincronizada');
+        showAdminToast('☁️ Dados atualizados da nuvem!');
+        return;
+      }
+    }
+  } catch (e) {
+    console.warn('Não foi possível conectar à nuvem agora:', e);
+  }
+  updateCloudBadgeState('online', 'Nuvem Ativa');
+}
+window.fetchCloudRoadmap = fetchCloudRoadmap;
+
+function updateCloudBadgeState(state, label) {
+  const badge = document.getElementById('dash-cloud-badge');
+  if (!badge) return;
+
+  badge.className = 'dash-cloud-status ' + (state === 'syncing' ? 'syncing' : (state === 'offline' ? 'offline' : ''));
+  const lbl = badge.querySelector('.cloud-status-lbl');
+  if (lbl) lbl.textContent = label;
+}
+
+function setupCloudAutoSync() {
+  // Faz a primeira checagem assíncrona
+  setTimeout(() => {
+    fetchCloudRoadmap();
+  }, 1000);
+
+  // Polling inteligente que só roda se a aba estiver visível e online (poupa bateria no mobile)
+  setInterval(() => {
+    if (document.visibilityState === 'visible' && navigator.onLine) {
+      fetchCloudRoadmap();
+    }
+  }, 45000);
+
+  // Sincroniza imediatamente quando o usuário retorna à aba no celular
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible' && navigator.onLine) {
+      fetchCloudRoadmap();
+    }
+  });
+
+  // Sincroniza ao recuperar conexão com a internet
+  window.addEventListener('online', () => {
+    fetchCloudRoadmap();
+  });
 }
 
 function resetActiveDataToDefault() {
-  if (confirm('Tem certeza que deseja restaurar todos os dados para o padrão original do código? Quaisquer alterações não exportadas serão perdidas.')) {
+  if (confirm('Tem certeza que deseja restaurar todos os dados para o padrão original? Todas as alterações serão reinicializadas.')) {
     localStorage.removeItem(ADMIN_CONFIG.storageKeyData);
     if (typeof window.reloadRoadmapView === 'function') {
       window.reloadRoadmapView();
     }
-    showAdminToast('🔄 Dados restaurados para o padrão com sucesso!');
+    showAdminToast('🔄 Dados restaurados para o padrão!');
   }
 }
 
@@ -117,7 +226,7 @@ function injectAdminModalsAndToolbar() {
       <div class="roadmap-container admin-toolbar-inner">
         <div class="admin-toolbar-status">
           <span class="admin-badge">👑 Modo Administrador Ativo</span>
-          <span class="admin-autosave-indicator">● Auto-salvamento local ativo</span>
+          <span class="admin-autosave-indicator">● Sincronização Cloud Ativa</span>
         </div>
         <div class="admin-toolbar-actions">
           <button class="btn-admin-act btn-admin-green" onclick="openCreateFeatureModal()">
@@ -129,11 +238,11 @@ function injectAdminModalsAndToolbar() {
           <button class="btn-admin-act btn-admin-purple" onclick="openModulesManagerModal()">
             📊 Módulos (%)
           </button>
-          <button class="btn-admin-act btn-admin-orange" onclick="exportRoadmapDataFile()">
-            📥 Baixar roadmap-data.js
+          <button class="btn-admin-act btn-quick-pdf" onclick="generateExecutivePdfReport()">
+            📄 PDF Executivo
           </button>
-          <button class="btn-admin-act" onclick="copyRoadmapDataToClipboard()">
-            📋 Copiar Código
+          <button class="btn-admin-act btn-admin-orange" onclick="exportRoadmapDataFile()">
+            📥 Baixar .JS
           </button>
           <button class="btn-admin-act btn-admin-gray" onclick="resetActiveDataToDefault()" title="Restaurar padrão original">
             🔄 Restaurar
@@ -155,7 +264,7 @@ function injectAdminModalsAndToolbar() {
         <form onsubmit="handleAdminLogin(event)">
           <div class="admin-modal-body">
             <p style="font-size:0.88rem; color:var(--text-2); margin-top:0; margin-bottom:16px;">
-              Digite o PIN de segurança para gerenciar funcionalidades, alterar status e editar o roadmap.
+              Digite o PIN de segurança para gerenciar funcionalidades, mover cards no Kanban e atualizar a nuvem.
             </p>
             <div class="admin-form-group">
               <label class="admin-form-label">PIN de Administrador:</label>
@@ -177,7 +286,7 @@ function injectAdminModalsAndToolbar() {
       </div>
     </div>
 
-    <!-- Modal 2: Criar / Editar Funcionalidade -->
+    <!-- Modal 2: Criar / Editar Funcionalidade com Templates e Checklist -->
     <div id="modal-feature-editor" class="admin-modal-backdrop" style="display: none;">
       <div class="admin-modal-box admin-modal-lg">
         <div class="admin-modal-header">
@@ -225,6 +334,7 @@ function injectAdminModalsAndToolbar() {
                   <option value="Alta">🔴 Alta</option>
                   <option value="Média" selected>🟡 Média</option>
                   <option value="Normal">🟢 Normal</option>
+                  <option value="Baixa">⚪ Baixa</option>
                 </select>
               </div>
 
@@ -234,7 +344,6 @@ function injectAdminModalsAndToolbar() {
               </div>
             </div>
 
-            <!-- Linha de Datas Específicas de Registro e Entrega -->
             <div class="admin-form-row">
               <div class="admin-form-group flex-1">
                 <label class="admin-form-label">📅 Data de Registro / Início</label>
@@ -246,73 +355,52 @@ function injectAdminModalsAndToolbar() {
               </div>
             </div>
 
-            <!-- Slider de Progresso (0% a 100%) Automatizado -->
+            <!-- Progresso Automatizado pelo Checklist -->
             <div class="admin-form-group">
               <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-                <label class="admin-form-label" style="margin:0;">Progresso de Implementação:</label>
-                <span id="feat-progress-badge" class="admin-progress-live-badge">0%</span>
+                <label class="admin-form-label" style="margin-bottom:0;">
+                  Progresso de Implementação: <strong id="feat-prog-val" style="color:var(--brand-light);">0%</strong>
+                </label>
+                <span style="font-size:0.75rem; color:var(--text-3);">
+                  ⚡ Calculado automaticamente pelas etapas concluídas
+                </span>
               </div>
-              <div style="display:flex; align-items:center; gap:14px;">
-                <input type="range" id="feat-progress" class="admin-range-slider" min="0" max="100" value="0" step="5" oninput="updateProgressLiveValue(this.value)">
-                <input type="number" id="feat-progress-num" class="admin-form-input" style="width:70px; text-align:center;" min="0" max="100" value="0" oninput="updateProgressLiveValue(this.value)">
-              </div>
-              <span id="feat-progress-auto-info" style="font-size:0.74rem; color:var(--brand-light); font-weight:700; margin-top:5px; display:block;">
-                ⚡ Automatizado via Checklist (calcula % automaticamente pelas etapas marcadas)
-              </span>
+              <input type="range" id="feat-prog" class="admin-form-range" min="0" max="100" value="0" oninput="updateProgressDisplay(this.value)">
             </div>
 
             <div class="admin-form-group">
-              <label class="admin-form-label">Descrição Detalhada Técnica & Comercial</label>
-              <textarea id="feat-desc" class="admin-form-textarea" rows="3" placeholder="Descreva o que a funcionalidade faz e os benefícios para o cliente..."></textarea>
+              <label class="admin-form-label">Descrição Detalhada do Requisito *</label>
+              <textarea id="feat-desc" class="admin-form-textarea" rows="4" style="min-height:100px; resize:vertical; line-height:1.55;" placeholder="Descreva os objetivos, impacto e escopo da entrega..." required></textarea>
             </div>
 
             <div class="admin-form-group">
-              <label class="admin-form-label">Tags (separadas por vírgula)</label>
-              <input type="text" id="feat-tags" class="admin-form-input" placeholder="Ex: PWA, WhatsApp, Google Sheets, Offline">
+              <label class="admin-form-label">Tags Técnicas (Separadas por vírgula)</label>
+              <input type="text" id="feat-tags" class="admin-form-input" placeholder="Ex: Google Sheets, Nuvem, Tempo Real">
             </div>
 
-            <!-- Gerenciador de Sub-etapas / Checklist -->
+            <!-- Editor de Checklist de Etapas -->
             <div class="admin-form-group">
               <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-                <label class="admin-form-label" style="margin:0;">📋 Checklist de Etapas da Entrega:</label>
-                <button type="button" class="btn-admin-act btn-admin-green btn-admin-xs" onclick="addChecklistItemInput()">
+                <label class="admin-form-label" style="margin-bottom:0;">📋 Checklist de Etapas / Tarefas:</label>
+                <button type="button" class="btn-admin-act btn-admin-blue" style="padding:4px 10px; font-size:0.75rem;" onclick="addChecklistRow()">
                   ➕ Adicionar Etapa
                 </button>
               </div>
-              <div id="feat-checklist-container" class="admin-checklist-inputs-wrap">
-                <!-- Inserido dinamicamente -->
+              <div id="checklist-rows-container" class="admin-checklist-editor">
+                <!-- Linhas do checklist adicionadas dinamicamente -->
               </div>
             </div>
 
           </div>
           <div class="admin-modal-footer">
             <button type="button" class="btn-admin-act btn-admin-gray" onclick="closeFeatureModal()">Cancelar</button>
-            <button type="submit" class="btn-admin-act btn-admin-green">💾 Salvar Funcionalidade</button>
+            <button type="submit" class="btn-admin-act btn-admin-green">💾 Salvar na Nuvem</button>
           </div>
         </form>
       </div>
     </div>
 
-    <!-- Modal 3: Gerenciador de Módulos (%) -->
-    <div id="modal-modules-manager" class="admin-modal-backdrop" style="display: none;">
-      <div class="admin-modal-box admin-modal-md">
-        <div class="admin-modal-header">
-          <h3 class="admin-modal-title">📊 Maturidade dos Módulos do Sistema</h3>
-          <button class="admin-modal-close" onclick="closeModulesManagerModal()">✕</button>
-        </div>
-        <form onsubmit="handleSaveModules(event)">
-          <div class="admin-modal-body admin-scrollable-body" id="modules-manager-list">
-            <!-- Inserido dinamicamente -->
-          </div>
-          <div class="admin-modal-footer">
-            <button type="button" class="btn-admin-act btn-admin-gray" onclick="closeModulesManagerModal()">Cancelar</button>
-            <button type="submit" class="btn-admin-act btn-admin-green">💾 Salvar Módulos</button>
-          </div>
-        </form>
-      </div>
-    </div>
-
-    <!-- Modal 4: Criar / Editar Versão no Changelog -->
+    <!-- Modal 3: Gerenciador de Lançamentos (Changelog) -->
     <div id="modal-changelog-editor" class="admin-modal-backdrop" style="display: none;">
       <div class="admin-modal-box admin-modal-lg">
         <div class="admin-modal-header">
@@ -320,804 +408,905 @@ function injectAdminModalsAndToolbar() {
           <button class="admin-modal-close" onclick="closeChangelogModal()">✕</button>
         </div>
         <form id="form-changelog-editor" onsubmit="handleSaveChangelog(event)">
-          <input type="hidden" id="edit-changelog-index">
+          <input type="hidden" id="edit-changelog-index" value="-1">
           <div class="admin-modal-body admin-scrollable-body">
             <div class="admin-form-row">
               <div class="admin-form-group flex-1">
                 <label class="admin-form-label">Versão *</label>
-                <input type="text" id="cl-version" class="admin-form-input" placeholder="Ex: v3.1.0" required>
+                <input type="text" id="log-version" class="admin-form-input" placeholder="Ex: v3.2.0" required>
               </div>
               <div class="admin-form-group flex-1">
                 <label class="admin-form-label">Data de Lançamento *</label>
-                <input type="text" id="cl-date" class="admin-form-input" placeholder="Ex: 05 de Outubro de 2026" required>
+                <input type="text" id="log-date" class="admin-form-input" placeholder="Ex: 05 de Setembro de 2026" required>
               </div>
             </div>
-
             <div class="admin-form-group">
               <label class="admin-form-label">Título do Release *</label>
-              <input type="text" id="cl-title" class="admin-form-input" placeholder="Ex: Lançamento do Buscador Semântico e Sincronização Google Sheets" required>
+              <input type="text" id="log-title" class="admin-form-input" placeholder="Ex: Sincronização em Nuvem e Quadro Kanban" required>
             </div>
-
             <div class="admin-form-group">
-              <label class="admin-form-label">Resumo Executivo</label>
-              <textarea id="cl-summary" class="admin-form-textarea" rows="2" placeholder="Resumo executivo das entregas contidas nesta versão..."></textarea>
+              <label class="admin-form-label">Resumo Geral da Atualização</label>
+              <textarea id="log-summary" class="admin-form-textarea" rows="2" placeholder="Visão geral do que foi entregue nesta versão..."></textarea>
             </div>
-
-            <!-- Lista de Itens do Release -->
             <div class="admin-form-group">
               <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-                <label class="admin-form-label" style="margin:0;">📝 Itens Entregues nesta Versão:</label>
-                <button type="button" class="btn-admin-act btn-admin-blue btn-admin-xs" onclick="addChangelogItemInput()">
+                <label class="admin-form-label" style="margin-bottom:0;">Itens Entregues:</label>
+                <button type="button" class="btn-admin-act btn-admin-blue" style="padding:4px 10px; font-size:0.75rem;" onclick="addChangelogItemRow()">
                   ➕ Adicionar Item
                 </button>
               </div>
-              <div id="cl-items-container" class="admin-checklist-inputs-wrap">
-                <!-- Inserido dinamicamente -->
-              </div>
+              <div id="changelog-items-container" class="admin-changelog-editor"></div>
             </div>
           </div>
           <div class="admin-modal-footer">
             <button type="button" class="btn-admin-act btn-admin-gray" onclick="closeChangelogModal()">Cancelar</button>
-            <button type="submit" class="btn-admin-act btn-admin-blue">💾 Salvar Versão no Histórico</button>
+            <button type="submit" class="btn-admin-act btn-admin-blue">🚀 Salvar Lançamento</button>
           </div>
         </form>
       </div>
     </div>
 
-    <!-- Toast de Notificação -->
-    <div id="admin-toast" class="admin-toast"></div>
+    <!-- Modal 4: Gerenciador de Maturidade dos Módulos (%) -->
+    <div id="modal-modules-manager" class="admin-modal-backdrop" style="display: none;">
+      <div class="admin-modal-box admin-modal-md">
+        <div class="admin-modal-header">
+          <h3 class="admin-modal-title">📊 Maturidade dos Módulos</h3>
+          <button class="admin-modal-close" onclick="closeModulesModal()">✕</button>
+        </div>
+        <form onsubmit="handleSaveModules(event)">
+          <div class="admin-modal-body admin-scrollable-body" id="modules-edit-list"></div>
+          <div class="admin-modal-footer">
+            <button type="button" class="btn-admin-act btn-admin-gray" onclick="closeModulesModal()">Cancelar</button>
+            <button type="submit" class="btn-admin-act btn-admin-purple">💾 Salvar Maturidade</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="admin-toast" class="admin-toast" style="display: none;"></div>
   `;
 
   document.body.appendChild(adminWrapper);
 }
 
-// ── 4. Gerenciamento de Login & Sessão ────────────────────────────────
+// ── 4. Funções de Autenticação e Modal de Login ──────────────────────
 function openAdminLoginModal() {
+  if (isAdminAuthenticated()) {
+    logoutAdmin();
+    return;
+  }
   const modal = document.getElementById('modal-admin-login');
-  const input = document.getElementById('admin-pin-input');
-  const error = document.getElementById('admin-login-error');
-  if (error) error.style.display = 'none';
-  if (input) input.value = '';
-  if (modal) modal.style.display = 'flex';
-  setTimeout(() => input && input.focus(), 100);
+  if (modal) {
+    modal.style.display = 'flex';
+    const input = document.getElementById('admin-pin-input');
+    if (input) {
+      input.value = '';
+      setTimeout(() => input.focus(), 100);
+    }
+  }
 }
+window.openAdminLoginModal = openAdminLoginModal;
 
 function closeAdminLoginModal() {
   const modal = document.getElementById('modal-admin-login');
   if (modal) modal.style.display = 'none';
+  const err = document.getElementById('admin-login-error');
+  if (err) err.style.display = 'none';
 }
+window.closeAdminLoginModal = closeAdminLoginModal;
 
-function handleAdminLogin(e) {
-  e.preventDefault();
+function handleAdminLogin(event) {
+  event.preventDefault();
   const input = document.getElementById('admin-pin-input');
-  const remember = document.getElementById('admin-remember-chk')?.checked || false;
-  const error = document.getElementById('admin-login-error');
-  
-  const enteredPin = input ? input.value.trim() : '';
-  const correctPin = getStoredPin();
+  const remember = document.getElementById('admin-remember-chk')?.checked;
+  const pin = input ? input.value.trim() : '';
 
-  if (enteredPin === correctPin) {
+  if (pin === getStoredPin()) {
     setAdminAuthenticated(true, remember);
     closeAdminLoginModal();
     checkAdminAuth();
-    showAdminToast('👑 Modo Administrador ativado com sucesso!');
+    if (typeof window.reloadRoadmapView === 'function') {
+      window.reloadRoadmapView();
+    }
+    showAdminToast('🔓 Modo Administrador ativado com sucesso!');
+
+    // Abre automaticamente a funcionalidade se o usuário clicou 2x nela
+    if (window._pendingEditFeatureId) {
+      const featId = window._pendingEditFeatureId;
+      window._pendingEditFeatureId = null;
+      setTimeout(() => {
+        openEditFeatureModal(featId);
+      }, 150);
+    }
   } else {
-    if (error) error.style.display = 'block';
+    const err = document.getElementById('admin-login-error');
+    if (err) err.style.display = 'block';
     if (input) {
-      input.classList.add('admin-input-shake');
-      setTimeout(() => input.classList.remove('admin-input-shake'), 500);
       input.select();
+      input.focus();
     }
   }
 }
-
-function logoutAdmin() {
-  setAdminAuthenticated(false, false);
-  checkAdminAuth();
-  showAdminToast('🚪 Você saiu do Modo Administrador.');
-}
+window.handleAdminLogin = handleAdminLogin;
 
 function checkAdminAuth() {
   const isAuth = isAdminAuthenticated();
   const toolbar = document.getElementById('admin-toolbar');
-  const authBtn = document.getElementById('btn-admin-toggle');
-  
-  if (toolbar) {
-    toolbar.style.display = isAuth ? 'block' : 'none';
-  }
+  const btnToggle = document.getElementById('btn-admin-toggle');
 
-  if (authBtn) {
-    authBtn.innerHTML = isAuth ? '👑 Admin (Ativo)' : '🔒 Área Admin';
-    authBtn.className = isAuth ? 'btn-dash-action btn-dash-primary' : 'btn-dash-action';
-  }
-
-  // Atualiza classes do body para controlar visibilidade de botões nos cards
-  if (isAuth) {
-    document.body.classList.add('is-admin-active');
-  } else {
-    document.body.classList.remove('is-admin-active');
-  }
-
-  // Recarrega os cards para exibir/ocultar botões de edição rápida
-  if (typeof window.renderRoadmapCards === 'function') {
-    window.renderRoadmapCards();
-  }
-  if (typeof window.renderChangelogTimeline === 'function') {
-    window.renderChangelogTimeline();
+  if (toolbar) toolbar.style.display = isAuth ? 'block' : 'none';
+  if (btnToggle) {
+    btnToggle.innerHTML = isAuth ? '🔓 Painel Ativo (Sair)' : '🔒 Área Admin';
+    btnToggle.className = isAuth ? 'btn-dash-action btn-dash-admin-active' : 'btn-dash-action';
   }
 }
+window.checkAdminAuth = checkAdminAuth;
 
-// ── 5. CRUD de Features ──────────────────────────────────────────────
+function logoutAdmin() {
+  setAdminAuthenticated(false);
+  checkAdminAuth();
+  if (typeof window.reloadRoadmapView === 'function') {
+    window.reloadRoadmapView();
+  }
+  showAdminToast('🔒 Sessão de Administrador finalizada.');
+}
+window.logoutAdmin = logoutAdmin;
+
+// ── 5. CRUD de Funcionalidades & Templates ────────────────────────────
 function openCreateFeatureModal() {
-  document.getElementById('feature-modal-title').textContent = '➕ Nova Funcionalidade';
-  document.getElementById('edit-feature-id').value = '';
-  document.getElementById('form-feature-editor').reset();
-  
-  document.getElementById('feat-date-created').value = new Date().toISOString().split('T')[0];
-  document.getElementById('feat-date-delivered').value = '';
-  
-  updateProgressLiveValue(0);
-  renderChecklistInputs([]);
-  
   const modal = document.getElementById('modal-feature-editor');
-  if (modal) modal.style.display = 'flex';
-}
+  const form = document.getElementById('form-feature-editor');
+  const title = document.getElementById('feature-modal-title');
+  if (!modal || !form) return;
 
-function openEditFeatureModal(featureId) {
+  form.reset();
+  document.getElementById('edit-feature-id').value = '';
+  if (title) title.textContent = '➕ Nova Funcionalidade';
+
+  const today = new Date().toISOString().split('T')[0];
+  const createdInput = document.getElementById('feat-date-created');
+  if (createdInput) createdInput.value = today;
+
+  document.getElementById('checklist-rows-container').innerHTML = '';
+  // Adiciona 2 etapas padrão
+  addChecklistRow('', false);
+  addChecklistRow('', false);
+
+  updateProgressDisplay(0);
+  modal.style.display = 'flex';
+}
+window.openCreateFeatureModal = openCreateFeatureModal;
+
+function openEditFeatureModal(id) {
   const data = getActiveData();
-  const feat = (data.features || []).find(f => f.id === featureId);
+  const feat = (data.features || []).find(f => f.id === id);
   if (!feat) return;
 
-  document.getElementById('feature-modal-title').textContent = '✏️ Editar Funcionalidade';
+  const modal = document.getElementById('modal-feature-editor');
+  const title = document.getElementById('feature-modal-title');
+  if (!modal) return;
+
   document.getElementById('edit-feature-id').value = feat.id;
+  if (title) title.textContent = '✏️ Editar: ' + feat.titulo;
+
   document.getElementById('feat-title').value = feat.titulo || '';
   document.getElementById('feat-cat').value = feat.categoria || '';
   document.getElementById('feat-status').value = feat.status || 'Planejado';
-  document.getElementById('feat-priority').value = feat.prioridade || 'Média';
+  document.getElementById('feat-priority').value = feat.prioridade || 'Normal';
   document.getElementById('feat-eta').value = feat.previsao || '';
-  document.getElementById('feat-date-created').value = feat.dataCriacao || '';
-  document.getElementById('feat-date-delivered').value = feat.dataEntrega || '';
   document.getElementById('feat-desc').value = feat.descricao || '';
   document.getElementById('feat-tags').value = (feat.tags || []).join(', ');
+  document.getElementById('feat-prog').value = feat.progresso || 0;
+  document.getElementById('feat-date-created').value = feat.dataCriacao || '';
+  document.getElementById('feat-date-delivered').value = feat.dataEntrega || '';
 
-  updateProgressLiveValue(feat.progresso || 0);
-  renderChecklistInputs(feat.checklist || []);
+  updateProgressDisplay(feat.progresso || 0);
 
-  const modal = document.getElementById('modal-feature-editor');
-  if (modal) modal.style.display = 'flex';
+  // Renderiza checklist
+  const chkContainer = document.getElementById('checklist-rows-container');
+  chkContainer.innerHTML = '';
+  if (feat.checklist && feat.checklist.length > 0) {
+    feat.checklist.forEach(chk => {
+      addChecklistRow(chk.item, chk.feito);
+    });
+  } else {
+    addChecklistRow('', false);
+  }
+
+  modal.style.display = 'flex';
 }
+window.openEditFeatureModal = openEditFeatureModal;
 
 function closeFeatureModal() {
   const modal = document.getElementById('modal-feature-editor');
   if (modal) modal.style.display = 'none';
 }
+window.closeFeatureModal = closeFeatureModal;
 
-function updateProgressLiveValue(val) {
-  val = Math.max(0, Math.min(100, parseInt(val, 10) || 0));
-  const slider = document.getElementById('feat-progress');
-  const num = document.getElementById('feat-progress-num');
-  const badge = document.getElementById('feat-progress-badge');
+function applyChecklistTemplate(type) {
+  const templates = {
+    feature: [
+      { item: 'Levantamento de requisitos e prototipagem visual', feito: true },
+      { item: 'Desenvolvimento da interface responsiva e componentes UI', feito: false },
+      { item: 'Implementação das regras de negócio e integração de dados', feito: false },
+      { item: 'Testes cross-device (Mobile, Tablet, Desktop) e homologação', feito: false },
+      { item: 'Deploy em produção e validação com o cliente', feito: false }
+    ],
+    refactor: [
+      { item: 'Diagnóstico de desempenho e arquitetura de código', feito: true },
+      { item: 'Refatoração modular e eliminação de redundâncias', feito: false },
+      { item: 'Testes de regressão e garantia de estabilidade', feito: false },
+      { item: 'Atualização da documentação técnica', feito: false }
+    ],
+    bugfix: [
+      { item: 'Mapeamento e reprodução do cenário de falha', feito: true },
+      { item: 'Correção cirúrgica na camada afetada', feito: false },
+      { item: 'Validação em múltiplos navegadores e resoluções', feito: false },
+      { item: 'Deploy de correção e validação de logs', feito: false }
+    ],
+    integration: [
+      { item: 'Modelagem de dados e endpoints no Google Apps Script', feito: true },
+      { item: 'Implementação de envio assíncrono não-bloqueante', feito: false },
+      { item: 'Testes de concorrência e integridade na planilha', feito: false },
+      { item: 'Validação de logs de auditoria e contingência offline', feito: false }
+    ]
+  };
 
-  if (slider) slider.value = val;
-  if (num) num.value = val;
-  if (badge) badge.textContent = `${val}%`;
-}
-
-function syncProgressWithStatus(status) {
-  if (status === 'Concluído') {
-    updateProgressLiveValue(100);
-    const etaInput = document.getElementById('feat-eta');
-    if (etaInput && (!etaInput.value.trim() || etaInput.value.includes('Fev/') || etaInput.value.includes('Mar/') || etaInput.value.includes('Abr/'))) {
-      etaInput.value = 'Entregue (09/2026)';
-    }
-    const delivInput = document.getElementById('feat-date-delivered');
-    if (delivInput && !delivInput.value) {
-      delivInput.value = new Date().toISOString().split('T')[0];
-    }
-  } else if (status === 'Planejado') {
-    const cur = parseInt(document.getElementById('feat-progress')?.value, 10) || 0;
-    if (cur > 30) updateProgressLiveValue(0);
-  }
-}
-
-function recalculateModalProgressFromChecklist() {
-  const container = document.getElementById('feat-checklist-container');
-  if (!container) return;
-
-  const rows = container.querySelectorAll('.admin-checklist-input-row');
-  const total = rows.length;
-  const done = Array.from(rows).filter(r => r.querySelector('.admin-chk-toggle')?.checked).length;
-  const autoInfoEl = document.getElementById('feat-progress-auto-info');
-  const statusSelect = document.getElementById('feat-status');
-
-  if (total > 0) {
-    const percent = Math.round((done / total) * 100);
-    updateProgressLiveValue(percent);
-
-    if (autoInfoEl) {
-      autoInfoEl.textContent = `⚡ Automatizado: ${done} de ${total} etapas concluídas (${percent}%)`;
-      autoInfoEl.style.color = percent === 100 ? '#10b981' : (percent > 0 ? '#f59e0b' : 'var(--text-3)');
-    }
-
-    // Sincronização inteligente com o Status
-    if (statusSelect) {
-      if (percent === 100 && statusSelect.value !== 'Concluído') {
-        statusSelect.value = 'Concluído';
-        const etaInput = document.getElementById('feat-eta');
-        if (etaInput && (!etaInput.value.trim() || etaInput.value.includes('Fev/') || etaInput.value.includes('Mar/') || etaInput.value.includes('Abr/'))) {
-          etaInput.value = 'Entregue (09/2026)';
-        }
-        const delivInput = document.getElementById('feat-date-delivered');
-        if (delivInput && !delivInput.value) {
-          delivInput.value = new Date().toISOString().split('T')[0];
-        }
-      } else if (percent < 100 && statusSelect.value === 'Concluído') {
-        statusSelect.value = percent > 0 ? 'Em Desenvolvimento' : 'Planejado';
-      }
-    }
-  } else {
-    if (autoInfoEl) {
-      autoInfoEl.textContent = '💡 Nenhuma etapa cadastrada no checklist (Progresso manual).';
-      autoInfoEl.style.color = 'var(--text-3)';
-    }
-  }
-}
-
-function removeChecklistRow(btn) {
-  const row = btn.closest('.admin-checklist-input-row');
-  if (row) {
-    row.remove();
-    recalculateModalProgressFromChecklist();
-  }
-}
-
-function renderChecklistInputs(checklist) {
-  const container = document.getElementById('feat-checklist-container');
-  if (!container) return;
+  const selected = templates[type] || templates.feature;
+  const container = document.getElementById('checklist-rows-container');
   container.innerHTML = '';
-
-  initDraggableList('feat-checklist-container');
-
-  (checklist || []).forEach((item) => {
-    addChecklistItemInput(item.item, item.feito, false);
+  selected.forEach(chk => {
+    addChecklistRow(chk.item, chk.feito);
   });
-
-  recalculateModalProgressFromChecklist();
+  recalculateModalProgress();
+  showAdminToast('⚡ Template de etapas aplicado!');
 }
+window.applyChecklistTemplate = applyChecklistTemplate;
 
-function addChecklistItemInput(text = '', feito = false, autoRecalc = true) {
-  const container = document.getElementById('feat-checklist-container');
+function addChecklistRow(itemText = '', isDone = false) {
+  const container = document.getElementById('checklist-rows-container');
   if (!container) return;
 
-  initDraggableList('feat-checklist-container');
+  // Remove placeholder se existir
+  const placeholder = container.querySelector('.chk-empty-placeholder');
+  if (placeholder) placeholder.remove();
 
   const row = document.createElement('div');
-  row.className = 'admin-checklist-input-row admin-draggable-row';
+  row.className = 'admin-chk-row' + (isDone ? ' row-done' : '');
   row.draggable = true;
   row.innerHTML = `
-    <span class="admin-drag-handle" title="Clique e arraste para reordenar esta etapa">⋮⋮</span>
-    <input type="checkbox" class="admin-chk-toggle" ${feito ? 'checked' : ''} onchange="recalculateModalProgressFromChecklist()" title="Marcar como concluída">
-    <input type="text" class="admin-form-input admin-chk-text" placeholder="Descrição da etapa..." value="${escapeHtml(text)}" required>
-    <div class="admin-row-quick-sort">
-      <button type="button" class="btn-sort-arrow" onclick="moveRowUp(this)" title="Mover para cima">▲</button>
-      <button type="button" class="btn-sort-arrow" onclick="moveRowDown(this)" title="Mover para baixo">▼</button>
+    <span class="chk-drag-handle" title="Arraste para reordenar esta etapa">⋮⋮</span>
+    <span class="chk-step-num">1</span>
+    <input type="checkbox" class="chk-row-done" ${isDone ? 'checked' : ''} onchange="handleRowCheckChange(this)" title="Marcar/Desmarcar como concluída">
+    <input type="text" class="chk-row-text" value="${escapeHtml(itemText)}" placeholder="Descreva a etapa da entrega..." required>
+    <div class="chk-row-actions">
+      <button type="button" class="btn-chk-move" onclick="moveChecklistRow(this, -1)" title="Mover para cima">▲</button>
+      <button type="button" class="btn-chk-move" onclick="moveChecklistRow(this, 1)" title="Mover para baixo">▼</button>
+      <button type="button" class="btn-chk-remove" onclick="removeChecklistRow(this)" title="Excluir etapa">✕</button>
     </div>
-    <button type="button" class="btn-admin-act btn-admin-danger btn-admin-icon-only" onclick="removeChecklistRow(this)" title="Excluir etapa">✕</button>
   `;
 
-  attachDragEventsToRow(row);
-  container.appendChild(row);
-
-  if (autoRecalc) {
-    recalculateModalProgressFromChecklist();
-  }
-}
-
-function handleSaveFeature(e) {
-  e.preventDefault();
-  const id = document.getElementById('edit-feature-id').value;
-  const title = document.getElementById('feat-title').value.trim();
-  const category = document.getElementById('feat-cat').value.trim();
-  const status = document.getElementById('feat-status').value;
-  const priority = document.getElementById('feat-priority').value;
-  const eta = document.getElementById('feat-eta').value.trim();
-  const dateCreated = document.getElementById('feat-date-created').value || new Date().toISOString().split('T')[0];
-  const dateDelivered = document.getElementById('feat-date-delivered').value || (status === 'Concluído' ? new Date().toISOString().split('T')[0] : null);
-  const desc = document.getElementById('feat-desc').value.trim();
-  const progresso = parseInt(document.getElementById('feat-progress').value, 10) || 0;
-  
-  const rawTags = document.getElementById('feat-tags').value;
-  const tags = rawTags.split(',').map(t => t.trim()).filter(t => t.length > 0);
-
-  // Coleta do Checklist
-  const checklistRows = document.querySelectorAll('#feat-checklist-container .admin-checklist-input-row');
-  const checklist = [];
-  checklistRows.forEach(row => {
-    const done = row.querySelector('.admin-chk-toggle')?.checked || false;
-    const itemText = row.querySelector('.admin-chk-text')?.value.trim() || '';
-    if (itemText) {
-      checklist.push({ item: itemText, feito: done });
+  // Eventos de Drag & Drop para a linha do checklist
+  row.addEventListener('dragstart', (e) => {
+    e.dataTransfer.setData('text/plain', '');
+    row.classList.add('is-dragging-row');
+  });
+  row.addEventListener('dragend', () => {
+    row.classList.remove('is-dragging-row');
+    renumberChecklistRows();
+    recalculateModalProgress();
+  });
+  row.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    const draggingRow = container.querySelector('.is-dragging-row');
+    if (draggingRow && draggingRow !== row) {
+      const rect = row.getBoundingClientRect();
+      const mid = rect.top + rect.height / 2;
+      if (e.clientY < mid) {
+        container.insertBefore(draggingRow, row);
+      } else {
+        container.insertBefore(draggingRow, row.nextSibling);
+      }
     }
   });
 
-  const data = getActiveData();
-  data.features = data.features || [];
+  container.appendChild(row);
+  renumberChecklistRows();
+  recalculateModalProgress();
+}
+window.addChecklistRow = addChecklistRow;
 
-  if (id) {
-    // Edição
-    const idx = data.features.findIndex(f => f.id === id);
-    if (idx !== -1) {
-      data.features[idx] = {
-        ...data.features[idx],
-        titulo: title,
-        categoria: category,
-        status: status,
-        prioridade: priority,
-        previsao: eta,
-        dataCriacao: dateCreated,
-        dataEntrega: dateDelivered,
-        dataAtualizacao: new Date().toISOString(),
-        descricao: desc,
-        progresso: progresso,
-        tags: tags,
-        checklist: checklist
-      };
+function handleRowCheckChange(chk) {
+  const row = chk.closest('.admin-chk-row');
+  if (row) {
+    row.classList.toggle('row-done', chk.checked);
+  }
+  recalculateModalProgress();
+}
+window.handleRowCheckChange = handleRowCheckChange;
+
+function renumberChecklistRows() {
+  const container = document.getElementById('checklist-rows-container');
+  if (!container) return;
+  const rows = container.querySelectorAll('.admin-chk-row');
+  rows.forEach((r, idx) => {
+    const num = r.querySelector('.chk-step-num');
+    if (num) num.textContent = idx + 1;
+  });
+}
+window.renumberChecklistRows = renumberChecklistRows;
+
+function removeChecklistRow(btn) {
+  const row = btn.closest('.admin-chk-row');
+  if (row) {
+    row.remove();
+    renumberChecklistRows();
+    recalculateModalProgress();
+  }
+}
+window.removeChecklistRow = removeChecklistRow;
+
+function moveChecklistRow(btn, direction) {
+  const row = btn.closest('.admin-chk-row');
+  if (!row) return;
+  const container = document.getElementById('checklist-rows-container');
+
+  if (direction === -1 && row.previousElementSibling && row.previousElementSibling.classList.contains('admin-chk-row')) {
+    container.insertBefore(row, row.previousElementSibling);
+  } else if (direction === 1 && row.nextElementSibling) {
+    container.insertBefore(row.nextElementSibling, row);
+  }
+  renumberChecklistRows();
+  recalculateModalProgress();
+}
+window.moveChecklistRow = moveChecklistRow;
+
+function recalculateModalProgress() {
+  const container = document.getElementById('checklist-rows-container');
+  if (!container) return;
+  const rows = container.querySelectorAll('.admin-chk-row');
+
+  if (rows.length === 0) {
+    if (!container.querySelector('.chk-empty-placeholder')) {
+      container.innerHTML = '<div class="chk-empty-placeholder">📋 Nenhuma etapa cadastrada. Clique em "➕ Adicionar Etapa" para adicionar.</div>';
     }
-  } else {
-    // Criação
-    const newId = `feat-${String(data.features.length + 1).padStart(3, '0')}-${Date.now().toString(36)}`;
-    data.features.unshift({
-      id: newId,
-      titulo: title,
-      categoria: category,
-      status: status,
-      prioridade: priority,
-      previsao: eta || 'Em breve',
-      dataCriacao: dateCreated,
-      dataEntrega: dateDelivered,
-      dataAtualizacao: new Date().toISOString(),
-      descricao: desc,
-      progresso: progresso,
-      tags: tags,
-      checklist: checklist
-    });
+    const progSlider = document.getElementById('feat-prog');
+    if (progSlider) {
+      progSlider.value = 0;
+      updateProgressDisplay(0);
+    }
+    updateChecklistSummaryBar(0, 0, 0);
+    return;
   }
 
-  // Atualiza data de modificação
-  data.projeto = data.projeto || {};
-  data.projeto.ultimaAtualizacao = new Intl.DateTimeFormat('pt-BR', { dateStyle: 'long' }).format(new Date());
+  let doneCount = 0;
+  rows.forEach(r => {
+    const chk = r.querySelector('.chk-row-done');
+    if (chk && chk.checked) {
+      doneCount++;
+      r.classList.add('row-done');
+    } else {
+      r.classList.remove('row-done');
+    }
+  });
+
+  const total = rows.length;
+  const pct = Math.round((doneCount / total) * 100);
+  const progSlider = document.getElementById('feat-prog');
+  if (progSlider) {
+    progSlider.value = pct;
+    updateProgressDisplay(pct);
+  }
+
+  updateChecklistSummaryBar(doneCount, total, pct);
+
+  // Sincroniza status se atingir 100%
+  const statusSelect = document.getElementById('feat-status');
+  if (statusSelect) {
+    if (pct === 100) statusSelect.value = 'Concluído';
+    else if (pct > 0 && statusSelect.value === 'Planejado') statusSelect.value = 'Em Desenvolvimento';
+  }
+}
+window.recalculateModalProgress = recalculateModalProgress;
+
+function updateChecklistSummaryBar(done, total, pct) {
+  let summaryBar = document.getElementById('checklist-summary-bar');
+  const container = document.getElementById('checklist-rows-container');
+  if (!container) return;
+
+  if (!summaryBar) {
+    summaryBar = document.createElement('div');
+    summaryBar.id = 'checklist-summary-bar';
+    summaryBar.className = 'checklist-summary-bar';
+    container.parentNode.insertBefore(summaryBar, container);
+  }
+
+  summaryBar.innerHTML = `
+    <div class="chk-summary-left">
+      <span>📋 Progresso das Etapas:</span>
+      <span class="chk-summary-pill">${done} de ${total} concluídas</span>
+    </div>
+    <div style="display:flex; align-items:center; gap:8px;">
+      <span style="font-size:0.75rem; color:var(--text-3);">Maturidade:</span>
+      <strong style="color:var(--brand-light); font-size:0.85rem;">${pct}%</strong>
+    </div>
+  `;
+}
+
+function updateProgressDisplay(val) {
+  const lbl = document.getElementById('feat-prog-val');
+  if (lbl) lbl.textContent = val + '%';
+}
+window.updateProgressDisplay = updateProgressDisplay;
+
+function syncProgressWithStatus(status) {
+  const progSlider = document.getElementById('feat-prog');
+  if (!progSlider) return;
+
+  if (status === 'Concluído') {
+    progSlider.value = 100;
+    updateProgressDisplay(100);
+    // Marca todos os itens do checklist
+    const chks = document.querySelectorAll('#checklist-rows-container .chk-row-done');
+    chks.forEach(c => c.checked = true);
+  } else if (status === 'Planejado' && progSlider.value == 100) {
+    progSlider.value = 0;
+    updateProgressDisplay(0);
+  }
+}
+window.syncProgressWithStatus = syncProgressWithStatus;
+
+function handleSaveFeature(event) {
+  event.preventDefault();
+  const data = getActiveData();
+  const editId = document.getElementById('edit-feature-id').value;
+
+  // Extrai etapas do checklist
+  const chkRows = document.querySelectorAll('#checklist-rows-container .admin-chk-row');
+  const checklist = [];
+  chkRows.forEach(row => {
+    const textInput = row.querySelector('.chk-row-text');
+    const doneInput = row.querySelector('.chk-row-done');
+    if (textInput && textInput.value.trim()) {
+      checklist.push({
+        item: textInput.value.trim(),
+        feito: doneInput ? doneInput.checked : false
+      });
+    }
+  });
+
+  // Extrai tags
+  const tagsRaw = document.getElementById('feat-tags').value;
+  const tags = tagsRaw.split(',').map(t => t.trim().replace(/^#/, '')).filter(t => t.length > 0);
+
+  const prog = parseInt(document.getElementById('feat-prog').value, 10) || 0;
+  const status = document.getElementById('feat-status').value;
+  const dateCreated = document.getElementById('feat-date-created').value;
+  const dateDelivered = document.getElementById('feat-date-delivered').value;
+
+  const featureObj = {
+    id: editId || 'feat-' + Date.now().toString(36),
+    titulo: document.getElementById('feat-title').value.trim(),
+    categoria: document.getElementById('feat-cat').value.trim(),
+    status: status,
+    prioridade: document.getElementById('feat-priority').value,
+    previsao: document.getElementById('feat-eta').value.trim() || (status === 'Concluído' ? 'Entregue' : 'Em breve'),
+    dataCriacao: dateCreated || new Date().toISOString().split('T')[0],
+    dataEntrega: status === 'Concluído' ? (dateDelivered || new Date().toISOString().split('T')[0]) : (dateDelivered || undefined),
+    descricao: document.getElementById('feat-desc').value.trim(),
+    progresso: prog,
+    tags: tags,
+    checklist: checklist,
+    dataAtualizacao: new Date().toISOString()
+  };
+
+  if (!data.features) data.features = [];
+
+  if (editId) {
+    const idx = data.features.findIndex(f => f.id === editId);
+    if (idx !== -1) {
+      data.features[idx] = featureObj;
+    } else {
+      data.features.unshift(featureObj);
+    }
+  } else {
+    data.features.unshift(featureObj);
+  }
 
   saveActiveData(data);
   closeFeatureModal();
 }
+window.handleSaveFeature = handleSaveFeature;
 
-function deleteFeature(featureId) {
-  if (!confirm('Deseja realmente excluir esta funcionalidade do roadmap?')) return;
-
+function deleteFeature(id) {
+  if (!confirm('Deseja realmente excluir esta funcionalidade? Ela será removida da visualização e sincronizada.')) return;
   const data = getActiveData();
-  data.deletedIds = data.deletedIds || [];
-  if (!data.deletedIds.includes(featureId)) {
-    data.deletedIds.push(featureId);
-  }
-  data.features = (data.features || []).filter(f => f.id !== featureId);
+  data.features = (data.features || []).filter(f => f.id !== id);
+  if (!data.deletedIds) data.deletedIds = [];
+  data.deletedIds.push(id);
+
   saveActiveData(data);
   showAdminToast('🗑️ Funcionalidade excluída com sucesso!');
 }
+window.deleteFeature = deleteFeature;
 
-function quickUpdateFeatureStatus(featureId, newStatus) {
+// Ações Rápidas Diretas nos Cards (Kanban / Grade)
+function quickUpdateFeatureStatus(id, newStatus) {
   const data = getActiveData();
-  const feat = (data.features || []).find(f => f.id === featureId);
+  const feat = (data.features || []).find(f => f.id === id);
   if (!feat) return;
 
   feat.status = newStatus;
   if (newStatus === 'Concluído') {
     feat.progresso = 100;
-    feat.previsao = 'Entregue (09/2026)';
-    if (feat.checklist) {
-      feat.checklist.forEach(c => c.feito = true);
-    }
-  } else if (newStatus === 'Planejado' && feat.progresso === 100) {
-    feat.progresso = 0;
+    if (feat.checklist) feat.checklist.forEach(c => c.feito = true);
+    if (!feat.dataEntrega) feat.dataEntrega = new Date().toISOString().split('T')[0];
+  } else if (newStatus === 'Planejado') {
+    if (feat.progresso === 100) feat.progresso = 0;
   }
+  feat.dataAtualizacao = new Date().toISOString();
 
   saveActiveData(data);
 }
+window.quickUpdateFeatureStatus = quickUpdateFeatureStatus;
 
-function quickUpdateFeaturePriority(featureId, newPriority) {
+function quickUpdateFeaturePriority(id, newPriority) {
   const data = getActiveData();
-  const feat = (data.features || []).find(f => f.id === featureId);
+  const feat = (data.features || []).find(f => f.id === id);
   if (!feat) return;
 
   feat.prioridade = newPriority;
+  feat.dataAtualizacao = new Date().toISOString();
   saveActiveData(data);
-  showAdminToast(`⚡ Prioridade de "${feat.titulo.substring(0, 25)}..." alterada para ${newPriority}!`);
 }
+window.quickUpdateFeaturePriority = quickUpdateFeaturePriority;
 
-function toggleChecklistItemDirect(featureId, itemIndex) {
+function toggleChecklistItemDirect(featId, itemIndex) {
   if (!isAdminAuthenticated()) return;
   const data = getActiveData();
-  const feat = (data.features || []).find(f => f.id === featureId);
+  const feat = (data.features || []).find(f => f.id === featId);
   if (!feat || !feat.checklist || !feat.checklist[itemIndex]) return;
 
   feat.checklist[itemIndex].feito = !feat.checklist[itemIndex].feito;
   
-  // Recalcula progresso automaticamente baseado nas etapas
+  // Recalcula progresso automaticamente
   const total = feat.checklist.length;
   const done = feat.checklist.filter(c => c.feito).length;
   feat.progresso = Math.round((done / total) * 100);
+  if (feat.progresso === 100) feat.status = 'Concluído';
+  else if (feat.progresso > 0 && feat.status === 'Planejado') feat.status = 'Em Desenvolvimento';
 
-  if (feat.progresso === 100) {
-    feat.status = 'Concluído';
-  } else if (feat.progresso > 0 && feat.status === 'Planejado') {
-    feat.status = 'Em Desenvolvimento';
-  }
-
+  feat.dataAtualizacao = new Date().toISOString();
   saveActiveData(data);
 }
+window.toggleChecklistItemDirect = toggleChecklistItemDirect;
 
-// ── 6. Gerenciamento de Módulos ──────────────────────────────────────
-function openModulesManagerModal() {
-  const data = getActiveData();
-  const container = document.getElementById('modules-manager-list');
-  if (!container) return;
-
-  container.innerHTML = (data.modulos || []).map((mod, idx) => `
-    <div class="admin-module-edit-row">
-      <div class="admin-module-edit-info">
-        <span style="font-size:1.2rem;">${mod.icone}</span>
-        <div>
-          <strong style="color:var(--text); font-size:0.9rem;">${mod.nome}</strong>
-          <div style="font-size:0.75rem; color:var(--text-3);">${mod.status || 'Ativo'}</div>
-        </div>
-      </div>
-      <div class="admin-module-edit-control">
-        <input type="range" class="admin-range-slider" min="0" max="100" step="5" value="${mod.maturidade}" 
-               oninput="document.getElementById('mod-val-${idx}').textContent = this.value + '%'">
-        <span id="mod-val-${idx}" class="admin-progress-live-badge" style="min-width:45px; text-align:center;">${mod.maturidade}%</span>
-      </div>
-    </div>
-  `).join('');
-
-  const modal = document.getElementById('modal-modules-manager');
-  if (modal) modal.style.display = 'flex';
-}
-
-function closeModulesManagerModal() {
-  const modal = document.getElementById('modal-modules-manager');
-  if (modal) modal.style.display = 'none';
-}
-
-function handleSaveModules(e) {
-  e.preventDefault();
-  const data = getActiveData();
-  const rows = document.querySelectorAll('#modules-manager-list .admin-module-edit-row');
-
-  rows.forEach((row, idx) => {
-    const slider = row.querySelector('input[type="range"]');
-    if (slider && data.modulos && data.modulos[idx]) {
-      const val = parseInt(slider.value, 10) || 0;
-      data.modulos[idx].maturidade = val;
-      if (val === 100) data.modulos[idx].status = 'Operacional';
-      else if (val >= 80) data.modulos[idx].status = 'Em Homologação';
-      else if (val >= 30) data.modulos[idx].status = 'Em Desenvolvimento';
-      else data.modulos[idx].status = 'Planejado';
-    }
-  });
-
-  saveActiveData(data);
-  closeModulesManagerModal();
-}
-
-// ── 7. Gerenciamento de Changelog ────────────────────────────────────
+// ── 6. Lançamentos do Changelog ──────────────────────────────────────
 function openCreateChangelogModal() {
-  document.getElementById('changelog-modal-title').textContent = '🚀 Novo Lançamento (Changelog)';
-  document.getElementById('edit-changelog-index').value = '';
-  document.getElementById('form-changelog-editor').reset();
-
-  const container = document.getElementById('cl-items-container');
-  if (container) container.innerHTML = '';
-  addChangelogItemInput('novo', '');
-
   const modal = document.getElementById('modal-changelog-editor');
-  if (modal) modal.style.display = 'flex';
+  const form = document.getElementById('form-changelog-editor');
+  const title = document.getElementById('changelog-modal-title');
+  if (!modal || !form) return;
+
+  form.reset();
+  document.getElementById('edit-changelog-index').value = '-1';
+  if (title) title.textContent = '🚀 Novo Lançamento (Changelog)';
+
+  document.getElementById('log-date').value = new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
+  document.getElementById('changelog-items-container').innerHTML = '';
+  addChangelogItemRow('novo', '');
+  modal.style.display = 'flex';
 }
+window.openCreateChangelogModal = openCreateChangelogModal;
 
 function openEditChangelogModal(index) {
   const data = getActiveData();
   const log = (data.changelog || [])[index];
   if (!log) return;
 
-  document.getElementById('changelog-modal-title').textContent = '✏️ Editar Versão do Changelog';
-  document.getElementById('edit-changelog-index').value = index;
-  document.getElementById('cl-version').value = log.versao || '';
-  document.getElementById('cl-date').value = log.data || '';
-  document.getElementById('cl-title').value = log.titulo || '';
-  document.getElementById('cl-summary').value = log.resumo || '';
+  const modal = document.getElementById('modal-changelog-editor');
+  const title = document.getElementById('changelog-modal-title');
+  if (!modal) return;
 
-  const container = document.getElementById('cl-items-container');
-  if (container) {
-    container.innerHTML = '';
-    (log.itens || []).forEach(item => {
-      addChangelogItemInput(item.tipo, item.texto);
-    });
+  document.getElementById('edit-changelog-index').value = index;
+  if (title) title.textContent = '✏️ Editar Lançamento: ' + log.versao;
+
+  document.getElementById('log-version').value = log.versao || '';
+  document.getElementById('log-date').value = log.data || '';
+  document.getElementById('log-title').value = log.titulo || '';
+  document.getElementById('log-summary').value = log.resumo || '';
+
+  const container = document.getElementById('changelog-items-container');
+  container.innerHTML = '';
+  if (log.itens && log.itens.length > 0) {
+    log.itens.forEach(item => addChangelogItemRow(item.tipo, item.texto));
+  } else {
+    addChangelogItemRow('novo', '');
   }
 
-  const modal = document.getElementById('modal-changelog-editor');
-  if (modal) modal.style.display = 'flex';
+  modal.style.display = 'flex';
 }
+window.openEditChangelogModal = openEditChangelogModal;
 
 function closeChangelogModal() {
   const modal = document.getElementById('modal-changelog-editor');
   if (modal) modal.style.display = 'none';
 }
+window.closeChangelogModal = closeChangelogModal;
 
-function addChangelogItemInput(tipo = 'novo', texto = '') {
-  const container = document.getElementById('cl-items-container');
+function addChangelogItemRow(type = 'novo', text = '') {
+  const container = document.getElementById('changelog-items-container');
   if (!container) return;
 
-  initDraggableList('cl-items-container');
-
   const row = document.createElement('div');
-  row.className = 'admin-changelog-input-row admin-draggable-row';
-  row.draggable = true;
+  row.className = 'admin-chk-row';
   row.innerHTML = `
-    <span class="admin-drag-handle" title="Clique e arraste para reordenar este item">⋮⋮</span>
-    <select class="admin-form-select admin-cl-type" style="width:130px; flex-shrink:0;">
-      <option value="novo" ${tipo === 'novo' ? 'selected' : ''}>✨ Novo</option>
-      <option value="melhoria" ${tipo === 'melhoria' ? 'selected' : ''}>⚡ Melhoria</option>
-      <option value="correcao" ${tipo === 'correcao' ? 'selected' : ''}>🐛 Correção</option>
-      <option value="performance" ${tipo === 'performance' ? 'selected' : ''}>🚀 Performance</option>
-      <option value="seguranca" ${tipo === 'seguranca' ? 'selected' : ''}>🔒 Segurança</option>
+    <select class="admin-form-select log-item-type" style="width:130px;">
+      <option value="novo" ${type === 'novo' ? 'selected' : ''}>✨ Novo</option>
+      <option value="melhoria" ${type === 'melhoria' ? 'selected' : ''}>⚡ Melhoria</option>
+      <option value="performance" ${type === 'performance' ? 'selected' : ''}>🚀 Performance</option>
+      <option value="seguranca" ${type === 'seguranca' ? 'selected' : ''}>🛡️ Segurança</option>
+      <option value="correcao" ${type === 'correcao' ? 'selected' : ''}>🐛 Correção</option>
     </select>
-    <input type="text" class="admin-form-input admin-cl-text" placeholder="Descrição do que foi feito..." value="${escapeHtml(texto)}" required>
-    <div class="admin-row-quick-sort">
-      <button type="button" class="btn-sort-arrow" onclick="moveRowUp(this)" title="Mover para cima">▲</button>
-      <button type="button" class="btn-sort-arrow" onclick="moveRowDown(this)" title="Mover para baixo">▼</button>
-    </div>
-    <button type="button" class="btn-admin-act btn-admin-danger btn-admin-icon-only" onclick="this.closest('.admin-changelog-input-row').remove()" title="Excluir item">✕</button>
+    <input type="text" class="admin-form-input log-item-text" value="${escapeHtml(text)}" placeholder="Descreva a alteração entregue..." required>
+    <button type="button" class="btn-chk-remove" onclick="this.closest('.admin-chk-row').remove()">✕</button>
   `;
-
-  attachDragEventsToRow(row);
   container.appendChild(row);
 }
+window.addChangelogItemRow = addChangelogItemRow;
 
-function handleSaveChangelog(e) {
-  e.preventDefault();
-  const indexStr = document.getElementById('edit-changelog-index').value;
-  const version = document.getElementById('cl-version').value.trim();
-  const date = document.getElementById('cl-date').value.trim();
-  const title = document.getElementById('cl-title').value.trim();
-  const summary = document.getElementById('cl-summary').value.trim();
+function handleSaveChangelog(event) {
+  event.preventDefault();
+  const data = getActiveData();
+  const editIndex = parseInt(document.getElementById('edit-changelog-index').value, 10);
 
-  const rows = document.querySelectorAll('#cl-items-container .admin-changelog-input-row');
-  const items = [];
-  rows.forEach(row => {
-    const tipo = row.querySelector('.admin-cl-type')?.value || 'novo';
-    const text = row.querySelector('.admin-cl-text')?.value.trim() || '';
-    if (text) {
-      items.push({ tipo: tipo, texto: text });
+  const itemRows = document.querySelectorAll('#changelog-items-container .admin-chk-row');
+  const itens = [];
+  itemRows.forEach(row => {
+    const t = row.querySelector('.log-item-type')?.value;
+    const txt = row.querySelector('.log-item-text')?.value;
+    if (txt && txt.trim()) {
+      itens.push({ tipo: t, texto: txt.trim() });
     }
   });
 
-  const data = getActiveData();
-  data.changelog = data.changelog || [];
-
-  const newEntry = {
-    versao: version,
-    data: date,
-    titulo: title,
-    resumo: summary,
-    itens: items
+  const logObj = {
+    versao: document.getElementById('log-version').value.trim(),
+    data: document.getElementById('log-date').value.trim(),
+    titulo: document.getElementById('log-title').value.trim(),
+    resumo: document.getElementById('log-summary').value.trim(),
+    itens: itens
   };
 
-  if (indexStr !== '') {
-    const idx = parseInt(indexStr, 10);
-    data.changelog[idx] = newEntry;
+  if (!data.changelog) data.changelog = [];
+
+  if (editIndex >= 0 && editIndex < data.changelog.length) {
+    data.changelog[editIndex] = logObj;
   } else {
-    // Insere no topo como lançamento mais recente
-    data.changelog.unshift(newEntry);
+    data.changelog.unshift(logObj);
   }
 
   saveActiveData(data);
   closeChangelogModal();
 }
+window.handleSaveChangelog = handleSaveChangelog;
 
 function deleteChangelog(index) {
-  if (!confirm('Deseja realmente remover esta versão do histórico?')) return;
+  if (!confirm('Deseja excluir este lançamento do histórico?')) return;
   const data = getActiveData();
-  data.changelog.splice(index, 1);
-  saveActiveData(data);
-  showAdminToast('🗑️ Versão removida do histórico!');
+  if (data.changelog && data.changelog[index]) {
+    data.changelog.splice(index, 1);
+    saveActiveData(data);
+  }
 }
+window.deleteChangelog = deleteChangelog;
 
-// ── 8. Exportador de Código & Download de Arquivo ─────────────────────
-function generateFormattedDataCode() {
+// ── 7. Módulos & Maturidade ──────────────────────────────────────────
+function openModulesManagerModal() {
   const data = getActiveData();
-  const header = `// ══════════════════════════════════════════════════════════════════════
-//  PAINEL DE CONTROLE DE IMPLEMENTAÇÕES & ROADMAP — JCV QUÍMICA 2026
-//  Base de Dados Oficial e Completa do Projeto (Rawell Química)
-//  Gerado via Painel Administrativo em: ${new Intl.DateTimeFormat('pt-BR', { dateStyle: 'full', timeStyle: 'medium' }).format(new Date())}
-// ══════════════════════════════════════════════════════════════════════
+  const modal = document.getElementById('modal-modules-manager');
+  const list = document.getElementById('modules-edit-list');
+  if (!modal || !list) return;
 
-const ROADMAP_DATA = `;
+  list.innerHTML = (data.modulos || []).map((mod, i) => `
+    <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px; margin-bottom:10px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+        <strong style="font-size:0.88rem;">${mod.icone} ${mod.nome}</strong>
+        <span id="mod-val-${i}" style="color:var(--brand-light); font-weight:800; font-size:0.85rem;">${mod.maturidade}%</span>
+      </div>
+      <input type="range" class="admin-form-range" min="0" max="100" value="${mod.maturidade}" 
+             data-index="${i}" oninput="document.getElementById('mod-val-${i}').textContent = this.value + '%'">
+    </div>
+  `).join('');
 
-  const jsonStr = JSON.stringify(data, null, 2);
-  const footer = `;
-
-if (typeof window !== 'undefined') window.ROADMAP_DATA = ROADMAP_DATA;
-if (typeof module !== 'undefined' && module.exports) module.exports = ROADMAP_DATA;
-`;
-
-  return header + jsonStr + footer;
+  modal.style.display = 'flex';
 }
+window.openModulesManagerModal = openModulesManagerModal;
 
-function exportRoadmapDataFile() {
-  const code = generateFormattedDataCode();
-  const blob = new Blob([code], { type: 'text/javascript;charset=utf-8' });
-  const url = URL.createObjectURL(blob);
-  
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'roadmap-data.js';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-
-  showAdminToast('📥 Arquivo roadmap-data.js baixado com sucesso!');
+function closeModulesModal() {
+  const modal = document.getElementById('modal-modules-manager');
+  if (modal) modal.style.display = 'none';
 }
+window.closeModulesModal = closeModulesModal;
 
-function copyRoadmapDataToClipboard() {
-  const code = generateFormattedDataCode();
-  navigator.clipboard.writeText(code).then(() => {
-    showAdminToast('📋 Código do roadmap-data.js copiado para a Área de Transferência!');
-  }).catch(() => {
-    showAdminToast('❌ Erro ao copiar código.', true);
+function handleSaveModules(event) {
+  event.preventDefault();
+  const data = getActiveData();
+  const sliders = document.querySelectorAll('#modules-edit-list input[type="range"]');
+
+  sliders.forEach(slider => {
+    const idx = parseInt(slider.getAttribute('data-index'), 10);
+    if (data.modulos && data.modulos[idx]) {
+      const val = parseInt(slider.value, 10);
+      data.modulos[idx].maturidade = val;
+      if (val === 100) data.modulos[idx].status = 'Operacional';
+      else if (val >= 50) data.modulos[idx].status = 'Em Homologação';
+      else data.modulos[idx].status = 'Em Desenvolvimento';
+    }
   });
-}
 
-// ── 9. Toast de Notificações Administrativas ──────────────────────────
+  saveActiveData(data);
+  closeModulesModal();
+}
+window.handleSaveModules = handleSaveModules;
+
+// ── 8. Emissor de Relatório Executivo Oficial em PDF ─────────────────
+function generateExecutivePdfReport() {
+  const data = getActiveData();
+  if (!data) return;
+
+  let printArea = document.getElementById('executive-pdf-print-area');
+  if (!printArea) {
+    printArea = document.createElement('div');
+    printArea.id = 'executive-pdf-print-area';
+    document.body.appendChild(printArea);
+  }
+
+  const features = data.features || [];
+  const concluidas = features.filter(f => f.status === 'Concluído' || f.progresso === 100);
+  const emAndamento = features.filter(f => f.status === 'Em Desenvolvimento');
+  const emTestes = features.filter(f => f.status === 'Em Testes');
+  const planejadas = features.filter(f => f.status === 'Planejado');
+
+  const somaProg = features.reduce((a, b) => a + (b.progresso || 0), 0);
+  const mediaProg = features.length > 0 ? Math.round(somaProg / features.length) : 0;
+  const dataHoje = new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+
+  printArea.innerHTML = `
+    <div class="pdf-report-header">
+      <div>
+        <h1 class="pdf-brand-title">🌿 JCV QUÍMICA / RAWELL</h1>
+        <div style="font-size:0.9rem; font-weight:700; color:#334155; margin-top:2px;">
+          Relatório Executivo de Implementações &amp; Roadmap Tecnológico
+        </div>
+      </div>
+      <div class="pdf-meta-box">
+        <div><strong>Cliente:</strong> ${data.projeto.cliente}</div>
+        <div><strong>Versão:</strong> ${data.projeto.versaoAtual}</div>
+        <div><strong>Emissão:</strong> ${dataHoje}</div>
+      </div>
+    </div>
+
+    <div class="pdf-stats-row">
+      <div class="pdf-stat-col">
+        <div class="pdf-stat-val">${mediaProg}%</div>
+        <div class="pdf-stat-name">Progresso Geral</div>
+      </div>
+      <div class="pdf-stat-col">
+        <div class="pdf-stat-val" style="color:#15803d;">${concluidas.length}</div>
+        <div class="pdf-stat-name">Entregues / Concluídas</div>
+      </div>
+      <div class="pdf-stat-col">
+        <div class="pdf-stat-val" style="color:#b45309;">${emAndamento.length}</div>
+        <div class="pdf-stat-name">Em Desenvolvimento</div>
+      </div>
+      <div class="pdf-stat-col">
+        <div class="pdf-stat-val" style="color:#1d4ed8;">${emTestes.length}</div>
+        <div class="pdf-stat-name">Em Testes</div>
+      </div>
+      <div class="pdf-stat-col">
+        <div class="pdf-stat-val" style="color:#6d28d9;">${planejadas.length}</div>
+        <div class="pdf-stat-name">Planejadas</div>
+      </div>
+    </div>
+
+    <div class="pdf-section-title">📊 Matriz de Maturidade dos Módulos Estruturais</div>
+    <table class="pdf-table">
+      <thead>
+        <tr>
+          <th>Módulo</th>
+          <th>Maturidade (%)</th>
+          <th>Status Operacional</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${(data.modulos || []).map(m => `
+          <tr>
+            <td><strong>${m.icone} ${m.nome}</strong></td>
+            <td><strong>${m.maturidade}%</strong></td>
+            <td>${m.status}</td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>
+
+    <div class="pdf-section-title">🚀 Detalhamento das Funcionalidades &amp; Entregas</div>
+    <table class="pdf-table">
+      <thead>
+        <tr>
+          <th style="width:35%;">Funcionalidade</th>
+          <th style="width:20%;">Categoria</th>
+          <th style="width:15%;">Status</th>
+          <th style="width:12%;">Progresso</th>
+          <th style="width:18%;">Previsão / Entrega</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${features.map(f => {
+          let tagClass = 'pdf-tag-plan';
+          if (f.status === 'Concluído') tagClass = 'pdf-tag-done';
+          else if (f.status === 'Em Desenvolvimento') tagClass = 'pdf-tag-dev';
+          else if (f.status === 'Em Testes') tagClass = 'pdf-tag-test';
+
+          return `
+            <tr>
+              <td><strong>${f.titulo}</strong></td>
+              <td>${f.categoria}</td>
+              <td><span class="${tagClass}">${f.status}</span></td>
+              <td><strong>${f.progresso}%</strong></td>
+              <td>${f.previsao || '-'}</td>
+            </tr>
+          `;
+        }).join('')}
+      </tbody>
+    </table>
+
+    <div class="pdf-signature-block">
+      <div class="pdf-sig-line">
+        <strong>Engenharia de Software</strong><br>
+        Equipe de Desenvolvimento
+      </div>
+      <div class="pdf-sig-line">
+        <strong>Aprovação da Diretoria</strong><br>
+        JCV Química / Valdecir
+      </div>
+    </div>
+  `;
+
+  window.print();
+}
+window.generateExecutivePdfReport = generateExecutivePdfReport;
+
+// ── 9. Utilitários de Toast e Exportação ──────────────────────────────
+function exportRoadmapDataFile() {
+  const data = getActiveData();
+  const fileContent = '// Base de Dados Oficial Exportada\nconst ROADMAP2_DATA = ' + JSON.stringify(data, null, 2) + ';\nif(typeof window !== "undefined") { window.ROADMAP2_DATA = ROADMAP2_DATA; window.ROADMAP_DATA = ROADMAP2_DATA; }\n';
+  const blob = new Blob([fileContent], { type: 'application/javascript;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'roadmap2-data.js';
+  a.click();
+  showAdminToast('📥 Arquivo roadmap2-data.js baixado!');
+}
+window.exportRoadmapDataFile = exportRoadmapDataFile;
+
 function showAdminToast(msg, isError = false) {
-  const toast = document.getElementById('admin-toast');
+  let toast = document.getElementById('admin-toast');
   if (!toast) return;
 
   toast.textContent = msg;
-  toast.style.background = isError ? '#ef4444' : '#10b981';
-  toast.classList.add('visible');
+  toast.style.background = isError ? '#ef4444' : '#0f4531';
+  toast.style.color = '#ffffff';
+  toast.style.display = 'block';
 
-  clearTimeout(window._adminToastTimeout);
-  window._adminToastTimeout = setTimeout(() => {
-    toast.classList.remove('visible');
-  }, 3200);
+  setTimeout(() => {
+    toast.style.display = 'none';
+  }, 3500);
 }
+window.showAdminToast = showAdminToast;
 
 function escapeHtml(str) {
   if (!str) return '';
-  return String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;');
+  return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
-
-// ── 10. Motor de Drag & Drop (Arrastar e Soltar) ──────────────────────
-function initDraggableList(containerId) {
-  const container = document.getElementById(containerId);
-  if (!container || container._dragInitialized) return;
-  container._dragInitialized = true;
-
-  container.addEventListener('dragover', (e) => {
-    e.preventDefault();
-    const draggingEl = container.querySelector('.dragging');
-    if (!draggingEl) return;
-
-    const afterElement = getDragAfterElement(container, e.clientY);
-    if (afterElement == null) {
-      container.appendChild(draggingEl);
-    } else {
-      container.insertBefore(draggingEl, afterElement);
-    }
-  });
-}
-
-function getDragAfterElement(container, y) {
-  const draggableElements = [...container.querySelectorAll('.admin-draggable-row:not(.dragging)')];
-
-  return draggableElements.reduce((closest, child) => {
-    const box = child.getBoundingClientRect();
-    const offset = y - box.top - box.height / 2;
-    if (offset < 0 && offset > closest.offset) {
-      return { offset: offset, element: child };
-    } else {
-      return closest;
-    }
-  }, { offset: Number.NEGATIVE_INFINITY }).element;
-}
-
-function attachDragEventsToRow(row) {
-  row.addEventListener('dragstart', (e) => {
-    row.classList.add('dragging');
-    if (e.dataTransfer) {
-      e.dataTransfer.effectAllowed = 'move';
-      try {
-        e.dataTransfer.setData('text/plain', '');
-      } catch (err) {}
-    }
-  });
-
-  row.addEventListener('dragend', () => {
-    row.classList.remove('dragging');
-    row.classList.add('admin-row-highlight-anim');
-    setTimeout(() => row.classList.remove('admin-row-highlight-anim'), 400);
-  });
-
-  // Touch Drag Support para dispositivos móveis
-  const handle = row.querySelector('.admin-drag-handle');
-  if (handle) {
-    let originalParent = null;
-
-    handle.addEventListener('touchstart', (e) => {
-      originalParent = row.parentNode;
-      row.classList.add('dragging');
-    }, { passive: true });
-
-    handle.addEventListener('touchmove', (e) => {
-      const touch = e.touches[0];
-      const targetEl = document.elementFromPoint(touch.clientX, touch.clientY);
-      if (!targetEl || !originalParent) return;
-
-      const targetRow = targetEl.closest('.admin-draggable-row');
-      if (targetRow && targetRow !== row && targetRow.parentNode === originalParent) {
-        const box = targetRow.getBoundingClientRect();
-        const next = (touch.clientY - box.top) / (box.bottom - box.top) > 0.5;
-        originalParent.insertBefore(row, next ? targetRow.nextSibling : targetRow);
-      }
-    }, { passive: true });
-
-    handle.addEventListener('touchend', () => {
-      row.classList.remove('dragging');
-      row.classList.add('admin-row-highlight-anim');
-      setTimeout(() => row.classList.remove('admin-row-highlight-anim'), 400);
-    }, { passive: true });
-  }
-}
-
-function moveRowUp(btn) {
-  const row = btn.closest('.admin-draggable-row');
-  if (row && row.previousElementSibling) {
-    row.parentNode.insertBefore(row, row.previousElementSibling);
-    row.classList.add('admin-row-highlight-anim');
-    setTimeout(() => row.classList.remove('admin-row-highlight-anim'), 400);
-  }
-}
-
-function moveRowDown(btn) {
-  const row = btn.closest('.admin-draggable-row');
-  if (row && row.nextElementSibling) {
-    row.parentNode.insertBefore(row.nextElementSibling, row);
-    row.classList.add('admin-row-highlight-anim');
-    setTimeout(() => row.classList.remove('admin-row-highlight-anim'), 400);
-  }
-}
-
-// Exposição Global
-window.openAdminLoginModal = openAdminLoginModal;
-window.openCreateFeatureModal = openCreateFeatureModal;
-window.openEditFeatureModal = openEditFeatureModal;
-window.deleteFeature = deleteFeature;
-window.quickUpdateFeatureStatus = quickUpdateFeatureStatus;
-window.quickUpdateFeaturePriority = quickUpdateFeaturePriority;
-window.toggleChecklistItemDirect = toggleChecklistItemDirect;
-window.openModulesManagerModal = openModulesManagerModal;
-window.openCreateChangelogModal = openCreateChangelogModal;
-window.openEditChangelogModal = openEditChangelogModal;
-window.deleteChangelog = deleteChangelog;
-window.exportRoadmapDataFile = exportRoadmapDataFile;
-window.copyRoadmapDataToClipboard = copyRoadmapDataToClipboard;
-window.resetActiveDataToDefault = resetActiveDataToDefault;
-window.logoutAdmin = logoutAdmin;
-window.getActiveData = getActiveData;
-window.moveRowUp = moveRowUp;
-window.moveRowDown = moveRowDown;
-

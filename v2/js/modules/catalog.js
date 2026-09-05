@@ -68,7 +68,17 @@ function renderProductList() {
     if (emptyBox) emptyBox.classList.add('show');
     if (countLabel) countLabel.innerHTML = 'Nenhum resultado encontrado';
     if (filterIndicator) filterIndicator.innerHTML = '';
+
+    const currentSearchTerm = (appState.search || '').trim();
+    if (currentSearchTerm && currentSearchTerm.length >= 2 && typeof logSearchTelemetry === 'function') {
+      logSearchTelemetry(currentSearchTerm, 0, false);
+    }
     return;
+  }
+
+  const currentSearchTerm = (appState.search || '').trim();
+  if (currentSearchTerm && currentSearchTerm.length >= 2 && typeof logSearchTelemetry === 'function') {
+    logSearchTelemetry(currentSearchTerm, list.length, false);
   }
 
   if (emptyBox) emptyBox.classList.remove('show');
@@ -297,6 +307,57 @@ function clearSearch() {
   renderProductList();
 }
 
+function submitSearch() {
+  hapticFeedback(15);
+  const term = (mSearchInput?.value || dSearchInput?.value || '').trim();
+  
+  if (term.length > 0 && appState.cat !== 'todos') {
+    appState.cat = 'todos';
+    renderStoriesCategories();
+  }
+
+  clearTimeout(searchDebounce);
+  appState.search = term;
+  renderProductList();
+
+  if (term.length >= 2 && typeof logSearchTelemetry === 'function') {
+    const list = getFilteredProducts();
+    logSearchTelemetry(term, list.length, true);
+  }
+
+  // Fecha o teclado virtual em smartphones
+  if (document.activeElement === mSearchInput || document.activeElement === dSearchInput) {
+    document.activeElement.blur();
+  }
+
+  setTimeout(() => {
+    scrollToProducts();
+  }, 40);
+}
+
+// Submissão ao pressionar Enter ou botão Buscar do teclado virtual
+mSearchInput?.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    submitSearch();
+  }
+});
+
+dSearchInput?.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    submitSearch();
+  }
+});
+
+mSearchInput?.addEventListener('search', () => {
+  submitSearch();
+});
+
+dSearchInput?.addEventListener('search', () => {
+  submitSearch();
+});
+
 function focusMainSearch() {
   hapticFeedback(15);
   mSearchInput?.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -309,6 +370,12 @@ function quickSearch(term) {
   appState.cat = 'todos';
   renderStoriesCategories();
   handleSearchChange(term);
+  
+  if (term && term.length >= 2 && typeof logSearchTelemetry === 'function') {
+    const list = getFilteredProducts();
+    logSearchTelemetry(term, list.length, true);
+  }
+
   setTimeout(() => {
     scrollToProducts();
   }, 40);

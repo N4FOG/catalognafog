@@ -52,6 +52,79 @@ function doPost(e) {
       })).setMimeType(ContentService.MimeType.JSON);
     }
 
+    // ── GESTÃO DE TERMOS DE PESQUISA (SEARCH ANALYTICS) ─────────────────
+    if (data.action === "logSearch") {
+      const sheet = getOrCreateSearchTermsSheet();
+      const termRaw = (data.termo || "").toString().trim();
+
+      if (!termRaw) {
+        lock.releaseLock();
+        return ContentService.createTextOutput(JSON.stringify({
+          status: "ignored",
+          message: "Termo de busca vazio."
+        })).setMimeType(ContentService.MimeType.JSON);
+      }
+
+      const termClean = termRaw.toLowerCase();
+      const qtdResultados = typeof data.resultados_qtd === "number" ? data.resultados_qtd : (parseInt(data.resultados_qtd, 10) || 0);
+      const nowStr = Utilities.formatDate(new Date(), "America/Sao_Paulo", "dd/MM/yyyy HH:mm:ss");
+      const canal = data.origem_canal || (data.vendedor && data.vendedor !== "Atendimento Geral" ? "🟢 Vendedor (" + data.vendedor + ")" : "🔵 Base / Orgânico");
+      const dispositivo = data.user_agent || "-";
+
+      const lastRow = sheet.getLastRow();
+      let foundRow = -1;
+
+      if (lastRow > 1) {
+        const termsValues = sheet.getRange(2, 1, lastRow - 1, 1).getValues();
+        for (let i = 0; i < termsValues.length; i++) {
+          if (termsValues[i][0] && termsValues[i][0].toString().trim().toLowerCase() === termClean) {
+            foundRow = i + 2;
+            break;
+          }
+        }
+      }
+
+      if (foundRow > -1) {
+        // Atualiza e incrementa o termo existente
+        const currentCount = parseInt(sheet.getRange(foundRow, 2).getValue(), 10) || 0;
+        sheet.getRange(foundRow, 2).setValue(currentCount + 1);
+        sheet.getRange(foundRow, 3).setValue(qtdResultados);
+        sheet.getRange(foundRow, 4).setValue(nowStr);
+        sheet.getRange(foundRow, 6).setValue(canal);
+        sheet.getRange(foundRow, 7).setValue(dispositivo);
+      } else {
+        // Insere novo termo
+        sheet.appendRow([
+          termRaw,        // Col A: Termo Pesquisado
+          1,              // Col B: Total de Buscas
+          qtdResultados,  // Col C: Produtos Encontrados
+          nowStr,         // Col D: Última Pesquisa
+          nowStr,         // Col E: Primeira Pesquisa
+          canal,          // Col F: Último Canal
+          dispositivo     // Col G: Dispositivo
+        ]);
+        const newRow = sheet.getLastRow();
+        sheet.getRange(newRow, 1, 1, 7).setVerticalAlignment("middle");
+        sheet.getRange(newRow, 2).setHorizontalAlignment("center").setFontWeight("bold").setFontColor("#0f4531");
+        sheet.getRange(newRow, 3).setHorizontalAlignment("center");
+      }
+
+      // Reordena a tabela pelo Total de Buscas (Coluna B) decrescente
+      if (sheet.getLastRow() > 2) {
+        sheet.getRange(2, 1, sheet.getLastRow() - 1, 7).sort({ column: 2, ascending: false });
+      }
+
+      lock.releaseLock();
+
+      return ContentService.createTextOutput(JSON.stringify({
+        status: "success",
+        action: "logSearch",
+        termo: termRaw,
+        resultados: qtdResultados,
+        timestamp: nowStr
+      })).setMimeType(ContentService.MimeType.JSON);
+    }
+
     // ── LOG DE AUDITORIA & TELEMETRIA ───────────────────────────────────
     const sheet = getOrCreateAuditSheet();
 
@@ -151,6 +224,30 @@ function doGet(e) {
       })).setMimeType(ContentService.MimeType.JSON);
     }
 
+    // ── LEITURA DOS TERMOS DE PESQUISA ──────────────────────────────────
+    if (action === "getTopSearches") {
+      const sheet = getOrCreateSearchTermsSheet();
+      const lastRow = sheet.getLastRow();
+      let terms = [];
+      if (lastRow > 1) {
+        const data = sheet.getRange(2, 1, lastRow - 1, 7).getValues();
+        terms = data.map(r => ({
+          termo: r[0],
+          totalBuscas: r[1],
+          produtosEncontrados: r[2],
+          ultimaBusca: r[3],
+          primeiraBusca: r[4],
+          canal: r[5]
+        }));
+      }
+      return ContentService.createTextOutput(JSON.stringify({
+        status: "success",
+        action: "getTopSearches",
+        total: terms.length,
+        data: terms
+      })).setMimeType(ContentService.MimeType.JSON);
+    }
+
     // Status padrão
     return ContentService.createTextOutput(JSON.stringify({
       status: "online",
@@ -239,6 +336,56 @@ function getOrCreateAuditSheet() {
     sheet.setColumnWidth(11, 230); // URL Completa
     sheet.setColumnWidth(12, 200); // Obs
     sheet.setColumnWidth(13, 180); // Dispositivo
+  }
+
+  return sheet;
+}
+
+// Cria e formata a aba de Termos de Pesquisa (Search Analytics) caso não exista
+function getOrCreateSearchTermsSheet() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  let sheet = ss.getSheetByName("Termos_Pesquisa");
+
+  if (!sheet) {
+    sheet = ss.insertSheet("Termos_Pesquisa");
+    sheet.setTabColor("#059669");
+  }
+
+  // Se a planilha estiver vazia, cria os cabeçalhos estilizados
+  if (sheet.getLastRow() === 0) {
+    const headers = [
+      "Termo Pesquisado",
+      "Total de Buscas",
+      "Produtos Encontrados",
+      "Última Pesquisa",
+      "Primeira Pesquisa",
+      "Último Canal / Vendedor",
+      "Dispositivo / Navegador"
+    ];
+
+    sheet.appendRow(headers);
+
+    // Estilização do cabeçalho oficial Rawell
+    const headerRange = sheet.getRange(1, 1, 1, headers.length);
+    headerRange.setBackground("#0f4531");
+    headerRange.setFontColor("#ffffff");
+    headerRange.setFontWeight("bold");
+    headerRange.setFontSize(11);
+    headerRange.setHorizontalAlignment("center");
+    headerRange.setVerticalAlignment("middle");
+    headerRange.setWrap(true);
+
+    sheet.setFrozenRows(1);
+    sheet.setRowHeight(1, 40);
+
+    // Larguras recomendadas
+    sheet.setColumnWidth(1, 240); // Termo
+    sheet.setColumnWidth(2, 140); // Total Buscas
+    sheet.setColumnWidth(3, 170); // Qtd Produtos Encontrados
+    sheet.setColumnWidth(4, 160); // Última Pesquisa
+    sheet.setColumnWidth(5, 160); // Primeira Pesquisa
+    sheet.setColumnWidth(6, 190); // Canal / Vendedor
+    sheet.setColumnWidth(7, 240); // Dispositivo
   }
 
   return sheet;

@@ -93,3 +93,69 @@ function trackInitialSession() {
     }
   } catch(e) {}
 }
+
+// ═══════════════════════════════════════════════════════════════
+//  TELEMETRIA DE TERMOS DE PESQUISA (SEARCH ANALYTICS)
+// ═══════════════════════════════════════════════════════════════
+let _searchTelemetryDebounceTimer = null;
+let _lastLoggedSearchTerm = '';
+
+function logSearchTelemetry(termo, resultadosQtd = 0, instant = false) {
+  const cleanTerm = (termo || '').trim();
+  if (!cleanTerm || cleanTerm.length < 2) return;
+
+  clearTimeout(_searchTelemetryDebounceTimer);
+
+  if (instant) {
+    if (_lastLoggedSearchTerm.toLowerCase() !== cleanTerm.toLowerCase()) {
+      _lastLoggedSearchTerm = cleanTerm;
+      _dispatchSearchPayload(cleanTerm, resultadosQtd);
+    }
+  } else {
+    _searchTelemetryDebounceTimer = setTimeout(() => {
+      if (_lastLoggedSearchTerm.toLowerCase() !== cleanTerm.toLowerCase()) {
+        _lastLoggedSearchTerm = cleanTerm;
+        _dispatchSearchPayload(cleanTerm, resultadosQtd);
+      }
+    }, 1200);
+  }
+}
+
+function _dispatchSearchPayload(termo, resultadosQtd = 0) {
+  try {
+    const webhookUrl = CONFIG.auditWebhookUrl || '';
+    if (!webhookUrl || !webhookUrl.startsWith('http')) return;
+
+    const session = getSellerSession();
+    const isSeller = isSellerLoggedIn();
+    const sellerObj = getActiveSellerObj();
+    const isAttributed = !!(clientAttributedSeller && !isSeller);
+
+    const origemCanal = isSeller 
+      ? `👔 Vendedor Logado (${session.vendedorNome})`
+      : (isAttributed ? `🟢 Vendedor (${sellerObj.nome})` : '🔵 Base Orgânica');
+
+    const payload = {
+      action: 'logSearch',
+      termo: termo,
+      resultados_qtd: resultadosQtd,
+      timestamp: new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' }) + ' ' + new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', second: '2-digit' }),
+      origem_canal: origemCanal,
+      vendedor: isSeller ? session.vendedorNome : (sellerObj ? sellerObj.nome : 'Atendimento Geral'),
+      user_agent: navigator.userAgent || '-'
+    };
+
+    if (navigator.sendBeacon) {
+      navigator.sendBeacon(webhookUrl, JSON.stringify(payload));
+    } else {
+      fetch(webhookUrl, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      }).catch(() => {});
+    }
+  } catch (e) {
+    console.debug('Search telemetry error:', e);
+  }
+}

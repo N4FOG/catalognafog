@@ -8,8 +8,8 @@
   <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
   <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
 
-  <title>Painel de Implementações & Roadmap — JCV Química 2026</title>
-  <meta name="description" content="Dashboard interativo e transparente de acompanhamento de status, roadmap de funcionalidades e histórico de atualizações do projeto.">
+  <title>Painel de Implementações & Roadmap — JCV Química 2026 (Cloud & Kanban)</title>
+  <meta name="description" content="Dashboard interativo com sincronização em nuvem em tempo real, quadro Kanban dinâmico e histórico de entregas.">
   
   <meta name="theme-color" content="#0f4531" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#0a2318" media="(prefers-color-scheme: dark)">
@@ -30,7 +30,7 @@
     })();
   </script>
 
-  <!-- Estilos -->
+  <!-- Estilos Oficiais do Painel de Roadmap -->
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/roadmap.css">
 </head>
@@ -45,14 +45,20 @@
         <div class="dash-brand-info">
           <h1>
             JCV Química
-            <span class="dash-brand-badge" id="dash-version-tag">v3.0</span>
+            <span class="dash-brand-badge" id="dash-version-tag">v3.2 Cloud</span>
           </h1>
           <div class="dash-client-name">Painel Exclusivo de Implementações • <span id="dash-client-name">JCV Química / Valdecir</span></div>
         </div>
       </a>
 
-      <!-- Ações do Cabeçalho -->
+      <!-- Ações do Cabeçalho & Indicador Cloud -->
       <div class="dash-header-actions">
+        <!-- Indicador de Status em Nuvem com clique para sincronizar -->
+        <div id="dash-cloud-badge" class="dash-cloud-status" onclick="fetchCloudRoadmap()" title="Clique para sincronizar com a nuvem agora">
+          <span class="cloud-pulse-dot"></span>
+          <span class="cloud-status-lbl">Nuvem Conectada</span>
+        </div>
+
         <button class="btn-dash-action" id="btn-admin-toggle" onclick="openAdminLoginModal()" title="Acessar Modo Administrador">
           🔒 Área Admin
         </button>
@@ -79,11 +85,11 @@
           <div>
             <div class="dash-status-pill">
               <span class="pulse-dot"></span>
-              <span>Em Produção &amp; Evolução Contínua</span>
+              <span>Em Produção &amp; Sincronização Cloud Ativa</span>
             </div>
             <h2 class="dash-hero-title">Painel de Acompanhamento de Implementações</h2>
             <p class="dash-hero-desc">
-              Acompanhe com total transparência o avanço de cada funcionalidade em desenvolvimento, testes de homologação e o histórico cronológico de todas as melhorias entregues.
+              Acompanhe com total transparência o avanço em tempo real de cada funcionalidade, quadro Kanban de entregas, maturidade dos módulos e o histórico de todas as melhorias da JCV Química.
             </p>
           </div>
 
@@ -101,7 +107,7 @@
             </div>
 
             <div class="dash-stat-details">
-              <div class="stat-item">Versão: <strong id="dash-version-num">v2.2.0</strong></div>
+              <div class="stat-item">Versão: <strong id="dash-version-num">v3.2 Cloud</strong></div>
               <div class="stat-item">Último Deploy: <strong id="dash-last-update">05/09/2026</strong></div>
               <div class="stat-item">Ambiente: <strong>Oficial / Produção</strong></div>
             </div>
@@ -161,6 +167,25 @@
 
     <!-- ── CONTEÚDO TAB 1: ROADMAP & FEATURES ──────────────────── -->
     <div class="dash-tab-content" id="tab-content-roadmap">
+
+      <!-- Seletor de Modo de Visualização (Grade vs Kanban + PDF) -->
+      <div class="dash-view-selector-bar">
+        <div class="view-toggle-group">
+          <button class="btn-view-toggle active" id="btn-view-grid" onclick="switchViewMode('grid')">
+            🔲 Visão em Grade
+          </button>
+          <button class="btn-view-toggle" id="btn-view-kanban" onclick="switchViewMode('kanban')">
+            📋 Quadro Kanban
+          </button>
+        </div>
+
+        <div style="display: flex; gap: 8px;">
+          <button class="btn-dash-action btn-quick-pdf" onclick="generateExecutivePdfReport()" title="Emitir Relatório Executivo Timbrado em PDF com 1 clique">
+            📄 Relatório PDF
+          </button>
+        </div>
+      </div>
+
       <!-- Filtros e Busca -->
       <div class="dash-filter-bar">
         <div class="filter-pills-wrap">
@@ -216,10 +241,16 @@
         </div>
       </div>
 
-      <!-- Grid de Cards de Features (0% a 100%) -->
+      <!-- 1. Grid Principal de Cards (Visão Grade) -->
       <div class="roadmap-grid" id="roadmap-cards-grid">
         <!-- Renderizado dinamicamente via JS -->
       </div>
+
+      <!-- 2. Quadro Kanban Interativo (Visão Kanban) -->
+      <div class="kanban-board-container" id="kanban-board-grid" style="display: none;">
+        <!-- Renderizado dinamicamente via JS com 4 colunas -->
+      </div>
+
     </div>
 
     <!-- ── CONTEÚDO TAB 2: CHANGELOG / HISTÓRICO ────────────────── -->
@@ -243,7 +274,7 @@
 
   </main>
 
-  <!-- Scripts -->
+  <!-- Scripts Oficiais do Painel de Roadmap -->
   <script src="js/roadmap-data.js"></script>
   <script src="js/roadmap-admin.js"></script>
   <script src="js/roadmap.js"></script>

@@ -1,27 +1,38 @@
 // ══════════════════════════════════════════════════════════════════════
-//  PAINEL DE CONTROLE DE IMPLEMENTAÇÕES & ROADMAP — JCV QUÍMICA 2026
-//  Base de Dados Oficial e Completa do Projeto (Rawell Química v3.0)
+//  PAINEL DE CONTROLE DE IMPLEMENTAÇÕES & ROADMAP v2 — JCV QUÍMICA 2026
+//  Base de Dados Oficial & Sincronizada (Rawell Química v3.2 Cloud)
 //  Repositório Oficial: https://github.com/N4FOG/catalognafog
 // ══════════════════════════════════════════════════════════════════════
 
-const ROADMAP_DATA = {
-  // ── 1. Informações Gerais do Projeto ────────────────────────────────
+const ROADMAP2_DATA = {
+  // ── 1. Configurações de Conexão Cloud ──────────────────────────────
+  config: {
+    cloudSyncUrl: "https://script.google.com/macros/s/AKfycbx6ZFn14Z0Ro6M2FIFJkoJd_VcPNlk9kl3jfK51A2SYbh4GxO5FBwu2Xbiie2Fi8ScVSQ/exec",
+    autoSyncIntervalMs: 30000,
+    storageKeyData: "rawell_roadmap2_cloud_data",
+    storageKeyAuth: "rawell_roadmap2_admin_auth",
+    storageKeyPin: "rawell_roadmap2_admin_pin",
+    storageKeyOrder: "rawell_roadmap2_card_order",
+    storageKeyView: "rawell_roadmap2_active_view"
+  },
+
+  // ── 2. Informações Gerais do Projeto ────────────────────────────────
   projeto: {
     nome: "Catálogo Oficial & Sistema de Orçamentos JCV Química (Rawell)",
     cliente: "JCV Química / Valdecir",
     repositorio: "https://github.com/N4FOG/catalognafog",
-    versaoAtual: "v3.0 (Baseline Estável)",
-    statusGlobal: "🟢 Em Produção & Melhorias Ativas",
+    versaoAtual: "v3.2 (Cloud & Kanban)",
+    statusGlobal: "🟢 Em Produção & Sincronização Cloud Ativa",
     dataInicio: "Janeiro / 2026",
     ultimaAtualizacao: "05 de Setembro de 2026",
     contatoDev: {
       nome: "Equipe de Engenharia & Desenvolvimento",
       whatsapp: "554599781407",
-      mensagemPadrao: "Olá! Estive visualizando o Painel de Implementações do projeto JCV Química e gostaria de tirar uma dúvida sobre as entregas."
+      mensagemPadrao: "Olá! Estive visualizando o Painel de Implementações (Roadmap v2) da JCV Química e gostaria de falar sobre as entregas."
     }
   },
 
-  // ── 2. Módulos Estruturais do Sistema (Maturidade %) ────────────────
+  // ── 3. Módulos Estruturais do Sistema (Maturidade %) ────────────────
   modulos: [
     { nome: "Catálogo & Busca", icone: "🌿", maturidade: 100, status: "Operacional" },
     { nome: "Ficha Consultiva", icone: "📋", maturidade: 100, status: "Operacional" },
@@ -31,11 +42,12 @@ const ROADMAP_DATA = {
     { nome: "WhatsApp Inteligente", icone: "💬", maturidade: 100, status: "Operacional" },
     { nome: "PWA & Cache Offline", icone: "📲", maturidade: 100, status: "Operacional" },
     { nome: "Auditoria Google Sheets", icone: "🛡️", maturidade: 95, status: "Em Homologação" },
+    { nome: "Sincronização Cloud (Roadmap 2.0)", icone: "☁️", maturidade: 100, status: "Operacional" },
     { nome: "Sincronização de Preços", icone: "⚡", maturidade: 55, status: "Em Desenvolvimento" },
     { nome: "Diagnóstico de Pragas", icone: "🔍", maturidade: 20, status: "Planejado" }
   ],
 
-  // ── 3. Funcionalidades & Roadmap Completo (0% a 100%) ────────────────
+  // ── 4. Funcionalidades & Roadmap Completo (0% a 100%) ────────────────
   features: [
     {
       id: "feat-001",
@@ -238,6 +250,86 @@ const ROADMAP_DATA = {
       ]
     },
     {
+      id: "feat-016",
+      titulo: "Sincronização em Nuvem Dinâmica em Tempo Real & Arquitetura Multi-Dispositivo",
+      categoria: "Integração & Nuvem",
+      progresso: 100,
+      status: "Concluído",
+      prioridade: "Alta",
+      previsao: "Entregue (09/2026)",
+      dataCriacao: "2026-09-05",
+      dataEntrega: "2026-09-05",
+      descricao: "Sincronização bidirecional em tempo real via Google Apps Script (ROADMAP_CLOUD). Permite que qualquer alteração feita no PC ou celular seja refletida imediatamente para qualquer usuário que acessar o link, com zero atraso de carregamento inicial (Local Cache + Async Cloud Fetch).",
+      tags: ["Nuvem", "Sincronização", "Google Apps Script", "Tempo Real", "Multi-Device"],
+      checklist: [
+        { item: "Desenvolvimento dos endpoints getRoadmap e saveRoadmap no Google Apps Script", feito: true },
+        { item: "Renderização instantânea (0ms) a partir de cache local com reconciliação em background", feito: true },
+        { item: "Disparo automático para nuvem em qualquer ação administrativa (CRUD, Drag & Drop, Status)", feito: true },
+        { item: "Badge inteligente de status de sincronização no cabeçalho com indicador online", feito: true },
+        { item: "Botão de sincronização manual com feedback visual", feito: true }
+      ]
+    },
+    {
+      id: "feat-017",
+      titulo: "Visão Kanban Interativa com Drag & Drop de Colunas e Transição de Status",
+      categoria: "UI & Experiência",
+      progresso: 100,
+      status: "Concluído",
+      prioridade: "Alta",
+      previsao: "Entregue (09/2026)",
+      dataCriacao: "2026-09-05",
+      dataEntrega: "2026-09-05",
+      descricao: "Quadro Kanban interativo dividido em 4 colunas operacionais (Planejadas, Em Desenvolvimento, Em Testes, Concluídas) com capacidade de arrastar cards entre colunas, atualizando automaticamente status, progresso e nuvem.",
+      tags: ["Kanban", "Drag & Drop", "Colunas", "Produtividade"],
+      checklist: [
+        { item: "Criação da visualização Kanban com colunas responsivas e contadores", feito: true },
+        { item: "Implementação de Drag & Drop HTML5 nativo entre colunas", feito: true },
+        { item: "Transição inteligente de status e recálculo proporcional de progresso", feito: true },
+        { item: "Alternador rápido Grade vs Kanban na barra de ferramentas", feito: true },
+        { item: "Integração completa com os filtros globais de busca e período", feito: true }
+      ]
+    },
+    {
+      id: "feat-018",
+      titulo: "Otimização Ergonômica do Quadro Kanban com Expansão Progressiva de Concluídas",
+      categoria: "UI & Experiência",
+      progresso: 100,
+      status: "Concluído",
+      prioridade: "Alta",
+      previsao: "Entregue (09/2026)",
+      dataCriacao: "2026-09-05",
+      dataEntrega: "2026-09-05",
+      descricao: "Sistema de paginação inteligente na coluna de funcionalidades Concluídas: exibe inicialmente 3 cards compactos e botão dinâmico (•••) para expandir progressivamente mais 5 cards, preservando o alinhamento e espaço visual do Kanban.",
+      tags: ["Kanban", "UX Design", "Paginação", "Produtividade"],
+      checklist: [
+        { item: "Limite visual padrão de 3 cards na coluna Concluídas", feito: true },
+        { item: "Efeito visual de corte suave no 3º card indicando continuidade", feito: true },
+        { item: "Botão dinâmico com 3 pontinhos para expandir +5 cards por clique", feito: true },
+        { item: "Botão de recolher para voltar à visualização compacta", feito: true },
+        { item: "Suporte completo a Drag & Drop em qualquer estado de expansão", feito: true }
+      ]
+    },
+    {
+      id: "feat-019",
+      titulo: "Emissor de Relatório Executivo Oficial em PDF com 1 Clique",
+      categoria: "Gestão & Transparência",
+      progresso: 100,
+      status: "Concluído",
+      prioridade: "Alta",
+      previsao: "Entregue (09/2026)",
+      dataCriacao: "2026-09-05",
+      dataEntrega: "2026-09-05",
+      descricao: "Geração instantânea de relatório executivo timbrado para diretoria em formato A4/PDF, contendo sumário executivo, tabela de maturidade de módulos, cronograma detalhado de features e campo de assinatura técnica.",
+      tags: ["Relatório PDF", "Executivo", "Impressão A4", "One-Click"],
+      checklist: [
+        { item: "Formatação de página A4 com cabeçalho timbrado oficial JCV Química", feito: true },
+        { item: "Sumário executivo de métricas (%) e tabela de maturidade dos módulos", feito: true },
+        { item: "Detalhamento de features agrupadas por status com tags e checklists", feito: true },
+        { item: "Bloco de assinaturas técnicas de engenharia e aprovação executiva", feito: true },
+        { item: "Botão 'Baixar PDF Executivo' com 1 clique direto no cabeçalho", feito: true }
+      ]
+    },
+    {
       id: "feat-010",
       titulo: "Sincronização Dinâmica de Tabela de Preços via Google Sheets",
       categoria: "Integração & Dados",
@@ -332,32 +424,28 @@ const ROADMAP_DATA = {
         { item: "Remoção do campo redundante de prioridade da barra inferior de ações", feito: true },
         { item: "Nivelamento e alinhamento do rodapé em todas as resoluções de tela", feito: true }
       ]
-    },
-    {
-      id: "feat-teste",
-      titulo: "teste",
-      categoria: "Testes & Validação",
-      progresso: 50,
-      status: "Em Desenvolvimento",
-      prioridade: "Média",
-      previsao: "Em Breve (09/2026)",
-      dataCriacao: "2026-09-05",
-      dataPrevisao: "2026-09-10",
-      descricao: "Funcionalidade de teste criada para validar a inserção de novos cards, cálculo dinâmico de métricas globais, tematização por prioridade e checklists interativos no dashboard.",
-      tags: ["Teste", "Validação", "Roadmap", "Dashboard"],
-      checklist: [
-        { item: "Criação do card e registro na base de dados oficial", feito: true },
-        { item: "Renderização no grid principal com status e progresso", feito: true },
-        { item: "Verificação da tematização âmbar (Prioridade Média)", feito: true },
-        { item: "Interação e edição via painel administrativo", feito: false }
-      ]
     }
   ],
 
-  // ── 4. Linha do Tempo & Changelog Oficial (Histórico de Versões) ────
+  // ── 5. Linha do Tempo & Changelog Oficial (Histórico de Versões) ────
   changelog: [
     {
-      versao: "v3.1.0 (Atualização Recente)",
+      versao: "v3.2.0 (Lançamento Oficial Roadmap v2)",
+      data: "05 de Setembro de 2026",
+      titulo: "Sincronização em Nuvem em Tempo Real, Quadro Kanban Dinâmico com Paginação e Relatório PDF Executivo",
+      resumo: "Grande salto tecnológico do Painel de Transparência da JCV Química. Introdução de persistência em nuvem multi-dispositivo via Google Apps Script, visão Kanban com Drag & Drop de status, paginação inteligente na coluna de concluídas e gerador instantâneo de relatórios executivos em PDF timbrado.",
+      itens: [
+        { tipo: "novo", texto: "Sincronização em Nuvem (Cloud Sync) 100% dinâmica via Google Apps Script — qualquer dispositivo vê alterações em tempo real sem exportar/importar arquivos." },
+        { tipo: "novo", texto: "Quadro Kanban Interativo com 4 colunas e Drag & Drop para alternar status e progresso de funcionalidades." },
+        { tipo: "melhoria", texto: "Paginação progressiva na coluna de Concluídas do Kanban (3 cards iniciais + botão ••• de expansão)." },
+        { tipo: "novo", texto: "Emissor de Relatório Executivo Oficial em PDF timbrado com 1 clique (A4 profissional)." },
+        { tipo: "novo", texto: "Templates rápidos de checklist no Admin (Nova Feature, Aprimoramento, Bugfix, Integração)." },
+        { tipo: "melhoria", texto: "Automação total de progresso calculada matematicamente a partir das etapas do checklist." },
+        { tipo: "performance", texto: "Carregamento instantâneo (0ms) com cache local e reconciliação assíncrona com a nuvem." }
+      ]
+    },
+    {
+      versao: "v3.1.0",
       data: "05 de Setembro de 2026",
       titulo: "Painel de Gestão do Roadmap, Tematização de Prioridades e Filtros Avançados de Datas",
       resumo: "Evolução do ecossistema de transparência com ferramentas completas de administração, controles de prioridade reativos nos cards, reordenação Drag & Drop de etapas, design de micro-tags ergonômicas e novos filtros por período temporal e intervalo de datas.",
@@ -437,5 +525,10 @@ const ROADMAP_DATA = {
   ]
 };
 
-if (typeof window !== 'undefined') window.ROADMAP_DATA = ROADMAP_DATA;
-if (typeof module !== 'undefined' && module.exports) module.exports = ROADMAP_DATA;
+if (typeof window !== 'undefined') {
+  window.ROADMAP2_DATA = ROADMAP2_DATA;
+  window.ROADMAP_DATA = ROADMAP2_DATA;
+}
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = ROADMAP2_DATA;
+}
