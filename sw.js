@@ -2,43 +2,13 @@
 //  JCV QUÍMICA v3.0 — Service Worker (Cache Offline & PWA)
 // ═══════════════════════════════════════════════════════════════
 
-const CACHE_NAME = 'jcv-quimica-cache-v20';
+const CACHE_NAME = 'jcv-quimica-v3-cache-v11';
 const STATIC_ASSETS = [
   './',
   './index.html',
-  './roadmap.html',
   './manifest.json',
   './fonts/inter.woff2',
   './fonts/plus-jakarta-sans.woff2',
-  './css/base.css',
-  './css/layout.css',
-  './css/catalog.css',
-  './css/sheet-modal.css',
-  './css/cart.css',
-  './css/seller.css',
-  './css/roadmap.css',
-  './css/roadmap-layout.css',
-  './css/roadmap-grid.css',
-  './css/roadmap-kanban.css',
-  './css/roadmap-timeline.css',
-  './css/roadmap-admin.css',
-  './css/roadmap-print.css',
-  './js/data/config.js',
-  './js/data/categories.js',
-  './js/data/products.js',
-  './js/roadmap-data.js',
-  './js/roadmap-admin.js',
-  './js/roadmap.js',
-  './js/modules/utils.js',
-  './js/modules/theme.js',
-  './js/modules/catalog.js',
-  './js/modules/cart.js',
-  './js/modules/seller.js',
-  './js/modules/pdf-proposal.js',
-  './js/modules/whatsapp.js',
-  './js/modules/telemetry.js',
-  './js/modules/pwa.js',
-  './js/app.js',
   './img/icon-192.png',
   './img/icon-512.png',
   './img/icon-maskable-512.png',
@@ -101,11 +71,11 @@ self.addEventListener('activate', event => {
   self.clients.claim();
 });
 
-// Fetch: cache-first para imagens/fontes, navegação tolerante a parâmetros, stale-while-revalidate para app shell
+// Fetch: cache-first for images/assets, stale-while-revalidate for html/scripts/styles
 self.addEventListener('fetch', event => {
   const url = new URL(event.request.url);
 
-  // 1. Assets Estáticos & Imagens/Fontes: Cache First
+  // Assets Estáticos & Imagens/Fontes: Cache First
   if (event.request.destination === 'image' || event.request.destination === 'font' || url.pathname.match(/\.(woff2|woff|ttf|webp|png|jpg|jpeg|gif|svg|ico)$/i)) {
     event.respondWith(
       caches.open(CACHE_NAME).then(cache =>
@@ -121,27 +91,7 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  // 2. Navegação (HTML): Suporte a Links Parametrizados (?v=carlos, ?cart=...) em Modo Offline
-  if (event.request.mode === 'navigate') {
-    event.respondWith(
-      caches.match(event.request, { ignoreSearch: true }).then(cached => {
-        const fetchPromise = fetch(event.request)
-          .then(response => {
-            if (response.ok) {
-              const clone = response.clone();
-              caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
-            }
-            return response;
-          })
-          .catch(() => cached || caches.match('./index.html') || caches.match('./'));
-
-        return cached || fetchPromise;
-      })
-    );
-    return;
-  }
-
-  // 3. App Shell, CSS, JS: Stale While Revalidate
+  // App Shell, CSS, JS: Stale While Revalidate
   event.respondWith(
     caches.match(event.request).then(cached => {
       const fetchPromise = fetch(event.request)

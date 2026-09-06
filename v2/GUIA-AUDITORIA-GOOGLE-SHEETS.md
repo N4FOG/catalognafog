@@ -1,27 +1,28 @@
-﻿# 🛡️ Guia de Configuração: Auditoria e Rastreamento Anti-Fraude (Google Sheets)
+# 🛡️ Guia de Configuração: Auditoria, Telemetria & Termos de Pesquisa (Google Sheets)
 
-Este sistema monitora e grava em tempo real na sua **Planilha do Google Sheets** todas as ações executadas pelos vendedores no catálogo da **Rawell Química**.
+Este sistema monitora e grava em tempo real na sua **Planilha do Google Sheets** todas as ações comerciais e termos pesquisados no catálogo da **JCV Química / Rawell Química**.
 
 ---
 
-## 📊 O que é registrado na sua Planilha:
+## 📊 Abas criadas automaticamente na sua Planilha:
 
-Cada vez que um vendedor:
-1. **Faz Login com PIN** no modo vendedor;
-2. **Copia o Link do Orçamento** (padrão ou com preços);
-3. **Envia uma cotação pelo WhatsApp**;
-4. **Gera ou Imprime a Proposta Comercial em PDF**;
+### 1️⃣ Aba `Auditoria_Eventos` (Rastreamento Comercial)
+Registra em tempo real quando:
+- Vendedores fazem login com PIN;
+- Propostas em PDF são geradas;
+- Orçamentos são enviados pelo WhatsApp;
+- Links de backup com preço travado são copiados;
+- Sessões são iniciadas.
 
-Uma nova linha é inserida na sua planilha com:
-* **Data e Hora exata** (Horário de Brasília);
-* **Nome do Vendedor**;
-* **Evento Realizado** (Ex: *Emissão de Proposta Comercial PDF*);
-* **Número da Proposta** (Ex: RQ-2026-4921);
-* **Nome do Cliente e Documento/Cidade**;
-* **Valor Total Cobrado (R$)**;
-* **Detalhamento dos Itens** (compara o preço cobrado pelo vendedor vs. o preço de tabela);
-* 🔗 **Link da Proposta**: Abre o catálogo com os itens selecionados;
-* 💰 **Link COM PREÇO (Backup de Garantia)**: Abre o catálogo travando exatamente os valores unitários que o vendedor digitou, servindo como **prova irrefutável** de que aquele preço foi o cotado.
+### 2️⃣ Aba `Termos_Pesquisa` (Inteligência e Analytics de Busca)
+Contabiliza automaticamente todas as pesquisas feitas pelos usuários e vendedores:
+- **Termo Pesquisado**: A palavra ou expressão buscada (ex: `Baratas`, `Tiririca`, `Fungos`);
+- **Total de Buscas**: Contador acumulado automático (incrementa a cada nova pesquisa);
+- **Produtos Encontrados**: Quantidade de produtos que atenderam a busca (ajuda a identificar termos com 0 resultados para adicionar novos produtos);
+- **Última e Primeira Pesquisa**: Data e hora da ocorrência;
+- **Canal / Vendedor**: Identifica se partiu de um vendedor logado ou da base orgânica;
+- **Dispositivo**: Mobile / Desktop.
+- ⚡ **Auto-Ranking**: A planilha é mantida automaticamente ordenada pelos termos mais buscados no topo!
 
 ---
 

@@ -424,11 +424,166 @@ const ROADMAP2_DATA = {
         { item: "Remoção do campo redundante de prioridade da barra inferior de ações", feito: true },
         { item: "Nivelamento e alinhamento do rodapé em todas as resoluções de tela", feito: true }
       ]
+    },
+    {
+      id: "feat-020",
+      titulo: "Interatividade Avançada com Duplo Clique para Edição Rápida de Cards",
+      categoria: "UI & Experiência",
+      progresso: 100,
+      status: "Concluído",
+      prioridade: "Alta",
+      previsao: "Entregue (09/2026)",
+      dataCriacao: "2026-09-05",
+      dataEntrega: "2026-09-05",
+      descricao: "Interação ergonômica de duplo clique em qualquer card do Grid ou Kanban para abrir instantaneamente o modal de edição avançada em modo Admin autenticado, além de duplo clique para renomeação direta de etapas do checklist.",
+      tags: ["Duplo Clique", "Edição Rápida", "UX", "Produtividade"],
+      checklist: [
+        { item: "Detecção de duplo clique em cards no Grid e Kanban", feito: true },
+        { item: "Abertura imediata do modal de edição com foco automático", feito: true },
+        { item: "Duplo clique no checklist para edição inline rápida de texto", feito: true },
+        { item: "Prevenção de conflitos com cliques em links e botões internos", feito: true },
+        { item: "Feedback tátil e visual ao acionar a edição", feito: true }
+      ]
+    },
+    {
+      id: "feat-021",
+      titulo: "Redesign Ergonômico do Editor de Checklist com Numeração Dinâmica e Alças de Arraste",
+      categoria: "UI & Experiência",
+      progresso: 100,
+      status: "Concluído",
+      prioridade: "Alta",
+      previsao: "Entregue (09/2026)",
+      dataCriacao: "2026-09-05",
+      dataEntrega: "2026-09-05",
+      descricao: "Reformulação completa da usabilidade do editor de etapas do checklist no modal administrativo: remoção de templates redundantes, inclusão de numeração sequencial automática (#1, #2, ...), alça de arraste (drag handle ⠿), botão intuitivo de exclusão e foco automático no novo item.",
+      tags: ["Editor", "Checklist", "Drag & Drop", "UX Ergonômica"],
+      checklist: [
+        { item: "Numeração sequencial dinâmica calculada em tempo real", feito: true },
+        { item: "Alça visual de arraste (drag handle ⠿) para reordenação fluida", feito: true },
+        { item: "Campo de input flexível com largura total e foco automático", feito: true },
+        { item: "Botão de exclusão rápido com confirmação não-intrusiva", feito: true },
+        { item: "Remoção do bloco obsoleto de templates rápidos", feito: true }
+      ]
+    },
+    {
+      id: "feat-022",
+      titulo: "Adaptabilidade Tipográfica Multi-Linhas para Descrições Técnicas Extensas",
+      categoria: "UI & Experiência",
+      progresso: 100,
+      status: "Concluído",
+      prioridade: "Alta",
+      previsao: "Entregue (09/2026)",
+      dataCriacao: "2026-09-05",
+      dataEntrega: "2026-09-05",
+      descricao: "Tratamento visual de tipografia responsiva e flexível para textos longos de descrições e detalhes técnicos nos cards, eliminando truncamentos indesejados (line-clamp adaptativo) e permitindo leitura integral fluida em qualquer resolução.",
+      tags: ["Tipografia", "Multi-Linhas", "Leitura", "Responsividade"],
+      checklist: [
+        { item: "Remoção de line-clamp rígido nas descrições de cards expandidos", feito: true },
+        { item: "Ajuste de line-height (1.45) e contraste tipográfico para legibilidade", feito: true },
+        { item: "Quebra de palavras longa inteligente (overflow-wrap / word-break)", feito: true },
+        { item: "Equalização de altura dinâmica entre cards no grid", feito: true },
+        { item: "Otimização para leitura confortável em smartphones e tablets", feito: true }
+      ]
+    },
+    {
+      id: "feat-023",
+      titulo: "Expansão Widescreen de Layout Desktop e Ampliação Espacial do Modal Editor",
+      categoria: "UI & Experiência",
+      progresso: 100,
+      status: "Concluído",
+      prioridade: "Alta",
+      previsao: "Entregue (09/2026)",
+      dataCriacao: "2026-09-05",
+      dataEntrega: "2026-09-05",
+      descricao: "Ampliação do contêiner principal do dashboard de 1280px para até 1560px em monitores desktop/widescreen com melhor aproveitamento do espaço horizontal, e expansão do modal administrativo de 600px para 860px (max-width: 92vw) com layout de duas colunas confortáveis para edição de dados.",
+      tags: ["Widescreen", "Desktop UX", "Modal 860px", "Espaçamento"],
+      checklist: [
+        { item: "Ampliação do container do Roadmap para max-width: 1560px", feito: true },
+        { item: "Expansão do modal administrativo para 860px em desktop", feito: true },
+        { item: "Estruturação em grid interno de 2 colunas para inputs do modal", feito: true },
+        { item: "Redimensionamento suave com transições CSS", feito: true },
+        { item: "Otimização de margens e paddings em monitores ultrawide", feito: true }
+      ]
+    },
+    {
+      id: "feat-024",
+      titulo: "Refino Visual Delicado e Equilíbrio Harmônico dos Cards no Grid",
+      categoria: "UI & Experiência",
+      progresso: 100,
+      status: "Concluído",
+      prioridade: "Normal",
+      previsao: "Entregue (09/2026)",
+      dataCriacao: "2026-09-05",
+      dataEntrega: "2026-09-05",
+      descricao: "Ajuste fino na densidade visual, paddings calibrados (18px), tipografia dos títulos (1.05rem) e badges de prioridade com visual mais suave e delicado, garantindo uma estética moderna e harmônica sem sobrecarregar a visão do usuário.",
+      tags: ["Design System", "Refino Visual", "Harmonia", "Cards"],
+      checklist: [
+        { item: "Redução calibrada do padding interno dos cards (1.1rem)", feito: true },
+        { item: "Suavização dos gradientes de fundo e sombras de elevação", feito: true },
+        { item: "Proporção harmônica entre título, badges e barra de progresso", feito: true },
+        { item: "Preservação da legibilidade com fontes WOFF2 locais", feito: true },
+        { item: "Alinhamento uniforme no grid responsivo", feito: true }
+      ]
+    },
+    {
+      id: "feat-025",
+      titulo: "Otimização de Bateria Mobile, Debounce de Busca e Cache Offline PWA v17",
+      categoria: "Performance & PWA",
+      progresso: 100,
+      status: "Concluído",
+      prioridade: "Alta",
+      previsao: "Entregue (09/2026)",
+      dataCriacao: "2026-09-05",
+      dataEntrega: "2026-09-05",
+      descricao: "Auditoria completa e otimização para dispositivos móveis: debounce de 150ms na digitação de busca, pausa inteligente de polling cloud em abas inativas (Page Visibility API), atualização do Service Worker para cache v17 e contenção de layout CSS com will-change e contain-intrinsic-size.",
+      tags: ["Performance", "Mobile", "Bateria", "Debounce", "PWA v17"],
+      checklist: [
+        { item: "Implementação de debounce reativo de 150ms na busca em tempo real", feito: true },
+        { item: "Suspensão do polling cloud de 30s quando a tela estiver em segundo plano", feito: true },
+        { item: "Atualização do cache do Service Worker para rawell-v17-stable", feito: true },
+        { item: "Aplicação de CSS contain: content e will-change para scrolling a 60fps", feito: true },
+        { item: "Validação de zero consumo de dados em segundo plano", feito: true }
+      ]
+    },
+    {
+      id: "feat-026",
+      titulo: "Consolidação Canônica do Roadmap Oficial & Desacoplamento Modular de CSS",
+      categoria: "Arquitetura & Código",
+      progresso: 100,
+      status: "Concluído",
+      prioridade: "Alta",
+      previsao: "Entregue (09/2026)",
+      dataCriacao: "2026-09-05",
+      dataEntrega: "2026-09-05",
+      descricao: "Unificação e consolidação do Roadmap v2 na página canônica oficial (roadmap.html com backup preservado de v1), e refatoração da folha de estilos monolítica em submódulos desacoplados de alta manutenibilidade (layout, grid, kanban, timeline, admin, print).",
+      tags: ["Arquitetura", "Modularização", "CSS", "Refatoração"],
+      checklist: [
+        { item: "Consolidação do roadmap.html como página canônica principal", feito: true },
+        { item: "Criação do redirecionamento transparente em roadmap2.html", feito: true },
+        { item: "Preservação intacta de backups de segurança v1", feito: true },
+        { item: "Modularização de css/roadmap.css em módulos especializados", feito: true },
+        { item: "Validação de integridade sintática e cache PWA", feito: true }
+      ]
     }
   ],
 
   // ── 5. Linha do Tempo & Changelog Oficial (Histórico de Versões) ────
   changelog: [
+    {
+      versao: "v3.2.1",
+      data: "05 de Setembro de 2026",
+      titulo: "Refinamento Ergonômico de UX, Expansão Widescreen, Otimizações Mobile & Modularização do Roadmap",
+      resumo: "Ciclo completo de aprimoramentos no Painel de Transparência e Roadmap: expansão de layout desktop para 1560px, modal editor ampliado (860px), duplo clique para edição ágil, descrições multi-linhas adaptativas, economia de bateria mobile com pausa de polling e decomposição modular dos estilos.",
+      itens: [
+        { tipo: "novo", texto: "Interatividade com Duplo Clique nos cards do Grid e Kanban para abrir o editor instantaneamente." },
+        { tipo: "melhoria", texto: "Redesign ergonômico do editor de checklist com numeração automática (#1, #2...) e alças de arraste." },
+        { tipo: "melhoria", texto: "Expansão de layout para desktop (max-width: 1560px) e modal de edição expandido para 860px em duas colunas." },
+        { tipo: "melhoria", texto: "Adaptabilidade tipográfica multi-linhas para descrições técnicas extensas e refino delicado de cards." },
+        { tipo: "performance", texto: "Otimização de bateria mobile com Page Visibility API (pausa do polling em background) e debounce de 150ms na busca." },
+        { tipo: "performance", texto: "Atualização do Service Worker para PWA Cache v17 e modularização dos estilos CSS em arquivos especializados." },
+        { tipo: "melhoria", texto: "Consolidação canônica do roadmap.html como base oficial única e preservação de backups v1." }
+      ]
+    },
     {
       versao: "v3.2.0 (Lançamento Oficial Roadmap v2)",
       data: "05 de Setembro de 2026",
