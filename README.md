@@ -24,7 +24,6 @@
 - [V3 — Arquitetura React + TypeScript](#-v3--arquitetura-react--typescript-vite--tailwind-v4)
 - [Estrutura de Arquivos](#-estrutura-de-arquivos)
 - [Instalação & Deploy](#-instalação--deploy)
-- [Configuração da Empresa](#-configuração-da-empresa)
 - [Changelog de Versões](#-changelog-de-versões)
 
 ---
@@ -404,33 +403,6 @@ npm run build    # Build em dist/
 
 ---
 
-## ⚙️ Configuração da Empresa
-
-Centralizada em `v2/js/data/config.js`:
-
-```javascript
-export const CONFIG = {
-  empresa: {
-    nome: 'JCV Química',
-    whatsapp: '554599781407',
-    email: 'contato@jcvquimica.com.br'
-  },
-  vendedores: [
-    { id: 'valdecir', nome: 'Valdecir', pin: '1234', whatsapp: '554599781407' }
-  ],
-  catalogo: {
-    descontoMaxItem: 30,       // % max por item
-    descontoMaxGlobal: 20      // % max global
-  },
-  telemetria: {
-    endpoint: 'https://script.google.com/macros/s/.../exec',
-    ativo: true
-  }
-};
-```
-
----
-
 ## 📜 Changelog de Versões
 
 ```
@@ -493,3 +465,4 @@ export const CONFIG = {
 `V4.0.0-BUSINESS-STABLE` · `2026-09-05` · `N4FOG`
 
 </div>
+
