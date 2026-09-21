@@ -24,9 +24,6 @@ export const ProductListItem: React.FC<ProductListItemProps> = ({ product }) => 
   const cartItem = items.find((i) => i.id === product.id);
   const isInCart = !!cartItem;
 
-  // Controle de estoque - padrão é true se não especificado
-  const isInStock = product.emEstoque !== false;
-
   const handleAddToCart = (e: React.MouseEvent) => {
     e.stopPropagation();
     triggerHaptic(20);

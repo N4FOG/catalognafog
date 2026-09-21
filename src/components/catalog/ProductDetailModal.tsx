@@ -8,7 +8,7 @@ import { Modal } from '../ui/Modal';
 import { Stepper } from '../ui/Stepper';
 import { formatCurrency } from '../../utils/formatters';
 import { triggerHaptic } from '../../utils/haptics';
-import { Plus, Check, Share2, Sparkles, AlertTriangle, Droplets, Wrench, Clock, ArrowRight } from 'lucide-react';
+import { Plus, Check, Share2, AlertTriangle, Wrench, Clock, ArrowRight } from 'lucide-react';
 import { sendTelemetry } from '../../utils/telemetry';
 
 export const ProductDetailModal: React.FC = () => {
