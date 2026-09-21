@@ -45,7 +45,7 @@ const PRODUTOS = [
     "referencia": "KP-PLUS-60",
     "rendimento": "Rende até 100 a 150 litros de calda de pulverização.",
     "destaque": true,
-    "preco_base": 89.9
+    "preco_base": 72.87
   },
   {
     "id": 2,
@@ -87,7 +87,7 @@ const PRODUTOS = [
     "referencia": "KP-TRAD-60",
     "rendimento": "Rende até 100 litros de calda (trata áreas médias de gramado).",
     "destaque": true,
-    "preco_base": 78.5
+    "preco_base": 50.66
   },
   {
     "id": 3,
@@ -127,7 +127,7 @@ const PRODUTOS = [
     "referencia": "KOR-60",
     "rendimento": "Trata de 150m² a 300m² dependendo do nível de infestação.",
     "destaque": false,
-    "preco_base": 84
+    "preco_base": 50.75
   },
   {
     "id": 4,
@@ -168,7 +168,7 @@ const PRODUTOS = [
     "referencia": "KAT-30",
     "rendimento": "Frasco de 30ml rende até 60 a 100 litros de calda.",
     "destaque": true,
-    "preco_base": 98
+    "preco_base": 36.70
   },
   {
     "id": 5,
@@ -209,7 +209,7 @@ const PRODUTOS = [
     "referencia": "KCURA-100",
     "rendimento": "Trata até 300m² de gramado.",
     "destaque": false,
-    "preco_base": 42
+    "preco_base": 44.22
   },
   {
     "id": 6,
@@ -252,7 +252,7 @@ const PRODUTOS = [
     "referencia": "ROC-100",
     "rendimento": "Rendimento garantido de 300m² por frasco de 100ml.",
     "destaque": true,
-    "preco_base": 38
+    "preco_base": 38.20
   },
   {
     "id": 7,
@@ -294,7 +294,7 @@ const PRODUTOS = [
     "referencia": "ARR-EW-100",
     "rendimento": "Trata até 300m² de área.",
     "destaque": false,
-    "preco_base": 46
+    "preco_base": 22.75
   },
   {
     "id": 8,
@@ -466,7 +466,7 @@ const PRODUTOS = [
     "referencia": "KABIO-60",
     "rendimento": "Rende de 30 a 60 litros de calda natural.",
     "destaque": false,
-    "preco_base": 52
+    "preco_base": 30.37
   },
   {
     "id": 12,
@@ -592,7 +592,7 @@ const PRODUTOS = [
     "referencia": "FIMO-40-120",
     "rendimento": "Residual ativo por até 6 meses por aplicação.",
     "destaque": false,
-    "preco_base": 36
+    "preco_base": 21.20
   },
   {
     "id": 15,
@@ -636,7 +636,7 @@ const PRODUTOS = [
     "referencia": "PANK-30-60-250",
     "rendimento": "Altíssima concentração com diluição super econômica.",
     "destaque": true,
-    "preco_base": 34
+    "preco_base": 32.47
   },
   {
     "id": 16,
@@ -675,7 +675,7 @@ const PRODUTOS = [
     "referencia": "UNIX-REP-30",
     "rendimento": "Trata dezenas de metros lineares de barreira ou furos.",
     "destaque": false,
-    "preco_base": 29
+    "preco_base": 13.50
   },
   {
     "id": 17,
@@ -715,7 +715,7 @@ const PRODUTOS = [
     "referencia": "ARR-SPM-10",
     "rendimento": "Envelope com 3 sachês de 10g para até 3 pulverizadores.",
     "destaque": false,
-    "preco_base": 18
+    "preco_base": 12.12
   },
   {
     "id": 18,
@@ -755,7 +755,7 @@ const PRODUTOS = [
     "referencia": "ARR-PM-10",
     "rendimento": "Envelope com 2 sachês de 10g.",
     "destaque": false,
-    "preco_base": 22
+    "preco_base": 12.12
   },
   {
     "id": 19,
@@ -795,7 +795,7 @@ const PRODUTOS = [
     "referencia": "NAMOSCA-20",
     "rendimento": "Sachê de 20g atrai e elimina milhares de moscas.",
     "destaque": true,
-    "preco_base": 15
+    "preco_base": 11.68
   },
   {
     "id": 20,
@@ -837,7 +837,7 @@ const PRODUTOS = [
     "referencia": "BLEK-90-1KG",
     "rendimento": "Trata galpões inteiros de granjas e confinamentos.",
     "destaque": true,
-    "preco_base": 68
+    "preco_base": 52.76
   },
   {
     "id": 21,
@@ -878,7 +878,7 @@ const PRODUTOS = [
     "referencia": "KORAL-MOSC-60",
     "rendimento": "Frasco de 60ml rende até 20 a 30 litros de calda.",
     "destaque": false,
-    "preco_base": 39
+    "preco_base": 40.84
   },
   {
     "id": 22,
@@ -919,7 +919,7 @@ const PRODUTOS = [
     "referencia": "GEL-FORM-10G",
     "rendimento": "Seringa de 10g trata dezenas de cômodos e ninhos.",
     "destaque": true,
-    "preco_base": 25
+    "preco_base": 11.68
   },
   {
     "id": 23,
@@ -959,7 +959,7 @@ const PRODUTOS = [
     "referencia": "GEL-BAR-10G",
     "rendimento": "Seringa de 10g trata até 40m² de frestas e cozinhas.",
     "destaque": true,
-    "preco_base": 25
+    "preco_base": 7.9885
   },
   {
     "id": 24,
@@ -1001,7 +1001,7 @@ const PRODUTOS = [
     "referencia": "ISCA-ETIP-50",
     "rendimento": "Sachê de 50g elimina ninhos médios de formigueiros.",
     "destaque": true,
-    "preco_base": 16
+    "preco_base": 9.99
   },
   {
     "id": 25,
@@ -1044,7 +1044,7 @@ const PRODUTOS = [
     "referencia": "KRATO-SOFT-150-2K",
     "rendimento": "Sachê de 150g ou Balde de 2kg para grandes infestações.",
     "destaque": true,
-    "preco_base": 32
+    "preco_base": 21.93
   },
   {
     "id": 26,
@@ -1085,7 +1085,7 @@ const PRODUTOS = [
     "referencia": "KRATO-PO-100-250-1K",
     "rendimento": "Frascos de 100g, 250g e 1kg com alto rendimento.",
     "destaque": false,
-    "preco_base": 26
+    "preco_base": 160.11
   },
   {
     "id": 27,
@@ -1126,7 +1126,7 @@ const PRODUTOS = [
     "referencia": "KARM-GARD-30",
     "rendimento": "Sachê de 30g cobre canteiros residenciais.",
     "destaque": true,
-    "preco_base": 14
+    "preco_base": 5.88
   },
   {
     "id": 28,
@@ -1168,7 +1168,7 @@ const PRODUTOS = [
     "referencia": "KARM-MET-200-1K",
     "rendimento": "Sachês de 200g e 1kg para grandes áreas.",
     "destaque": false,
-    "preco_base": 38
+    "preco_base": 38.20
   },
   {
     "id": 29,
@@ -1210,7 +1210,7 @@ const PRODUTOS = [
     "referencia": "KOR-CARR-60",
     "rendimento": "Frasco de 60ml rende 20 litros de calda (limpeza de grandes pátios).",
     "destaque": true,
-    "preco_base": 44
+    "preco_base": 37.02
   },
   {
     "id": 30,
@@ -1250,7 +1250,7 @@ const PRODUTOS = [
     "referencia": "KOR-PU-240",
     "rendimento": "Frasco de 240ml com centenas de borrifadas.",
     "destaque": false,
-    "preco_base": 29
+    "preco_base": 37.36
   },
   {
     "id": 31,
@@ -1290,7 +1290,7 @@ const PRODUTOS = [
     "referencia": "RED-PH-100",
     "rendimento": "Frasco de 100ml trata de 50 a 100 litros de água.",
     "destaque": false,
-    "preco_base": 22
+    "preco_base": 30.37
   },
   {
     "id": 32,
@@ -1330,6 +1330,6 @@ const PRODUTOS = [
     "referencia": "OLEO-MIN-100",
     "rendimento": "Frasco de 100ml prepara até 100 litros de calda.",
     "destaque": true,
-    "preco_base": 24
+    "preco_base": 26.52
   }
 ];
