@@ -36,6 +36,12 @@ function addToCart(id, qty = 1) {
   const p = PRODUTOS.find(item => item.id === id);
   if (!p) return;
 
+  // ✨ NOVO: Verificar estoque
+  if (p.em_estoque === false) {
+    showToast('❌ Este produto está temporariamente indisponível', 'error');
+    return;
+  }
+
   const existing = cartItems.find(i => i.id === id);
   if (existing) {
     existing.quantidade += qty;

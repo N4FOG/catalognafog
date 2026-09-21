@@ -119,6 +119,11 @@ function renderProductList() {
     const catObj = CATEGORIAS.find(c => c.id === p.categoria);
     const formObj = FORMULACOES.find(f => f.id === p.tipo_formulacao);
     
+    // ✨ NOVO: Verificar estoque
+    const emEstoque = p.em_estoque !== false; // Default true se undefined
+    const outOfStockClass = emEstoque ? '' : 'out-of-stock';
+    const outOfStockBadge = emEstoque ? '' : '<span class="badge-out-of-stock">❌ Sem Estoque</span>';
+    
     // Identifica embalagem
     const packFeature = p.caracteristicas ? p.caracteristicas.find(c => c.toLowerCase().includes('frasco') || c.toLowerCase().includes('caixa') || c.toLowerCase().includes('sachê') || c.toLowerCase().includes('display') || c.toLowerCase().includes('seringa') || c.toLowerCase().includes('balde') || c.toLowerCase().includes('envelope')) : null;
     const packTag = packFeature ? packFeature.split('(')[0].trim() : (p.unidade ? p.unidade.toUpperCase() : 'UN');
@@ -141,9 +146,10 @@ function renderProductList() {
 
     if (isGrid) {
       return `
-        <div class="prod-card" onclick="openProductSheet(${p.id})">
+        <div class="prod-card ${outOfStockClass}" onclick="openProductSheet(${p.id})">
           <div class="prod-thumb-box">
             <img src="${p.imagens[0]}" alt="${p.nome}" width="200" height="200" loading="lazy" decoding="async">
+            ${outOfStockBadge}
             ${p.destaque ? '<span class="badge-star">⭐ Top Vendas</span>' : ''}
             <span class="badge-cat-emoji" title="${catObj ? catObj.nome : ''}">${catObj ? catObj.icone : '🌿'}</span>
             <span class="badge-form-pill">${formObj ? formObj.icone + ' ' + formObj.nome.split(' ')[0] : '⚡'}</span>
@@ -166,6 +172,7 @@ function renderProductList() {
               </div>
               
               <div class="prod-action-row" onclick="event.stopPropagation();">
+                ${emEstoque ? `
                 <div class="card-stepper-box">
                   <button class="card-step-btn" onclick="adjustCardQty(${p.id}, -1)" title="Diminuir">−</button>
                   <input type="number" id="card-qty-${p.id}" class="card-step-input" value="${inCart ? cartItem.quantidade : 1}" min="1" max="999" onclick="this.select()" onchange="validateCardInput(this)">
@@ -174,6 +181,11 @@ function renderProductList() {
                 <button class="btn-card-quote ${inCart ? 'in-cart' : ''}" onclick="addFromCard(${p.id})" title="Adicionar à cotação">
                   ${inCart ? `Cotar (${cartItem.quantidade})` : '+ Cotar'}
                 </button>
+                ` : `
+                <button class="btn-card-quote" disabled title="Produto indisponível no momento">
+                  📦 Indisponível
+                </button>
+                `}
               </div>
             </div>
           </div>
@@ -181,9 +193,10 @@ function renderProductList() {
       `;
     } else {
       return `
-        <div class="prod-card" onclick="openProductSheet(${p.id})">
+        <div class="prod-card ${outOfStockClass}" onclick="openProductSheet(${p.id})">
           <div class="prod-thumb-box">
             <img src="${p.imagens[0]}" alt="${p.nome}" width="200" height="200" loading="lazy" decoding="async">
+            ${outOfStockBadge}
             ${p.destaque ? '<span class="badge-star">⭐ Top Vendas</span>' : ''}
             <span class="badge-form-pill">${formObj ? formObj.icone + ' ' + formObj.nome : '⚡'}</span>
           </div>
@@ -207,6 +220,7 @@ function renderProductList() {
               <span class="btn-card-ficha-link" onclick="openProductSheet(${p.id})">
                 <span>📄</span> Ver Especificações
               </span>
+              ${emEstoque ? `
               <div style="display:flex; align-items:center; gap:8px;">
                 <div class="card-stepper-box">
                   <button class="card-step-btn" onclick="adjustCardQty(${p.id}, -1)" title="Diminuir">−</button>
@@ -217,6 +231,11 @@ function renderProductList() {
                   ${inCart ? `Cotar (${cartItem.quantidade})` : '+ Cotar'}
                 </button>
               </div>
+              ` : `
+              <button class="btn-card-quote" disabled title="Produto indisponível no momento" style="padding: 0 16px;">
+                📦 Indisponível
+              </button>
+              `}
             </div>
           </div>
         </div>

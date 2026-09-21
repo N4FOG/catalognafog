@@ -293,7 +293,7 @@ const PRODUTOS = [
     "unidade": "frasco",
     "referencia": "ARR-EW-100",
     "rendimento": "Trata até 300m² de área.",
-    "destaque": false,
+    "destaque": true,
     "preco_base": 22.75
   },
   {
@@ -1257,6 +1257,7 @@ const PRODUTOS = [
     "nome": "Redutor de pH para Águas Duras (100ml)",
     "categoria": "adjuvantes",
     "tipo_formulacao": "adjuvante",
+    "em_estoque": false,
     "o_que_faz": "Neutraliza águas duras e carbonatos, potencializando calda",
     "para_que_serve": "Corretor e nivelador de pH essencial para preparar a água de pulverização antes de adicionar os defensivos e herbicidas.",
     "como_age": "Neutraliza cátions livres, ferro e carbonatos da água de poço/torneira, trazendo o pH para a faixa ácida ideal (4.5 a 5.5) onde os defensivos têm 100% de absorção foliar.",
