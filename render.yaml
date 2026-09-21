@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: catalognafog
+    runtime: node
+    region: oregon
+    plan: free
+    branch: main
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./dist
+    envVars:
+      - key: NODE_VERSION
+        value: 18.17.0
