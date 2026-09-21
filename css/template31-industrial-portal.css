@@ -1,0 +1,151 @@
+/* ============================================================
+   TEMPLATE 31: INDUSTRIAL & AGRO PORTAL (RAWELL/SIEMENS INSPIRED)
+   ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap');
+
+:root {
+  --raw-primary: #0f4531;
+  --raw-primary-dark: #092f21;
+  --raw-primary-light: #186b4d;
+  --raw-gold: #c59b27;
+  --raw-bg: #f4f7f5;
+  --raw-card: #ffffff;
+  --raw-border: #dce5e0;
+  --raw-text: #1a2e26;
+  --raw-muted: #5f756b;
+  --whatsapp: #25D366;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Montserrat', sans-serif;
+  background: var(--raw-bg);
+  color: var(--raw-text);
+  line-height: 1.5;
+}
+
+a { text-decoration: none; color: inherit; }
+button { font-family: inherit; cursor: pointer; }
+img { max-width: 100%; display: block; }
+.raw-wrap { max-width: 1280px; margin: 0 auto; padding: 0 1.5rem; }
+
+/* TOP CERTIFICATIONS BAR */
+.raw-cert-bar {
+  background: var(--raw-primary-dark);
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.45rem 0;
+  border-bottom: 2px solid var(--raw-gold);
+}
+.raw-cert-inner {
+  display: flex; justify-content: space-between; align-items: center;
+}
+
+/* HEADER */
+.raw-header {
+  background: #fff;
+  border-bottom: 1px solid var(--raw-border);
+  padding: 1rem 0; position: sticky; top: 0; z-index: 1000;
+  box-shadow: 0 2px 10px rgba(15,69,49,0.06);
+}
+.raw-nav {
+  display: flex; align-items: center; justify-content: space-between; gap: 1.5rem;
+}
+.raw-brand {
+  display: flex; align-items: center; gap: 0.6rem;
+  font-size: 1.4rem; font-weight: 900; color: var(--raw-primary);
+}
+.raw-brand-icon {
+  background: var(--raw-primary); color: #fff; width: 36px; height: 36px;
+  border-radius: 6px; display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem;
+}
+.raw-brand span { color: var(--raw-gold); }
+
+.raw-search {
+  flex: 1; max-width: 500px; position: relative;
+}
+.raw-search input {
+  width: 100%; padding: 0.65rem 1rem 0.65rem 2.6rem; border: 1.5px solid var(--raw-border);
+  border-radius: 6px; font-family: inherit; font-size: 0.88rem;
+}
+.raw-search input:focus {
+  outline: none; border-color: var(--raw-primary); box-shadow: 0 0 0 3px rgba(15,69,49,0.1);
+}
+.raw-search svg { position: absolute; left: 0.85rem; top: 50%; transform: translateY(-50%); color: var(--raw-muted); }
+
+.raw-cart-btn {
+  background: var(--raw-primary); color: #fff; border: none; border-radius: 6px;
+  padding: 0.65rem 1.4rem; font-weight: 700; font-size: 0.88rem; display: flex; align-items: center; gap: 0.5rem;
+  transition: 0.2s;
+}
+.raw-cart-btn:hover { background: var(--raw-primary-light); }
+
+/* HERO */
+.raw-hero {
+  background: linear-gradient(135deg, var(--raw-primary-dark) 0%, var(--raw-primary) 60%, #1c5e45 100%);
+  color: #fff; border-radius: 12px; padding: 3rem 2.5rem; margin: 2rem 0;
+  display: grid; grid-template-columns: 1.5fr 1fr; gap: 2rem; align-items: center;
+  box-shadow: 0 8px 30px rgba(15,69,49,0.15);
+}
+.raw-hero-tag {
+  background: rgba(197, 155, 39, 0.25); color: #ffd875; border: 1px solid var(--raw-gold);
+  padding: 0.3rem 0.8rem; border-radius: 4px; font-size: 0.75rem; font-weight: 800; letter-spacing: 0.08em;
+  display: inline-block; margin-bottom: 1rem;
+}
+.raw-hero-title {
+  font-size: clamp(2rem, 3.5vw, 3rem); font-weight: 900; line-height: 1.15; margin-bottom: 0.8rem;
+}
+.raw-hero-desc {
+  font-size: 0.95rem; color: #d4e5dd; line-height: 1.6; margin-bottom: 1.8rem; max-width: 520px;
+}
+
+/* CATEGORIES */
+.raw-cats {
+  display: flex; gap: 0.6rem; overflow-x: auto; padding-bottom: 0.6rem; margin-bottom: 2rem;
+  scrollbar-width: none;
+}
+.raw-cats::-webkit-scrollbar { display: none; }
+.raw-cat-pill {
+  background: #fff; border: 1px solid var(--raw-border); border-radius: 6px;
+  padding: 0.6rem 1.2rem; font-weight: 700; font-size: 0.85rem; color: var(--raw-muted);
+  white-space: nowrap; cursor: pointer; display: flex; align-items: center; gap: 0.4rem; transition: 0.15s;
+}
+.raw-cat-pill:hover, .raw-cat-pill.active {
+  background: var(--raw-primary); color: #fff; border-color: var(--raw-primary);
+}
+
+/* GRID */
+.raw-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem; margin-bottom: 5rem;
+}
+.raw-card {
+  background: #fff; border: 1px solid var(--raw-border); border-radius: 8px;
+  overflow: hidden; display: flex; flex-direction: column; transition: 0.2s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+}
+.raw-card:hover {
+  transform: translateY(-3px); box-shadow: 0 10px 25px rgba(15,69,49,0.1); border-color: var(--raw-primary);
+}
+.raw-card-img-wrap { height: 180px; background: #f0f4f2; overflow: hidden; position: relative; }
+.raw-card-img { width: 100%; height: 100%; object-fit: cover; }
+.raw-card-body { padding: 1.25rem; display: flex; flex-direction: column; flex: 1; }
+.raw-card-sku { font-size: 0.72rem; font-weight: 800; color: var(--raw-gold); text-transform: uppercase; margin-bottom: 0.2rem; }
+.raw-card-title { font-size: 1.1rem; font-weight: 800; color: var(--raw-primary); margin-bottom: 0.4rem; }
+.raw-card-desc { font-size: 0.82rem; color: var(--raw-muted); line-height: 1.5; margin-bottom: 1.2rem; flex: 1; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+.raw-card-row { display: flex; gap: 0.4rem; align-items: center; }
+.raw-qty { display: flex; border: 1px solid var(--raw-border); border-radius: 6px; }
+.raw-qty button { width: 28px; height: 34px; background: #f4f7f5; border: none; font-weight: 800; color: var(--raw-primary); }
+.raw-qty input { width: 34px; text-align: center; border: none; font-weight: 800; font-size: 0.85rem; }
+.raw-add-btn {
+  flex: 1; background: var(--raw-primary); color: #fff; border: none; border-radius: 6px;
+  padding: 0.6rem; font-weight: 800; font-size: 0.82rem;
+}
+.raw-add-btn:hover { background: var(--raw-primary-light); }
+
+@media (max-width: 768px) {
+  .raw-hero { grid-template-columns: 1fr; }
+}
