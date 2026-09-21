@@ -1,0 +1,151 @@
+/* ============================================================
+   TEMPLATE 28: ENTERPRISE B2B DISTRIBUTOR (HUBSPOT/GRAINGER STYLE)
+   ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --b2b-navy: #0b2545;
+  --b2b-navy-dark: #07192f;
+  --b2b-emerald: #10b981;
+  --b2b-emerald-hover: #059669;
+  --b2b-light-bg: #f8fafc;
+  --b2b-card: #ffffff;
+  --b2b-border: #e2e8f0;
+  --b2b-text: #0f172a;
+  --b2b-muted: #64748b;
+  --whatsapp: #25D366;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background: var(--b2b-light-bg);
+  color: var(--b2b-text);
+  line-height: 1.5;
+}
+
+a { text-decoration: none; color: inherit; }
+button { font-family: inherit; cursor: pointer; }
+img { max-width: 100%; display: block; }
+.ent-wrap { max-width: 1280px; margin: 0 auto; padding: 0 1.5rem; }
+
+/* HEADER */
+.ent-header {
+  background: #fff;
+  border-bottom: 1px solid var(--b2b-border);
+  position: sticky; top: 0; z-index: 1000;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+}
+.ent-header-inner {
+  display: flex; align-items: center; justify-content: space-between; gap: 1.5rem;
+  padding: 1rem 0;
+}
+.ent-brand {
+  font-size: 1.3rem; font-weight: 800; color: var(--b2b-navy);
+  display: flex; align-items: center; gap: 0.6rem;
+}
+.ent-brand-badge {
+  background: var(--b2b-emerald); color: #fff; width: 32px; height: 32px;
+  border-radius: 8px; display: flex; align-items: center; justify-content: center;
+  font-weight: 900;
+}
+.ent-search {
+  flex: 1; max-width: 480px; position: relative;
+}
+.ent-search input {
+  width: 100%; padding: 0.65rem 1rem 0.65rem 2.5rem; border: 1.5px solid var(--b2b-border);
+  border-radius: 8px; font-family: inherit; font-size: 0.88rem; background: #f8fafc;
+}
+.ent-search input:focus {
+  outline: none; border-color: var(--b2b-navy); background: #fff;
+}
+.ent-search svg { position: absolute; left: 0.8rem; top: 50%; transform: translateY(-50%); color: var(--b2b-muted); }
+
+.ent-cart-btn {
+  background: var(--b2b-navy); color: #fff; border: none; border-radius: 8px;
+  padding: 0.65rem 1.4rem; font-weight: 700; font-size: 0.88rem; display: flex; align-items: center; gap: 0.5rem;
+}
+.ent-cart-btn:hover { background: var(--b2b-navy-dark); }
+
+/* HERO B2B CONSULTANT */
+.ent-hero {
+  padding: 2.5rem 0;
+  display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; align-items: stretch;
+}
+.ent-hero-main {
+  background: linear-gradient(135deg, #0b2545 0%, #133a68 100%);
+  color: #fff; border-radius: 12px; padding: 2.5rem;
+  display: flex; flex-direction: column; justify-content: space-between;
+}
+.ent-hero-title {
+  font-size: clamp(1.8rem, 3.2vw, 2.5rem); font-weight: 800; line-height: 1.2; margin-bottom: 0.8rem;
+}
+.ent-hero-desc { color: #cbd5e1; font-size: 0.95rem; max-width: 520px; margin-bottom: 1.5rem; }
+
+.ent-consultant-card {
+  background: #fff; border: 1px solid var(--b2b-border); border-radius: 12px; padding: 1.5rem;
+  display: flex; flex-direction: column; justify-content: center; text-align: center;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+}
+.ent-consultant-avatar {
+  width: 60px; height: 60px; border-radius: 50%; background: #e0f2fe; color: #0284c7;
+  display: flex; align-items: center; justify-content: center; font-size: 1.8rem;
+  margin: 0 auto 0.8rem;
+}
+
+/* CATEGORIES */
+.ent-cats {
+  display: flex; gap: 0.6rem; overflow-x: auto; padding-bottom: 0.6rem; margin-bottom: 2rem;
+  scrollbar-width: none;
+}
+.ent-cats::-webkit-scrollbar { display: none; }
+.ent-cat-pill {
+  background: #fff; border: 1px solid var(--b2b-border); padding: 0.55rem 1.1rem;
+  border-radius: 8px; font-size: 0.85rem; font-weight: 600; color: var(--b2b-muted);
+  white-space: nowrap; cursor: pointer; display: flex; align-items: center; gap: 0.4rem;
+}
+.ent-cat-pill:hover, .ent-cat-pill.active {
+  background: var(--b2b-navy); color: #fff; border-color: var(--b2b-navy);
+}
+
+/* PRODUCT CARDS */
+.ent-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem; margin-bottom: 5rem;
+}
+.ent-card {
+  background: #fff; border: 1px solid var(--b2b-border); border-radius: 10px;
+  overflow: hidden; display: flex; flex-direction: column; transition: 0.2s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+}
+.ent-card:hover {
+  transform: translateY(-3px); box-shadow: 0 8px 25px rgba(11,37,69,0.08); border-color: #94a3b8;
+}
+.ent-card-img-wrap {
+  height: 180px; background: #f1f5f9; overflow: hidden; position: relative;
+}
+.ent-card-img { width: 100%; height: 100%; object-fit: cover; }
+.ent-card-body { padding: 1.25rem; display: flex; flex-direction: column; flex: 1; }
+.ent-card-sku { font-size: 0.72rem; font-weight: 700; color: var(--b2b-emerald); text-transform: uppercase; margin-bottom: 0.2rem; }
+.ent-card-title { font-size: 1.05rem; font-weight: 700; color: var(--b2b-navy); margin-bottom: 0.4rem; }
+.ent-card-desc { font-size: 0.82rem; color: var(--b2b-muted); line-height: 1.5; margin-bottom: 1.2rem; flex: 1; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+/* Specs Box */
+.ent-spec-box {
+  background: #f8fafc; border: 1px solid var(--b2b-border); border-radius: 6px;
+  padding: 0.5rem 0.75rem; margin-bottom: 1rem; font-size: 0.75rem; display: flex; justify-content: space-between;
+}
+
+.ent-card-footer { display: flex; gap: 0.5rem; align-items: center; }
+.ent-qty { display: flex; border: 1px solid var(--b2b-border); border-radius: 6px; }
+.ent-qty button { width: 28px; height: 32px; background: #f8fafc; border: none; font-weight: 700; }
+.ent-qty input { width: 34px; text-align: center; border: none; font-weight: 700; font-size: 0.85rem; }
+.ent-add-btn {
+  flex: 1; background: var(--b2b-emerald); color: #fff; border: none; border-radius: 6px;
+  padding: 0.55rem; font-weight: 700; font-size: 0.82rem;
+}
+.ent-add-btn:hover { background: var(--b2b-emerald-hover); }
+
+@media (max-width: 800px) {
+  .ent-hero { grid-template-columns: 1fr; }
+}
