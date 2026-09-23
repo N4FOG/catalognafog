@@ -61,10 +61,45 @@ export const ProductListItem: React.FC<ProductListItemProps> = ({ product }) => 
         </div>
 
         <div className="min-w-0 flex-1">
-          <div className="flex items-center gap-1.5 mb-1">
+          <div className="flex items-center gap-1.5 mb-1 flex-wrap">
             <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
               {product.referencia}
             </span>
+
+            {/* Custom Badge na lista */}
+            {(product.badge_texto || product.destaque) && (
+              <span
+                className={`text-[9px] font-black uppercase px-2 py-0.5 rounded-full text-white shadow-sm ${
+                  product.badge_tipo === 'lancamento'
+                    ? 'bg-gradient-to-r from-purple-600 to-indigo-600'
+                    : product.badge_tipo === 'mais_vendido'
+                    ? 'bg-gradient-to-r from-orange-500 to-amber-600'
+                    : product.badge_tipo === 'natural'
+                    ? 'bg-gradient-to-r from-emerald-600 to-teal-700'
+                    : product.badge_tipo === 'rapido'
+                    ? 'bg-gradient-to-r from-yellow-500 to-amber-600 !text-slate-900'
+                    : product.badge_tipo === 'premium'
+                    ? 'bg-gradient-to-r from-cyan-600 to-blue-700'
+                    : product.badge_tipo === 'profissional'
+                    ? 'bg-gradient-to-r from-slate-700 to-slate-900'
+                    : product.badge_tipo === 'oferta'
+                    ? 'bg-gradient-to-r from-rose-600 to-red-600'
+                    : 'bg-gradient-to-r from-amber-500 to-amber-600'
+                }`}
+              >
+                {product.badge_texto || '⭐ Top Vendas'}
+              </span>
+            )}
+
+            {/* Emojis representativos na lista */}
+            {product.icones_representativos && product.icones_representativos.length > 0 && (
+              <span className="flex items-center gap-0.5 text-xs">
+                {product.icones_representativos.map((emo, i) => (
+                  <span key={i}>{emo}</span>
+                ))}
+              </span>
+            )}
+
             <span className="text-[11px] font-semibold text-emerald-700 dark:text-emerald-400 truncate">
               {product.categoria} • {product.tipo_formulacao}
             </span>

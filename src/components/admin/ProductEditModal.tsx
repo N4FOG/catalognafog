@@ -381,6 +381,322 @@ export const ProductEditModal: React.FC = () => {
                 />
               </div>
             </div>
+
+            {/* SEÇÃO: BADGE COMERCIAL DO CARD */}
+            <div className="p-3 bg-slate-100 dark:bg-slate-800/60 rounded-xl border border-slate-200 dark:border-slate-700 space-y-2">
+              <div className="flex items-center justify-between">
+                <label className="text-xs font-bold text-slate-700 dark:text-slate-300">
+                  🏷️ Badge Comercial do Card:
+                </label>
+                {(formData.badge_texto || formData.destaque) && (
+                  <span
+                    className={`text-[10px] font-black uppercase px-2 py-0.5 rounded-full text-white shadow-xs ${
+                      formData.badge_tipo === 'lancamento'
+                        ? 'bg-gradient-to-r from-purple-600 to-indigo-600'
+                        : formData.badge_tipo === 'mais_vendido'
+                        ? 'bg-gradient-to-r from-orange-500 to-amber-600'
+                        : formData.badge_tipo === 'natural'
+                        ? 'bg-gradient-to-r from-emerald-600 to-teal-700'
+                        : formData.badge_tipo === 'rapido'
+                        ? 'bg-gradient-to-r from-yellow-500 to-amber-600 text-slate-900'
+                        : formData.badge_tipo === 'premium'
+                        ? 'bg-gradient-to-r from-cyan-600 to-blue-700'
+                        : formData.badge_tipo === 'profissional'
+                        ? 'bg-gradient-to-r from-slate-700 to-slate-900'
+                        : formData.badge_tipo === 'oferta'
+                        ? 'bg-gradient-to-r from-rose-600 to-red-600'
+                        : 'bg-gradient-to-r from-amber-500 to-amber-600'
+                    }`}
+                  >
+                    Prévia: {formData.badge_texto || '⭐ Top Vendas'}
+                  </span>
+                )}
+              </div>
+
+              {/* Botões Rápidos de Badges Predefinidas */}
+              <div className="flex flex-wrap gap-1.5">
+                {[
+                  { id: 'none', label: 'Sem Badge', tipo: undefined, texto: '' },
+                  { id: 'top_vendas', label: '⭐ Top Vendas', tipo: 'top_vendas', texto: '⭐ Top Vendas' },
+                  { id: 'mais_vendido', label: '🔥 Mais Vendido', tipo: 'mais_vendido', texto: '🔥 Mais Vendido' },
+                  { id: 'lancamento', label: '🚀 Lançamento 2026', tipo: 'lancamento', texto: '🚀 Lançamento 2026' },
+                  { id: 'natural', label: '🌿 Fórmula Natural', tipo: 'natural', texto: '🌿 Fórmula Natural' },
+                  { id: 'rapido', label: '⚡ Ação Rápida', tipo: 'rapido', texto: '⚡ Ação Rápida' },
+                  { id: 'premium', label: '💎 Linha Premium', tipo: 'premium', texto: '💎 Linha Premium' },
+                  { id: 'profissional', label: '🛡️ Uso Profissional', tipo: 'profissional', texto: '🛡️ Uso Profissional' },
+                  { id: 'oferta', label: '🏷️ Oferta Especial', tipo: 'oferta', texto: '🏷️ Oferta Especial' }
+                ].map((b) => {
+                  const isCurrent =
+                    (!formData.badge_texto && !formData.destaque && b.id === 'none') ||
+                    (formData.badge_texto === b.texto && formData.badge_tipo === b.tipo);
+
+                  return (
+                    <button
+                      key={b.id}
+                      type="button"
+                      onClick={() => {
+                        triggerHaptic(10);
+                        if (b.id === 'none') {
+                          setFormData({ ...formData, badge_texto: '', badge_tipo: undefined, destaque: false });
+                        } else {
+                          setFormData({
+                            ...formData,
+                            badge_texto: b.texto,
+                            badge_tipo: b.tipo as any,
+                            destaque: true
+                          });
+                        }
+                      }}
+                      className={`text-[11px] px-2.5 py-1 rounded-lg border font-bold transition-all cursor-pointer ${
+                        isCurrent
+                          ? 'bg-emerald-700 text-white border-emerald-800 shadow-xs'
+                          : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-emerald-400'
+                      }`}
+                    >
+                      {b.label}
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Input para Badge 100% Personalizada */}
+              <div className="flex items-center gap-2 pt-1">
+                <span className="text-[11px] font-semibold text-slate-500 shrink-0">Ou digite texto livre:</span>
+                <input
+                  type="text"
+                  value={formData.badge_texto || ''}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      badge_texto: e.target.value,
+                      destaque: !!e.target.value,
+                      badge_tipo: formData.badge_tipo || 'custom'
+                    })
+                  }
+                  placeholder="Ex: 🏆 Campeão de Vendas, ⭐ Dose Única..."
+                  className="flex-1 py-1 px-2.5 text-xs bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-800 dark:text-slate-100 font-semibold"
+                />
+              </div>
+            </div>
+
+            {/* SEÇÃO: EMOJIS / ÍCONES REPRESENTATIVOS DO CARD (MÚLTIPLOS LADO A LADO) */}
+            <div className="p-3 bg-slate-100 dark:bg-slate-800/60 rounded-xl border border-slate-200 dark:border-slate-700 space-y-2">
+              <div className="flex items-center justify-between">
+                <div>
+                  <label className="text-xs font-bold text-slate-700 dark:text-slate-300">
+                    🐾 Ícones Representativos (Canto Superior Direito):
+                  </label>
+                  <span className="text-[10px] text-slate-500 block">
+                    Selecione 1 ou mais emojis para aparecerem lado a lado no card do produto
+                  </span>
+                </div>
+
+                {/* Prévia da Cápsula */}
+                <div className="px-2 py-0.5 rounded-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 flex items-center gap-1 shadow-2xs">
+                  {(formData.icones_representativos && formData.icones_representativos.length > 0) ? (
+                    formData.icones_representativos.map((emo, i) => (
+                      <span key={i} className="text-sm">{emo}</span>
+                    ))
+                  ) : (
+                    <span className="text-xs text-slate-400">Padrão da categoria</span>
+                  )}
+                </div>
+              </div>
+
+              {/* Emojis Atualmente Selecionados (com botão de remover) */}
+              {(formData.icones_representativos && formData.icones_representativos.length > 0) && (
+                <div className="flex flex-wrap items-center gap-1.5 p-1.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700">
+                  <span className="text-[10px] font-bold text-slate-400 mr-1">Ativos:</span>
+                  {formData.icones_representativos.map((emo, idx) => (
+                    <span
+                      key={idx}
+                      className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-bold bg-emerald-50 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800"
+                    >
+                      <span className="text-sm">{emo}</span>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const copy = [...(formData.icones_representativos || [])];
+                          copy.splice(idx, 1);
+                          setFormData({ ...formData, icones_representativos: copy });
+                        }}
+                        className="text-red-500 hover:text-red-700 font-black ml-0.5"
+                        title="Remover este emoji"
+                      >
+                        ×
+                      </button>
+                    </span>
+                  ))}
+                  <button
+                    type="button"
+                    onClick={() => setFormData({ ...formData, icones_representativos: [] })}
+                    className="text-[10px] text-slate-400 hover:text-red-500 font-semibold underline ml-auto"
+                  >
+                    Limpar todos
+                  </button>
+                </div>
+              )}
+
+              {/* Paleta Rápida de Emojis Temáticos Relevantes */}
+              <div className="space-y-1.5 pt-1">
+                <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wide block">
+                  Clique para adicionar ou remover:
+                </span>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 text-xs">
+                  {/* Grupo 1: Insetos & Pragas */}
+                  <div className="p-1.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700">
+                    <span className="text-[9px] font-bold text-slate-400 block mb-1">🪳 Insetos & Pragas</span>
+                    <div className="flex flex-wrap gap-1">
+                      {['🪳', '🐜', '🕷️', '🦂', '🪲', '🐛', '🦗', '🦟', '🪰', '🐝'].map((e) => {
+                        const isSelected = (formData.icones_representativos || []).includes(e);
+                        return (
+                          <button
+                            key={e}
+                            type="button"
+                            onClick={() => {
+                              triggerHaptic(10);
+                              const current = formData.icones_representativos || [];
+                              if (isSelected) {
+                                setFormData({
+                                  ...formData,
+                                  icones_representativos: current.filter((item) => item !== e)
+                                });
+                              } else {
+                                setFormData({
+                                  ...formData,
+                                  icones_representativos: [...current, e]
+                                });
+                              }
+                            }}
+                            className={`w-7 h-7 rounded-md flex items-center justify-center text-sm transition-all cursor-pointer ${
+                              isSelected
+                                ? 'bg-emerald-600 text-white shadow-xs scale-110'
+                                : 'bg-slate-100 dark:bg-slate-800 hover:bg-emerald-100 hover:scale-105'
+                            }`}
+                          >
+                            {e}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* Grupo 2: Gramados & Ervas */}
+                  <div className="p-1.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700">
+                    <span className="text-[9px] font-bold text-slate-400 block mb-1">🌱 Grama & Plantas</span>
+                    <div className="flex flex-wrap gap-1">
+                      {['🌱', '🌿', '🌾', '🥀', '☘️', '🌻', '🌸', '🌳', '🍂', '🍄'].map((e) => {
+                        const isSelected = (formData.icones_representativos || []).includes(e);
+                        return (
+                          <button
+                            key={e}
+                            type="button"
+                            onClick={() => {
+                              triggerHaptic(10);
+                              const current = formData.icones_representativos || [];
+                              if (isSelected) {
+                                setFormData({
+                                  ...formData,
+                                  icones_representativos: current.filter((item) => item !== e)
+                                });
+                              } else {
+                                setFormData({
+                                  ...formData,
+                                  icones_representativos: [...current, e]
+                                });
+                              }
+                            }}
+                            className={`w-7 h-7 rounded-md flex items-center justify-center text-sm transition-all cursor-pointer ${
+                              isSelected
+                                ? 'bg-emerald-600 text-white shadow-xs scale-110'
+                                : 'bg-slate-100 dark:bg-slate-800 hover:bg-emerald-100 hover:scale-105'
+                            }`}
+                          >
+                            {e}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* Grupo 3: Pets & Animais */}
+                  <div className="p-1.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700">
+                    <span className="text-[9px] font-bold text-slate-400 block mb-1">🐾 Animais & Roedores</span>
+                    <div className="flex flex-wrap gap-1">
+                      {['🐕', '🐈', '🐀', '🐁', '🐌', '🐂', '🐎', '🦎', '🐍', '🦇'].map((e) => {
+                        const isSelected = (formData.icones_representativos || []).includes(e);
+                        return (
+                          <button
+                            key={e}
+                            type="button"
+                            onClick={() => {
+                              triggerHaptic(10);
+                              const current = formData.icones_representativos || [];
+                              if (isSelected) {
+                                setFormData({
+                                  ...formData,
+                                  icones_representativos: current.filter((item) => item !== e)
+                                });
+                              } else {
+                                setFormData({
+                                  ...formData,
+                                  icones_representativos: [...current, e]
+                                });
+                              }
+                            }}
+                            className={`w-7 h-7 rounded-md flex items-center justify-center text-sm transition-all cursor-pointer ${
+                              isSelected
+                                ? 'bg-emerald-600 text-white shadow-xs scale-110'
+                                : 'bg-slate-100 dark:bg-slate-800 hover:bg-emerald-100 hover:scale-105'
+                            }`}
+                          >
+                            {e}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* Grupo 4: Ação, Fórmula & Foco */}
+                  <div className="p-1.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700">
+                    <span className="text-[9px] font-bold text-slate-400 block mb-1">⚡ Fórmula & Ação</span>
+                    <div className="flex flex-wrap gap-1">
+                      {['⚡', '💧', '🧪', '🛡️', '🎯', '🔥', '🚿', '🚜', '🔬', '⭐'].map((e) => {
+                        const isSelected = (formData.icones_representativos || []).includes(e);
+                        return (
+                          <button
+                            key={e}
+                            type="button"
+                            onClick={() => {
+                              triggerHaptic(10);
+                              const current = formData.icones_representativos || [];
+                              if (isSelected) {
+                                setFormData({
+                                  ...formData,
+                                  icones_representativos: current.filter((item) => item !== e)
+                                });
+                              } else {
+                                setFormData({
+                                  ...formData,
+                                  icones_representativos: [...current, e]
+                                });
+                              }
+                            }}
+                            className={`w-7 h-7 rounded-md flex items-center justify-center text-sm transition-all cursor-pointer ${
+                              isSelected
+                                ? 'bg-emerald-600 text-white shadow-xs scale-110'
+                                : 'bg-slate-100 dark:bg-slate-800 hover:bg-emerald-100 hover:scale-105'
+                            }`}
+                          >
+                            {e}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 

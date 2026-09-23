@@ -63,6 +63,9 @@ export interface Product {
   preco_base: number;
   manual_aplicacao?: ProductApplicationManual;
   emEstoque?: boolean; // Controle de disponibilidade do produto
+  badge_texto?: string; // Texto customizado do badge (ex: "Top Vendas", "Lançamento 2026")
+  badge_tipo?: 'top_vendas' | 'lancamento' | 'mais_vendido' | 'natural' | 'rapido' | 'premium' | 'profissional' | 'oferta' | 'custom';
+  icones_representativos?: string[]; // Array de emojis representativos (ex: ['🪳', '🐜', '🕷️', '🦂'])
 }
 
 export interface Category {

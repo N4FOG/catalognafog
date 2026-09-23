@@ -94,20 +94,51 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           </span>
         )}
 
-        {/* Top Vendas Badge */}
-        {product.destaque && isInStock && (
-          <span className="absolute top-2 left-2 z-10 px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-gradient-to-r from-amber-500 to-amber-600 text-white shadow-sm">
-            ⭐ Top Vendas
+        {/* Badge do Produto (Personalizado ou Top Vendas) */}
+        {isInStock && (product.badge_texto || product.destaque) && (
+          <span
+            className={`absolute top-2 left-2 z-10 px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider text-white shadow-sm flex items-center gap-1 ${
+              product.badge_tipo === 'lancamento'
+                ? 'bg-gradient-to-r from-purple-600 to-indigo-600'
+                : product.badge_tipo === 'mais_vendido'
+                ? 'bg-gradient-to-r from-orange-500 to-amber-600'
+                : product.badge_tipo === 'natural'
+                ? 'bg-gradient-to-r from-emerald-600 to-teal-700'
+                : product.badge_tipo === 'rapido'
+                ? 'bg-gradient-to-r from-yellow-500 to-amber-600 text-slate-900 font-black'
+                : product.badge_tipo === 'premium'
+                ? 'bg-gradient-to-r from-cyan-600 to-blue-700'
+                : product.badge_tipo === 'profissional'
+                ? 'bg-gradient-to-r from-slate-700 to-slate-900'
+                : product.badge_tipo === 'oferta'
+                ? 'bg-gradient-to-r from-rose-600 to-red-600'
+                : 'bg-gradient-to-r from-amber-500 to-amber-600'
+            }`}
+          >
+            {product.badge_texto || '⭐ Top Vendas'}
           </span>
         )}
 
-        {/* Category Emoji Badge */}
-        <span
-          className="absolute top-2 right-2 z-10 w-7 h-7 rounded-full bg-white/90 dark:bg-[#0f1f17]/90 backdrop-blur-xs border border-slate-200 dark:border-slate-700 flex items-center justify-center text-sm shadow-xs"
-          title={catObj?.nome}
-        >
-          {catObj?.icone || '🌿'}
-        </span>
+        {/* Emojis Representativos / Alvos (1 ou mais emojis lado a lado) */}
+        {product.icones_representativos && product.icones_representativos.length > 0 ? (
+          <div
+            className="absolute top-2 right-2 z-10 px-1.5 py-0.5 rounded-full bg-white/95 dark:bg-[#0f1f17]/95 backdrop-blur-xs border border-slate-200 dark:border-slate-700 flex items-center gap-1 text-sm shadow-xs"
+            title={product.alvos?.slice(0, 4).join(', ') || catObj?.nome}
+          >
+            {product.icones_representativos.map((emoji, idx) => (
+              <span key={idx} className="leading-none select-none hover:scale-110 transition-transform">
+                {emoji}
+              </span>
+            ))}
+          </div>
+        ) : (
+          <span
+            className="absolute top-2 right-2 z-10 w-7 h-7 rounded-full bg-white/90 dark:bg-[#0f1f17]/90 backdrop-blur-xs border border-slate-200 dark:border-slate-700 flex items-center justify-center text-sm shadow-xs"
+            title={catObj?.nome}
+          >
+            {catObj?.icone || '🌿'}
+          </span>
+        )}
 
         {/* Product Image */}
         <img

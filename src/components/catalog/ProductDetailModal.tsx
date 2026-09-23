@@ -160,9 +160,37 @@ export const ProductDetailModal: React.FC = () => {
                     🚫 FORA DE ESTOQUE
                   </span>
                 )}
-                {selectedProduct.destaque && isInStock && (
-                  <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-extrabold bg-amber-100 text-amber-900 dark:bg-amber-950/80 dark:text-amber-300 border border-amber-300 dark:border-amber-800">
-                    ⭐ Mais Vendido
+                {/* Badge Customizada ou Destaque */}
+                {isInStock && (selectedProduct.badge_texto || selectedProduct.destaque) && (
+                  <span
+                    className={`inline-flex items-center px-2.5 py-0.5 rounded-md text-[11px] font-black uppercase text-white shadow-2xs ${
+                      selectedProduct.badge_tipo === 'lancamento'
+                        ? 'bg-gradient-to-r from-purple-600 to-indigo-600'
+                        : selectedProduct.badge_tipo === 'mais_vendido'
+                        ? 'bg-gradient-to-r from-orange-500 to-amber-600'
+                        : selectedProduct.badge_tipo === 'natural'
+                        ? 'bg-gradient-to-r from-emerald-600 to-teal-700'
+                        : selectedProduct.badge_tipo === 'rapido'
+                        ? 'bg-gradient-to-r from-yellow-500 to-amber-600 text-slate-900 font-black'
+                        : selectedProduct.badge_tipo === 'premium'
+                        ? 'bg-gradient-to-r from-cyan-600 to-blue-700'
+                        : selectedProduct.badge_tipo === 'profissional'
+                        ? 'bg-gradient-to-r from-slate-700 to-slate-900'
+                        : selectedProduct.badge_tipo === 'oferta'
+                        ? 'bg-gradient-to-r from-rose-600 to-red-600'
+                        : 'bg-gradient-to-r from-amber-500 to-amber-600'
+                    }`}
+                  >
+                    {selectedProduct.badge_texto || '⭐ Mais Vendido'}
+                  </span>
+                )}
+
+                {/* Emojis Representativos */}
+                {selectedProduct.icones_representativos && selectedProduct.icones_representativos.length > 0 && (
+                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
+                    {selectedProduct.icones_representativos.map((emo, i) => (
+                      <span key={i}>{emo}</span>
+                    ))}
                   </span>
                 )}
                 {catObj && (
