@@ -103,12 +103,12 @@ export const ProposalModal: React.FC = () => {
 
   const handleShare = async () => {
     triggerHaptic(15);
-    const summaryText = `📄 *Proposta Comercial JCV Química (${proposalNumber})*\nCliente: ${clientInfo.nome || 'Não informado'}\nItens: ${totals.totalQtd} produtos\n${showPrices ? `Valor: ${formatCurrency(totals.totalFinalLiquido)}` : ''}`;
+    const summaryText = `📄 *Proposta Comercial JCV Jardinagem (${proposalNumber})*\nCliente: ${clientInfo.nome || 'Não informado'}\nItens: ${totals.totalQtd} produtos\n${showPrices ? `Valor: ${formatCurrency(totals.totalFinalLiquido)}` : ''}`;
 
     if (navigator.share) {
       try {
         await navigator.share({
-          title: `Proposta JCV Química - ${proposalNumber}`,
+          title: `Proposta JCV Jardinagem - ${proposalNumber}`,
           text: summaryText,
           url: window.location.href
         });

@@ -22,7 +22,7 @@ export const IosInstallModal: React.FC = () => {
     >
       <div className="space-y-4">
         <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
-          Instale o <strong>Catálogo JCV Química</strong> no seu aparelho iOS para abrir direto em tela cheia como um aplicativo:
+          Instale o <strong>Catálogo JCV Jardinagem</strong> no seu aparelho iOS para abrir direto em tela cheia como um aplicativo:
         </p>
 
         <div className="space-y-3">

@@ -1,8 +1,8 @@
 // ═══════════════════════════════════════════════════════════════
-//  JCV QUÍMICA v3.0 — Service Worker (Cache Offline & PWA)
+//  JCV JARDINAGEM v3.0 — Service Worker (Cache Offline & PWA)
 // ═══════════════════════════════════════════════════════════════
 
-const CACHE_NAME = 'jcv-quimica-v3-cache-v11';
+const CACHE_NAME = 'jcv-jardinagem-v3-cache-v12';
 const STATIC_ASSETS = [
   './',
   './index.html',

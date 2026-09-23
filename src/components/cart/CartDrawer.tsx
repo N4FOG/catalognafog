@@ -110,7 +110,7 @@ export const CartDrawer: React.FC = () => {
     const orcNum = 'RQ-2026-' + Math.floor(1000 + Math.random() * 9000);
     const shareUrl = generateCartShareUrl(includePrices);
 
-    let msg = `🌿 *${CONFIG.empresa || 'JCV Química — Catálogo de Produtos 2026'}*\n`;
+    let msg = `🌿 *${CONFIG.empresa || 'JCV Jardinagem — Catálogo de Produtos 2026'}*\n`;
     msg += `━━━━━━━━━━━━━━━━━━━━━\n`;
     msg += includePrices
       ? `📋 *PROPOSTA COMERCIAL (Nº ${orcNum})*\n`
@@ -121,7 +121,7 @@ export const CartDrawer: React.FC = () => {
       msg += `👤 *Cliente:* ${clientInfo.nome}\n`;
     }
     if (isSellerLoggedIn || activeSeller?.id) {
-      msg += `👔 *Representante:* ${activeSeller?.nome || 'JCV Química'}\n`;
+      msg += `👔 *Representante:* ${activeSeller?.nome || 'JCV Jardinagem'}\n`;
     } else if (clientInfo.vendedor) {
       const vendObj = VENDEDORES.find((v) => v.id === clientInfo.vendedor);
       if (vendObj) {

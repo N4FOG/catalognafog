@@ -36,7 +36,7 @@ export const PrintableProposal: React.FC<PrintableProposalProps> = ({
           </div>
           <div>
             <h1 className="font-extrabold text-lg sm:text-xl text-emerald-950 tracking-tight leading-tight">
-              JCV QUÍMICA & AGRO
+              JCV JARDINAGEM & AGRO
             </h1>
             <p className="text-[11px] text-slate-500 font-medium">
               Rawell Química • Indústria e Comércio de Defensivos & Adjuvantes
@@ -70,7 +70,7 @@ export const PrintableProposal: React.FC<PrintableProposalProps> = ({
           </h4>
           <p className="font-bold text-slate-900 text-sm">{sellerName}</p>
           <p className="text-slate-600">WhatsApp / Central: {sellerPhone}</p>
-          <p className="text-slate-500 text-[11px]">Canal Oficial JCV Química 2026</p>
+          <p className="text-slate-500 text-[11px]">Canal Oficial JCV Jardinagem 2026</p>
         </div>
       </div>
 
@@ -179,7 +179,7 @@ export const PrintableProposal: React.FC<PrintableProposalProps> = ({
         <div>
           <div className="border-b border-slate-400 w-4/5 mx-auto mb-1"></div>
           <p className="font-bold text-slate-700">{sellerName}</p>
-          <p>JCV Química / Rawell Química</p>
+          <p>JCV Jardinagem / Rawell Química</p>
         </div>
 
         <div>

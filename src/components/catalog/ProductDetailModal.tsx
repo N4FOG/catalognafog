@@ -56,7 +56,7 @@ export const ProductDetailModal: React.FC = () => {
 
   const handleShare = async () => {
     triggerHaptic(15);
-    const text = `🌿 *${selectedProduct.nome}* (${selectedProduct.referencia})\n${selectedProduct.o_que_faz}\n\nConsulte detalhes no catálogo oficial JCV Química!`;
+    const text = `🌿 *${selectedProduct.nome}* (${selectedProduct.referencia})\n${selectedProduct.o_que_faz}\n\nConsulte detalhes no catálogo oficial JCV Jardinagem!`;
 
     if (navigator.share) {
       try {

@@ -43,7 +43,7 @@ export const WhatsAppModal: React.FC = () => {
 
   // Generate formatted WhatsApp message text
   const generateMessage = () => {
-    let msg = `🌿 *JCV QUÍMICA & AGRO — COTAÇÃO OFICIAL 2026*\n`;
+    let msg = `🌿 *JCV JARDINAGEM & AGRO — COTAÇÃO OFICIAL 2026*\n`;
     msg += `📄 *Proposta:* \`${orcNum}\` | 📅 *Data:* ${dateStr} às ${timeStr}\n`;
     msg += `👔 *Representante:* ${seller.nome}\n`;
 

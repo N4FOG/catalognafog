@@ -101,7 +101,7 @@ export const Header: React.FC = () => {
           <div className="leading-tight">
             <div className="flex items-center gap-1.5">
               <span className="font-extrabold text-base sm:text-lg text-[#0f1f17] dark:text-[#edf5f0] tracking-tight font-display">
-                JCV Química
+                JCV Jardinagem
               </span>
             </div>
             <span className="inline-block px-1.5 py-0.2 rounded text-[10px] font-bold bg-[#eaf7f0] text-[#0f4531] dark:bg-[#14281f] dark:text-[#10b981] border border-[#10b981]/30">

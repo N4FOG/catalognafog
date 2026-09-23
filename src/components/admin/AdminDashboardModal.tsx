@@ -112,7 +112,7 @@ export const AdminDashboardModal: React.FC = () => {
               </span>
             </div>
             <h3 className="text-lg font-black tracking-tight">
-              Bem-vindo ao Controle Geral JCV Química
+              Bem-vindo ao Controle Geral JCV Jardinagem
             </h3>
             <p className="text-xs text-emerald-100 leading-relaxed max-w-xl">
               As alterações salvas no catálogo de produtos são propagadas automaticamente para todos os visitantes e representantes através da sincronização em nuvem.
