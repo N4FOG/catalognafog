@@ -13,9 +13,13 @@ import { SellerDashboardModal } from './components/seller/SellerDashboardModal';
 import { CommissionModal } from './components/seller/CommissionModal';
 import { ProposalModal } from './components/proposal/ProposalModal';
 import { WhatsAppModal } from './components/proposal/WhatsAppModal';
+import { AdminDashboardModal } from './components/admin/AdminDashboardModal';
+import { ProductListAdminModal } from './components/admin/ProductListAdminModal';
+import { ProductEditModal } from './components/admin/ProductEditModal';
 import { IosInstallModal } from './components/ui/IosInstallModal';
 import { ToastContainer } from './components/ui/ToastContainer';
 import { useSellerStore } from './store/useSellerStore';
+import { useAdminStore } from './store/useAdminStore';
 import { useCartStore } from './store/useCartStore';
 import { useThemeStore } from './store/useThemeStore';
 import { useToastStore } from './store/useToastStore';
@@ -25,14 +29,16 @@ import { sendTelemetry } from './utils/telemetry';
 
 export const App: React.FC = () => {
   const { setAttributedSeller, getActiveSeller, initIndexedDb } = useSellerStore();
+  const { loadInitialData } = useAdminStore();
   const { loadCartFromUrl } = useCartStore();
   const { theme, setTheme } = useThemeStore();
   const { addToast } = useToastStore();
 
   useEffect(() => {
-    // 1. Sync theme and load IndexedDB history
+    // 1. Sync theme and load IndexedDB history & cloud products
     setTheme(theme);
     initIndexedDb();
+    loadInitialData();
 
     // 2. Read query params for ?vendedor=carlos
     try {
@@ -108,6 +114,9 @@ export const App: React.FC = () => {
       <CommissionModal />
       <ProposalModal />
       <WhatsAppModal />
+      <AdminDashboardModal />
+      <ProductListAdminModal />
+      <ProductEditModal />
       <IosInstallModal />
       <ToastContainer />
     </div>

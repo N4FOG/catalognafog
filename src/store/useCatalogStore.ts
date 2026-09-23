@@ -18,6 +18,11 @@ interface CatalogState {
   isWhatsAppModalOpen: boolean;
   isCommissionModalOpen: boolean;
   isIosInstallModalOpen: boolean;
+
+  // Admin Modals & State
+  isAdminDashboardOpen: boolean;
+  isAdminProductsListOpen: boolean;
+  adminEditingProduct: Product | null;
   
   // Modal specific options
   proposalMode: 'with_prices' | 'without_prices';
@@ -38,6 +43,13 @@ interface CatalogState {
   closeSellerAppModal: () => void;
   setSellerAppActiveTab: (tab: 'quotes' | 'tools') => void;
   setSellerQuoteStatusFilter: (status: string) => void;
+
+  // Admin Actions
+  openAdminDashboard: () => void;
+  closeAdminDashboard: () => void;
+  openAdminProductsList: () => void;
+  closeAdminProductsList: () => void;
+  setAdminEditingProduct: (product: Product | null) => void;
   
   openProposalModal: (mode?: 'with_prices' | 'without_prices') => void;
   closeProposalModal: () => void;
@@ -67,6 +79,10 @@ export const useCatalogStore = create<CatalogState>((set) => ({
   isCommissionModalOpen: false,
   isIosInstallModalOpen: false,
 
+  isAdminDashboardOpen: false,
+  isAdminProductsListOpen: false,
+  adminEditingProduct: null,
+
   proposalMode: 'with_prices',
   whatsAppMode: 'with_prices',
 
@@ -91,6 +107,12 @@ export const useCatalogStore = create<CatalogState>((set) => ({
   closeSellerAppModal: () => set({ isSellerAppModalOpen: false }),
   setSellerAppActiveTab: (tab) => set({ sellerAppActiveTab: tab }),
   setSellerQuoteStatusFilter: (status) => set({ sellerQuoteStatusFilter: status }),
+
+  openAdminDashboard: () => set({ isAdminDashboardOpen: true }),
+  closeAdminDashboard: () => set({ isAdminDashboardOpen: false }),
+  openAdminProductsList: () => set({ isAdminProductsListOpen: true }),
+  closeAdminProductsList: () => set({ isAdminProductsListOpen: false }),
+  setAdminEditingProduct: (product) => set({ adminEditingProduct: product }),
   
   openProposalModal: (mode = 'with_prices') =>
     set({ isProposalModalOpen: true, proposalMode: mode }),

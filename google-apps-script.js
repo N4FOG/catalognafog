@@ -26,6 +26,46 @@ function doPost(e) {
       data = {};
     }
 
+    // ── GESTÃO DE PRODUTOS & CATÁLOGO CLOUD (ADMIN) ────────────────────
+    if (data.action === "saveProducts") {
+      const sheet = getOrCreateProductsSheet();
+      const backupSheet = getOrCreateProductBackupsSheet();
+      const nowStr = Utilities.formatDate(new Date(), "America/Sao_Paulo", "dd/MM/yyyy HH:mm:ss");
+      const userStr = data.user || "jcvadmin";
+      const productsPayload = typeof data.products === "string" ? data.products : JSON.stringify(data.products || []);
+      const backupItem = data.backup;
+
+      // 1. Atualiza a aba oficial de produtos (A1: Timestamp, B1: Autor, A2: JSON)
+      sheet.getRange(1, 1).setValue("ÚLTIMA ATUALIZAÇÃO:");
+      sheet.getRange(1, 2).setValue(nowStr);
+      sheet.getRange(1, 3).setValue("AUTOR:");
+      sheet.getRange(1, 4).setValue(userStr);
+      sheet.getRange(2, 1).setValue(productsPayload);
+
+      // 2. Se houver backup associado a esta alteração, anexa na aba de histórico
+      if (backupItem) {
+        const snapStr = typeof backupItem.snapshot === "string" ? backupItem.snapshot : JSON.stringify(backupItem.snapshot || {});
+        backupSheet.appendRow([
+          backupItem.id || ("BKP-" + new Date().getTime()),
+          backupItem.timestamp || nowStr,
+          backupItem.author || userStr,
+          backupItem.productId || "-",
+          backupItem.productName || "-",
+          backupItem.summary || "Alteração de Produto",
+          snapStr
+        ]);
+      }
+
+      lock.releaseLock();
+
+      return ContentService.createTextOutput(JSON.stringify({
+        status: "success",
+        action: "saveProducts",
+        timestamp: nowStr,
+        message: "Produtos e backup salvos na nuvem com sucesso!"
+      })).setMimeType(ContentService.MimeType.JSON);
+    }
+
     // ── GESTÃO DO ROADMAP CLOUD ─────────────────────────────────────────
     if (data.action === "saveRoadmap") {
       const sheet = getOrCreateRoadmapSheet();
@@ -200,6 +240,62 @@ function doGet(e) {
   try {
     const action = (e && e.parameter && e.parameter.action) ? e.parameter.action : "";
 
+    // ── LEITURA DOS PRODUTOS ATUALIZADOS CLOUD ──────────────────────────
+    if (action === "getProducts") {
+      const sheet = getOrCreateProductsSheet();
+      const backupSheet = getOrCreateProductBackupsSheet();
+      const lastUpdate = sheet.getRange(1, 2).getValue() || "";
+      const updatedBy = sheet.getRange(1, 4).getValue() || "";
+      const rawJson = sheet.getRange(2, 1).getValue() || "";
+
+      let products = null;
+      if (rawJson && typeof rawJson === "string" && (rawJson.trim().startsWith("[") || rawJson.trim().startsWith("{"))) {
+        try {
+          products = JSON.parse(rawJson);
+        } catch (err) {
+          products = null;
+        }
+      }
+
+      // Lê os backups recentes
+      let backups = [];
+      const lastBackupRow = backupSheet.getLastRow();
+      if (lastBackupRow > 1) {
+        // Pega os últimos 50 backups
+        const startRow = Math.max(2, lastBackupRow - 49);
+        const numRows = lastBackupRow - startRow + 1;
+        const backupData = backupSheet.getRange(startRow, 1, numRows, 7).getValues();
+
+        backups = backupData.map(r => {
+          let snap = null;
+          try {
+            snap = JSON.parse(r[6]);
+          } catch (e) {
+            snap = null;
+          }
+          return {
+            id: r[0],
+            timestamp: r[1],
+            author: r[2],
+            productId: r[3],
+            productName: r[4],
+            summary: r[5],
+            snapshot: snap
+          };
+        }).reverse(); // Mais recentes primeiro
+      }
+
+      return ContentService.createTextOutput(JSON.stringify({
+        status: "success",
+        action: "getProducts",
+        lastUpdate: lastUpdate,
+        updatedBy: updatedBy,
+        hasData: !!(products && products.length > 0),
+        products: products,
+        backups: backups
+      })).setMimeType(ContentService.MimeType.JSON);
+    }
+
     // ── LEITURA DO ROADMAP NA NUVEM ─────────────────────────────────────
     if (action === "getRoadmap") {
       const sheet = getOrCreateRoadmapSheet();
@@ -263,33 +359,83 @@ function doGet(e) {
   }
 }
 
-// Cria e formata a aba da planilha de Roadmap caso não exista
-function getOrCreateRoadmapSheet() {
+// ── FUNÇÃO DE SUPORTE: CRIA OU OBTÉM A ABA PRODUTOS_CATALOGO ──────────
+function getOrCreateProductsSheet() {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
-  let sheet = ss.getSheetByName("ROADMAP_CLOUD");
+  let sheet = ss.getSheetByName("Produtos_Catalogo");
 
   if (!sheet) {
-    sheet = ss.insertSheet("ROADMAP_CLOUD");
-    sheet.getRange(1, 1).setValue("ÚLTIMA ATUALIZAÇÃO:").setFontWeight("bold");
-    sheet.getRange(1, 2).setValue(Utilities.formatDate(new Date(), "America/Sao_Paulo", "dd/MM/yyyy HH:mm:ss"));
-    sheet.getRange(1, 3).setValue("AUTOR:").setFontWeight("bold");
-    sheet.getRange(1, 4).setValue("Sistema Rawell");
-    sheet.setTabColor("#0f4531");
+    sheet = ss.insertSheet("Produtos_Catalogo");
+    sheet.setTabColor("#10b981");
+
+    sheet.getRange(1, 1).setValue("ÚLTIMA ATUALIZAÇÃO:");
+    sheet.getRange(1, 2).setValue("-");
+    sheet.getRange(1, 3).setValue("AUTOR:");
+    sheet.getRange(1, 4).setValue("-");
+
+    const header = sheet.getRange(1, 1, 1, 4);
+    header.setBackground("#0f4531");
+    header.setFontColor("#ffffff");
+    header.setFontWeight("bold");
+    sheet.setRowHeight(1, 35);
   }
 
   return sheet;
 }
 
-// Cria e formata a aba da planilha caso esteja vazia
-function getOrCreateAuditSheet() {
+// ── FUNÇÃO DE SUPORTE: CRIA OU OBTÉM A ABA BACKUP_PRODUTOS ────────────
+function getOrCreateProductBackupsSheet() {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
-  let sheet = ss.getSheetByName("Auditoria_Eventos");
+  let sheet = ss.getSheetByName("Backup_Produtos");
 
   if (!sheet) {
-    sheet = ss.insertSheet("Auditoria_Eventos");
+    sheet = ss.insertSheet("Backup_Produtos");
+    sheet.setTabColor("#f59e0b");
+
+    const headers = [
+      "ID Backup",
+      "Data / Hora",
+      "Autor",
+      "ID Produto",
+      "Nome do Produto",
+      "Resumo da Alteração",
+      "Snapshot JSON"
+    ];
+
+    sheet.appendRow(headers);
+
+    const headerRange = sheet.getRange(1, 1, 1, headers.length);
+    headerRange.setBackground("#78350f");
+    headerRange.setFontColor("#ffffff");
+    headerRange.setFontWeight("bold");
+    headerRange.setHorizontalAlignment("center");
+    headerRange.setVerticalAlignment("middle");
+
+    sheet.setFrozenRows(1);
+    sheet.setRowHeight(1, 35);
+
+    sheet.setColumnWidth(1, 160); // ID Backup
+    sheet.setColumnWidth(2, 160); // Data
+    sheet.setColumnWidth(3, 130); // Autor
+    sheet.setColumnWidth(4, 100); // ID Produto
+    sheet.setColumnWidth(5, 220); // Nome Produto
+    sheet.setColumnWidth(6, 280); // Resumo
+    sheet.setColumnWidth(7, 300); // Snapshot
   }
 
-  // Se a planilha estiver vazia, cria os cabeçalhos estilizados
+  return sheet;
+}
+
+// ── FUNÇÕES DE SUPORTE EXISTENTES ─────────────────────────────────────
+function getOrCreateAuditSheet() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  let sheet = ss.getSheetByName("Auditoria_Rawell");
+
+  if (!sheet) {
+    sheet = ss.insertSheet("Auditoria_Rawell");
+    sheet.setTabColor("#0f4531");
+  }
+
   if (sheet.getLastRow() === 0) {
     const headers = [
       "Data / Hora",
@@ -299,17 +445,16 @@ function getOrCreateAuditSheet() {
       "Nº Proposta",
       "Cliente / Solicitante",
       "Documento / Cidade",
-      "Qtd Itens",
-      "Resumo Itens",
-      "Link Direto",
+      "Total Itens",
+      "Resumo dos Produtos",
+      "Link da Proposta",
       "URL Completa",
-      "Observações",
+      "Observações / Detalhes",
       "Dispositivo / Navegador"
     ];
 
     sheet.appendRow(headers);
 
-    // Estilização do cabeçalho oficial Rawell (Verde Floresta #0f4531 com texto branco em negrito)
     const headerRange = sheet.getRange(1, 1, 1, headers.length);
     headerRange.setBackground("#0f4531");
     headerRange.setFontColor("#ffffff");
@@ -322,26 +467,47 @@ function getOrCreateAuditSheet() {
     sheet.setFrozenRows(1);
     sheet.setRowHeight(1, 40);
 
-    // Larguras recomendadas para fácil visualização
-    sheet.setColumnWidth(1, 150); // Data
-    sheet.setColumnWidth(2, 170); // Origem / Canal
-    sheet.setColumnWidth(3, 170); // Vendedor
-    sheet.setColumnWidth(4, 190); // Evento
-    sheet.setColumnWidth(5, 130); // Nº Proposta
-    sheet.setColumnWidth(6, 200); // Cliente
-    sheet.setColumnWidth(7, 150); // Documento
-    sheet.setColumnWidth(8, 90);  // Qtd
-    sheet.setColumnWidth(9, 320); // Resumo Itens
-    sheet.setColumnWidth(10, 140); // Link Clicável
-    sheet.setColumnWidth(11, 230); // URL Completa
-    sheet.setColumnWidth(12, 200); // Obs
-    sheet.setColumnWidth(13, 180); // Dispositivo
+    sheet.setColumnWidth(1, 160);
+    sheet.setColumnWidth(2, 170);
+    sheet.setColumnWidth(3, 170);
+    sheet.setColumnWidth(4, 200);
+    sheet.setColumnWidth(5, 140);
+    sheet.setColumnWidth(6, 220);
+    sheet.setColumnWidth(7, 180);
+    sheet.setColumnWidth(8, 100);
+    sheet.setColumnWidth(9, 320);
+    sheet.setColumnWidth(10, 160);
+    sheet.setColumnWidth(11, 260);
+    sheet.setColumnWidth(12, 280);
+    sheet.setColumnWidth(13, 240);
   }
 
   return sheet;
 }
 
-// Cria e formata a aba de Termos de Pesquisa (Search Analytics) caso não exista
+function getOrCreateRoadmapSheet() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  let sheet = ss.getSheetByName("Roadmap_Rawell");
+
+  if (!sheet) {
+    sheet = ss.insertSheet("Roadmap_Rawell");
+    sheet.setTabColor("#2563eb");
+
+    sheet.getRange(1, 1).setValue("ÚLTIMA ATUALIZAÇÃO:");
+    sheet.getRange(1, 2).setValue("-");
+    sheet.getRange(1, 3).setValue("AUTOR:");
+    sheet.getRange(1, 4).setValue("-");
+
+    const header = sheet.getRange(1, 1, 1, 4);
+    header.setBackground("#1e3a8a");
+    header.setFontColor("#ffffff");
+    header.setFontWeight("bold");
+    sheet.setRowHeight(1, 35);
+  }
+
+  return sheet;
+}
+
 function getOrCreateSearchTermsSheet() {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
   let sheet = ss.getSheetByName("Termos_Pesquisa");
@@ -351,7 +517,6 @@ function getOrCreateSearchTermsSheet() {
     sheet.setTabColor("#059669");
   }
 
-  // Se a planilha estiver vazia, cria os cabeçalhos estilizados
   if (sheet.getLastRow() === 0) {
     const headers = [
       "Termo Pesquisado",
@@ -365,7 +530,6 @@ function getOrCreateSearchTermsSheet() {
 
     sheet.appendRow(headers);
 
-    // Estilização do cabeçalho oficial Rawell
     const headerRange = sheet.getRange(1, 1, 1, headers.length);
     headerRange.setBackground("#0f4531");
     headerRange.setFontColor("#ffffff");
@@ -378,14 +542,13 @@ function getOrCreateSearchTermsSheet() {
     sheet.setFrozenRows(1);
     sheet.setRowHeight(1, 40);
 
-    // Larguras recomendadas
-    sheet.setColumnWidth(1, 240); // Termo
-    sheet.setColumnWidth(2, 140); // Total Buscas
-    sheet.setColumnWidth(3, 170); // Qtd Produtos Encontrados
-    sheet.setColumnWidth(4, 160); // Última Pesquisa
-    sheet.setColumnWidth(5, 160); // Primeira Pesquisa
-    sheet.setColumnWidth(6, 190); // Canal / Vendedor
-    sheet.setColumnWidth(7, 240); // Dispositivo
+    sheet.setColumnWidth(1, 240);
+    sheet.setColumnWidth(2, 140);
+    sheet.setColumnWidth(3, 170);
+    sheet.setColumnWidth(4, 160);
+    sheet.setColumnWidth(5, 160);
+    sheet.setColumnWidth(6, 190);
+    sheet.setColumnWidth(7, 240);
   }
 
   return sheet;

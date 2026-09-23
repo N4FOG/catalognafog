@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { useCatalogStore } from '../../store/useCatalogStore';
 import { useCartStore } from '../../store/useCartStore';
 import { useSellerStore } from '../../store/useSellerStore';
+import { useAdminStore } from '../../store/useAdminStore';
 import { useThemeStore } from '../../store/useThemeStore';
 import { triggerHaptic } from '../../utils/haptics';
 import { logSearchTelemetry } from '../../utils/telemetry';
@@ -12,11 +13,13 @@ export const Header: React.FC = () => {
     setSearchQuery,
     openSellerModal,
     openSellerAppModal,
+    openAdminDashboard,
     openIosInstallModal
   } = useCatalogStore();
 
   const { setIsCartOpen, getTotals } = useCartStore();
   const { isSellerLoggedIn, session, getActiveSeller } = useSellerStore();
+  const { isAdminLoggedIn } = useAdminStore();
   const { theme, toggleTheme } = useThemeStore();
   const searchInputRef = useRef<HTMLInputElement>(null);
 
@@ -48,7 +51,9 @@ export const Header: React.FC = () => {
 
   const handleSellerClick = () => {
     triggerHaptic(20);
-    if (isSellerLoggedIn) {
+    if (isAdminLoggedIn) {
+      openAdminDashboard();
+    } else if (isSellerLoggedIn) {
       openSellerAppModal('quotes');
     } else {
       openSellerModal();
@@ -149,19 +154,31 @@ export const Header: React.FC = () => {
 
         {/* Top Actions */}
         <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
-          {/* Seller Badge / Button */}
+          {/* Seller / Admin Badge / Button */}
           <button
             onClick={handleSellerClick}
-            className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-bold transition-all active:scale-95 border ${
-              isSellerLoggedIn
+            className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-bold transition-all active:scale-95 border cursor-pointer ${
+              isAdminLoggedIn
+                ? 'bg-amber-100 text-amber-900 border-amber-400 dark:bg-amber-950 dark:text-amber-300 dark:border-amber-700 shadow-sm'
+                : isSellerLoggedIn
                 ? 'bg-[#eaf7f0] text-[#0f4531] border-[#10b981]/50 dark:bg-[#14281f] dark:text-[#10b981] dark:border-[#10b981]/40 shadow-sm'
                 : 'bg-slate-100 text-[#334e40] border-slate-200 hover:bg-slate-200 dark:bg-[#14281f] dark:text-[#9cb8a9] dark:border-slate-800'
             }`}
-            title={isSellerLoggedIn ? 'Painel do Vendedor' : 'Acesso Restrito do Representante'}
+            title={
+              isAdminLoggedIn
+                ? 'Painel Administrativo Master'
+                : isSellerLoggedIn
+                ? 'Painel do Vendedor'
+                : 'Acesso Restrito / Login'
+            }
           >
-            <span>{isSellerLoggedIn ? '👔' : '🔒'}</span>
+            <span>{isAdminLoggedIn ? '👑' : isSellerLoggedIn ? '👔' : '🔒'}</span>
             <span className="hidden sm:inline">
-              {isSellerLoggedIn ? (session?.vendedorNome?.split(' ')[0] || 'Vendedor') : 'Área do Vendedor'}
+              {isAdminLoggedIn
+                ? 'Painel Admin'
+                : isSellerLoggedIn
+                ? (session?.vendedorNome?.split(' ')[0] || 'Vendedor')
+                : 'Área Restrita'}
             </span>
           </button>
 

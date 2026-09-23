@@ -46,7 +46,7 @@
       "name": "WhatsApp Comercial",
       "short_name": "WhatsApp",
       "description": "Atendimento comercial direto",
-      "url": "https://api.whatsapp.com/send?phone=554599781407",
+      "url": "./#whatsapp",
       "icons": [{ "src": "img/icon-192.png", "sizes": "192x192" }]
     }
   ],

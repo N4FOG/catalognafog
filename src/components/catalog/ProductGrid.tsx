@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import { useCatalogStore } from '../../store/useCatalogStore';
+import { useAdminStore } from '../../store/useAdminStore';
 import { ProductCard } from './ProductCard';
 import { ProductListItem } from './ProductListItem';
 import { FilterBar } from '../layout/FilterBar';
@@ -15,9 +16,11 @@ export const ProductGrid: React.FC = () => {
     clearFilters
   } = useCatalogStore();
 
+  const { products } = useAdminStore();
+
   const filteredProducts = useMemo(() => {
-    return searchProducts(searchQuery, selectedCategory, selectedFormulation);
-  }, [searchQuery, selectedCategory, selectedFormulation]);
+    return searchProducts(searchQuery, selectedCategory, selectedFormulation, products);
+  }, [searchQuery, selectedCategory, selectedFormulation, products]);
 
   return (
     <div className="min-h-[60vh] pb-16">

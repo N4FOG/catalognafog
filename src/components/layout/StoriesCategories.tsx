@@ -1,11 +1,12 @@
 import React from 'react';
 import { CATEGORIAS } from '../../data/categories';
-import { PRODUTOS } from '../../data/products';
+import { useAdminStore } from '../../store/useAdminStore';
 import { useCatalogStore } from '../../store/useCatalogStore';
 import { triggerHaptic } from '../../utils/haptics';
 
 export const StoriesCategories: React.FC = () => {
   const { selectedCategory, setSelectedCategory } = useCatalogStore();
+  const { products } = useAdminStore();
 
   const handleSelectCategory = (id: string) => {
     triggerHaptic(12);
@@ -30,7 +31,7 @@ export const StoriesCategories: React.FC = () => {
       <div className="grid grid-cols-6 lg:grid-cols-11 gap-x-1.5 sm:gap-x-2.5 gap-y-2 py-1">
         {CATEGORIAS.map((cat) => {
           const isActive = selectedCategory === cat.id;
-          const count = cat.id === 'todos' ? PRODUTOS.length : PRODUTOS.filter((p) => p.categoria === cat.id).length;
+          const count = cat.id === 'todos' ? products.length : products.filter((p) => p.categoria === cat.id).length;
 
           return (
             <button

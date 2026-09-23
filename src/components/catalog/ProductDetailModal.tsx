@@ -2,19 +2,21 @@ import React, { useState } from 'react';
 import { useCatalogStore } from '../../store/useCatalogStore';
 import { useCartStore } from '../../store/useCartStore';
 import { useSellerStore } from '../../store/useSellerStore';
+import { useAdminStore } from '../../store/useAdminStore';
 import { useToastStore } from '../../store/useToastStore';
 import { CATEGORIAS, FORMULACOES } from '../../data/categories';
 import { Modal } from '../ui/Modal';
 import { Stepper } from '../ui/Stepper';
 import { formatCurrency } from '../../utils/formatters';
 import { triggerHaptic } from '../../utils/haptics';
-import { Plus, Check, Share2, AlertTriangle, Wrench, Clock, ArrowRight } from 'lucide-react';
+import { Plus, Check, Share2, AlertTriangle, Wrench, Clock, ArrowRight, Edit3 } from 'lucide-react';
 import { sendTelemetry } from '../../utils/telemetry';
 
 export const ProductDetailModal: React.FC = () => {
-  const { selectedProduct, setSelectedProduct } = useCatalogStore();
+  const { selectedProduct, setSelectedProduct, setAdminEditingProduct } = useCatalogStore();
   const { items, addToCart } = useCartStore();
   const { isSellerLoggedIn, getActiveSeller } = useSellerStore();
+  const { isAdminLoggedIn } = useAdminStore();
   const { addToast } = useToastStore();
 
   const [activeTab, setActiveTab] = useState<'guia' | 'aplicacao' | 'seguranca' | 'alvos'>('guia');
@@ -77,13 +79,31 @@ export const ProductDetailModal: React.FC = () => {
       onClose={handleClose}
       maxWidth="2xl"
       title={
-        <div className="flex items-center gap-2">
-          <span className="text-xs font-bold px-2 py-0.5 rounded-lg bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">
-            CÓDIGO: {selectedProduct.referencia}
-          </span>
-          <span className="text-xs font-semibold text-slate-500 uppercase">
-            {selectedProduct.categoria}
-          </span>
+        <div className="flex items-center justify-between w-full pr-4">
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-bold px-2 py-0.5 rounded-lg bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">
+              CÓDIGO: {selectedProduct.referencia}
+            </span>
+            <span className="text-xs font-semibold text-slate-500 uppercase">
+              {selectedProduct.categoria}
+            </span>
+          </div>
+
+          {isAdminLoggedIn && (
+            <button
+              onClick={() => {
+                triggerHaptic(20);
+                const prod = selectedProduct;
+                setSelectedProduct(null);
+                setAdminEditingProduct(prod);
+              }}
+              className="px-2.5 py-1 rounded-lg bg-amber-100 hover:bg-amber-200 dark:bg-amber-950 dark:hover:bg-amber-900 text-amber-900 dark:text-amber-200 font-extrabold text-xs flex items-center gap-1 border border-amber-300 dark:border-amber-800 shadow-xs cursor-pointer"
+              title="Abrir este produto em Modo de Edição Admin"
+            >
+              <Edit3 className="w-3.5 h-3.5" />
+              <span>Editar Produto</span>
+            </button>
+          )}
         </div>
       }
     >

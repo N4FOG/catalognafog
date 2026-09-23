@@ -2,12 +2,14 @@ import React from 'react';
 import { useCatalogStore } from '../../store/useCatalogStore';
 import { useCartStore } from '../../store/useCartStore';
 import { useSellerStore } from '../../store/useSellerStore';
+import { useAdminStore } from '../../store/useAdminStore';
 import { triggerHaptic } from '../../utils/haptics';
 
 export const BottomNavMobile: React.FC = () => {
-  const { openSellerAppModal } = useCatalogStore();
+  const { openSellerAppModal, openAdminDashboard } = useCatalogStore();
   const { setIsCartOpen, getTotals } = useCartStore();
   const { isSellerLoggedIn } = useSellerStore();
+  const { isAdminLoggedIn } = useAdminStore();
 
   const totals = getTotals();
 
@@ -50,7 +52,18 @@ export const BottomNavMobile: React.FC = () => {
         <span className="text-[10px] font-bold">Categorias</span>
       </button>
 
-      {isSellerLoggedIn && (
+      {isAdminLoggedIn ? (
+        <button
+          onClick={() => {
+            triggerHaptic(15);
+            openAdminDashboard();
+          }}
+          className="flex flex-col items-center gap-0.5 text-amber-600 dark:text-amber-400 focus:outline-none py-1"
+        >
+          <span className="text-lg">👑</span>
+          <span className="text-[10px] font-black">Admin</span>
+        </button>
+      ) : isSellerLoggedIn ? (
         <button
           onClick={() => {
             triggerHaptic(15);
@@ -61,7 +74,7 @@ export const BottomNavMobile: React.FC = () => {
           <span className="text-lg">👔</span>
           <span className="text-[10px] font-black">Vendedor</span>
         </button>
-      )}
+      ) : null}
 
       <button
         onClick={() => {

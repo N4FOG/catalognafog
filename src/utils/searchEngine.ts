@@ -17,21 +17,25 @@ interface IndexedProductDoc {
   product: Product;
 }
 
-const documents: IndexedProductDoc[] = PRODUTOS.map((p) => ({
-  id: p.id,
-  nome: p.nome,
-  referencia: p.referencia,
-  categoria: p.categoria,
-  tipo_formulacao: p.tipo_formulacao,
-  o_que_faz: p.o_que_faz || '',
-  para_que_serve: p.para_que_serve || '',
-  como_age: p.como_age || '',
-  alvos: (p.alvos || []).join(' '),
-  descricao: p.descricao || '',
-  product: p
-}));
+let activeProductsList: Product[] = PRODUTOS;
 
-const miniSearch = new MiniSearch<IndexedProductDoc>({
+function buildDocuments(products: Product[]): IndexedProductDoc[] {
+  return products.map((p) => ({
+    id: p.id,
+    nome: p.nome,
+    referencia: p.referencia,
+    categoria: p.categoria,
+    tipo_formulacao: p.tipo_formulacao,
+    o_que_faz: p.o_que_faz || '',
+    para_que_serve: p.para_que_serve || '',
+    como_age: p.como_age || '',
+    alvos: (p.alvos || []).join(' '),
+    descricao: p.descricao || '',
+    product: p
+  }));
+}
+
+let miniSearch = new MiniSearch<IndexedProductDoc>({
   fields: ['nome', 'referencia', 'alvos', 'o_que_faz', 'para_que_serve', 'como_age', 'descricao', 'categoria'],
   storeFields: ['id', 'product'],
   searchOptions: {
@@ -50,19 +54,41 @@ const miniSearch = new MiniSearch<IndexedProductDoc>({
   processTerm: (term) => normalizeText(term)
 });
 
-// Index all products
-miniSearch.addAll(documents);
+// Index initial products
+miniSearch.addAll(buildDocuments(PRODUTOS));
+
+/**
+ * Re-indexes all products whenever an admin modifies or restores products
+ */
+export function reindexProducts(products: Product[]): void {
+  activeProductsList = products;
+  miniSearch.removeAll();
+  miniSearch.addAll(buildDocuments(products));
+}
+
+/**
+ * Returns current active products (synced with admin edits)
+ */
+export function getActiveProductsList(): Product[] {
+  return activeProductsList;
+}
 
 /**
  * Searches products using fuzzy full-text indexing with typo tolerance
  */
-export function searchProducts(query: string, category = 'todos', formulation = 'todos'): Product[] {
+export function searchProducts(
+  query: string,
+  category = 'todos',
+  formulation = 'todos',
+  customProducts?: Product[]
+): Product[] {
+  const sourceProducts = customProducts || activeProductsList;
   const normQuery = normalizeText(query).trim();
 
   let matchedProducts: Product[];
 
   if (!normQuery) {
-    matchedProducts = PRODUTOS;
+    matchedProducts = sourceProducts;
   } else {
     const results = miniSearch.search(normQuery);
 
@@ -70,7 +96,7 @@ export function searchProducts(query: string, category = 'todos', formulation = 
       matchedProducts = results.map((r) => r.product);
     } else {
       // Fallback: substring matching
-      matchedProducts = PRODUTOS.filter((p) => {
+      matchedProducts = sourceProducts.filter((p) => {
         const matchName = normalizeText(p.nome).includes(normQuery);
         const matchRef = normalizeText(p.referencia).includes(normQuery);
         const matchDesc = normalizeText(p.descricao).includes(normQuery);
