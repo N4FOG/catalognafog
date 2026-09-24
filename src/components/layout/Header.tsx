@@ -95,8 +95,8 @@ export const Header: React.FC = () => {
           }}
           className="flex items-center gap-2.5 cursor-pointer select-none shrink-0"
         >
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#0f4531] to-[#09261b] dark:from-[#176043] dark:to-[#0f4531] flex items-center justify-center text-white font-black text-xl shadow-md shadow-[#0f4531]/20 shrink-0 border border-[#10b981]/30">
-            🌿
+          <div className="w-10 h-10 rounded-xl overflow-hidden shadow-md shadow-[#0f4531]/20 shrink-0 border border-[#10b981]/30 bg-black flex items-center justify-center">
+            <img src="img/logo.png" alt="JCV Jardinagem" className="w-full h-full object-cover" />
           </div>
           <div className="leading-tight">
             <div className="flex items-center gap-1.5">

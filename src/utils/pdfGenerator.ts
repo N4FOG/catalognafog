@@ -1,5 +1,6 @@
 import { jsPDF } from 'jspdf';
 import autoTable from 'jspdf-autotable';
+import { toPng } from 'html-to-image';
 import type { CartItem, CartTotals, ClientInfo } from '../types/cart';
 import { formatCurrency } from './formatters';
 
@@ -260,4 +261,64 @@ export function downloadProposalPdf(options: GeneratePdfOptions) {
   const doc = generateProposalPdf(options);
   const fileName = `Proposta-JCV-Jardinagem-${options.proposalNumber}.pdf`;
   doc.save(fileName);
+}
+
+/**
+ * Gera e faz download do PDF renderizando diretamente o elemento HTML timbrado da tela.
+ * Suporta 100% de Tailwind CSS v4 (incluindo cores oklch) com paridade visual com o botao de Imprimir.
+ */
+export async function downloadElementAsPdf(element: HTMLElement, proposalNumber: string): Promise<boolean> {
+  try {
+    const dataUrl = await toPng(element, {
+      quality: 0.98,
+      pixelRatio: 2,
+      backgroundColor: '#ffffff',
+      cacheBust: true
+    });
+
+    const img = new Image();
+    img.src = dataUrl;
+    await new Promise((resolve, reject) => {
+      img.onload = () => resolve(true);
+      img.onerror = reject;
+    });
+
+    const pdf = new jsPDF({
+      orientation: 'portrait',
+      unit: 'mm',
+      format: 'a4'
+    });
+
+    const pdfWidth = pdf.internal.pageSize.getWidth(); // 210mm
+    const pdfHeight = pdf.internal.pageSize.getHeight(); // 297mm
+    const margin = 8; // 8mm margem
+    const contentWidth = pdfWidth - (margin * 2); // 194mm
+    const contentHeight = (img.height * contentWidth) / img.width;
+
+    // Se couber em 1 pagina
+    if (contentHeight <= (pdfHeight - (margin * 2))) {
+      pdf.addImage(dataUrl, 'PNG', margin, margin, contentWidth, contentHeight);
+    } else {
+      // Paginacao caso a tabela seja muito longa
+      let heightLeft = contentHeight;
+      let position = margin;
+
+      pdf.addImage(dataUrl, 'PNG', margin, position, contentWidth, contentHeight);
+      heightLeft -= (pdfHeight - margin);
+
+      while (heightLeft > 0) {
+        position = heightLeft - contentHeight + margin;
+        pdf.addPage();
+        pdf.addImage(dataUrl, 'PNG', margin, position, contentWidth, contentHeight);
+        heightLeft -= (pdfHeight - (margin * 2));
+      }
+    }
+
+    const fileName = `Proposta-JCV-Jardinagem-${proposalNumber}.pdf`;
+    pdf.save(fileName);
+    return true;
+  } catch (err) {
+    console.error('Erro ao gerar PDF via html-to-image:', err);
+    return false;
+  }
 }

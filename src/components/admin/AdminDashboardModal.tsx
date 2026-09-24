@@ -66,8 +66,8 @@ export const AdminDashboardModal: React.FC = () => {
       title={
         <div className="flex items-center justify-between w-full pr-4">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-emerald-800 text-white flex items-center justify-center font-black shadow-sm">
-              👑
+            <div className="w-8 h-8 rounded-lg overflow-hidden shrink-0 border border-emerald-600/50 bg-black flex items-center justify-center shadow-sm">
+              <img src="img/logo.png" alt="JCV Jardinagem" className="w-full h-full object-cover" />
             </div>
             <div>
               <h2 className="font-extrabold text-base text-slate-900 dark:text-white leading-tight">

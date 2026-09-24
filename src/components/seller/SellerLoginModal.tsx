@@ -6,7 +6,7 @@ import { useCatalogStore } from '../../store/useCatalogStore';
 import { useToastStore } from '../../store/useToastStore';
 import { Modal } from '../ui/Modal';
 import { triggerHaptic } from '../../utils/haptics';
-import { Lock, KeyRound, ShieldAlert, User, ShieldCheck } from 'lucide-react';
+import { KeyRound, ShieldAlert, User, ShieldCheck } from 'lucide-react';
 import { sendTelemetry } from '../../utils/telemetry';
 
 export const SellerLoginModal: React.FC = () => {
@@ -111,8 +111,8 @@ export const SellerLoginModal: React.FC = () => {
       maxWidth="md"
       title={
         <div className="flex items-center gap-2 text-slate-800 dark:text-slate-100">
-          <div className="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-950 flex items-center justify-center text-emerald-700 dark:text-emerald-400">
-            <Lock className="w-4 h-4" />
+          <div className="w-8 h-8 rounded-lg overflow-hidden shrink-0 border border-emerald-700/30 bg-black flex items-center justify-center">
+            <img src="img/logo.png" alt="JCV Jardinagem" className="w-full h-full object-cover" />
           </div>
           <div>
             <h3 className="font-extrabold text-base leading-tight">Acesso Restrito</h3>

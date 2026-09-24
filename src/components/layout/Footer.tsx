@@ -9,8 +9,8 @@ export const Footer: React.FC = () => {
           {/* Brand Col */}
           <div className="space-y-2">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-emerald-800 text-white flex items-center justify-center font-black text-base">
-                🌿
+              <div className="w-8 h-8 rounded-lg overflow-hidden shrink-0 border border-emerald-700/30 bg-black flex items-center justify-center">
+                <img src="img/logo.png" alt="JCV Jardinagem" className="w-full h-full object-cover" />
               </div>
               <span className="font-extrabold text-base text-slate-900 dark:text-white">
                 JCV Jardinagem & Agro

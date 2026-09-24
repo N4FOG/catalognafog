@@ -87,58 +87,62 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     >
       {/* Thumb Box with Badges */}
       <div className="relative aspect-square p-3 bg-[#f8faf9] dark:bg-[#14281f] flex items-center justify-center overflow-hidden">
-        {/* Sem Estoque Badge */}
-        {!isInStock && (
-          <span className="absolute top-2 left-2 z-10 px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-gradient-to-r from-red-500 to-red-600 text-white shadow-md">
-            🚫 Sem Estoque
-          </span>
-        )}
-
-        {/* Badge do Produto (Personalizado ou Top Vendas) */}
-        {isInStock && (product.badge_texto || product.destaque) && (
-          <span
-            className={`absolute top-2 left-2 z-10 px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider text-white shadow-sm flex items-center gap-1 ${
-              product.badge_tipo === 'lancamento'
-                ? 'bg-gradient-to-r from-purple-600 to-indigo-600'
-                : product.badge_tipo === 'mais_vendido'
-                ? 'bg-gradient-to-r from-orange-500 to-amber-600'
-                : product.badge_tipo === 'natural'
-                ? 'bg-gradient-to-r from-emerald-600 to-teal-700'
-                : product.badge_tipo === 'rapido'
-                ? 'bg-gradient-to-r from-yellow-500 to-amber-600 text-slate-900 font-black'
-                : product.badge_tipo === 'premium'
-                ? 'bg-gradient-to-r from-cyan-600 to-blue-700'
-                : product.badge_tipo === 'profissional'
-                ? 'bg-gradient-to-r from-slate-700 to-slate-900'
-                : product.badge_tipo === 'oferta'
-                ? 'bg-gradient-to-r from-rose-600 to-red-600'
-                : 'bg-gradient-to-r from-amber-500 to-amber-600'
-            }`}
-          >
-            {product.badge_texto || '⭐ Top Vendas'}
-          </span>
-        )}
-
-        {/* Emojis Representativos / Alvos (1 ou mais emojis lado a lado) */}
-        {product.icones_representativos && product.icones_representativos.length > 0 ? (
-          <div
-            className="absolute top-2 right-2 z-10 px-1.5 py-0.5 rounded-full bg-white/95 dark:bg-[#0f1f17]/95 backdrop-blur-xs border border-slate-200 dark:border-slate-700 flex items-center gap-1 text-sm shadow-xs"
-            title={product.alvos?.slice(0, 4).join(', ') || catObj?.nome}
-          >
-            {product.icones_representativos.map((emoji, idx) => (
-              <span key={idx} className="leading-none select-none hover:scale-110 transition-transform">
-                {emoji}
+        {/* Top Header Bar com Badge e Emojis alinhados sem colisao */}
+        <div className="absolute top-2 inset-x-2 z-10 flex items-start justify-between gap-1 pointer-events-none">
+          <div className="min-w-0 max-w-[65%] flex items-center">
+            {/* Sem Estoque Badge */}
+            {!isInStock ? (
+              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-gradient-to-r from-red-500 to-red-600 text-white shadow-md truncate">
+                🚫 Sem Estoque
               </span>
-            ))}
+            ) : (product.badge_texto || product.destaque) ? (
+              <span
+                className={`px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider text-white shadow-sm flex items-center gap-1 truncate ${
+                  product.badge_tipo === 'lancamento'
+                    ? 'bg-gradient-to-r from-purple-600 to-indigo-600'
+                    : product.badge_tipo === 'mais_vendido'
+                    ? 'bg-gradient-to-r from-orange-500 to-amber-600'
+                    : product.badge_tipo === 'natural'
+                    ? 'bg-gradient-to-r from-emerald-600 to-teal-700'
+                    : product.badge_tipo === 'rapido'
+                    ? 'bg-gradient-to-r from-yellow-500 to-amber-600 text-slate-900 font-black'
+                    : product.badge_tipo === 'premium'
+                    ? 'bg-gradient-to-r from-cyan-600 to-blue-700'
+                    : product.badge_tipo === 'profissional'
+                    ? 'bg-gradient-to-r from-slate-700 to-slate-900'
+                    : product.badge_tipo === 'oferta'
+                    ? 'bg-gradient-to-r from-rose-600 to-red-600'
+                    : 'bg-gradient-to-r from-amber-500 to-amber-600'
+                }`}
+              >
+                <span className="truncate">{product.badge_texto || '⭐ Top Vendas'}</span>
+              </span>
+            ) : null}
           </div>
-        ) : (
-          <span
-            className="absolute top-2 right-2 z-10 w-7 h-7 rounded-full bg-white/90 dark:bg-[#0f1f17]/90 backdrop-blur-xs border border-slate-200 dark:border-slate-700 flex items-center justify-center text-sm shadow-xs"
-            title={catObj?.nome}
-          >
-            {catObj?.icone || '🌿'}
-          </span>
-        )}
+
+          {/* Emojis Representativos / Alvos */}
+          <div className="shrink-0 pointer-events-auto">
+            {product.icones_representativos && product.icones_representativos.length > 0 ? (
+              <div
+                className="px-1.5 py-0.5 rounded-full bg-white/95 dark:bg-[#0f1f17]/95 backdrop-blur-xs border border-slate-200 dark:border-slate-700 flex items-center gap-0.5 text-xs shadow-xs"
+                title={product.alvos?.slice(0, 4).join(', ') || catObj?.nome}
+              >
+                {product.icones_representativos.map((emoji, idx) => (
+                  <span key={idx} className="leading-none select-none hover:scale-110 transition-transform">
+                    {emoji}
+                  </span>
+                ))}
+              </div>
+            ) : (
+              <span
+                className="w-7 h-7 rounded-full bg-white/90 dark:bg-[#0f1f17]/90 backdrop-blur-xs border border-slate-200 dark:border-slate-700 flex items-center justify-center text-sm shadow-xs block"
+                title={catObj?.nome}
+              >
+                {catObj?.icone || '🌿'}
+              </span>
+            )}
+          </div>
+        </div>
 
         {/* Product Image */}
         <img

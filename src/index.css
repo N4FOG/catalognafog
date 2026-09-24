@@ -213,10 +213,70 @@ mark.search-highlight {
 
 /* Print Styles for Commercial Proposal */
 @media print {
-  body {
+  @page {
+    margin: 8mm 10mm;
+    size: A4 portrait;
+  }
+
+  html, body {
+    height: auto !important;
+    min-height: auto !important;
+    overflow: visible !important;
     background: white !important;
     color: black !important;
-    font-size: 11pt !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Reseta containers do Modal para evitar cortes e repeticao de fixed */
+  .fixed,
+  .overflow-hidden,
+  .overflow-y-auto {
+    position: static !important;
+    overflow: visible !important;
+    max-height: none !important;
+    height: auto !important;
+    transform: none !important;
+  }
+
+  /* Oculta tudo na pagina por padrao para nao imprimir o catalogo de fundo */
+  body * {
+    visibility: hidden;
+  }
+
+  /* Torna visivel unicamente o container da proposta e seus filhos */
+  #printable-proposal-area,
+  #printable-proposal-area * {
+    visibility: visible;
+  }
+
+  /* Reposiciona a proposta para o topo absoluto da folha de impressao */
+  #printable-proposal-area {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: white !important;
+    box-shadow: none !important;
+    border: none !important;
+    page-break-after: avoid;
+  }
+
+  #printable-proposal-area > div {
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+  }
+
+  /* Evita quebras feias dentro de linhas da tabela */
+  #printable-proposal-area tr {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
   }
 
   .no-print {
@@ -225,10 +285,5 @@ mark.search-highlight {
 
   .print-only {
     display: block !important;
-  }
-
-  @page {
-    margin: 1cm;
-    size: A4 portrait;
   }
 }

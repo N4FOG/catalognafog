@@ -7,9 +7,9 @@ import { Modal } from '../ui/Modal';
 import { PrintableProposal } from './PrintableProposal';
 import { formatDateTime, formatCurrency } from '../../utils/formatters';
 import { triggerHaptic } from '../../utils/haptics';
-import { Printer, Share2, DollarSign, FileText, Download } from 'lucide-react';
+import { DollarSign, FileText, Download } from 'lucide-react';
 import { sendTelemetry } from '../../utils/telemetry';
-import { downloadProposalPdf } from '../../utils/pdfGenerator';
+import { downloadElementAsPdf } from '../../utils/pdfGenerator';
 import type { QuoteHistoryItem } from '../../types/seller';
 
 export const ProposalModal: React.FC = () => {
@@ -19,11 +19,12 @@ export const ProposalModal: React.FC = () => {
     proposalMode
   } = useCatalogStore();
 
-  const { items, clientInfo, getTotals, paymentTerms, validityDays } = useCartStore();
+  const { items, clientInfo, getTotals } = useCartStore();
   const { isSellerLoggedIn, getActiveSeller, saveQuoteToHistory } = useSellerStore();
   const { addToast } = useToastStore();
 
   const [showPrices, setShowPrices] = useState(proposalMode === 'with_prices');
+  const [isDownloading, setIsDownloading] = useState(false);
   const totals = getTotals();
   const seller = getActiveSeller();
 
@@ -79,45 +80,25 @@ export const ProposalModal: React.FC = () => {
 
   if (!isProposalModalOpen) return null;
 
-  const handleDownloadDirectPdf = () => {
-    triggerHaptic(25);
-    downloadProposalPdf({
-      proposalNumber,
-      dateTime: currentDateTime,
-      clientInfo,
-      sellerName: seller.nome,
-      sellerPhone: seller.whatsapp,
-      items,
-      totals,
-      showPrices,
-      paymentTerms,
-      validityDays
-    });
-    addToast('📄 Download do PDF iniciado!', 'success');
-  };
-
-  const handlePrint = () => {
+  const handleDownloadDirectPdf = async () => {
     triggerHaptic(20);
-    window.print();
-  };
-
-  const handleShare = async () => {
-    triggerHaptic(15);
-    const summaryText = `📄 *Proposta Comercial JCV Jardinagem (${proposalNumber})*\nCliente: ${clientInfo.nome || 'Não informado'}\nItens: ${totals.totalQtd} produtos\n${showPrices ? `Valor: ${formatCurrency(totals.totalFinalLiquido)}` : ''}`;
-
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: `Proposta JCV Jardinagem - ${proposalNumber}`,
-          text: summaryText,
-          url: window.location.href
-        });
-        return;
-      } catch {}
+    const element = document.getElementById('printable-proposal-area');
+    if (!element) {
+      addToast('⚠️ Não foi possível localizar a área de proposta.', 'warning');
+      return;
     }
 
-    navigator.clipboard.writeText(`${summaryText}\n${window.location.href}`);
-    addToast('📋 Link e resumo copiados!', 'info');
+    setIsDownloading(true);
+    addToast('⚡ Baixando arquivo PDF...', 'info');
+
+    const ok = await downloadElementAsPdf(element, proposalNumber);
+    setIsDownloading(false);
+
+    if (ok) {
+      addToast('✅ PDF baixado com sucesso!', 'success');
+    } else {
+      addToast('⚠️ Ocorreu um erro ao gerar o arquivo.', 'error');
+    }
   };
 
   return (
@@ -172,29 +153,15 @@ export const ProposalModal: React.FC = () => {
 
           <div className="flex items-center gap-2 ml-auto flex-wrap">
             <button
-              onClick={handleShare}
-              className="py-2 px-3 rounded-xl bg-slate-200 hover:bg-slate-300 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-800 dark:text-slate-200 text-xs font-bold flex items-center gap-1.5 transition-colors"
-            >
-              <Share2 className="w-3.5 h-3.5" />
-              <span>Compartilhar</span>
-            </button>
-
-            <button
               onClick={handleDownloadDirectPdf}
-              className="py-2 px-3.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold flex items-center gap-1.5 shadow-md shadow-emerald-900/20 active:scale-95 transition-all"
-              title="Baixar arquivo PDF nativo"
+              disabled={isDownloading}
+              className={`py-2 px-4 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold flex items-center gap-1.5 shadow-md shadow-emerald-900/20 active:scale-95 transition-all ${
+                isDownloading ? 'opacity-70 cursor-not-allowed' : ''
+              }`}
+              title="Baixar arquivo PDF direto instantaneamente"
             >
               <Download className="w-4 h-4" />
-              <span>Baixar PDF</span>
-            </button>
-
-            <button
-              onClick={handlePrint}
-              className="py-2 px-3.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 text-xs font-bold flex items-center gap-1.5 border border-slate-300 dark:border-slate-600 transition-colors"
-              title="Imprimir via diálogo do sistema"
-            >
-              <Printer className="w-4 h-4" />
-              <span>Imprimir</span>
+              <span>{isDownloading ? 'Baixando...' : 'Baixar PDF'}</span>
             </button>
           </div>
         </div>

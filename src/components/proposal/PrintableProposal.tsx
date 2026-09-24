@@ -31,8 +31,8 @@ export const PrintableProposal: React.FC<PrintableProposalProps> = ({
     <div className="bg-white text-slate-900 p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-sm print:border-none print:shadow-none print:p-0 font-sans text-xs sm:text-sm">
       <div className="flex items-center justify-between pb-5 border-b-2 border-emerald-900 gap-4">
         <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-xl bg-emerald-900 text-white flex items-center justify-center font-black text-2xl print:bg-emerald-900 print:text-white shrink-0">
-            🌿
+          <div className="w-12 h-12 rounded-xl overflow-hidden shrink-0 border border-emerald-900 bg-black flex items-center justify-center print:border-emerald-900">
+            <img src="img/logo.png" alt="JCV Jardinagem" className="w-full h-full object-cover" />
           </div>
           <div>
             <h1 className="font-extrabold text-lg sm:text-xl text-emerald-950 tracking-tight leading-tight">
