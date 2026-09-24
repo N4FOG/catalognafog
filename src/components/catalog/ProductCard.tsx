@@ -152,6 +152,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             !isInStock ? 'grayscale opacity-60' : ''
           }`}
           loading="lazy"
+          onError={(e) => {
+            (e.target as HTMLImageElement).src = 'img/logo.png';
+          }}
         />
 
         {/* Formulation Pill Badge */}

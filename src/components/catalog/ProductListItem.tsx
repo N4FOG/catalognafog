@@ -57,6 +57,9 @@ export const ProductListItem: React.FC<ProductListItemProps> = ({ product }) => 
             alt={product.nome}
             className="w-full h-full object-contain group-hover:scale-105 transition-transform"
             loading="lazy"
+            onError={(e) => {
+              (e.target as HTMLImageElement).src = 'img/logo.png';
+            }}
           />
         </div>
 

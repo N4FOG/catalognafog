@@ -26,6 +26,59 @@ function doPost(e) {
       data = {};
     }
 
+    // ── UPLOAD DE IMAGEM PARA O GOOGLE DRIVE ──────────────────────────
+    if (data.action === "uploadImage") {
+      try {
+        if (!data.base64) {
+          lock.releaseLock();
+          return ContentService.createTextOutput(JSON.stringify({
+            status: "error",
+            message: "Nenhum conteúdo de imagem (base64) fornecido."
+          })).setMimeType(ContentService.MimeType.JSON);
+        }
+
+        const folder = getOrCreateImagesFolder();
+        const mimeType = data.mimeType || "image/jpeg";
+        const fileName = (data.fileName || ("produto_" + new Date().getTime() + ".jpg")).replace(/[^a-zA-Z0-9_.-]/g, "_");
+        
+        // Remove cabeçalho data:image/...;base64, se presente
+        let cleanBase64 = data.base64;
+        if (cleanBase64.indexOf("base64,") > -1) {
+          cleanBase64 = cleanBase64.split("base64,")[1];
+        }
+
+        const decodedBytes = Utilities.base64Decode(cleanBase64);
+        const blob = Utilities.newBlob(decodedBytes, mimeType, fileName);
+        const file = folder.createFile(blob);
+
+        // Define visibilidade pública para leitura
+        file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
+
+        const fileId = file.getId();
+        // Link direto do Google para imagens públicas de alta performance
+        const directImageUrl = "https://lh3.googleusercontent.com/d/" + fileId;
+        const fallbackUrl = "https://drive.google.com/uc?export=view&id=" + fileId;
+
+        lock.releaseLock();
+
+        return ContentService.createTextOutput(JSON.stringify({
+          status: "success",
+          action: "uploadImage",
+          fileId: fileId,
+          imageUrl: directImageUrl,
+          fallbackUrl: fallbackUrl,
+          message: "Imagem enviada para o Google Drive com sucesso!"
+        })).setMimeType(ContentService.MimeType.JSON);
+
+      } catch (uploadErr) {
+        lock.releaseLock();
+        return ContentService.createTextOutput(JSON.stringify({
+          status: "error",
+          message: "Erro ao processar imagem no Google Drive: " + uploadErr.toString()
+        })).setMimeType(ContentService.MimeType.JSON);
+      }
+    }
+
     // ── GESTÃO DE PRODUTOS & CATÁLOGO CLOUD (ADMIN) ────────────────────
     if (data.action === "saveProducts") {
       const sheet = getOrCreateProductsSheet();
@@ -552,4 +605,17 @@ function getOrCreateSearchTermsSheet() {
   }
 
   return sheet;
+}
+
+function getOrCreateImagesFolder() {
+  const folderName = "Catalogo_Rawell_Imagens";
+  const folders = DriveApp.getFoldersByName(folderName);
+  let folder;
+  if (folders.hasNext()) {
+    folder = folders.next();
+  } else {
+    folder = DriveApp.createFolder(folderName);
+    folder.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
+  }
+  return folder;
 }

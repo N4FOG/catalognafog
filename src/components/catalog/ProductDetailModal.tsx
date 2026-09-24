@@ -124,6 +124,9 @@ export const ProductDetailModal: React.FC = () => {
                 src={selectedProduct.imagens[selectedImageIndex] || selectedProduct.imagens[0]}
                 alt={selectedProduct.nome}
                 className={`max-h-full object-contain ${!isInStock ? 'grayscale opacity-50' : ''}`}
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = 'img/logo.png';
+                }}
               />
             </div>
 
@@ -140,7 +143,14 @@ export const ProductDetailModal: React.FC = () => {
                         : 'border-slate-200 opacity-60'
                     }`}
                   >
-                    <img src={img} alt="" className="w-full h-full object-contain" />
+                    <img
+                      src={img}
+                      alt=""
+                      className="w-full h-full object-contain"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = 'img/logo.png';
+                      }}
+                    />
                   </button>
                 ))}
               </div>

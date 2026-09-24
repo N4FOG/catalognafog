@@ -12,8 +12,13 @@ import {
   History,
   ArrowLeft,
   Plus,
-  Trash2
+  Trash2,
+  UploadCloud,
+  Image as ImageIcon,
+  Loader2,
+  ExternalLink
 } from 'lucide-react';
+import { uploadImageToDrive } from '../../utils/driveUploader';
 import type { Product } from '../../types/product';
 import type { ProductBackup } from '../../types/admin';
 
@@ -38,6 +43,43 @@ export const ProductEditModal: React.FC = () => {
   const [isSaving, setIsSaving] = useState(false);
   const [showBackupDrawer, setShowBackupDrawer] = useState(false);
   const [newTargetInput, setNewTargetInput] = useState('');
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
+  const [uploadStatusText, setUploadStatusText] = useState('');
+
+  const handleImageFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !formData) return;
+
+    if (!file.type.startsWith('image/')) {
+      addToast('⚠️ Selecione um arquivo de imagem válido (PNG, JPG, WEBP).', 'warning');
+      return;
+    }
+
+    triggerHaptic(15);
+    setIsUploadingImage(true);
+    setUploadStatusText('Otimizando imagem...');
+
+    try {
+      setUploadStatusText('Enviando para o Google Drive...');
+      const result = await uploadImageToDrive(file, formData.nome);
+
+      if (result.success && result.imageUrl) {
+        const copy = [...(formData.imagens || [])];
+        copy[0] = result.imageUrl;
+        setFormData({ ...formData, imagens: copy });
+        addToast('✅ Imagem enviada ao Google Drive com sucesso! Não esqueça de Salvar Alterações.', 'success');
+      } else {
+        addToast(`⚠️ Falha no upload: ${result.error || 'Erro desconhecido'}`, 'error');
+      }
+    } catch {
+      addToast('❌ Erro inesperado ao processar imagem.', 'error');
+    } finally {
+      setIsUploadingImage(false);
+      setUploadStatusText('');
+      // Limpa input
+      e.target.value = '';
+    }
+  };
 
   // Sincroniza dados quando o produto selecionado mudar
   useEffect(() => {
@@ -242,9 +284,9 @@ export const ProductEditModal: React.FC = () => {
 
         {/* HERO INFO EDITÁVEL COM A MESMA IDENTIDADE DO CLIENTE */}
         <div className="grid grid-cols-1 sm:grid-cols-12 gap-5 items-start">
-          {/* Imagem + Input de URL */}
-          <div className="sm:col-span-5 flex flex-col items-center space-y-2">
-            <div className="w-full aspect-square bg-slate-50 dark:bg-slate-800/80 rounded-2xl p-4 flex items-center justify-center border border-slate-100 dark:border-slate-800 shadow-inner relative">
+          {/* Imagem + Upload Google Drive + Input de URL */}
+          <div className="sm:col-span-5 flex flex-col items-center space-y-3">
+            <div className="w-full aspect-square bg-slate-50 dark:bg-slate-800/80 rounded-2xl p-4 flex items-center justify-center border border-slate-200 dark:border-slate-700 shadow-inner relative overflow-hidden group">
               {/* Badge Sem Estoque com Alternância */}
               <button
                 type="button"
@@ -252,38 +294,96 @@ export const ProductEditModal: React.FC = () => {
                   triggerHaptic(15);
                   setFormData({ ...formData, emEstoque: !isInStock });
                 }}
-                className={`absolute top-3 left-3 z-10 px-3 py-1.5 rounded-full text-xs font-black uppercase tracking-wider transition-all cursor-pointer ${
+                className={`absolute top-3 left-3 z-10 px-3 py-1.5 rounded-full text-xs font-black uppercase tracking-wider transition-all cursor-pointer shadow-md ${
                   !isInStock
-                    ? 'bg-red-600 text-white shadow-md'
-                    : 'bg-emerald-600 text-white shadow-md hover:bg-emerald-700'
+                    ? 'bg-red-600 text-white'
+                    : 'bg-emerald-600 text-white hover:bg-emerald-700'
                 }`}
                 title="Clique para alternar o status de estoque"
               >
-                {!isInStock ? '🚫 Sem Estoque (Clique p/ Ativar)' : '✅ Em Estoque (Clique p/ Pausar)'}
+                {!isInStock ? '🚫 Sem Estoque' : '✅ Em Estoque'}
               </button>
 
-              <img
-                src={formData.imagens[0]}
-                alt={formData.nome}
-                className={`max-h-full object-contain ${!isInStock ? 'grayscale opacity-50' : ''}`}
-              />
+              {/* Overlay de carregamento do upload */}
+              {isUploadingImage && (
+                <div className="absolute inset-0 z-20 bg-slate-900/80 backdrop-blur-xs flex flex-col items-center justify-center p-4 text-center text-white space-y-2">
+                  <Loader2 className="w-8 h-8 animate-spin text-emerald-400" />
+                  <span className="text-xs font-bold">{uploadStatusText}</span>
+                  <span className="text-[10px] text-slate-300">Aguarde a finalização e permissão no Drive</span>
+                </div>
+              )}
+
+              {formData.imagens && formData.imagens[0] ? (
+                <img
+                  src={formData.imagens[0]}
+                  alt={formData.nome}
+                  className={`max-h-full object-contain transition-transform group-hover:scale-105 duration-200 ${
+                    !isInStock ? 'grayscale opacity-50' : ''
+                  }`}
+                  onError={(e) => {
+                    // Fallback visual amigável caso a imagem falhe
+                    (e.target as HTMLImageElement).src = 'img/logo.png';
+                  }}
+                />
+              ) : (
+                <div className="flex flex-col items-center justify-center text-slate-400 space-y-2">
+                  <ImageIcon className="w-12 h-12 stroke-[1.5]" />
+                  <span className="text-xs font-medium">Sem imagem definida</span>
+                </div>
+              )}
             </div>
 
-            {/* Input URL da Imagem */}
-            <div className="w-full">
-              <label className="text-[11px] font-bold text-slate-500 block mb-1">
-                Link da Imagem Principal:
+            {/* BOTÃO DE UPLOAD DIRETO PARA O GOOGLE DRIVE */}
+            <div className="w-full space-y-2">
+              <label
+                className={`w-full py-2.5 px-3 rounded-xl border-2 border-dashed flex items-center justify-center gap-2 cursor-pointer transition-all ${
+                  isUploadingImage
+                    ? 'border-slate-300 bg-slate-100 text-slate-400 cursor-not-allowed'
+                    : 'border-emerald-500/70 bg-emerald-50/60 dark:bg-emerald-950/30 text-emerald-800 dark:text-emerald-300 hover:bg-emerald-100/80 hover:border-emerald-600'
+                }`}
+              >
+                <input
+                  type="file"
+                  accept="image/png,image/jpeg,image/webp,image/jpg"
+                  onChange={handleImageFileChange}
+                  disabled={isUploadingImage}
+                  className="hidden"
+                />
+                <UploadCloud className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                <span className="text-xs font-extrabold truncate">
+                  {isUploadingImage ? 'Enviando...' : '📷 Enviar Nova Foto (Google Drive)'}
+                </span>
               </label>
-              <input
-                type="text"
-                value={formData.imagens[0] || ''}
-                onChange={(e) => {
-                  const copy = [...formData.imagens];
-                  copy[0] = e.target.value;
-                  setFormData({ ...formData, imagens: copy });
-                }}
-                className="w-full py-1.5 px-2.5 text-xs bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-700 dark:text-slate-300 font-mono"
-              />
+
+              {/* Campo para Link Manual ou Visualização */}
+              <div className="w-full">
+                <div className="flex items-center justify-between mb-1">
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                    Ou Link Direto da Foto:
+                  </label>
+                  {formData.imagens[0] && formData.imagens[0].startsWith('http') && (
+                    <a
+                      href={formData.imagens[0]}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[10px] text-emerald-600 dark:text-emerald-400 hover:underline flex items-center gap-0.5 font-bold"
+                    >
+                      Abrir link <ExternalLink className="w-2.5 h-2.5" />
+                    </a>
+                  )}
+                </div>
+                <input
+                  type="text"
+                  placeholder="https://..."
+                  value={formData.imagens[0] || ''}
+                  onChange={(e) => {
+                    const copy = [...(formData.imagens || [])];
+                    copy[0] = e.target.value;
+                    setFormData({ ...formData, imagens: copy });
+                  }}
+                  className="w-full py-1.5 px-2.5 text-xs bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-700 dark:text-slate-300 font-mono truncate"
+                />
+              </div>
             </div>
           </div>
 
