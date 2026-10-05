@@ -4,16 +4,32 @@
 
 let deferredInstallPrompt = null;
 
-// ── 1. Registro do Service Worker ────────────────────────────
+// ── 1. Registro do Service Worker (APENAS EM PRODUÇÃO) ────────
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js')
-      .then((reg) => {
-        console.log('[PWA] Service Worker registrado com sucesso! Escopo:', reg.scope);
-      })
-      .catch((err) => {
-        console.warn('[PWA] Falha ao registrar Service Worker:', err);
+    // Detecta se está em desenvolvimento
+    const isDev = window.location.hostname === 'localhost' || 
+                  window.location.hostname === '127.0.0.1' ||
+                  window.location.protocol === 'file:';
+    
+    if (isDev) {
+      // Em desenvolvimento, desregistra qualquer Service Worker ativo
+      navigator.serviceWorker.getRegistrations().then((registrations) => {
+        for (const reg of registrations) {
+          reg.unregister();
+          console.log('🔧 [DEV] Service Worker desregistrado para evitar cache');
+        }
       });
+    } else {
+      // Em produção, registra o Service Worker
+      navigator.serviceWorker.register('./sw.js')
+        .then((reg) => {
+          console.log('[PWA] Service Worker registrado com sucesso! Escopo:', reg.scope);
+        })
+        .catch((err) => {
+          console.warn('[PWA] Falha ao registrar Service Worker:', err);
+        });
+    }
   });
 }
 

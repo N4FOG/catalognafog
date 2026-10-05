@@ -43,15 +43,19 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event => {
   const url = new URL(event.request.url);
 
-  // Ignorar módulos e rotas de desenvolvimento
+  // Ignorar módulos, rotas de desenvolvimento e localhost
   if (
+    url.hostname === 'localhost' ||
+    url.hostname === '127.0.0.1' ||
     url.pathname.startsWith('/@') ||
     url.pathname.startsWith('/src/') ||
+    url.pathname.startsWith('/node_modules/') ||
     url.pathname.includes('node_modules') ||
+    url.pathname.includes('vite') ||
     url.protocol === 'chrome-extension:' ||
     event.request.method !== 'GET'
   ) {
-    return;
+    return; // Deixa o browser buscar normalmente
   }
 
   // 1. Navegações HTML: NETWORK FIRST com fallback para cache se offline
