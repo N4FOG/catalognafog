@@ -186,7 +186,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
         {/* Product Image */}
         <img
-          src={product.imagens[0]}
+          src={product.imagens?.[0] || 'img/logo.png'}
           alt={product.nome}
           className={`w-4/5 h-4/5 object-contain group-hover:scale-105 transition-transform duration-300 ${
             !isInStock ? 'grayscale opacity-60' : ''
@@ -199,7 +199,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
         {/* Formulation Pill Badge */}
         <span className="absolute bottom-2 left-2 z-10 px-2 py-0.5 rounded-full text-[10px] font-bold bg-white/90 dark:bg-[#0f1f17]/90 backdrop-blur-xs border border-slate-200 dark:border-slate-700 text-[#334e40] dark:text-[#9cb8a9] shadow-xs">
-          {formObj ? `${formObj.icone} ${formObj.nome.split(' ')[0]}` : '⚡'}
+          {formObj ? `${formObj.icone} ${formObj.nome ? formObj.nome.split(' ')[0] : ''}` : '⚡'}
         </span>
       </div>
 

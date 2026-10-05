@@ -38,10 +38,68 @@ function loadStoredAdminSession(): AdminSession | null {
   }
 }
 
+export function sanitizeProduct(p: Partial<Product> | any): Product {
+  const defaultImagens = ['img/logo.png'];
+  const rawImgs = Array.isArray(p?.imagens)
+    ? p.imagens.filter((url: any) => typeof url === 'string' && url.trim().length > 0)
+    : [];
+  const imagens = rawImgs.length > 0 ? rawImgs : defaultImagens;
+  const rawNome = typeof p?.nome === 'string' ? p.nome.trim() : 'Produto Sem Nome';
+
+  return {
+    id: typeof p?.id === 'number' ? p.id : Math.floor(Date.now() + Math.random() * 1000),
+    nome: rawNome,
+    categoria: p?.categoria || 'outros',
+    tipo_formulacao: p?.tipo_formulacao || 'concentrado',
+    o_que_faz: p?.o_que_faz || p?.descricao || '',
+    para_que_serve: p?.para_que_serve || p?.o_que_faz || '',
+    como_age: p?.como_age || '',
+    como_usar: p?.como_usar || '',
+    onde_nao_usar: p?.onde_nao_usar || '',
+    seguranca: p?.seguranca || {
+      pets: 'Afastar pets até a secagem completa',
+      chuva: 'Não aplicar com previsão de chuva em 4h',
+      horario: 'Horários amenos do dia',
+      epi: 'Luvas, máscara e óculos'
+    },
+    alvos: Array.isArray(p?.alvos) ? p.alvos : [],
+    descricao: p?.descricao || p?.o_que_faz || '',
+    caracteristicas: Array.isArray(p?.caracteristicas) ? p.caracteristicas : [],
+    imagens,
+    unidade: p?.unidade || 'UN',
+    referencia: p?.referencia || `REF-${p?.id || '00'}`,
+    rendimento: p?.rendimento || '',
+    destaque: !!p?.destaque,
+    preco_base: typeof p?.preco_base === 'number' && !isNaN(p.preco_base) ? p.preco_base : 0,
+    emEstoque: p?.emEstoque !== false,
+    badge_texto: p?.badge_texto,
+    badge_tipo: p?.badge_tipo,
+    icones_representativos: Array.isArray(p?.icones_representativos) ? p.icones_representativos : ['🌿'],
+    manual_aplicacao: p?.manual_aplicacao
+  };
+}
+
+export function mergeProducts(baseProducts: Product[], incoming: any[]): Product[] {
+  if (!Array.isArray(incoming) || incoming.length === 0) {
+    return baseProducts.map(sanitizeProduct);
+  }
+
+  const map = new Map<number, Product>();
+  baseProducts.forEach((p) => map.set(p.id, sanitizeProduct(p)));
+  incoming.forEach((raw) => {
+    if (raw && typeof raw === 'object') {
+      const sanitized = sanitizeProduct(raw);
+      map.set(sanitized.id, sanitized);
+    }
+  });
+
+  return Array.from(map.values());
+}
+
 export const useAdminStore = create<AdminState>((set, get) => ({
   isAdminLoggedIn: !!loadStoredAdminSession()?.logged,
   adminSession: loadStoredAdminSession(),
-  products: PRODUTOS,
+  products: PRODUTOS.map(sanitizeProduct),
   backups: [],
   isSyncingCloud: false,
   lastCloudSync: null,
@@ -75,67 +133,30 @@ export const useAdminStore = create<AdminState>((set, get) => ({
 
   loadInitialData: async () => {
     try {
-      // 1. Tenta carregar do IndexedDB / localStorage para exibição imediata
+      // 1. Carrega edições locais salvas pelo admin, se houver
       const cachedProducts = await persistentStorage.getItem<Product[]>(ADMIN_PRODUCTS_STORAGE_KEY, []);
       const cachedBackups = await persistentStorage.getItem<ProductBackup[]>(ADMIN_BACKUPS_STORAGE_KEY, []);
 
-      if (cachedProducts && cachedProducts.length > 0) {
-        set({ products: cachedProducts, backups: cachedBackups || [] });
-        reindexProducts(cachedProducts);
-      } else {
-        set({ products: PRODUTOS, backups: cachedBackups || [] });
-        reindexProducts(PRODUTOS);
-      }
+      // SEMPRE mescla com PRODUTOS do código e sanitiza!
+      const initialProducts = mergeProducts(PRODUTOS, cachedProducts || []);
 
-      // 2. Busca silenciosamente as novidades do Google Sheets na nuvem
-      get().syncWithCloud().catch(() => {});
+      set({ products: initialProducts, backups: cachedBackups || [] });
+      reindexProducts(initialProducts);
+
+      // Atualiza o cache local com a versão mesclada e sanitizada
+      await persistentStorage.setItem(ADMIN_PRODUCTS_STORAGE_KEY, initialProducts);
     } catch (e) {
       console.warn('Erro ao carregar dados iniciais de produtos:', e);
+      const safe = PRODUTOS.map(sanitizeProduct);
+      set({ products: safe });
+      reindexProducts(safe);
     }
   },
 
   syncWithCloud: async (): Promise<boolean> => {
-    const url = CONFIG.auditWebhookUrl;
-    if (!url || !url.startsWith('http')) return false;
-
-    set({ isSyncingCloud: true });
-
-    try {
-      // Faz requisição GET ao Google Apps Script
-      const fetchUrl = `${url}${url.includes('?') ? '&' : '?'}action=getProducts&_t=${Date.now()}`;
-      const response = await fetch(fetchUrl);
-      if (!response.ok) {
-        set({ isSyncingCloud: false });
-        return false;
-      }
-
-      const resData = await response.json();
-      if (resData && resData.status === 'success' && resData.hasData && Array.isArray(resData.products)) {
-        const cloudProducts: Product[] = resData.products;
-        const cloudBackups: ProductBackup[] = Array.isArray(resData.backups) ? resData.backups : [];
-
-        // Atualiza cache local
-        await persistentStorage.setItem(ADMIN_PRODUCTS_STORAGE_KEY, cloudProducts);
-        if (cloudBackups.length > 0) {
-          await persistentStorage.setItem(ADMIN_BACKUPS_STORAGE_KEY, cloudBackups);
-        }
-
-        set({
-          products: cloudProducts,
-          backups: cloudBackups.length > 0 ? cloudBackups : get().backups,
-          isSyncingCloud: false,
-          lastCloudSync: resData.lastUpdate || new Date().toISOString()
-        });
-
-        reindexProducts(cloudProducts);
-        return true;
-      }
-    } catch (err) {
-      console.debug('Aviso na sincronização em nuvem de produtos:', err);
-    }
-
-    set({ isSyncingCloud: false });
-    return false;
+    // A busca de produtos via Google Sheets foi desativada para impedir que indisponibilidade ou inconsistência na nuvem oculte produtos do catálogo.
+    set({ isSyncingCloud: false, lastCloudSync: new Date().toISOString() });
+    return true;
   },
 
   updateProduct: async (updatedProduct: Product, changeSummary?: string): Promise<boolean> => {

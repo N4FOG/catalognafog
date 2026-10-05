@@ -313,9 +313,9 @@ export const ProductEditModal: React.FC = () => {
                 </div>
               )}
 
-              {formData.imagens && formData.imagens[0] ? (
+              {formData.imagens && formData.imagens?.[0] ? (
                 <img
-                  src={formData.imagens[0]}
+                  src={formData.imagens?.[0] || 'img/logo.png'}
                   alt={formData.nome}
                   className={`max-h-full object-contain transition-transform group-hover:scale-105 duration-200 ${
                     !isInStock ? 'grayscale opacity-50' : ''
@@ -361,9 +361,9 @@ export const ProductEditModal: React.FC = () => {
                   <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
                     Ou Link Direto da Foto:
                   </label>
-                  {formData.imagens[0] && formData.imagens[0].startsWith('http') && (
+                  {formData.imagens?.[0] && formData.imagens?.[0].startsWith('http') && (
                     <a
-                      href={formData.imagens[0]}
+                      href={formData.imagens?.[0]}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-[10px] text-emerald-600 dark:text-emerald-400 hover:underline flex items-center gap-0.5 font-bold"
@@ -375,7 +375,7 @@ export const ProductEditModal: React.FC = () => {
                 <input
                   type="text"
                   placeholder="https://..."
-                  value={formData.imagens[0] || ''}
+                  value={formData.imagens?.[0] || ''}
                   onChange={(e) => {
                     const copy = [...(formData.imagens || [])];
                     copy[0] = e.target.value;

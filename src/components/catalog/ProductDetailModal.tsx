@@ -130,7 +130,7 @@ export const ProductDetailModal: React.FC = () => {
               )}
               
               <img
-                src={selectedProduct.imagens[selectedImageIndex] || selectedProduct.imagens[0]}
+                src={(selectedProduct.imagens && selectedProduct.imagens[selectedImageIndex]) || (selectedProduct.imagens && selectedProduct.imagens[0]) || 'img/logo.png'}
                 alt={selectedProduct.nome}
                 className={`max-h-full object-contain ${!isInStock ? 'grayscale opacity-50' : ''}`}
                 onError={(e) => {
@@ -140,7 +140,7 @@ export const ProductDetailModal: React.FC = () => {
             </div>
 
             {/* Thumbnail dots/selectors if multiple */}
-            {selectedProduct.imagens.length > 1 && (
+            {Array.isArray(selectedProduct.imagens) && selectedProduct.imagens.length > 1 && (
               <div className="flex items-center gap-2 mt-2">
                 {selectedProduct.imagens.map((img, idx) => (
                   <button
@@ -153,7 +153,7 @@ export const ProductDetailModal: React.FC = () => {
                     }`}
                   >
                     <img
-                      src={img}
+                      src={img || 'img/logo.png'}
                       alt=""
                       className="w-full h-full object-contain"
                       onError={(e) => {

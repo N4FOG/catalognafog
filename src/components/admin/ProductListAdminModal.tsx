@@ -127,7 +127,7 @@ export const ProductListAdminModal: React.FC = () => {
                   <div className="flex items-center gap-3 min-w-0">
                     <div className="w-12 h-12 rounded-lg bg-slate-50 dark:bg-slate-800 p-1 border border-slate-100 dark:border-slate-800 shrink-0 flex items-center justify-center">
                       <img
-                        src={prod.imagens[0]}
+                        src={prod.imagens?.[0] || 'img/logo.png'}
                         alt={prod.nome}
                         className="w-full h-full object-contain"
                       />

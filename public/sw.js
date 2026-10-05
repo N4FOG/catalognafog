@@ -2,7 +2,7 @@
 //  JCV JARDINAGEM v3.0 — Service Worker (Cache Offline & PWA)
 // ═══════════════════════════════════════════════════════════════
 
-const CACHE_NAME = 'jcv-jardinagem-v3-cache-v12';
+const CACHE_NAME = 'jcv-jardinagem-v3-cache-v14';
 const STATIC_ASSETS = [
   './',
   './index.html',
@@ -12,39 +12,7 @@ const STATIC_ASSETS = [
   './img/icon-192.png',
   './img/icon-512.png',
   './img/icon-maskable-512.png',
-  './img/apple-touch-icon.png',
-  './img/produtos/p01-kapina-plus-60ml.webp',
-  './img/produtos/p02-kapina-tradicional-60ml.webp',
-  './img/produtos/p03-korsario-60ml.webp',
-  './img/produtos/p04-katana-30ml.webp',
-  './img/produtos/p05-kcura-fungicida-100ml.webp',
-  './img/produtos/p06-rocada-100ml.webp',
-  './img/produtos/p07-arranka-ew-100ml.webp',
-  './img/produtos/p08-arranka-pronto-uso-1l.webp',
-  './img/produtos/p09-bravick-fungicida-10ml.webp',
-  './img/produtos/p10-bravick-pronto-uso-240ml.webp',
-  './img/produtos/p11-ka-bio-fitoterapico-60ml.webp',
-  './img/produtos/p12-ka-bio-pronto-uso-240ml.webp',
-  './img/produtos/p13-impakto-inseticida.webp',
-  './img/produtos/p14-fimo-combina-spray.webp',
-  './img/produtos/p15-pankada-multi-insetos.webp',
-  './img/produtos/p16-unix-repik-30ml.webp',
-  './img/produtos/p17-arranka-spm-saude.webp',
-  './img/produtos/p18-arranka-pm-lambda.webp',
-  './img/produtos/p19-namosca-gb-20g.webp',
-  './img/produtos/p20-blekalt-25.webp',
-  './img/produtos/p21-koral-moscas-60ml.webp',
-  './img/produtos/p22-mata-formiga-gel-10g.webp',
-  './img/produtos/p23-mata-barata-gel-10g.webp',
-  './img/produtos/p24-mata-formiga-isca-50g.webp',
-  './img/produtos/p25-k-rato-soft-bait.webp',
-  './img/produtos/p26-k-rato-po-contato.webp',
-  './img/produtos/p27-karamujo-garden-30g.webp',
-  './img/produtos/p28-karamujo-metaldeido-pellets.webp',
-  './img/produtos/p29-koral-carrapatos-pulgas-60ml.webp',
-  './img/produtos/p30-koral-pronto-uso-240ml.webp',
-  './img/produtos/p31-redutor-de-ph-100ml.webp',
-  './img/produtos/p32-oleo-mineral-parafinado-100ml.webp'
+  './img/apple-touch-icon.png'
 ];
 
 // Install: cache static assets de forma tolerante a falhas parciais
@@ -71,12 +39,46 @@ self.addEventListener('activate', event => {
   self.clients.claim();
 });
 
-// Fetch: cache-first for images/assets, stale-while-revalidate for html/scripts/styles
+// Fetch: Network-First for HTML/Navigation, Cache-First for static images/fonts
 self.addEventListener('fetch', event => {
   const url = new URL(event.request.url);
 
-  // Assets Estáticos & Imagens/Fontes: Cache First
-  if (event.request.destination === 'image' || event.request.destination === 'font' || url.pathname.match(/\.(woff2|woff|ttf|webp|png|jpg|jpeg|gif|svg|ico)$/i)) {
+  // Ignorar módulos e rotas de desenvolvimento
+  if (
+    url.pathname.startsWith('/@') ||
+    url.pathname.startsWith('/src/') ||
+    url.pathname.includes('node_modules') ||
+    url.protocol === 'chrome-extension:' ||
+    event.request.method !== 'GET'
+  ) {
+    return;
+  }
+
+  // 1. Navegações HTML: NETWORK FIRST com fallback para cache se offline
+  if (event.request.mode === 'navigate' || event.request.destination === 'document') {
+    event.respondWith(
+      fetch(event.request)
+        .then(response => {
+          if (response.ok) {
+            const clone = response.clone();
+            caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
+          }
+          return response;
+        })
+        .catch(async () => {
+          const cached = await caches.match(event.request);
+          return cached || caches.match('./index.html') || caches.match('/');
+        })
+    );
+    return;
+  }
+
+  // 2. Assets Estáticos & Imagens/Fontes: Cache First
+  if (
+    event.request.destination === 'image' ||
+    event.request.destination === 'font' ||
+    url.pathname.match(/\.(woff2|woff|ttf|webp|png|jpg|jpeg|gif|svg|ico)$/i)
+  ) {
     event.respondWith(
       caches.open(CACHE_NAME).then(cache =>
         cache.match(event.request).then(cached => {
@@ -91,7 +93,7 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  // App Shell, CSS, JS: Stale While Revalidate
+  // 3. Demais requisições (JS, CSS): Stale While Revalidate
   event.respondWith(
     caches.match(event.request).then(cached => {
       const fetchPromise = fetch(event.request)

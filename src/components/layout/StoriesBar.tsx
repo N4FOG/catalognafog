@@ -34,8 +34,8 @@ export const StoriesBar: React.FC = () => {
               <div className="relative p-0.5 rounded-2xl bg-gradient-to-tr from-emerald-600 via-teal-400 to-amber-400 shadow-sm group-hover:scale-105 group-active:scale-95 transition-transform duration-200">
                 <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-[14px] bg-white dark:bg-slate-900 p-1 flex items-center justify-center overflow-hidden">
                   <img
-                    src={prod.imagens[0]}
-                    alt={prod.nome}
+                    src={prod.imagens?.[0] || 'img/logo.png'}
+                    alt={prod.nome || ''}
                     className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-300"
                     loading="lazy"
                   />
@@ -44,7 +44,7 @@ export const StoriesBar: React.FC = () => {
 
               {/* Title */}
               <span className="text-[11px] font-semibold text-slate-700 dark:text-slate-300 max-w-[68px] truncate text-center group-hover:text-emerald-700 dark:group-hover:text-emerald-400">
-                {prod.nome.split(' ')[0]}
+                {prod.nome ? prod.nome.split(' ')[0] : ''}
               </span>
             </button>
           ))}

@@ -32,12 +32,32 @@
     
     
     
+
+    <!-- Limpeza de Service Workers e Caches Antigos -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistrations().then(function(regs) {
+          for (var reg of regs) {
+            reg.unregister();
+          }
+        });
+      }
+      if ('caches' in window) {
+        caches.keys().then(function(names) {
+          for (var name of names) {
+            if (name.includes('jcv-jardinagem-v3-cache-v12') || name.includes('v13')) {
+              caches.delete(name);
+            }
+          }
+        });
+      }
+    </script>
     <script>
       document.documentElement.setAttribute('data-theme', 'light');
       document.documentElement.classList.remove('dark');
-    </script>
-    <script type="module" crossorigin src="/assets/index-BHAISgg9.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-mJivGaQX.css">
+    </script>
+    <script type="module" crossorigin src="/assets/index-Cu8YzctU.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-Dr721i_x.css">
   
     <title>Impakto Inseticida (250ml e 500ml) — JCV Jardinagem</title>
     <meta name="description" content="Inseticida sem cheiro para aranhas, baratas e cupins" />

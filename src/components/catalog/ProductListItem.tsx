@@ -82,7 +82,7 @@ export const ProductListItem: React.FC<ProductListItemProps> = ({ product }) => 
       <div className="flex items-center gap-3.5 w-full sm:w-auto flex-1 min-w-0">
         <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl bg-slate-50 dark:bg-slate-800/60 p-1.5 flex items-center justify-center shrink-0 border border-slate-100 dark:border-slate-800">
           <img
-            src={product.imagens[0]}
+            src={product.imagens?.[0] || 'img/logo.png'}
             alt={product.nome}
             className="w-full h-full object-contain group-hover:scale-105 transition-transform"
             loading="lazy"

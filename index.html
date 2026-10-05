@@ -31,12 +31,32 @@
     <meta name="twitter:title" content="JCV Jardinagem — Catálogo Oficial & Orçamentos 2026" />
     <meta name="twitter:description" content="Catálogo Oficial e Sistema de Orçamentos 2026 - JCV Jardinagem / Rawell Química." />
     <meta name="twitter:image" content="https://catalognafog.onrender.com/img/logo.png" />
+
+    <!-- Limpeza de Service Workers e Caches Antigos -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistrations().then(function(regs) {
+          for (var reg of regs) {
+            reg.unregister();
+          }
+        });
+      }
+      if ('caches' in window) {
+        caches.keys().then(function(names) {
+          for (var name of names) {
+            if (name.includes('jcv-jardinagem-v3-cache-v12') || name.includes('v13')) {
+              caches.delete(name);
+            }
+          }
+        });
+      }
+    </script>
     <script>
       document.documentElement.setAttribute('data-theme', 'light');
       document.documentElement.classList.remove('dark');
-    </script>
-    <script type="module" crossorigin src="/assets/index-BHAISgg9.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-mJivGaQX.css">
+    </script>
+    <script type="module" crossorigin src="/assets/index-Cu8YzctU.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-Dr721i_x.css">
   </head>
   <body class="bg-slate-50 text-slate-900 antialiased selection:bg-emerald-500 selection:text-white">
     <div id="root"></div>
