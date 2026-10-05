@@ -83,11 +83,11 @@ export const PRODUTOS: Product[] = [
           "dica_do_aplicador": "Evite aplicar se houver previsão de chuva nas próximas 3 horas."
         },
         {
-          "passo": 2,
-          "titulo": "Preparo da Calda no Pulverizador",
-          "descricao": "Meça a dosagem correta (ex: 10ml para um pulverizador de 2L ou o frasco todo de 60ml para 15-20L). Agite bem o frasco do produto antes de abrir. Misture na água limpa sem deixar sedimentos.",
-          "alerta": "Use um pulverizador exclusivo para gramados ou certifique-se de lavá-lo 3 vezes com sabão neutro caso tenha usado herbicidas não seletivos antes."
-        },
+                "passo": 2,
+                "titulo": "Preparo Conforme a Bula",
+                "descricao": "A diluição e o preparo da calda devem seguir estritamente as instruções contidas no rótulo/bula do produto ou a orientação direta da equipe técnica autorizada.",
+                "alerta": "Nunca dobre a dosagem recomendada; o excesso pode queimar a folha rápido demais antes do princípio ativo chegar ao rizoma."
+            },
         {
           "passo": 3,
           "titulo": "Técnica de Pulverização no Alvo",
@@ -206,8 +206,8 @@ export const PRODUTOS: Product[] = [
             },
             {
                 "passo": 2,
-                "titulo": "Preparo da Mistura no Tanque",
-                "descricao": "Agite a embalagem de 60ml antes de abrir. Meça a dose na proporção correta e misture na água limpa sem deixar sedimentos.",
+                "titulo": "Preparo Conforme a Bula",
+                "descricao": "A diluição e o preparo da calda devem seguir estritamente as instruções contidas no rótulo/bula do produto ou a orientação direta da equipe técnica autorizada.",
                 "alerta": "Nunca dobre a dosagem recomendada; o excesso pode queimar a folha rápido demais antes do princípio ativo chegar ao rizoma."
             },
             {
@@ -287,7 +287,7 @@ export const PRODUTOS: Product[] = [
     ],
     "unidade": "frasco",
     "referencia": "KOR-60",
-    "rendimento": "Trata até 600 m² dependendo do nível de infestação.",
+    "rendimento": "Rende até 600 m² de calda de pulverização.",
     "destaque": false,
     "preco_base": 50.75,
     "manual_aplicacao": {
@@ -326,8 +326,8 @@ export const PRODUTOS: Product[] = [
             },
             {
                 "passo": 2,
-                "titulo": "Preparo da Calda",
-                "descricao": "Meça a quantidade exata para o tamanho do seu pulverizador. Dissolva bem em água limpa para garantir calda uniforme.",
+                "titulo": "Preparo Conforme a Bula",
+                "descricao": "A diluição e o preparo da calda devem seguir estritamente as instruções contidas no rótulo/bula do produto ou a orientação direta da equipe técnica autorizada.",
                 "alerta": "Evite dias de vento forte para não desviar a calda para canteiros de flores sensíveis."
             },
             {
@@ -447,9 +447,9 @@ export const PRODUTOS: Product[] = [
             },
             {
                 "passo": 2,
-                "titulo": "Preparo da Dosagem Exata",
-                "descricao": "Meça a dose de 1,5ml a 2ml por litro. O Katana é um herbicida altamente concentrado e eficiente na dose certa.",
-                "dica_do_aplicador": "Se a água da sua região for de poço artesiano muito dura, use o Redutor de pH da Rawell antes de misturar o Katana."
+                "titulo": "Preparo Conforme a Bula",
+                "descricao": "A diluição e o preparo da calda devem seguir estritamente as instruções contidas no rótulo/bula do produto ou a orientação direta da equipe técnica autorizada.",
+                "alerta": "Não faça misturas ou alterações de dosagem por conta própria."
             },
             {
                 "passo": 3,
@@ -529,7 +529,7 @@ export const PRODUTOS: Product[] = [
     ],
     "unidade": "frasco",
     "referencia": "KCURA-100",
-    "rendimento": "Trata até 300 m² de gramado.",
+    "rendimento": "Rende até 300 m² de calda de pulverização.",
     "destaque": false,
     "preco_base": 44.22,
     "manual_aplicacao": {
@@ -568,8 +568,8 @@ export const PRODUTOS: Product[] = [
             },
             {
                 "passo": 2,
-                "titulo": "Preparo da Calda Homogênea",
-                "descricao": "Misture o Kcura na água limpa até obter uma calda uniforme sem grumos.",
+                "titulo": "Preparo Conforme a Bula",
+                "descricao": "A diluição e o preparo da calda devem seguir estritamente as instruções contidas no rótulo/bula do produto ou a orientação direta da equipe técnica autorizada.",
                 "alerta": "Use máscara durante a manipulação para evitar inalação da névoa."
             },
             {
@@ -652,7 +652,7 @@ export const PRODUTOS: Product[] = [
     ],
     "unidade": "frasco",
     "referencia": "ROC-100",
-    "rendimento": "Rende até 300m² de calda.",
+    "rendimento": "Rende até 300 m² de calda de pulverização.",
     "destaque": true,
     "preco_base": 38.20,
     "manual_aplicacao": {
@@ -691,9 +691,9 @@ export const PRODUTOS: Product[] = [
             },
             {
                 "passo": 2,
-                "titulo": "Preparo da Calda",
-                "descricao": "O produto já vem com óleo mineral e espalhante de alta performance incorporados, não necessitando de adjuvantes extras.",
-                "dica_do_aplicador": "Misture bem para formar uma emulsão homogênea e leitosa."
+                "titulo": "Preparo Conforme a Bula",
+                "descricao": "A diluição e o preparo da calda devem seguir estritamente as instruções contidas no rótulo/bula do produto ou a orientação direta da equipe técnica autorizada.",
+                "alerta": "Não altere a proporção de calda recomendada na bula."
             },
             {
                 "passo": 3,
@@ -774,7 +774,7 @@ export const PRODUTOS: Product[] = [
     ],
     "unidade": "frasco",
     "referencia": "ARR-EW-100",
-    "rendimento": "Trata até 300m² de área.",
+    "rendimento": "Rende até 300 m² de calda de pulverização.",
     "destaque": false,
     "preco_base": 22.75,
     "manual_aplicacao": {
@@ -813,8 +813,8 @@ export const PRODUTOS: Product[] = [
             },
             {
                 "passo": 2,
-                "titulo": "Diluição da Emulsão",
-                "descricao": "Coloque a dose no reservatório e misture com água. Por ser fórmula EW, a calda fica estável sem empelotar.",
+                "titulo": "Preparo Conforme a Bula",
+                "descricao": "A diluição e o preparo da calda devem seguir estritamente as instruções contidas no rótulo/bula do produto ou a orientação direta da equipe técnica autorizada.",
                 "alerta": "Não use a mesma água para regar vasos ou hortaliças."
             },
             {
@@ -897,7 +897,7 @@ export const PRODUTOS: Product[] = [
     ],
     "unidade": "frasco",
     "referencia": "BRAV-10",
-    "rendimento": "Rendimento pode variar significativamente de acordo com o porte da cultura, a densidade da folhagem e o equipamento de aplicação utilizado.",
+    "rendimento": "Rende até 30 m² de calda de pulverização.",
     "destaque": true,
     "preco_base": 24,
     "manual_aplicacao": {
@@ -936,8 +936,8 @@ export const PRODUTOS: Product[] = [
             },
             {
                 "passo": 2,
-                "titulo": "Mistura da Dose de 10ml",
-                "descricao": "Coloque 10ml de Bravick em 1L de água. Feche o borrifador e agite bem por 30 segundos.",
+                "titulo": "Preparo Conforme a Bula",
+                "descricao": "A diluição e o preparo da calda devem seguir estritamente as instruções contidas no rótulo/bula do produto ou a orientação direta da equipe técnica autorizada.",
                 "alerta": "Use toda a calda preparada no mesmo dia; não guarde calda diluída por semanas."
             },
             {
@@ -1019,7 +1019,7 @@ export const PRODUTOS: Product[] = [
     ],
     "unidade": "frasco",
     "referencia": "BRAV-PU-240",
-    "rendimento": "Trata dezenas de vasos e plantas em recipientes.",
+    "rendimento": "Trata até 10 m² de área foliar ou 25 vasos.",
     "destaque": false,
     "preco_base": 28,
     "manual_aplicacao": {
@@ -1142,7 +1142,7 @@ export const PRODUTOS: Product[] = [
     ],
     "unidade": "frasco",
     "referencia": "KABIO-60",
-    "rendimento": "Rende de 30 a 60 litros de calda natural.",
+    "rendimento": "Rende até 150 m² de calda de pulverização.",
     "destaque": false,
     "preco_base": 30.37,
     "manual_aplicacao": {
@@ -1181,9 +1181,9 @@ export const PRODUTOS: Product[] = [
             },
             {
                 "passo": 2,
-                "titulo": "Adição do Ka-Bio (5ml/L)",
-                "descricao": "Agite o frasco de Ka-Bio. Adicione 5ml para cada 1 litro da solução com sabão e misture bem.",
-                "alerta": "Não pule a etapa do sabão; ele é essencial para fixar o óleo botânico nas pragas."
+                "titulo": "Preparo Conforme a Bula",
+                "descricao": "A diluição e o preparo da calda devem seguir estritamente as instruções contidas no rótulo/bula do produto ou a orientação direta da equipe técnica autorizada.",
+                "alerta": "Não faça misturas ou alterações de dosagem sem orientação técnica."
             },
             {
                 "passo": 3,
@@ -1264,7 +1264,7 @@ export const PRODUTOS: Product[] = [
     ],
     "unidade": "frasco",
     "referencia": "KABIO-PU-240",
-    "rendimento": "Rende centenas de borrifadas práticas.",
+    "rendimento": "Trata até 10 m² de área foliar ou 50 vasos.",
     "destaque": false,
     "preco_base": 21.93,
     "emEstoque": false,
@@ -1385,7 +1385,7 @@ export const PRODUTOS: Product[] = [
     ],
     "unidade": "frasco",
     "referencia": "IMP-250-500",
-    "rendimento": "Frascos de 250ml e 500ml com alto rendimento.",
+    "rendimento": "Trata até 150 m² de área aplicada.",
     "destaque": true,
     "preco_base": 48,
     "manual_aplicacao": {
@@ -1506,7 +1506,7 @@ export const PRODUTOS: Product[] = [
     ],
     "unidade": "frasco",
     "referencia": "FIMO-40-120",
-    "rendimento": "Residual ativo por até 6 meses por aplicação.",
+    "rendimento": "Trata até 120 m² de área com proteção residual.",
     "destaque": false,
     "preco_base": 21.20,
     "manual_aplicacao": {
@@ -1628,7 +1628,7 @@ export const PRODUTOS: Product[] = [
     ],
     "unidade": "frasco",
     "referencia": "PANK-30-60-250",
-    "rendimento": "Altíssima concentração com diluição super econômica.",
+    "rendimento": "Rende até 600 m² de calda de pulverização.",
     "destaque": true,
     "preco_base": 32.47,
     "manual_aplicacao": {
@@ -1666,9 +1666,9 @@ export const PRODUTOS: Product[] = [
             },
             {
                 "passo": 2,
-                "titulo": "Preparo Rigoroso da Diluição (3ml/L)",
-                "descricao": "Respeite a dosagem prescrita na embalagem/manual/bula do produto. O produto tem alto teor de princípio ativo.",
-                "dica_do_aplicador": "Use seringa para puxar a dosagem milimétrica sem desperdício."
+                "titulo": "Preparo Conforme a Bula",
+                "descricao": "A diluição e o preparo da calda devem seguir estritamente as instruções contidas no rótulo/bula do produto ou a orientação direta da equipe técnica autorizada.",
+                "alerta": "Respeite rigorosamente a dosagem recomendada pelo fabricante e utilize EPIs completos."
             },
             {
                 "passo": 3,
@@ -1748,7 +1748,7 @@ export const PRODUTOS: Product[] = [
     ],
     "unidade": "frasco",
     "referencia": "UNIX-REP-30",
-    "rendimento": "Trata dezenas de metros lineares de barreira ou furos.",
+    "rendimento": "Trata até 100 metros lineares ou 150 m² de área.",
     "destaque": false,
     "preco_base": 13.50,
     "manual_aplicacao": {
@@ -1786,8 +1786,8 @@ export const PRODUTOS: Product[] = [
             },
             {
                 "passo": 2,
-                "titulo": "Preparo da Diluição",
-                "descricao": "Dilua na água limpa conforme a gravidade da infestação.",
+                "titulo": "Preparo Conforme a Bula",
+                "descricao": "A diluição e o preparo da calda devem seguir estritamente as instruções contidas no rótulo/bula do produto ou a orientação direta da equipe técnica autorizada.",
                 "alerta": "Não aplicar sobre tomadas ou fiações elétricas desencapadas."
             },
             {
@@ -1870,7 +1870,7 @@ export const PRODUTOS: Product[] = [
     ],
     "unidade": "envelope",
     "referencia": "ARR-PM-10",
-    "rendimento": "Envelope com 2 sachês de 10g.",
+    "rendimento": "Rende até 100 m² de calda de pulverização.",
     "destaque": false,
     "preco_base": 12.12,
     "manual_aplicacao": {
@@ -1989,7 +1989,7 @@ export const PRODUTOS: Product[] = [
     ],
     "unidade": "sachê",
     "referencia": "NAMOSCA-20",
-    "rendimento": "Sachê de 20g atrai e elimina milhares de moscas.",
+    "rendimento": "Trata até 10 m² de área aplicada.",
     "destaque": true,
     "preco_base": 11.68,
     "manual_aplicacao": {
@@ -2110,7 +2110,7 @@ export const PRODUTOS: Product[] = [
     ],
     "unidade": "un",
     "referencia": "BLEK-90-1KG",
-    "rendimento": "Trata galpões inteiros de granjas e confinamentos.",
+    "rendimento": "Trata até 500 m² de área construída ou galpão.",
     "destaque": true,
     "preco_base": 52.76,
     "manual_aplicacao": {
@@ -2149,8 +2149,8 @@ export const PRODUTOS: Product[] = [
             },
             {
                 "passo": 2,
-                "titulo": "Preparo da Calda com Açúcar",
-                "descricao": "Misture BleKalt + Açúcar + Água conforme a receita escolhida até homogeneizar.",
+                "titulo": "Preparo Conforme a Bula",
+                "descricao": "A diluição e o preparo da calda devem seguir estritamente as instruções contidas no rótulo/bula do produto ou a orientação direta da equipe técnica autorizada.",
                 "alerta": "Use luvas e máscara durante o preparo para não respirar o pó."
             },
             {
@@ -2231,7 +2231,7 @@ export const PRODUTOS: Product[] = [
     ],
     "unidade": "frasco",
     "referencia": "KORAL-MOSC-60",
-    "rendimento": "O uso do frasco requer seguir as instruções específicas de diluição para o volume de água adequado.",
+    "rendimento": "Rende até 600 m² de calda de pulverização.",
     "destaque": false,
     "preco_base": 40.84,
     "manual_aplicacao": {
@@ -2269,8 +2269,8 @@ export const PRODUTOS: Product[] = [
             },
             {
                 "passo": 2,
-                "titulo": "Preparo da Diluição",
-                "descricao": "Siga as instruções específicas de diluição para o volume de água adequado.",
+                "titulo": "Preparo Conforme a Bula",
+                "descricao": "A diluição e o preparo da calda devem seguir estritamente as instruções contidas no rótulo/bula do produto ou a orientação direta da equipe técnica autorizada.",
                 "alerta": "Não pulverizar sobre bancadas de preparo de comida ou pratos."
             },
             {
@@ -2351,7 +2351,7 @@ export const PRODUTOS: Product[] = [
     ],
     "unidade": "seringa",
     "referencia": "GEL-FORM-10G",
-    "rendimento": "Seringa de 10g trata dezenas de cômodos e ninhos.",
+    "rendimento": "Trata até 50 m² de área ou dezenas de ninhos.",
     "destaque": true,
     "preco_base": 11.68,
     "manual_aplicacao": {
@@ -2469,7 +2469,7 @@ export const PRODUTOS: Product[] = [
     ],
     "unidade": "seringa",
     "referencia": "GEL-BAR-10G",
-    "rendimento": "Seringa de 10g trata até 40m² de frestas e cozinhas.",
+    "rendimento": "Trata até 40 m² de frestas e superfícies.",
     "destaque": true,
     "preco_base": 7.9885,
     "manual_aplicacao": {
@@ -2589,7 +2589,7 @@ export const PRODUTOS: Product[] = [
     ],
     "unidade": "sachê",
     "referencia": "ISCA-ETIP-50",
-    "rendimento": "Sachê de 50g elimina ninhos médios de formigueiros.",
+    "rendimento": "Trata até 50 m² de área de formigueiro.",
     "destaque": true,
     "preco_base": 9.99,
     "manual_aplicacao": {
@@ -2711,7 +2711,7 @@ export const PRODUTOS: Product[] = [
     ],
     "unidade": "un",
     "referencia": "KRATO-SOFT-150-2K",
-    "rendimento": "Sachê de 200g ou Balde de 2kg para grandes infestações.",
+    "rendimento": "Trata até 200 m² de área perimetral.",
     "destaque": true,
     "preco_base": 21.93,
     "manual_aplicacao": {
@@ -2831,7 +2831,7 @@ export const PRODUTOS: Product[] = [
     ],
     "unidade": "frasco",
     "referencia": "KRATO-PO-100-250-1K",
-    "rendimento": "Frascos de 100g e 250g com alto rendimento.",
+    "rendimento": "Trata até 25 metros lineares de trilhas ou tocas.",
     "destaque": false,
     "preco_base": 160.11,
     "manual_aplicacao": {
@@ -2952,7 +2952,7 @@ export const PRODUTOS: Product[] = [
     ],
     "unidade": "sachê",
     "referencia": "KARM-GARD-30",
-    "rendimento": "Sachê de 30g cobre canteiros residenciais.",
+    "rendimento": "Trata até 10 m² de canteiros e jardins.",
     "destaque": true,
     "preco_base": 5.88,
     "manual_aplicacao": {
@@ -3072,7 +3072,7 @@ export const PRODUTOS: Product[] = [
     ],
     "unidade": "sachê",
     "referencia": "KARM-MET-200-1K",
-    "rendimento": "Sachês de 200g e 1kg para grandes áreas.",
+    "rendimento": "Trata de 40 m² a 200 m² de área perimetral.",
     "destaque": false,
     "preco_base": 38.20,
     "manual_aplicacao": {
@@ -3193,7 +3193,7 @@ export const PRODUTOS: Product[] = [
     ],
     "unidade": "frasco",
     "referencia": "KOR-CARR-60",
-    "rendimento": "Frasco de 60ml rende 20 litros de calda (limpeza de grandes pátios).",
+    "rendimento": "Rende até 600 m² de calda de pulverização.",
     "destaque": true,
     "preco_base": 37.36,
     "manual_aplicacao": {
@@ -3231,9 +3231,9 @@ export const PRODUTOS: Product[] = [
             },
             {
                 "passo": 2,
-                "titulo": "Preparo da Calda (3ml/L)",
-                "descricao": "Coloque a água limpa no tanque, adicione a dose exata do Koral e misture bem.",
-                "alerta": "Use máscara durante a pulverização."
+                "titulo": "Preparo Conforme a Bula",
+                "descricao": "A diluição e o preparo da calda devem seguir estritamente as instruções contidas no rótulo/bula do produto ou a orientação direta da equipe técnica autorizada.",
+                "alerta": "Use máscara durante a manipulação para evitar inalação da névoa."
             },
             {
                 "passo": 3,
@@ -3312,7 +3312,7 @@ export const PRODUTOS: Product[] = [
     ],
     "unidade": "frasco",
     "referencia": "KOR-PU-240",
-    "rendimento": "Frasco de 240ml com centenas de borrifadas.",
+    "rendimento": "Trata até 30 m² de área aplicada ou 20 casinhas de pet.",
     "destaque": false,
     "preco_base": 13.50,
     "manual_aplicacao": {
@@ -3430,7 +3430,7 @@ export const PRODUTOS: Product[] = [
     ],
     "unidade": "frasco",
     "referencia": "RED-PH-100",
-    "rendimento": "Frasco de 100ml trata de 50 a 100 litros de água.",
+    "rendimento": "Condiciona até 100 litros de calda de pulverização.",
     "destaque": false,
     "preco_base": 12.12,
     "emEstoque":false,
@@ -3469,9 +3469,9 @@ export const PRODUTOS: Product[] = [
             },
             {
                 "passo": 2,
-                "titulo": "Adição do Redutor de pH (PRIMEIRO DE TUDO)",
-                "descricao": "Meça 2ml para cada litro de água no tanque. Verta o produto na água limpa.",
-                "alerta": "NUNCA coloque o veneno antes do redutor; o redutor precisa agir na água primeiro."
+                "titulo": "Preparo Conforme a Bula",
+                "descricao": "A diluição e o condicionamento da calda devem seguir estritamente as instruções contidas no rótulo/bula do produto ou a orientação direta da equipe técnica autorizada.",
+                "alerta": "NUNCA coloque o defensivo antes do redutor; o redutor precisa agir na água primeiro."
             },
             {
                 "passo": 3,
@@ -3550,7 +3550,7 @@ export const PRODUTOS: Product[] = [
     ],
     "unidade": "frasco",
     "referencia": "OLEO-MIN-100",
-    "rendimento": "Frasco de 100ml prepara até 100 litros de calda.",
+    "rendimento": "Condiciona até 100 litros de calda de pulverização.",
     "destaque": true,
     "preco_base": 26.52,
     "manual_aplicacao": {
@@ -3588,9 +3588,9 @@ export const PRODUTOS: Product[] = [
             },
             {
                 "passo": 2,
-                "titulo": "Adição do Óleo Mineral (1ml/L)",
-                "descricao": "Adicione 1ml por litro de água usando uma seringa para medição exata.",
-                "alerta": "Não exceda a dose recomendada de 1ml/L para não provocar queima por excesso de óleo sob sol forte."
+                "titulo": "Preparo Conforme a Bula",
+                "descricao": "A adição e o preparo da calda com adjuvante devem seguir estritamente as instruções contidas no rótulo/bula do produto ou a orientação direta da equipe técnica autorizada.",
+                "alerta": "Não exceda a dose recomendada na bula para não provocar fitotoxidez sob sol forte."
             },
             {
                 "passo": 3,
@@ -3631,6 +3631,516 @@ export const PRODUTOS: Product[] = [
                 "icone": "🌧️"
             }
         ]
+    }
+  },
+  {
+    "id": 33,
+    "nome": "Pega Rato Krodec",
+    "categoria": "raticidas",
+    "tipo_formulacao": "gel-isca",
+    "o_que_faz": "Captura ratos com cola atóxica de alta aderência sem veneno",
+    "para_que_serve": "Ratoeira adesiva dobrável para captura de ratos e camundongos em ambientes domésticos. Produto 100% atóxico e não poluente, ideal para uso seguro em casa sem risco para crianças e pets. Cola de longa duração com eficácia mantida por até 18 meses mesmo armazenada.",
+    "como_age": "Conta com cola especial de altíssima aderência que imobiliza o roedor com segurança no momento do contato. Sem veneno, sem odor, sem substâncias nocivas — apenas a força da cola de alta performance Krodec que garante captura rápida e segura.",
+    "como_usar": "Abra as partes lentamente para não perder a aderência da cola. Arme em formato 'L' (em canto de parede), dentro de tubos ou fixado diretamente no chão. Posicione SEMPRE encostado nas paredes, que são os trajetos mais usados pelos ratos. Descarte higienicamente após o uso.",
+    "onde_nao_usar": "Evitar posicionar em áreas úmidas, pois a umidade pode comprometer a cola e reduzir a eficácia. Manter fora do alcance de crianças e animais de estimação.",
+    "seguranca": {
+      "pets": "Produto atóxico — sem risco de envenenamento. Manter fora do alcance de pets durante o uso. Após captura, descartar higienicamente sem contato direto com o animal.",
+      "chuva": "Evitar locais úmidos ou expostos à umidade. A umidade pode comprometer a cola e reduzir a eficácia da captura.",
+      "horario": "Posicionar à noite ou ao entardecer, horário de maior circulação de roedores. Verificar pela manhã.",
+      "epi": "Usar luvas descartáveis ao manusear o produto após o uso. Descarte em saco plástico fechado sem necessidade de contato com o roedor."
+    },
+    "alvos": [
+      "ratos",
+      "camundongos",
+      "ratazanas",
+      "roedores",
+      "mus musculus",
+      "rattus norvegicus"
+    ],
+    "descricao": "Ratoeira adesiva atóxica com cola de alta performance e longa duração. Captura ratos e camundongos sem veneno, sem odor, com segurança e higiene.",
+    "caracteristicas": [
+      "100% Atóxico e não poluente",
+      "Cola de alta aderência — dura até 18 meses",
+      "Captura mais de um roedor por unidade",
+      "Uso versátil: formato L, tubo ou solo",
+      "Sem veneno, sem odor, fácil de descartar",
+      "Indicado para uso doméstico"
+    ],
+    "imagens": [
+      "img/produtos/p33-pega-rato-krodec.webp"
+    ],
+    "unidade": "unidade",
+    "referencia": "KRODEC-PR-01",
+    "rendimento": "Pode capturar mais de um roedor por armadilha.",
+    "destaque": false,
+    "preco_base": 3.99,
+    "badge_texto": "Atóxico",
+    "badge_tipo": "natural",
+    "icones_representativos": ["🐀", "🪤", "🏠"],
+    "manual_aplicacao": {
+      "resumo_aplicador": "Ratoeira adesiva dobrável com cola atóxica de alta performance. Captura ratos e camundongos sem veneno, sem odor e sem bagunça. Posicione sempre encostada nas paredes, nos trajetos naturais dos roedores.",
+      "checklist_previo": [
+        "Identifique os sinais de infestação: fezes, roeduras em embalagens, trilhas oleosas nas paredes ou barulhos noturnos.",
+        "Escolha o local ideal: sempre encostado nas paredes ou em cantos, que são os caminhos naturais dos ratos.",
+        "Locais prioritários: atrás de móveis, em frestas, sob pias, em despensas e áreas de baixa luminosidade.",
+        "Evite áreas úmidas: a umidade compromete a cola. Prefira ambientes secos e protegidos."
+      ],
+      "equipamentos": [
+        "Luvas descartáveis para manuseio após o uso",
+        "Saco plástico para descarte seguro",
+        "Isca opcional (pedaço de pão, chocolate ou amendoim) para aumentar a atração"
+      ],
+      "dosagem": {
+        "pequena_area": {
+          "titulo": "Uso Pontual (1 ambiente)",
+          "dose": "1 unidade por ponto de infestação",
+          "cobertura": "1 armadilha por canto ou fresta identificada com sinais de roedores"
+        },
+        "area_total": {
+          "titulo": "Infestação Moderada (vários cômodos)",
+          "dose": "1 unidade a cada 3 a 5 metros ao longo das paredes",
+          "cobertura": "Distribua pelas paredes de toda a área afetada para bloquear os trajetos"
+        },
+        "instrucao_diluicao": "Produto pronto para uso. Abra as partes lentamente para preservar a cola. Não é necessário nenhum preparo adicional."
+      },
+      "passos": [
+        {
+          "passo": 1,
+          "titulo": "Abertura Cuidadosa da Armadilha",
+          "descricao": "Abra as partes da ratoeira LENTAMENTE para evitar perda de aderência da cola. Não toque na superfície adesiva com as mãos para não reduzir o poder de fixação.",
+          "dica_do_aplicador": "Se desejar, coloque um pequeno pedaço de isca (pão, chocolate ou amendoim) no centro da cola para aumentar a atração."
+        },
+        {
+          "passo": 2,
+          "titulo": "Posicionamento Estratégico",
+          "descricao": "Arme em formato 'L' (encostada em canto de parede), dentro de tubos de PVC ou papelão, ou fixada diretamente no chão. SEMPRE encostada nas paredes — os ratos circulam principalmente pelos cantos e bordas dos ambientes.",
+          "dica_do_aplicador": "Em locais com alta infestação, posicione duas unidades em paralelo para aumentar a área de cobertura."
+        },
+        {
+          "passo": 3,
+          "titulo": "Verificação e Monitoramento",
+          "descricao": "Verifique as armadilhas pela manhã, pois os roedores são mais ativos à noite. Se não houver captura em 3 a 4 dias, mude o ponto de posicionamento para outro local com sinais de atividade.",
+          "alerta": "Não movimente a armadilha com frequência após posicionada; os ratos desconfiam de mudanças no ambiente."
+        },
+        {
+          "passo": 4,
+          "titulo": "Descarte Seguro e Higiênico",
+          "descricao": "Após a captura, feche a armadilha dobrando-a sobre o roedor (sem contato direto). Descarte em saco plástico fechado no lixo comum. Produto sem odor e sem veneno — descarte prático e seguro.",
+          "alerta": "Use luvas descartáveis no manuseio pós-captura. Lave as mãos após o descarte."
+        },
+        {
+          "passo": 5,
+          "titulo": "Reposicionamento para Nova Captura",
+          "descricao": "Posicione uma nova unidade no mesmo local se houver sinais de continuidade da infestação. Em infestações mais sérias, recomenda-se o uso conjunto com raticidas em isca para controle mais completo.",
+          "dica_do_aplicador": "Combine com vedação de frestas e buracos de entrada para eliminar definitivamente o foco de infestação."
+        }
+      ],
+      "linha_do_tempo": [
+        {
+          "periodo": "Na Colocação",
+          "titulo": "Armadilha Pronta",
+          "descricao": "Cola de alta aderência ativa imediatamente após abertura. Eficácia garantida por até 18 meses de armazenamento.",
+          "icone": "🪤"
+        },
+        {
+          "periodo": "1ª Noite",
+          "titulo": "Período de Maior Atividade",
+          "descricao": "Ratos e camundongos são mais ativos à noite. A armadilha posicionada nas paredes intercepta o trajeto natural do roedor.",
+          "icone": "🌙"
+        },
+        {
+          "periodo": "24 a 72 Horas",
+          "titulo": "Captura Esperada",
+          "descricao": "Em locais com sinais ativos de infestação, a captura ocorre em até 3 dias. Se não houver resultado, reposicione em outro ponto.",
+          "icone": "🐀"
+        },
+        {
+          "periodo": "Após a Captura",
+          "titulo": "Descarte Fácil e Seguro",
+          "descricao": "Feche, ensaque e descarte. Sem odor, sem veneno, sem contato com o animal. Coloque uma nova unidade para manter o controle.",
+          "icone": "♻️"
+        }
+      ]
+    }
+  },
+  {
+    "id": 34,
+    "nome": "Kromax Gel Mata Barata (10g)",
+    "categoria": "formicidas-baratas",
+    "tipo_formulacao": "gel-isca",
+    "o_que_faz": "Elimina baratas com isca em gel de Imidacloprid — ação rápida e efeito prolongado",
+    "para_que_serve": "Inseticida em gel com isca altamente atrativa para combate a baratas urbanas, especialmente Blattella germânica (francesinha / paulistinha). Fórmula com Imidacloprid de ação rápida e efeito por semanas. Contém armagante para evitar ingestão acidental por humanos e pets.",
+    "como_age": "A barata é atraída pela isca altamente palatável e, ao ingerir o gel, absorve o Imidacloprid que inicia o processo de intoxicação rapidamente, levando à morte progressiva. O efeito cascata pode eliminar outros indivíduos da colônia que entrem em contato com a barata intoxicada.",
+    "como_usar": "Aplique pequenas gotas ou filetes próximo aos locais onde as baratas se escondem ou transitam: frestas, ralos, atrás de móveis, cantos escuros e soleiras. Não limpe ou remova o gel antes de 48 horas. Reaplique quando notar consumo da isca ou retorno da infestação.",
+    "onde_nao_usar": "Não aplicar diretamente sobre alimentos, utensílios ou superfícies de preparo de alimentos. Não aplicar em locais úmidos que possam dissolver o gel antes da ação. Manter fora do alcance de crianças e pets.",
+    "seguranca": {
+      "pets": "Contém armagante — substância que inibe a ingestão acidental por animais. Mesmo assim, manter fora do alcance de crianças e pets. Aplicar em locais de difícil acesso para eles.",
+      "chuva": "Evitar aplicação em locais úmidos ou expostos à água, pois a umidade pode diluir o gel e reduzir a eficácia da isca.",
+      "horario": "Aplicar preferencialmente ao final da tarde ou à noite, horário de maior atividade das baratas. Não pertube a isca por pelo menos 48 horas após aplicação.",
+      "epi": "Usar luvas durante a aplicação. Lavar as mãos após o manuseio. Evitar contato com olhos e mucosas. Armazenar em local seco, fresco e fora da luz solar direta."
+    },
+    "alvos": [
+      "baratas",
+      "blattella germanica",
+      "francesinha",
+      "paulistinha",
+      "barata pequena",
+      "barata de cozinha",
+      "insetos rasteiros"
+    ],
+    "descricao": "Gel inseticida com Imidacloprid e armagante para eliminação rápida e segura de baratas urbanas. Ação prolongada por semanas. Bisnaga com 10g.",
+    "caracteristicas": [
+      "Ingrediente ativo Imidacloprid",
+      "Fórmula atrativa — isca irresistível",
+      "Contém armagante (segurança extra)",
+      "Efeito prolongado por semanas",
+      "Aplicação em gotas ou filetes",
+      "Uso doméstico e profissional",
+      "Bisnaga aplicadora com 10g"
+    ],
+    "imagens": [
+      "img/produtos/p34-kromax-gel-mata-barata-10g.webp"
+    ],
+    "unidade": "bisnaga",
+    "referencia": "KROMAX-GEL-10G",
+    "rendimento": "1 bisnaga de 10g trata múltiplos pontos de infestação. Reaplique conforme consumo da isca.",
+    "destaque": false,
+    "preco_base": 7.98,
+    "badge_texto": "Ação Rápida",
+    "badge_tipo": "rapido",
+    "icones_representativos": ["🪳", "🎯", "🏠"],
+    "manual_aplicacao": {
+      "resumo_aplicador": "Gel inseticida com Imidacloprid para eliminação de baratas urbanas (Blattella germânica, francesinha e paulistinha). Isca altamente atrativa com efeito prolongado por semanas. Contém armagante para segurança extra.",
+      "checklist_previo": [
+        "Identifique os focos: verifique frestas, ralos, atrás de geladeiras e fogões, soleiras de portas e cantos escuros — locais preferidos das baratas.",
+        "Higienize o ambiente: remova restos de alimento e sujeira antes de aplicar para que a isca seja a única fonte de atração.",
+        "Não use inseticida spray simultâneo: o spray repele as baratas e pode impedir que elas consumam o gel.",
+        "Não remova o gel antes de 48 horas: o produto precisa de tempo para atrair e intoxicar as baratas."
+      ],
+      "equipamentos": [
+        "A própria bisnaga aplicadora (produto pronto para uso)",
+        "Luvas descartáveis para manuseio",
+        "Palito ou espátula para aplicação em frestas muito estreitas (opcional)"
+      ],
+      "dosagem": {
+        "pequena_area": {
+          "titulo": "Aplicação Pontual (por ponto)",
+          "dose": "Gotas de 0,1 a 0,3g por ponto de aplicação",
+          "cobertura": "1 bisnaga de 10g rende de 30 a 100 pontos de aplicação dependendo do tamanho das gotas"
+        },
+        "area_total": {
+          "titulo": "Tratamento de Ambiente (cozinha/banheiro)",
+          "dose": "Aplique em todos os pontos críticos do ambiente: ralos, frestas, cantos e atrás de eletrodomésticos",
+          "cobertura": "1 bisnaga trata completamente 1 a 2 ambientes infestados com múltiplos pontos"
+        },
+        "instrucao_diluicao": "Produto pronto para uso. Retire a tampa da bisnaga, encaixe o bico aplicador e pressione levemente para liberar gotas ou filetes no local desejado. Não diluir."
+      },
+      "passos": [
+        {
+          "passo": 1,
+          "titulo": "Mapeamento dos Pontos Críticos",
+          "descricao": "Identifique todos os locais com sinais de baratas: fezes (pontos escuros), odor característico, exúvias (peles) ou avistamento direto. Foque em frestas, ralos, rodapés, atrás de geladeiras, fogões e sob pias.",
+          "dica_do_aplicador": "Iluminações noturnas revelam os trajetos reais das baratas — faça a vistoria à noite para mapear melhor os pontos de aplicação."
+        },
+        {
+          "passo": 2,
+          "titulo": "Aplicação do Gel em Gotas",
+          "descricao": "Aplique pequenas gotas ou filetes diretamente nos pontos mapeados. O bico aplicador da bisnaga permite precisão em frestas e cantos estreitos. Não aplique em grandes quantidades — gotas pequenas e frequentes são mais eficazes.",
+          "dica_do_aplicador": "Aplique o gel nas superfícies verticais (laterais de frestas, rodapés) para que as baratas passem por cima e ingiram o produto ao se limparem."
+        },
+        {
+          "passo": 3,
+          "titulo": "Período de Ação — Não Perturbe",
+          "descricao": "Não limpe, não remova e não molhe o gel por pelo menos 48 horas. Esse é o período crítico de atração e intoxicação inicial das baratas. Evite também usar sprays ou outros inseticidas na área tratada.",
+          "alerta": "O uso de sprays repelentes junto com o gel anula o efeito da isca, pois as baratas fogem e não consomem o produto."
+        },
+        {
+          "passo": 4,
+          "titulo": "Monitoramento e Reaplicação",
+          "descricao": "Verifique os pontos de aplicação após 5 a 7 dias. Reaplique onde a isca estiver consumida ou ressecada. Em infestações severas, faça uma segunda aplicação completa após 15 dias para eliminar novas gerações.",
+          "dica_do_aplicador": "A presença de baratas mortas próximas aos pontos de aplicação é sinal de que o produto está funcionando corretamente."
+        }
+      ],
+      "linha_do_tempo": [
+        {
+          "periodo": "Imediato",
+          "titulo": "Isca Ativada",
+          "descricao": "O aroma atrativo do gel começa a agir imediatamente após a aplicação, atraindo as baratas para o ponto de isca.",
+          "icone": "🎯"
+        },
+        {
+          "periodo": "Minutos após ingestão",
+          "titulo": "Intoxicação Rápida",
+          "descricao": "O Imidacloprid começa a agir minutos após a ingestão, paralisando o sistema nervoso da barata e iniciando o processo de morte progressiva.",
+          "icone": "⚡"
+        },
+        {
+          "periodo": "48 a 72 Horas",
+          "titulo": "Eliminação Ativa",
+          "descricao": "Redução visível da infestação. Baratas mortas próximas aos pontos de isca confirmam a eficácia do tratamento.",
+          "icone": "🪳"
+        },
+        {
+          "periodo": "Semanas",
+          "titulo": "Proteção Prolongada",
+          "descricao": "O gel mantém sua eficácia por semanas no local de aplicação. Reaplique apenas quando a isca estiver totalmente consumida ou a infestação retornar.",
+          "icone": "🛡️"
+        }
+      ]
+    }
+  },
+  {
+    "id": 35,
+    "nome": "Kromax Gel Mata Formiga (10g)",
+    "categoria": "formicidas-baratas",
+    "tipo_formulacao": "gel-isca",
+    "o_que_faz": "Elimina toda a colônia de formigas — da operária à rainha — com Hidrametilnona",
+    "para_que_serve": "Inseticida em gel com isca altamente atrativa para formigas doceiras. A fórmula com Hidrametilnona de ação lenta permite que as operárias consumam e transportem o produto até o ninho, eliminando a colônia de dentro para fora — incluindo a rainha. Contém armagante para uso seguro em ambientes domésticos e profissionais.",
+    "como_age": "A ação lenta da Hidrametilnona é proposital: as formigas operárias não morrem imediatamente, o que lhes permite carregar o gel até o interior da colônia e compartilhá-lo com a rainha e demais indivíduos. O resultado é a extinção total da infestação, de dentro para fora, sem alarmar a colônia.",
+    "como_usar": "Aplique pequenas gotas ou filetes um pouco acima ou abaixo dos locais onde as formigas transitam. Priorize frestas, fendas, rachaduras, atrás e embaixo de móveis, pias, armários e rodapés. Aguarde a ação sem remover o gel nas primeiras 48 horas. Pode ser usado em áreas externas desde que protegidas da chuva e umidade.",
+    "onde_nao_usar": "Não aplicar diretamente sobre alimentos, utensílios ou superfícies de preparo. Evitar locais expostos à chuva ou umidade intensa. Manter fora do alcance de crianças e pets.",
+    "seguranca": {
+      "pets": "Contém armagante — substância que reduz o risco de ingestão acidental por animais. Mesmo assim, aplicar em locais fora do alcance de crianças e pets. Produto sem odor, discreto e seguro quando usado conforme as instruções.",
+      "chuva": "Evitar aplicação em locais expostos à chuva ou umidade. Em áreas externas, aplicar apenas em pontos protegidos (sob pedras, dentro de frestas cobertas, etc.).",
+      "horario": "Aplicar ao final do dia ou à noite, quando as formigas estão mais ativas no carregamento de alimentos. Não perturbe o gel por pelo menos 48 horas.",
+      "epi": "Usar luvas durante a aplicação. Lavar as mãos após o manuseio. Evitar contato com olhos e mucosas. Armazenar em local seco, fresco e fora da luz solar direta."
+    },
+    "alvos": [
+      "formigas",
+      "formigas doceiras",
+      "formigas lava-pé",
+      "formigas de cozinha",
+      "formigas pretas pequenas",
+      "colônia de formigas",
+      "formigueiro"
+    ],
+    "descricao": "Gel inseticida com Hidrametilnona de ação lenta para eliminação completa de colônias de formigas doceiras. As operárias levam o produto até o ninho, eliminando a rainha. Bisnaga 10g com armagante.",
+    "caracteristicas": [
+      "Ingrediente ativo Hidrametilnona (ação lenta)",
+      "Elimina a rainha e toda a colônia",
+      "Isca atrativa para formigas doceiras",
+      "Contém armagante (segurança extra)",
+      "Sem odor — ideal para uso interno",
+      "Uso doméstico e profissional",
+      "Bisnaga aplicadora com 10g"
+    ],
+    "imagens": [
+      "img/produtos/p35-kromax-gel-mata-formiga-10g.webp"
+    ],
+    "unidade": "bisnaga",
+    "referencia": "KROMAX-FORM-10G",
+    "rendimento": "1 bisnaga de 10g trata múltiplos pontos de infestação. Reaplique conforme consumo da isca.",
+    "destaque": false,
+    "preco_base": 7.98,
+    "badge_texto": "Elimina o Ninho",
+    "badge_tipo": "profissional",
+    "icones_representativos": ["🐜", "🎯", "🏚️"],
+    "manual_aplicacao": {
+      "resumo_aplicador": "Gel inseticida com Hidrametilnona de ação lenta para eliminação total de colônias de formigas doceiras. As operárias consomem e transportam a isca até o ninho, eliminando a rainha e toda a colônia de dentro para fora. Contém armagante.",
+      "checklist_previo": [
+        "Identifique o tipo de formiga: produto específico para formigas doceiras (pequenas, que atacam alimentos açucarados). Para formigas cortadeiras (saúva), usar formicida específico.",
+        "Mapeie os trajetos: observe por onde as formigas transitam — essas são as trilhas de comunicação com o ninho.",
+        "Não use spray antes do gel: inseticidas de contato matam as operárias antes que levem o gel ao ninho, anulando o efeito cascata.",
+        "Higienize os alimentos expostos: remova fontes de comida alternativas para que a isca seja a atração principal."
+      ],
+      "equipamentos": [
+        "A própria bisnaga aplicadora (produto pronto para uso)",
+        "Luvas descartáveis para manuseio",
+        "Palito ou espátula para aplicação em frestas muito estreitas (opcional)"
+      ],
+      "dosagem": {
+        "pequena_area": {
+          "titulo": "Aplicação Pontual (por trilha)",
+          "dose": "Gotas de 0,1 a 0,3g por ponto, ao longo da trilha de formigas",
+          "cobertura": "1 bisnaga de 10g rende de 30 a 100 pontos de aplicação"
+        },
+        "area_total": {
+          "titulo": "Infestação em Ambiente (cozinha/área de serviço)",
+          "dose": "Aplique em todos os pontos críticos: rodapés, frestas, atrás de eletrodomésticos e sob armários",
+          "cobertura": "1 bisnaga trata completamente 1 a 2 ambientes infestados com múltiplos formigueiros"
+        },
+        "instrucao_diluicao": "Produto pronto para uso. Retire a tampa da bisnaga, encaixe o bico aplicador e pressione levemente para liberar gotas ou filetes no local desejado. Não diluir."
+      },
+      "passos": [
+        {
+          "passo": 1,
+          "titulo": "Mapeamento das Trilhas de Formigas",
+          "descricao": "Observe os caminhos das formigas por alguns minutos. As trilhas são os canais de comunicação com o ninho — é nesses pontos que o gel deve ser aplicado para garantir que as operárias o encontrem e transportem.",
+          "dica_do_aplicador": "Aplique o gel ao lado da trilha, não em cima dela, para não interromper o fluxo de formigas. Elas devem circular livremente e encontrar o gel naturalmente."
+        },
+        {
+          "passo": 2,
+          "titulo": "Aplicação Estratégica do Gel",
+          "descricao": "Aplique pequenas gotas ou filetes um pouco acima ou abaixo das trilhas. Priorize: frestas, fendas, rodapés, atrás de geladeiras e fogões, sob pias e dentro de armários. O bico aplicador da bisnaga permite precisão em locais estreitos.",
+          "dica_do_aplicador": "Aplique em múltiplos pontos ao longo da trilha para aumentar as chances de contato. Quanto mais operárias carregarem o gel, mais rápida será a eliminação da colônia."
+        },
+        {
+          "passo": 3,
+          "titulo": "Aguardar — Não Perturbe as Formigas",
+          "descricao": "Não remova o gel, não limpe a área e não use spray por pelo menos 48 horas. O aumento temporário de formigas próximo ao gel é NORMAL e sinal de que a isca está sendo aceita. As operárias estão coletando e levando para o ninho.",
+          "alerta": "Matar as formigas manualmente ou com spray durante esse período interrompe o processo de contaminação da colônia e desperdiça o produto."
+        },
+        {
+          "passo": 4,
+          "titulo": "Monitoramento e Reaplicação",
+          "descricao": "Após 5 a 10 dias, observe a redução progressiva do número de formigas. Reaplique onde a isca estiver consumida. Em ninhos grandes ou infestações severas, uma segunda aplicação completa após 15 dias garante a eliminação total.",
+          "dica_do_aplicador": "Se as formigas pararem de consumir o gel após 3 a 4 dias sem eliminação visível, mude os pontos de aplicação — o ninho pode estar em outra direção."
+        }
+      ],
+      "linha_do_tempo": [
+        {
+          "periodo": "Imediato",
+          "titulo": "Isca Aceita",
+          "descricao": "As formigas operárias são atraídas pelo aroma alimentar irresistível do gel e iniciam o consumo e transporte até o ninho.",
+          "icone": "🎯"
+        },
+        {
+          "periodo": "24 a 48 Horas",
+          "titulo": "Contaminação da Colônia",
+          "descricao": "A Hidrametilnona é distribuída internamente pelas operárias e compartilhada com a rainha e demais indivíduos do ninho. Pode haver aumento temporário de formigas visíveis — sinal positivo.",
+          "icone": "🐜"
+        },
+        {
+          "periodo": "3 a 7 Dias",
+          "titulo": "Eliminação Progressiva",
+          "descricao": "Redução visível e progressiva da infestação. Número de formigas diminui conforme a colônia é contaminada internamente.",
+          "icone": "📉"
+        },
+        {
+          "periodo": "10 a 15 Dias",
+          "titulo": "Extinção Total da Colônia",
+          "descricao": "A rainha e toda a colônia são eliminadas. Reaplique se necessário para garantir a eliminação de ninhos secundários ou novas colônias migrantes.",
+          "icone": "🏚️"
+        }
+      ]
+    }
+  },
+  {
+    "id": 36,
+    "nome": "Repelente de Pombos Krodec",
+    "categoria": "inseticidas",
+    "tipo_formulacao": "gel-isca",
+    "o_que_faz": "Afasta pombos e morcegos com gel físico atóxico — sem capturar, sem matar",
+    "para_que_serve": "Gel repelente físico para afastar pombos e morcegos de beirais, marquises, telhados, coberturas e demais superfícies planas. Forma uma barreira desconfortável ao toque que impede a permanência dos animais sem causar danos ou capturá-los. Ideal para uso residencial, comercial e industrial. Rende de 10 a 15 metros lineares por bisnaga.",
+    "como_age": "O gel forma uma barreira física de superfície pegajosa e desconfortável que, ao contato com as patas dos pombos e morcegos, causa estranhamento e desconforto, fazendo com que os animais abandonem o local espontaneamente. Não é tóxico, não captura e não machuca — apenas repele de forma segura e silenciosa.",
+    "como_usar": "Limpe bem o local removendo fezes, ninhos e sujeiras antes de aplicar. Aplique o gel em zigue-zague sobre a superfície a ser protegida. Evite aplicar em locais expostos diretamente à chuva. Reaplique sempre que houver acúmulo de poeira ou após chuva forte. Para remover: espátula para o excesso, óleo mineral e depois água e sabão.",
+    "onde_nao_usar": "Evitar aplicação sobre pedras naturais, mármore ou porcelanato — o gel pode causar manchas nessas superfícies. Não aplicar sobre alimentos ou utensílios. Não usar em locais onde possa ser removido facilmente pela chuva sem proteção.",
+    "seguranca": {
+      "pets": "Produto atóxico — não causa intoxicação em animais domésticos. Manter fora do alcance de crianças e pets durante a aplicação. O gel não captura nem machuca os animais-alvo, apenas os repele.",
+      "chuva": "Evitar aplicar com chuva prevista. Reaplique sempre que a barreira for comprometida por chuva forte, poeira excessiva ou sujeira. Prefira superfícies protegidas ou cobertas.",
+      "horario": "Aplicar em dia seco e ensolarado para melhor aderência do gel à superfície. Limpe e seque bem o local antes da aplicação.",
+      "epi": "Evitar contato direto com olhos e mucosas durante a aplicação. Usar luvas para evitar contato da mão com o gel. Armazenar em local seco, longe da luz solar direta."
+    },
+    "alvos": [
+      "pombos",
+      "morcegos",
+      "aves",
+      "pássaros",
+      "beiral",
+      "marquise",
+      "telhado"
+    ],
+    "descricao": "Gel físico repelente atóxico para afastar pombos e morcegos de beirais, marquises e telhados. Ação por barreira de contato. Rende 10 a 15 metros lineares por bisnaga.",
+    "caracteristicas": [
+      "100% atóxico e não poluente",
+      "Não captura — apenas repele",
+      "Eficaz contra pombos e morcegos",
+      "Rende 10 a 15 metros lineares",
+      "Gel pronto para uso",
+      "Ação prolongada e duradoura",
+      "Uso externo em beirais e marquises"
+    ],
+    "imagens": [
+      "img/produtos/p36-repelente-pombos-krodec.webp"
+    ],
+    "unidade": "bisnaga",
+    "referencia": "KRODEC-REP-POMBO",
+    "rendimento": "Cada bisnaga rende de 10 a 15 metros lineares de barreira repelente.",
+    "destaque": false,
+    "preco_base": 24.09,
+    "badge_texto": "Atóxico",
+    "badge_tipo": "natural",
+    "icones_representativos": ["🕊️", "🦇", "🏚️"],
+    "manual_aplicacao": {
+      "resumo_aplicador": "Gel físico repelente atóxico para afastar pombos e morcegos de superfícies externas. Forma barreira de desconforto ao toque sem capturar ou machucar os animais. Aplicação em zigue-zague. Rende 10 a 15 metros lineares por bisnaga.",
+      "checklist_previo": [
+        "Limpe o local antes de tudo: remova completamente fezes, ninhos, penas e sujeiras. O gel não adere corretamente em superfícies sujas ou úmidas.",
+        "Seque a superfície: aplique apenas em superfícies secas para garantir máxima aderência e durabilidade do gel.",
+        "Verifique o tipo de superfície: EVITAR pedras naturais, mármore e porcelanato — o gel pode causar manchas permanentes nessas superfícies.",
+        "Avalie a exposição à chuva: prefira aplicar em locais protegidos ou semi-cobertos para maior durabilidade da barreira."
+      ],
+      "equipamentos": [
+        "A própria bisnaga de gel (produto pronto para uso — aplicador não incluso)",
+        "Pistola aplicadora de silicone (recomendada para melhor controle da aplicação)",
+        "Espátula para remoção do excesso quando necessário",
+        "Óleo mineral para limpeza e remoção do gel das mãos ou superfícies",
+        "Luvas de proteção e óculos durante a aplicação"
+      ],
+      "dosagem": {
+        "pequena_area": {
+          "titulo": "Proteção de Trecho Curto (até 5m)",
+          "dose": "Filetes em zigue-zague contínuo a cada 10 cm sobre a superfície",
+          "cobertura": "Meia bisnaga cobre de 5 a 7 metros lineares de proteção"
+        },
+        "area_total": {
+          "titulo": "Proteção de Beiral ou Marquise (bisnaga inteira)",
+          "dose": "Filetes em zigue-zague sobre toda a extensão da superfície a proteger",
+          "cobertura": "1 bisnaga cobre de 10 a 15 metros lineares de superfície"
+        },
+        "instrucao_diluicao": "Produto pronto para uso. Encaixe a bisnaga na pistola aplicadora (ou use diretamente), e aplique o gel em movimentos de zigue-zague contínuo sobre a superfície limpa e seca. Não diluir."
+      },
+      "passos": [
+        {
+          "passo": 1,
+          "titulo": "Limpeza e Preparação da Superfície",
+          "descricao": "Remova completamente fezes, ninhos, penas e qualquer sujeira da superfície a ser tratada. Use vassoura, espátula e água com detergente. Aguarde secar completamente antes de aplicar o gel — a aderência depende de uma superfície limpa e seca.",
+          "alerta": "Aplicar sobre superfície suja ou úmida compromete a aderência do gel e reduz drasticamente a durabilidade da barreira repelente."
+        },
+        {
+          "passo": 2,
+          "titulo": "Aplicação em Zigue-Zague",
+          "descricao": "Aplique o gel em movimento de zigue-zague contínuo sobre toda a extensão da superfície a proteger (beiral, borda de marquise, telhado, etc.). O padrão em zigue-zague garante cobertura eficiente e impede que os pombos encontrem espaço de pouso entre os filetes.",
+          "dica_do_aplicador": "Use uma pistola aplicadora de silicone para melhor controle do fluxo e uniformidade da aplicação. Isso também aumenta o rendimento da bisnaga."
+        },
+        {
+          "passo": 3,
+          "titulo": "Verificação da Barreira",
+          "descricao": "Após a aplicação, verifique se toda a extensão da superfície está coberta com filetes contínuos de gel. Reforce os pontos de pouso preferenciais dos pombos (onde há mais sujeira concentrada) com uma camada extra de gel.",
+          "dica_do_aplicador": "Pombos costumam preferir bordas e cantos para pousar — dê atenção especial a esses pontos para garantir máxima eficácia."
+        },
+        {
+          "passo": 4,
+          "titulo": "Manutenção e Reaplicação",
+          "descricao": "Verifique a barreira periodicamente, especialmente após chuvas fortes ou períodos de muita poeira. Reaplique onde o gel estiver ressecado, coberto de poeira ou removido. Para remover o gel antigo: espátula para o excesso, óleo mineral para dissolver o resíduo e água com sabão para finalizar.",
+          "alerta": "Não use solventes agressivos ou produtos abrasivos para remover o gel — use apenas óleo mineral seguido de água e sabão."
+        }
+      ],
+      "linha_do_tempo": [
+        {
+          "periodo": "Imediato",
+          "titulo": "Barreira Ativa",
+          "descricao": "O gel está ativo assim que aplicado. Pombos e morcegos que tentarem pousar sentirão o desconforto imediatamente e abandonarão o local.",
+          "icone": "🛡️"
+        },
+        {
+          "periodo": "Primeiros Dias",
+          "titulo": "Afastamento Progressivo",
+          "descricao": "Os pombos tentarão retornar algumas vezes antes de desistirem definitivamente do local. A persistência da barreira é essencial nesse período.",
+          "icone": "🕊️"
+        },
+        {
+          "periodo": "1 a 2 Semanas",
+          "titulo": "Abandono do Local",
+          "descricao": "Com a barreira íntegra, os pombos e morcegos abandonam o ponto de pouso e não retornam, desde que a superfície continue protegida.",
+          "icone": "✅"
+        },
+        {
+          "periodo": "Conforme necessário",
+          "titulo": "Reaplicação de Manutenção",
+          "descricao": "Reaplique sempre que o gel estiver comprometido por poeira, chuva forte ou desgaste natural para manter a proteção contínua e duradoura.",
+          "icone": "🔄"
+        }
+      ]
     }
   }
 ];
