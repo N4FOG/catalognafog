@@ -141,6 +141,18 @@ export const App: React.FC = () => {
     }
   }, [selectedProduct]);
 
+  // Sincroniza o produto aberto no modal caso a lista seja atualizada com variações
+  useEffect(() => {
+    if (selectedProduct && products && products.length > 0) {
+      const latest = products.find((p) => p.id === selectedProduct.id);
+      if (latest && latest !== selectedProduct) {
+        if (!selectedProduct.variacoes && latest.variacoes) {
+          setSelectedProduct(latest);
+        }
+      }
+    }
+  }, [products, selectedProduct, setSelectedProduct]);
+
   // Suporte ao botão 'Voltar' do navegador ou celular (Android / iOS)
   useEffect(() => {
     if (typeof window === 'undefined') return;

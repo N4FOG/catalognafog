@@ -48,6 +48,26 @@ export const PRODUTOS: Product[] = [
     "rendimento": "Rende até 600 m² de calda de pulverização.",
     "destaque": true,
     "preco_base": 72.87,
+    "variacoes": [
+      {
+        "id": "60ml",
+        "nome": "60ml",
+        "referencia": "KP-PLUS-60",
+        "preco_base": 72.87,
+        "unidade": "frasco",
+        "imagem": "img/produtos/p01-kapina-plus-60ml.webp",
+        "packTag": "FRASCO 60ML"
+      },
+      {
+        "id": "1l",
+        "nome": "1 Litro",
+        "referencia": "KP-PLUS-1L",
+        "preco_base": 775.00,
+        "unidade": "litro",
+        "imagem": "img/produtos/p01-kapina-plus-1l.webp",
+        "packTag": "GALÃO 1L"
+      }
+    ],
     "manual_aplicacao": {
       "resumo_aplicador": "Desinfestante seletivo sistêmico exclusivo para Grama Esmeralda. Mata folhas largas e tiriricas pela raiz sem queimar o gramado quando aplicado no mato jovem e com solo úmido.",
       "checklist_previo": [
@@ -2713,7 +2733,27 @@ export const PRODUTOS: Product[] = [
     "referencia": "KRATO-SOFT-150-2K",
     "rendimento": "Trata até 200 m² de área perimetral.",
     "destaque": true,
-    "preco_base": 21.93,
+    "preco_base": 15.36,
+    "variacoes": [
+      {
+        "id": "200g",
+        "nome": "200g",
+        "referencia": "KRATO-SOFT-200G",
+        "preco_base": 15.36,
+        "unidade": "pacote",
+        "imagem": "img/produtos/p25-k-rato-soft-bait.webp",
+        "packTag": "SACHÊ 200G"
+      },
+      {
+        "id": "2kg",
+        "nome": "2kg (Balde)",
+        "referencia": "KRATO-SOFT-2K",
+        "preco_base": 160.11,
+        "unidade": "balde",
+        "imagem": "img/produtos/p25-k-rato-soft-bait-2kg.webp",
+        "packTag": "BALDE 2KG"
+      }
+    ],
     "manual_aplicacao": {
         "resumo_aplicador": "Isca fresca macia de dose única formulada com GORDURA DE QUEIJO. Palatabilidade e atratividade máximas para ratos de esgoto, ratos de telhado e camundongos resistentes a outras iscas.",
         "checklist_previo": [
@@ -3195,7 +3235,27 @@ export const PRODUTOS: Product[] = [
     "referencia": "KOR-CARR-60",
     "rendimento": "Rende até 600 m² de calda de pulverização.",
     "destaque": true,
-    "preco_base": 37.36,
+    "preco_base": 27.02,
+    "variacoes": [
+      {
+        "id": "30ml",
+        "nome": "30ml",
+        "referencia": "KOR-CARR-30",
+        "preco_base": 27.02,
+        "unidade": "frasco",
+        "imagem": "img/produtos/p29-koral-carrapatos-pulgas-30ml.webp",
+        "packTag": "FRASCO 30ML"
+      },
+      {
+        "id": "60ml",
+        "nome": "60ml",
+        "referencia": "KOR-CARR-60",
+        "preco_base": 37.36,
+        "unidade": "frasco",
+        "imagem": "img/produtos/p29-koral-carrapatos-pulgas-60ml.webp",
+        "packTag": "FRASCO 60ML"
+      }
+    ],
     "manual_aplicacao": {
         "resumo_aplicador": "Inseticida e acaricida concentrado de ação completa contra Carrapatos e Pulgas. Fórmula de quebra total do ciclo: Adulticida, Ovicida e Larvicida (elimina ovos, larvas, ninfas e adultos).",
         "checklist_previo": [

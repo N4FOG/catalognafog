@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import type { CartItem, CartTotals, ClientInfo } from '../types/cart';
-import type { Product } from '../types/product';
+import type { Product, ProductVariation } from '../types/product';
 import type { QuoteHistoryItem } from '../types/seller';
 import { calculateCartTotals } from '../utils/calculations';
 import { PRODUTOS } from '../data/products';
@@ -15,11 +15,11 @@ interface CartState {
   isClientAccordionOpen: boolean;
   isSecondaryActionsExpanded: boolean;
 
-  addToCart: (product: Product, quantity?: number) => void;
-  removeFromCart: (productId: number) => void;
-  updateQuantity: (productId: number, quantity: number) => void;
-  updateUnitPrice: (productId: number, price: number) => void;
-  updateItemDiscount: (productId: number, discountPercent: number) => void;
+  addToCart: (product: Product, quantity?: number, variation?: ProductVariation) => void;
+  removeFromCart: (itemKey: number | string) => void;
+  updateQuantity: (itemKey: number | string, quantity: number) => void;
+  updateUnitPrice: (itemKey: number | string, price: number) => void;
+  updateItemDiscount: (itemKey: number | string, discountPercent: number) => void;
   setGlobalDiscount: (percent: number) => void;
   setClientInfo: (info: Partial<ClientInfo>) => void;
   setPaymentTerms: (val: string) => void;
@@ -59,6 +59,14 @@ function getPackTag(product: Product): string {
   return product.unidade ? product.unidade.toUpperCase() : 'UN';
 }
 
+function matchesItemKey(item: CartItem, key: number | string): boolean {
+  if (item.cartItemId && item.cartItemId === key.toString()) return true;
+  if (typeof key === 'number') {
+    return item.id === key && !item.variationId;
+  }
+  return item.cartItemId === key || (item.variationId && `${item.id}_${item.variationId}` === key) || item.id.toString() === key;
+}
+
 function loadCartItems(): CartItem[] {
   if (typeof window === 'undefined') return [];
   try {
@@ -66,12 +74,16 @@ function loadCartItems(): CartItem[] {
     const parsed: CartItem[] = raw ? JSON.parse(raw) : [];
     return parsed.map((item) => {
       const p = PRODUTOS.find((prod) => prod.id === item.id);
+      const v = item.variationId && p?.variacoes ? p.variacoes.find((varItem) => varItem.id === item.variationId) : undefined;
+      const basePrice = v ? v.preco_base : (p?.preco_base || 0);
+      const cartItemId = item.cartItemId || (item.variationId ? `${item.id}_${item.variationId}` : `${item.id}`);
       return {
         ...item,
-        preco_base: item.preco_base !== undefined ? item.preco_base : (p?.preco_base || 0),
-        preco_unitario: item.preco_unitario !== undefined ? item.preco_unitario : (item.preco_base || p?.preco_base || 0),
+        cartItemId,
+        preco_base: item.preco_base !== undefined ? item.preco_base : basePrice,
+        preco_unitario: item.preco_unitario !== undefined ? item.preco_unitario : (item.preco_base || basePrice),
         desconto_percent: item.desconto_percent || 0,
-        packTag: item.packTag || (p ? getPackTag(p) : 'UN')
+        packTag: item.packTag || (v?.packTag || (p ? getPackTag(p) : 'UN'))
       };
     });
   } catch {
@@ -109,12 +121,21 @@ export const useCartStore = create<CartState>((set, get) => ({
   isClientAccordionOpen: false,
   isSecondaryActionsExpanded: false,
 
-  addToCart: (product, quantity = 1) => {
+  addToCart: (product, quantity = 1, variation) => {
     const current = get().items;
-    const existingIndex = current.findIndex((i) => i.id === product.id);
+    const variationId = variation?.id;
+    const cartItemId = variation ? `${product.id}_${variation.id}` : `${product.id}`;
+    const existingIndex = current.findIndex((i) =>
+      variationId ? (i.id === product.id && i.variationId === variationId) : (i.id === product.id && !i.variationId)
+    );
     let updated: CartItem[];
 
-    const packTag = getPackTag(product);
+    const packTag = variation?.packTag || getPackTag(product);
+    const preco = variation ? variation.preco_base : (product.preco_base || 0);
+    const nome = variation ? `${product.nome} (${variation.nome})` : product.nome;
+    const referencia = variation ? variation.referencia : product.referencia;
+    const imagem = variation?.imagem || product.imagens?.[0] || 'img/logo.png';
+    const unidade = variation?.unidade || product.unidade;
 
     if (existingIndex > -1) {
       updated = current.map((item, idx) =>
@@ -127,13 +148,15 @@ export const useCartStore = create<CartState>((set, get) => ({
         ...current,
         {
           id: product.id,
-          nome: product.nome,
-          referencia: product.referencia,
-          unidade: product.unidade,
-          imagem: product.imagens?.[0] || 'img/logo.png',
+          cartItemId,
+          variationId,
+          nome,
+          referencia,
+          unidade,
+          imagem,
           quantidade: quantity,
-          preco_base: product.preco_base || 0,
-          preco_unitario: product.preco_base || 0,
+          preco_base: preco,
+          preco_unitario: preco,
           desconto_percent: 0,
           packTag
         }
@@ -144,34 +167,34 @@ export const useCartStore = create<CartState>((set, get) => ({
     set({ items: updated });
   },
 
-  removeFromCart: (productId) => {
-    const updated = get().items.filter((i) => i.id !== productId);
+  removeFromCart: (itemKey) => {
+    const updated = get().items.filter((i) => !matchesItemKey(i, itemKey));
     localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(updated));
     set({ items: updated });
   },
 
-  updateQuantity: (productId, quantity) => {
+  updateQuantity: (itemKey, quantity) => {
     const validQty = Math.max(1, Math.min(999, Math.floor(quantity)));
     const updated = get().items.map((item) =>
-      item.id === productId ? { ...item, quantidade: validQty } : item
+      matchesItemKey(item, itemKey) ? { ...item, quantidade: validQty } : item
     );
     localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(updated));
     set({ items: updated });
   },
 
-  updateUnitPrice: (productId, price) => {
+  updateUnitPrice: (itemKey, price) => {
     const validPrice = Math.max(0, Number(price) || 0);
     const updated = get().items.map((item) =>
-      item.id === productId ? { ...item, preco_unitario: validPrice } : item
+      matchesItemKey(item, itemKey) ? { ...item, preco_unitario: validPrice } : item
     );
     localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(updated));
     set({ items: updated });
   },
 
-  updateItemDiscount: (productId, discountPercent) => {
+  updateItemDiscount: (itemKey, discountPercent) => {
     const validDisc = Math.max(0, Math.min(100, Number(discountPercent) || 0));
     const updated = get().items.map((item) =>
-      item.id === productId ? { ...item, desconto_percent: validDisc } : item
+      matchesItemKey(item, itemKey) ? { ...item, desconto_percent: validDisc } : item
     );
     localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(updated));
     set({ items: updated });

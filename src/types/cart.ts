@@ -1,5 +1,7 @@
 export interface CartItem {
   id: number;
+  variationId?: string;
+  cartItemId?: string;
   nome: string;
   referencia: string;
   unidade: string;

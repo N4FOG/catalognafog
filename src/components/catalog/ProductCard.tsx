@@ -18,12 +18,27 @@ interface ProductCardProps {
 
 export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const [qty, setQty] = useState(1);
+  const [selectedVarIndex, setSelectedVarIndex] = useState(0);
+  const [hoveredVarIndex, setHoveredVarIndex] = useState<number | null>(null);
+
   const { items, addToCart } = useCartStore();
   const { isSellerLoggedIn, getActiveSeller } = useSellerStore();
   const { searchQuery, setSelectedProduct } = useCatalogStore();
   const { addToast } = useToastStore();
 
-  const cartItem = items.find((i) => i.id === product.id);
+  const hasVariations = Boolean(product.variacoes && product.variacoes.length > 0);
+  const currentVar = hasVariations ? product.variacoes![selectedVarIndex] : undefined;
+  const activeVar = hasVariations
+    ? (hoveredVarIndex !== null ? product.variacoes![hoveredVarIndex] : currentVar)
+    : undefined;
+
+  const currentPrice = currentVar ? currentVar.preco_base : product.preco_base;
+  const currentRef = currentVar ? currentVar.referencia : product.referencia;
+  const currentImage = activeVar?.imagem || currentVar?.imagem || product.imagens?.[0] || 'img/logo.png';
+
+  const cartItem = items.find((i) =>
+    currentVar ? (i.id === product.id && i.variationId === currentVar.id) : (i.id === product.id && !i.variationId)
+  );
   const inCart = !!cartItem;
 
   const catObj = CATEGORIAS.find((c) => c.id === product.categoria);
@@ -44,7 +59,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         );
       })
     : null;
-  const packTag = packFeature ? packFeature.split('(')[0].trim() : (product.unidade ? product.unidade.toUpperCase() : 'UN');
+  const basePackTag = packFeature ? packFeature.split('(')[0].trim() : (product.unidade ? product.unidade.toUpperCase() : 'UN');
+  const currentPackTag = currentVar?.packTag || basePackTag;
 
   const targetsGrid = (product.alvos || []).slice(0, 2);
   const moreGridCount = (product.alvos || []).length - targetsGrid.length;
@@ -60,8 +76,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const handleAddToCart = (e: React.MouseEvent) => {
     e.stopPropagation();
     triggerHaptic(20);
-    addToCart(product, qty);
-    addToast(`✅ ${product.nome} adicionado ao orçamento!`, 'success');
+    addToCart(product, qty, currentVar);
+    const itemName = currentVar ? `${product.nome} (${currentVar.nome})` : product.nome;
+    addToast(`✅ ${itemName} adicionado ao orçamento!`, 'success');
 
     const seller = getActiveSeller();
     sendTelemetry({
@@ -69,8 +86,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       vendedor: seller.nome,
       vendedor_nome: seller.nome,
       total_itens: qty,
-      resumo_itens: `${qty}x ${product.nome} (Ref: ${product.referencia})`,
-      detalhes_extras: `Produto: ${product.nome} | Qtd: ${qty} | Preço: R$ ${product.preco_base}`
+      resumo_itens: `${qty}x ${itemName} (Ref: ${currentRef})`,
+      detalhes_extras: `Produto: ${itemName} | Qtd: ${qty} | Preço: R$ ${currentPrice}`
     });
   };
 
@@ -186,9 +203,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
         {/* Product Image */}
         <img
-          src={product.imagens?.[0] || 'img/logo.png'}
+          src={currentImage}
           alt={product.nome}
-          className={`w-4/5 h-4/5 object-contain group-hover:scale-105 transition-transform duration-300 ${
+          className={`w-4/5 h-4/5 object-contain group-hover:scale-105 transition-all duration-300 ${
             !isInStock ? 'grayscale opacity-60' : ''
           }`}
           loading="lazy"
@@ -209,10 +226,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           {/* Packaging Tag & Reference */}
           <div className="flex items-center justify-between gap-1 mb-1">
             <span className="text-[10px] font-bold text-slate-500 dark:text-[#638573] uppercase tracking-wider">
-              Ref: {product.referencia}
+              Ref: {currentRef}
             </span>
             <span className="px-1.5 py-0.2 rounded text-[10px] font-bold bg-slate-100 dark:bg-[#14281f] text-[#334e40] dark:text-[#9cb8a9]">
-              📦 {packTag}
+              📦 {currentPackTag}
             </span>
           </div>
 
@@ -226,13 +243,56 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             {highlightSearch(product.descricao, searchQuery)}
           </p>
 
+          {/* Variation Pill Selector if available */}
+          {hasVariations && product.variacoes && (
+            <div className="mt-2 pt-1.5 border-t border-slate-100 dark:border-slate-800/80">
+              <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 block mb-1">
+                Tamanho da embalagem:
+              </span>
+              <div className="flex flex-wrap gap-1.5" onClick={(e) => e.stopPropagation()}>
+                {product.variacoes.map((v, idx) => {
+                  const isSelected = selectedVarIndex === idx;
+                  return (
+                    <button
+                      key={v.id}
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        triggerHaptic(10);
+                        setSelectedVarIndex(idx);
+                      }}
+                      onMouseEnter={() => setHoveredVarIndex(idx)}
+                      onMouseLeave={() => setHoveredVarIndex(null)}
+                      className={`px-2 py-0.5 rounded-lg text-[11px] font-extrabold transition-all cursor-pointer border ${
+                        isSelected
+                          ? 'bg-[#0f4531] text-white border-[#0f4531] dark:bg-[#10b981] dark:border-[#10b981] dark:text-[#0f1f17] shadow-xs scale-102'
+                          : 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:border-emerald-500'
+                      }`}
+                      title={`${v.nome} - ${formatCurrency(v.preco_base)}`}
+                    >
+                      <span>{v.nome}</span>
+                      {isSellerLoggedIn && (
+                        <span className={`ml-1 text-[10px] font-mono ${isSelected ? 'opacity-90' : 'text-slate-400'}`}>
+                          {formatCurrency(v.preco_base)}
+                        </span>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
           {/* Seller Price Box */}
           {isSellerLoggedIn && (
             <div className="inline-flex items-center gap-1.5 bg-[#10b981]/10 border border-[#10b981]/35 rounded-lg px-2 py-0.5 mt-1.5 text-xs">
               <span className="text-[#059669] font-black">💰 Tabela:</span>
               <strong className="text-[#0f1f17] dark:text-[#edf5f0] font-mono font-black">
-                {formatCurrency(product.preco_base)}
+                {formatCurrency(currentPrice)}
               </strong>
+              {currentVar && (
+                <span className="text-[10px] text-slate-500 font-semibold">({currentVar.nome})</span>
+              )}
             </div>
           )}
         </div>

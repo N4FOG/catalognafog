@@ -24,19 +24,21 @@ export const CartItemRow: React.FC<CartItemRowProps> = ({ item }) => {
   const itemTotalBruto = item.quantidade * (item.preco_unitario || item.preco_base || 0);
   const itemTotalLiquido = itemTotalBruto * (1 - (item.desconto_percent || 0) / 100);
 
+  const itemKey = item.cartItemId || (item.variationId ? `${item.id}_${item.variationId}` : item.id);
+
   const handleRemove = () => {
     triggerHaptic(20);
-    removeFromCart(item.id);
+    removeFromCart(itemKey);
   };
 
   const handleDiscountTag = (percent: number) => {
     triggerHaptic(10);
-    updateItemDiscount(item.id, percent);
+    updateItemDiscount(itemKey, percent);
   };
 
   const handleResetPrice = () => {
     triggerHaptic(10);
-    updateUnitPrice(item.id, item.preco_base);
+    updateUnitPrice(itemKey, item.preco_base);
   };
 
   return (
@@ -92,7 +94,7 @@ export const CartItemRow: React.FC<CartItemRowProps> = ({ item }) => {
       <div className="flex items-center justify-between pt-1 border-t border-slate-100 dark:border-slate-800">
         <Stepper
           value={item.quantidade}
-          onChange={(q) => updateQuantity(item.id, q)}
+          onChange={(q) => updateQuantity(itemKey, q)}
           size="sm"
         />
 
@@ -127,7 +129,7 @@ export const CartItemRow: React.FC<CartItemRowProps> = ({ item }) => {
                 min="0"
                 max="100"
                 value={item.desconto_percent || ''}
-                onChange={(e) => updateItemDiscount(item.id, parseFloat(e.target.value) || 0)}
+                onChange={(e) => updateItemDiscount(itemKey, parseFloat(e.target.value) || 0)}
                 placeholder="0"
                 className="w-12 py-0.5 px-1.5 text-center text-xs font-bold bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-1 focus:ring-emerald-500"
               />

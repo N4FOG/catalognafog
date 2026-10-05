@@ -41,6 +41,17 @@ export interface ProductApplicationManual {
   linha_do_tempo: ApplicationTimelineItem[];
 }
 
+export interface ProductVariation {
+  id: string;
+  nome: string;
+  referencia: string;
+  preco_base: number;
+  unidade: string;
+  imagem: string;
+  packTag?: string;
+  rendimento?: string;
+}
+
 export interface Product {
   id: number;
   nome: string;
@@ -66,6 +77,7 @@ export interface Product {
   badge_texto?: string; // Texto customizado do badge (ex: "Top Vendas", "Lançamento 2026")
   badge_tipo?: 'top_vendas' | 'lancamento' | 'mais_vendido' | 'natural' | 'rapido' | 'premium' | 'profissional' | 'oferta' | 'custom';
   icones_representativos?: string[]; // Array de emojis representativos (ex: ['🪳', '🐜', '🕷️', '🦂'])
+  variacoes?: ProductVariation[];
 }
 
 export interface Category {

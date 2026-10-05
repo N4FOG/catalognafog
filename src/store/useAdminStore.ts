@@ -25,7 +25,7 @@ interface AdminState {
 }
 
 const ADMIN_SESSION_STORAGE_KEY = 'rawell_admin_session_auth_v3';
-const ADMIN_PRODUCTS_STORAGE_KEY = 'rawell_products_data_v3';
+const ADMIN_PRODUCTS_STORAGE_KEY = 'rawell_products_data_v4';
 const ADMIN_BACKUPS_STORAGE_KEY = 'rawell_products_backups_v3';
 
 function loadStoredAdminSession(): AdminSession | null {
@@ -75,7 +75,8 @@ export function sanitizeProduct(p: Partial<Product> | any): Product {
     badge_texto: p?.badge_texto,
     badge_tipo: p?.badge_tipo,
     icones_representativos: Array.isArray(p?.icones_representativos) ? p.icones_representativos : ['🌿'],
-    manual_aplicacao: p?.manual_aplicacao
+    manual_aplicacao: p?.manual_aplicacao,
+    variacoes: Array.isArray(p?.variacoes) && p.variacoes.length > 0 ? p.variacoes : undefined,
   };
 }
 
@@ -85,10 +86,18 @@ export function mergeProducts(baseProducts: Product[], incoming: any[]): Product
   }
 
   const map = new Map<number, Product>();
+  // Base do código-fonte (sempre confiável, inclui variacoes oficiais e fotos)
   baseProducts.forEach((p) => map.set(p.id, sanitizeProduct(p)));
   incoming.forEach((raw) => {
-    if (raw && typeof raw === 'object') {
+    if (raw && typeof raw === 'object' && typeof raw.id === 'number') {
       const sanitized = sanitizeProduct(raw);
+      const base = map.get(sanitized.id);
+      if (base) {
+        // Preserva SEMPRE as variações oficiais do código se existirem
+        if (base.variacoes && base.variacoes.length > 0) {
+          sanitized.variacoes = base.variacoes;
+        }
+      }
       map.set(sanitized.id, sanitized);
     }
   });

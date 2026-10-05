@@ -17,19 +17,30 @@ interface ProductListItemProps {
 
 export const ProductListItem: React.FC<ProductListItemProps> = ({ product }) => {
   const [qty, setQty] = useState(1);
+  const [selectedVarIndex, setSelectedVarIndex] = useState(0);
+
   const { items, addToCart } = useCartStore();
   const { isSellerLoggedIn, getActiveSeller } = useSellerStore();
   const { setSelectedProduct } = useCatalogStore();
   const { addToast } = useToastStore();
 
-  const cartItem = items.find((i) => i.id === product.id);
+  const hasVariations = Boolean(product.variacoes && product.variacoes.length > 0);
+  const currentVar = hasVariations ? product.variacoes![selectedVarIndex] : undefined;
+  const currentPrice = currentVar ? currentVar.preco_base : product.preco_base;
+  const currentRef = currentVar ? currentVar.referencia : product.referencia;
+  const currentImage = currentVar?.imagem || product.imagens?.[0] || 'img/logo.png';
+
+  const cartItem = items.find((i) =>
+    currentVar ? (i.id === product.id && i.variationId === currentVar.id) : (i.id === product.id && !i.variationId)
+  );
   const isInCart = !!cartItem;
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.stopPropagation();
     triggerHaptic(20);
-    addToCart(product, qty);
-    addToast(`✅ ${product.nome} adicionado!`, 'success');
+    addToCart(product, qty, currentVar);
+    const itemName = currentVar ? `${product.nome} (${currentVar.nome})` : product.nome;
+    addToast(`✅ ${itemName} adicionado!`, 'success');
 
     const seller = getActiveSeller();
     sendTelemetry({
@@ -37,7 +48,7 @@ export const ProductListItem: React.FC<ProductListItemProps> = ({ product }) => 
       vendedor: seller.nome,
       vendedor_nome: seller.nome,
       total_itens: qty,
-      resumo_itens: `${qty}x ${product.nome}`
+      resumo_itens: `${qty}x ${itemName}`
     });
   };
 
@@ -82,7 +93,7 @@ export const ProductListItem: React.FC<ProductListItemProps> = ({ product }) => 
       <div className="flex items-center gap-3.5 w-full sm:w-auto flex-1 min-w-0">
         <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl bg-slate-50 dark:bg-slate-800/60 p-1.5 flex items-center justify-center shrink-0 border border-slate-100 dark:border-slate-800">
           <img
-            src={product.imagens?.[0] || 'img/logo.png'}
+            src={currentImage}
             alt={product.nome}
             className="w-full h-full object-contain group-hover:scale-105 transition-transform"
             loading="lazy"
@@ -95,7 +106,7 @@ export const ProductListItem: React.FC<ProductListItemProps> = ({ product }) => 
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-1.5 mb-1 flex-wrap">
             <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
-              {product.referencia}
+              {currentRef}
             </span>
 
             {/* Custom Badge na lista */}
@@ -144,6 +155,33 @@ export const ProductListItem: React.FC<ProductListItemProps> = ({ product }) => 
           <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-1 mt-0.5">
             {product.o_que_faz || product.descricao}
           </p>
+
+          {/* Variations Pills na lista */}
+          {hasVariations && product.variacoes && (
+            <div className="flex flex-wrap gap-1 mt-1.5" onClick={(e) => e.stopPropagation()}>
+              {product.variacoes.map((v, idx) => {
+                const isSelected = selectedVarIndex === idx;
+                return (
+                  <button
+                    key={v.id}
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      triggerHaptic(10);
+                      setSelectedVarIndex(idx);
+                    }}
+                    className={`px-2 py-0.5 rounded-md text-[10px] font-extrabold transition-all cursor-pointer border ${
+                      isSelected
+                        ? 'bg-emerald-800 text-white border-emerald-800 dark:bg-emerald-600 dark:border-emerald-600 shadow-2xs'
+                        : 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:border-emerald-500'
+                    }`}
+                  >
+                    {v.nome}
+                  </button>
+                );
+              })}
+            </div>
+          )}
         </div>
       </div>
 
@@ -154,7 +192,7 @@ export const ProductListItem: React.FC<ProductListItemProps> = ({ product }) => 
               Tabela
             </span>
             <span className="font-mono font-black text-sm sm:text-base text-emerald-700 dark:text-emerald-400">
-              {formatCurrency(product.preco_base)}
+              {formatCurrency(currentPrice)}
             </span>
           </div>
         )}

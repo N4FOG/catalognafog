@@ -22,11 +22,20 @@ export const ProductDetailModal: React.FC = () => {
 
   const [activeTab, setActiveTab] = useState<'guia' | 'aplicacao' | 'seguranca' | 'alvos'>('guia');
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const [selectedVarIndex, setSelectedVarIndex] = useState(0);
   const [qty, setQty] = useState(1);
 
   if (!selectedProduct) return null;
 
-  const cartItem = items.find((i) => i.id === selectedProduct.id);
+  const hasVariations = Boolean(selectedProduct.variacoes && selectedProduct.variacoes.length > 0);
+  const currentVar = hasVariations ? selectedProduct.variacoes![selectedVarIndex] : undefined;
+  const currentPrice = currentVar ? currentVar.preco_base : selectedProduct.preco_base;
+  const currentRef = currentVar ? currentVar.referencia : selectedProduct.referencia;
+  const currentUnit = currentVar ? currentVar.unidade : selectedProduct.unidade;
+
+  const cartItem = items.find((i) =>
+    currentVar ? (i.id === selectedProduct.id && i.variationId === currentVar.id) : (i.id === selectedProduct.id && !i.variationId)
+  );
   const isInCart = !!cartItem;
   const catObj = CATEGORIAS.find((c) => c.id === selectedProduct.categoria);
   const formObj = FORMULACOES.find((f) => f.id === selectedProduct.tipo_formulacao);
@@ -37,13 +46,15 @@ export const ProductDetailModal: React.FC = () => {
   const handleClose = () => {
     setSelectedProduct(null);
     setSelectedImageIndex(0);
+    setSelectedVarIndex(0);
     setActiveTab('guia');
   };
 
   const handleAddToCart = () => {
     triggerHaptic(20);
-    addToCart(selectedProduct, qty);
-    addToast(`✅ ${selectedProduct.nome} adicionado ao orçamento!`, 'success');
+    addToCart(selectedProduct, qty, currentVar);
+    const itemName = currentVar ? `${selectedProduct.nome} (${currentVar.nome})` : selectedProduct.nome;
+    addToast(`✅ ${itemName} adicionado ao orçamento!`, 'success');
 
     const seller = getActiveSeller();
     sendTelemetry({
@@ -51,7 +62,7 @@ export const ProductDetailModal: React.FC = () => {
       vendedor: seller.nome,
       vendedor_nome: seller.nome,
       total_itens: qty,
-      resumo_itens: `${qty}x ${selectedProduct.nome}`
+      resumo_itens: `${qty}x ${itemName}`
     });
   };
 
@@ -91,7 +102,7 @@ export const ProductDetailModal: React.FC = () => {
         <div className="flex items-center justify-between w-full pr-4">
           <div className="flex items-center gap-2">
             <span className="text-xs font-bold px-2 py-0.5 rounded-lg bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">
-              CÓDIGO: {selectedProduct.referencia}
+              CÓDIGO: {currentRef}
             </span>
             <span className="text-xs font-semibold text-slate-500 uppercase">
               {selectedProduct.categoria}
@@ -130,7 +141,7 @@ export const ProductDetailModal: React.FC = () => {
               )}
               
               <img
-                src={(selectedProduct.imagens && selectedProduct.imagens[selectedImageIndex]) || (selectedProduct.imagens && selectedProduct.imagens[0]) || 'img/logo.png'}
+                src={currentVar?.imagem || (selectedProduct.imagens && selectedProduct.imagens[selectedImageIndex]) || (selectedProduct.imagens && selectedProduct.imagens[0]) || 'img/logo.png'}
                 alt={selectedProduct.nome}
                 className={`max-h-full object-contain ${!isInStock ? 'grayscale opacity-50' : ''}`}
                 onError={(e) => {
@@ -235,6 +246,52 @@ export const ProductDetailModal: React.FC = () => {
               </div>
             </div>
 
+            {/* Variations Selector if available */}
+            {hasVariations && selectedProduct.variacoes && (
+              <div className="bg-slate-50 dark:bg-slate-800/80 p-3 rounded-xl border border-slate-200 dark:border-slate-700/80 space-y-1.5">
+                <span className="text-xs font-bold text-slate-600 dark:text-slate-300 block">
+                  Escolha o Tamanho da Embalagem:
+                </span>
+                <div className="grid grid-cols-2 gap-2">
+                  {selectedProduct.variacoes.map((v, idx) => {
+                    const isSelected = selectedVarIndex === idx;
+                    return (
+                      <button
+                        key={v.id}
+                        type="button"
+                        onClick={() => {
+                          triggerHaptic(15);
+                          setSelectedVarIndex(idx);
+                        }}
+                        className={`p-2.5 rounded-xl border flex flex-col text-left transition-all cursor-pointer ${
+                          isSelected
+                            ? 'bg-emerald-50 dark:bg-emerald-950/60 border-emerald-600 dark:border-emerald-500 shadow-xs ring-1 ring-emerald-500'
+                            : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 opacity-80'
+                        }`}
+                      >
+                        <div className="flex items-center justify-between w-full">
+                          <span className={`text-xs font-extrabold ${isSelected ? 'text-emerald-900 dark:text-emerald-300' : 'text-slate-800 dark:text-slate-200'}`}>
+                            {v.nome}
+                          </span>
+                          <span className={`w-3.5 h-3.5 rounded-full border flex items-center justify-center ${isSelected ? 'border-emerald-600 bg-emerald-600 text-white' : 'border-slate-300'}`}>
+                            {isSelected && <span className="w-1.5 h-1.5 rounded-full bg-white block" />}
+                          </span>
+                        </div>
+                        <span className="text-[10px] text-slate-500 font-mono mt-0.5">
+                          Ref: {v.referencia}
+                        </span>
+                        {isSellerLoggedIn && (
+                          <span className={`text-xs font-black font-mono mt-1 ${isSelected ? 'text-emerald-700 dark:text-emerald-400' : 'text-slate-600 dark:text-slate-400'}`}>
+                            {formatCurrency(v.preco_base)}
+                          </span>
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
             {/* Price Box */}
             {isSellerLoggedIn && (
               <div className="flex items-baseline gap-2 bg-slate-100 dark:bg-slate-800/70 p-3 rounded-xl border border-slate-200 dark:border-slate-700">
@@ -242,9 +299,9 @@ export const ProductDetailModal: React.FC = () => {
                   Preço de Tabela:
                 </span>
                 <span className="font-mono font-black text-2xl text-emerald-700 dark:text-emerald-400">
-                  {formatCurrency(selectedProduct.preco_base)}
+                  {formatCurrency(currentPrice)}
                 </span>
-                <span className="text-xs text-slate-500">/{selectedProduct.unidade}</span>
+                <span className="text-xs text-slate-500">/{currentUnit}</span>
               </div>
             )}
 
