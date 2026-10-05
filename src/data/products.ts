@@ -2796,7 +2796,7 @@ export const PRODUTOS: Product[] = [
   },
   {
     "id": 26,
-    "nome": "K-Rato Raticida Pó de Contato (100g e 250g)",
+    "nome": "K-Rato Raticida Pó de Contato (100g)",
     "categoria": "raticidas",
     "tipo_formulacao": "po",
     "o_que_faz": "Pó aderente aos pelos: contamina a colônia e o roedor seca",
@@ -2824,16 +2824,16 @@ export const PRODUTOS: Product[] = [
       "Aderente aos pelos dos roedores",
       "Contamina toda a colônia",
       "Roedor seca após a morte",
-      "Frascos 100g, 250g e 1kg"
+      "Frasco 100g"
     ],
     "imagens": [
       "img/produtos/p26-k-rato-po-contato.webp"
     ],
     "unidade": "frasco",
-    "referencia": "KRATO-PO-100-250-1K",
+    "referencia": "KRATO-PO-100",
     "rendimento": "Trata até 25 metros lineares de trilhas ou tocas.",
     "destaque": false,
-    "preco_base": 160.11,
+    "preco_base": 21.93,
     "manual_aplicacao": {
         "resumo_aplicador": "Raticida anticoagulante em pó fino aderente para aplicação em tocas, conduítes, forros e frestas. O roedor caminha, o pó gruda nos pelos e patas e é ingerido durante a autolimpeza.",
         "checklist_previo": [
@@ -4139,6 +4139,259 @@ export const PRODUTOS: Product[] = [
           "titulo": "Reaplicação de Manutenção",
           "descricao": "Reaplique sempre que o gel estiver comprometido por poeira, chuva forte ou desgaste natural para manter a proteção contínua e duradoura.",
           "icone": "🔄"
+        }
+      ]
+    }
+  },
+  {
+    "id": 37,
+    "nome": "Raticida Kyrraty (100g)",
+    "categoria": "raticidas",
+    "tipo_formulacao": "po",
+    "o_que_faz": "Mata ratos, ratazanas e camundongos por dupla ação — ingestão e impregnação nas patas",
+    "para_que_serve": "Raticida em isca granulada com Bromadiolone 0,005% para controle eficaz de ratos, ratazanas e camundongos em instalações residenciais, comerciais e em armazenamentos em geral. Dose única: basta 1g de consumo. Elimina inclusive filhotes via leite materno contaminado, interrompendo o ciclo reprodutivo da infestação.",
+    "como_age": "Age por dupla ação: 1º por ingestão direta ao consumir a isca granulada; 2º por impregnação nas patas e pelos ao caminhar sobre o produto — o hábito de limpeza dos roedores (lambedura) força a ingestão indireta. O Bromadiolone causa hemorragia interna e desidratação progressiva, levando à morte entre o 3º e 7º dia após o consumo. A fêmea prenha contamina os filhotes via leite materno, eliminando toda a geração.",
+    "como_usar": "Coloque a isca granulada a cada 5 metros de distância nos locais mais frequentados pelos roedores. Cada unidade de 100g rende até 4 aplicações de 25g. Posicione próximo a paredes, rodapés, atrás de móveis e em pontos com sinais de atividade (fezes, roeduras, trilhas oleosas). Repor a isca quando consumida.",
+    "onde_nao_usar": "PRODUTO VENENO — manter TOTALMENTE fora do alcance de crianças, pets, aves domésticas e animais silvestres. Não aplicar em locais abertos com acesso irrestrito de animais domésticos. Não usar próximo a alimentos ou utensílios domésticos sem proteção adequada.",
+    "seguranca": {
+      "pets": "ATENÇÃO: produto venenoso com Bromadiolone. Manter absolutamente fora do alcance de cães, gatos e outros pets. Utilizar porta-iscas fechados e seguros (ratoeiras fechadas ou caixas de isca) para evitar acesso acidental de animais domésticos.",
+      "chuva": "Evitar posicionar a isca em locais expostos à chuva ou umidade intensa, pois a umidade pode deteriorar o granulado e reduzir a palatabilidade. Usar porta-iscas cobertos em ambientes externos.",
+      "horario": "Posicionar a isca ao entardecer ou à noite, horário de maior atividade dos roedores. Verificar e repor pela manhã conforme necessário.",
+      "epi": "Usar luvas ao manusear o produto. Lavar as mãos após qualquer contato. Em caso de ingestão acidental por humanos, procurar imediatamente serviço médico de emergência. Antídoto: Vitamina K1. Armazenar em local trancado, seco e fora do alcance de crianças."
+    },
+    "alvos": [
+      "ratos",
+      "ratazanas",
+      "camundongos",
+      "roedores",
+      "rattus norvegicus",
+      "rattus rattus",
+      "mus musculus"
+    ],
+    "descricao": "Raticida em isca granulada com Bromadiolone 0,005%. Dupla ação: ingestão direta e impregnação nas patas. Dose única de 1g. Elimina ratos, ratazanas e camundongos entre 3 e 7 dias.",
+    "caracteristicas": [
+      "Ingrediente ativo: Bromadiolone 0,005%",
+      "Isca granulada de dose única (1g mata)",
+      "Dupla ação: ingestão e patas/pelos",
+      "Elimina filhotes via leite materno",
+      "Cada 100g rende 4 aplicações de 25g",
+      "Eficaz contra ratos, ratazanas e camundongos",
+      "Caixa com 30 unidades de 100g"
+    ],
+    "imagens": [
+      "img/produtos/p37-raticida-kyrraty-100g.webp"
+    ],
+    "unidade": "pacote",
+    "referencia": "KYRRATY-100G",
+    "rendimento": "Cada pacote de 100g rende até 4 aplicações de 25g. Distribuir a cada 5 metros nos pontos de infestação.",
+    "destaque": false,
+    "preco_base": 5.13,
+    "badge_texto": "Dose Única",
+    "badge_tipo": "rapido",
+    "icones_representativos": ["🐀", "🐭", "☠️"],
+    "manual_aplicacao": {
+      "resumo_aplicador": "Raticida em isca granulada com Bromadiolone 0,005% de ação anticoagulante. Dose única eficaz: 1g de consumo causa hemorragia interna e morte entre 3 e 7 dias. Dupla ação por ingestão direta e impregnação nas patas. Elimina ratos, ratazanas, camundongos e seus filhotes.",
+      "checklist_previo": [
+        "Identifique os pontos de infestação: trilhas oleosas nas paredes, fezes, roeduras em embalagens, barulhos noturnos ou avistamento direto.",
+        "Escolha os locais de aplicação: sempre ao longo das paredes e rodapés, em cantos escuros, atrás de móveis e próximo a buracos de entrada.",
+        "Utilize porta-iscas fechados: em ambientes com pets ou crianças, use obrigatoriamente porta-iscas com tampa para proteger o acesso à isca.",
+        "PRODUTO VENENOSO: use luvas e mantenha o produto trancado antes e após o uso."
+      ],
+      "equipamentos": [
+        "Luvas descartáveis para manuseio obrigatório",
+        "Porta-iscas fechados ou caixas de isca (recomendado para segurança de pets e crianças)",
+        "Recipiente pequeno ou tampa plástica para apoiar a isca diretamente no chão",
+        "Saco plástico para descarte das embalagens usadas"
+      ],
+      "dosagem": {
+        "pequena_area": {
+          "titulo": "Aplicação Pontual (por ponto)",
+          "dose": "25g por ponto de isca (¼ do pacote de 100g)",
+          "cobertura": "1 pacote de 100g rende 4 pontos de isca de 25g cada"
+        },
+        "area_total": {
+          "titulo": "Área com Infestação Ativa",
+          "dose": "25g a cada 5 metros ao longo das paredes e rodapés",
+          "cobertura": "1 pacote de 100g cobre 20 metros lineares de proteção (4 pontos × 5m)"
+        },
+        "instrucao_diluicao": "Produto pronto para uso — não diluir. Divida o pacote de 100g em até 4 porções de 25g e posicione cada porção em um ponto de isca. Repor quando a isca estiver consumida ou após 7 dias sem consumo (trocar por isca fresca)."
+      },
+      "passos": [
+        {
+          "passo": 1,
+          "titulo": "Mapeamento dos Pontos de Isca",
+          "descricao": "Identifique os locais com maior atividade de roedores: trilhas oleosas nas paredes (manchas escuras), concentração de fezes, buracos de entrada, roeduras em materiais e barulhos noturnos. Esses são os pontos prioritários para posicionar a isca.",
+          "dica_do_aplicador": "Ratos caminham sempre encostados nas paredes — posicione a isca paralela à parede, não no meio do ambiente, para garantir máximo contato."
+        },
+        {
+          "passo": 2,
+          "titulo": "Posicionamento da Isca Granulada",
+          "descricao": "Distribua porções de 25g a cada 5 metros de distância nos pontos mapeados. Posicione a isca diretamente no chão em recipiente aberto, ou dentro de porta-iscas fechado (obrigatório onde há pets e crianças). Em locais com muito movimento de roedores, posicione porções maiores.",
+          "alerta": "Em ambientes domésticos com pets, use SEMPRE porta-iscas fechados com entrada apenas para roedores. Nunca deixe a isca acessível a cães e gatos."
+        },
+        {
+          "passo": 3,
+          "titulo": "Aguardar a Ação do Bromadiolone",
+          "descricao": "Não mova ou remova as iscas nas primeiras 48 a 72 horas. Os roedores precisam encontrar e aceitar a isca antes de consumi-la. A morte não é imediata — ocorre entre o 3º e 7º dia, o que é proposital para que os roedores não associem a isca ao perigo.",
+          "dica_do_aplicador": "Se a isca não for consumida em 3 dias, mude o ponto de posicionamento — pode haver outra rota de passagem preferencial dos roedores."
+        },
+        {
+          "passo": 4,
+          "titulo": "Reposição e Monitoramento",
+          "descricao": "Verifique diariamente os pontos de isca. Repor sempre que a isca estiver totalmente consumida. Mantenha a isca disponível por pelo menos 15 dias consecutivos para garantir a eliminação de todos os indivíduos e gerações. Recolha os roedores mortos com luvas e descarte em saco plástico fechado.",
+          "alerta": "Roedores mortos devem ser descartados com luvas — nunca manuseie com as mãos. Descarte em saco plástico duplo, amarrado, no lixo comum."
+        }
+      ],
+      "linha_do_tempo": [
+        {
+          "periodo": "Imediato",
+          "titulo": "Isca Posicionada",
+          "descricao": "A isca granulada exala atrativo alimentar. Roedores em atividade noturna encontram e começam a consumir o produto.",
+          "icone": "🌙"
+        },
+        {
+          "periodo": "24 a 48 Horas",
+          "titulo": "Consumo Ativo",
+          "descricao": "Roedores consomem a isca regularmente. A dupla ação (ingestão direta + impregnação nas patas) garante que mesmo os mais cautelosos absorvam o princípio ativo.",
+          "icone": "🐀"
+        },
+        {
+          "periodo": "3º ao 7º Dia",
+          "titulo": "Morte por Hemorragia Interna",
+          "descricao": "O Bromadiolone causa anticoagulação progressiva, hemorragia interna e desidratação. Os roedores morrem discretamente, geralmente em seus ninhos ou buracos.",
+          "icone": "☠️"
+        },
+        {
+          "periodo": "15 Dias",
+          "titulo": "Eliminação do Ciclo",
+          "descricao": "Com a isca mantida continuamente, filhotes (contaminados via leite materno) e novos roedores também são eliminados, quebrando definitivamente o ciclo reprodutivo da infestação.",
+          "icone": "✅"
+        }
+      ]
+    }
+  },
+  {
+    "id": 38,
+    "nome": "Raticida Kyrraty 7 Cereais (25g)",
+    "categoria": "raticidas",
+    "tipo_formulacao": "po",
+    "o_que_faz": "Mata ratos, ratazanas e camundongos com isca de 7 cereais e Brodifacoum — altíssima atratividade",
+    "para_que_serve": "Raticida em isca de cereais com Brodifacoum 0,005% — único 7 cereais do mercado com Amendoim + Girassol e cereais selecionados. Altíssima atratividade aromática e palatabilidade com 16% dos 22% da necessidade mínima proteica diária dos roedores. Melhor custo x benefício do mercado. Dose única — morte do 2º ao 7º dia.",
+    "como_age": "O Brodifacoum, hidroxicumarina de ação anticoagulante de 2ª geração, interrompe a síntese de vitamina K no organismo do roedor, causando hemorragia interna progressiva e morte entre o 2º e 7º dia após a ingestão. A altíssima palatabilidade da isca de 7 cereais com amendoim e girassol garante consumo imediato e voluntário — os roedores não resistem ao aroma e sabor do produto.",
+    "como_usar": "Para Ratos e Ratazanas: usar de 4 a 8 sachês a cada 4 a 9 metros nos pontos de infestação. Para Camundongos: usar de 1 a 2 sachês a cada 2 a 4 metros em alta infestação. Não é necessário abrir a embalagem — posicione o sachê inteiro no local. Repor quando consumido.",
+    "onde_nao_usar": "PRODUTO VENENO — manter TOTALMENTE fora do alcance de crianças, pets, aves domésticas e animais silvestres. Não aplicar em locais com acesso irrestrito de animais domésticos. Não deixar exposto em áreas molhadas ou com chuva direta.",
+    "seguranca": {
+      "pets": "ATENÇÃO: produto venenoso com Brodifacoum. Manter absolutamente fora do alcance de cães, gatos e outros pets. Utilizar obrigatoriamente porta-iscas fechados em ambientes com animais domésticos. Em caso de ingestão por pets, acionar veterinário imediatamente. Antídoto: Vitamina K1.",
+      "chuva": "Evitar posicionar em locais expostos à chuva ou umidade intensa. A embalagem sachê oferece proteção, mas em áreas muito úmidas use porta-iscas cobertos para preservar a palatabilidade da isca.",
+      "horario": "Posicionar ao entardecer ou à noite, horário de maior atividade dos roedores. Verificar e repor pela manhã conforme o consumo observado.",
+      "epi": "Usar luvas ao manusear. Lavar as mãos após contato. Em caso de ingestão acidental por humanos, procurar imediatamente serviço médico de emergência. Antídoto: Vitamina K1. Armazenar em local trancado, seco e fora do alcance de crianças."
+    },
+    "alvos": [
+      "ratos",
+      "ratazanas",
+      "camundongos",
+      "roedores",
+      "rattus norvegicus",
+      "rattus rattus",
+      "mus musculus"
+    ],
+    "descricao": "Raticida em isca de 7 cereais com Amendoim + Girassol e Brodifacoum 0,005%. Único 7 cereais do mercado. Altíssima palatabilidade. Morte do 2º ao 7º dia. Sachê de 25g.",
+    "caracteristicas": [
+      "Único 7 cereais com Amendoim + Girassol",
+      "Ingrediente ativo: Brodifacoum 0,005%",
+      "16% da proteína mínima diária dos roedores",
+      "Altíssima atratividade aromática",
+      "Morte do 2º ao 7º dia — dose única",
+      "Não precisa abrir a embalagem",
+      "Caixa com 100 sachês de 25g"
+    ],
+    "imagens": [
+      "img/produtos/p38-raticida-kyrraty-7-cereais-25g.webp"
+    ],
+    "unidade": "sachê",
+    "referencia": "KYRRATY-7CER-25G",
+    "rendimento": "Para ratos/ratazanas: 4 a 8 sachês a cada 4-9m. Para camundongos: 1 a 2 sachês a cada 2-4m.",
+    "destaque": false,
+    "preco_base": 1.05,
+    "badge_texto": "7 Cereais",
+    "badge_tipo": "premium",
+    "icones_representativos": ["🐀", "🌾", "☠️"],
+    "manual_aplicacao": {
+      "resumo_aplicador": "Raticida premium em isca de 7 cereais com Amendoim + Girassol e Brodifacoum 0,005%. Único do mercado com essa composição. Altíssima palatabilidade garante consumo imediato. Morte anticoagulante do 2º ao 7º dia. Sachê pronto para uso — não precisa abrir.",
+      "checklist_previo": [
+        "Identifique os pontos de infestação: trilhas oleosas nas paredes, fezes, roeduras em embalagens, barulhos noturnos e buracos de entrada.",
+        "Diferencie o tipo de roedor: ratos e ratazanas exigem maior quantidade de sachês por ponto; camundongos precisam de pontos mais próximos entre si.",
+        "Use porta-iscas onde há pets e crianças: o sachê deve ficar dentro de uma caixa de isca fechada para máxima segurança.",
+        "PRODUTO VENENOSO: use luvas e mantenha o produto trancado antes e após o uso."
+      ],
+      "equipamentos": [
+        "Luvas descartáveis para manuseio obrigatório",
+        "Porta-iscas fechados ou caixas de isca (obrigatório em ambientes com pets e crianças)",
+        "Saco plástico para descarte de sachês usados e roedores mortos"
+      ],
+      "dosagem": {
+        "pequena_area": {
+          "titulo": "Camundongos (infestação alta)",
+          "dose": "1 a 2 sachês de 25g a cada 2 a 4 metros",
+          "cobertura": "1 caixa com 100 sachês cobre de 50 a 200 metros lineares para camundongos"
+        },
+        "area_total": {
+          "titulo": "Ratos e Ratazanas",
+          "dose": "4 a 8 sachês de 25g a cada 4 a 9 metros",
+          "cobertura": "1 caixa com 100 sachês distribui de 12 a 25 pontos de isca reforçados"
+        },
+        "instrucao_diluicao": "Produto pronto para uso — não abrir e não diluir. Posicione o sachê inteiro no local de infestação. O sachê pode ser colocado dentro de porta-iscas fechado sem necessidade de abrir a embalagem."
+      },
+      "passos": [
+        {
+          "passo": 1,
+          "titulo": "Mapeamento e Identificação do Roedor-Alvo",
+          "descricao": "Identifique os pontos de atividade e o tipo de roedor presente: ratos e ratazanas deixam fezes maiores e trilhas oleosas mais largas; camundongos deixam fezes pequenas e percorrem trajetos mais curtos. Essa distinção é fundamental para definir a quantidade e o espaçamento correto dos sachês.",
+          "dica_do_aplicador": "A altíssima atratividade aromática dos 7 cereais com amendoim e girassol chama os roedores de longe — posicione os sachês nas rotas de passagem, não apenas onde há fezes."
+        },
+        {
+          "passo": 2,
+          "titulo": "Posicionamento dos Sachês",
+          "descricao": "Para ratos e ratazanas: posicione de 4 a 8 sachês por ponto a cada 4 a 9 metros ao longo das paredes. Para camundongos: 1 a 2 sachês a cada 2 a 4 metros. Não abra os sachês — posicione inteiros. Em ambientes com pets e crianças, coloque dentro de porta-iscas fechados.",
+          "alerta": "Nunca deixe os sachês acessíveis a cães e gatos. Use SEMPRE porta-iscas com abertura restrita ao tamanho dos roedores-alvo."
+        },
+        {
+          "passo": 3,
+          "titulo": "Aguardar — Não Perturbe os Pontos de Isca",
+          "descricao": "Não mova ou remova os sachês nas primeiras 48 a 72 horas. Os roedores precisam encontrar, aceitar e consumir a isca. A morte lenta e gradual do Brodifacoum (2º ao 7º dia) é intencional — os roedores não associam o alimento ao perigo e continuam consumindo.",
+          "dica_do_aplicador": "Se após 3 dias não houver consumo, mude o ponto de posicionamento — a rota principal dos roedores pode ser diferente do esperado."
+        },
+        {
+          "passo": 4,
+          "titulo": "Reposição e Descarte Seguro",
+          "descricao": "Verifique os pontos diariamente. Reponha os sachês consumidos imediatamente para manter a pressão de controle sobre a população. Colete os roedores mortos com luvas e descarte em saco plástico duplo fechado. Mantenha o tratamento por no mínimo 15 a 20 dias.",
+          "alerta": "Nunca manuseie roedores mortos sem luvas. Descarte em saco plástico duplo amarrado no lixo comum — nunca em vasos sanitários ou ralos."
+        }
+      ],
+      "linha_do_tempo": [
+        {
+          "periodo": "Imediato",
+          "titulo": "Atratividade Imediata",
+          "descricao": "O aroma único dos 7 cereais com amendoim e girassol atrai os roedores imediatamente. A palatabilidade superior garante consumo voluntário sem resistência.",
+          "icone": "🌾"
+        },
+        {
+          "periodo": "24 a 48 Horas",
+          "titulo": "Consumo Ativo",
+          "descricao": "Roedores consomem os sachês regularmente. O Brodifacoum é absorvido e inicia a inibição da síntese de vitamina K, sem causar sintomas imediatos que alertem a colônia.",
+          "icone": "🐀"
+        },
+        {
+          "periodo": "2º ao 7º Dia",
+          "titulo": "Morte por Anticoagulação",
+          "descricao": "O Brodifacoum de 2ª geração causa falha total da coagulação sanguínea. Os roedores morrem por hemorragia interna progressiva, geralmente em seus ninhos.",
+          "icone": "☠️"
+        },
+        {
+          "periodo": "15 a 20 Dias",
+          "titulo": "Controle Total da Infestação",
+          "descricao": "Com reposição contínua da isca, toda a população de roedores do local é eliminada. Monitore por mais 7 dias após o último consumo para confirmar o controle total.",
+          "icone": "✅"
         }
       ]
     }
