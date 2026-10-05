@@ -20,7 +20,6 @@ interface ProductCardProps {
 export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const [qty, setQty] = useState(1);
   const [selectedVarIndex, setSelectedVarIndex] = useState(0);
-  const [hoveredVarIndex, setHoveredVarIndex] = useState<number | null>(null);
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
 
@@ -37,13 +36,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
   const hasVariations = Boolean(variacoes && variacoes.length > 0);
   const currentVar = hasVariations ? variacoes![selectedVarIndex] : undefined;
-  const activeVar = hasVariations
-    ? (hoveredVarIndex !== null ? variacoes![hoveredVarIndex] : currentVar)
-    : undefined;
 
   const currentPrice = currentVar ? currentVar.preco_base : (product.preco_base || baseProd?.preco_base || 0);
   const currentRef = currentVar ? currentVar.referencia : (product.referencia || baseProd?.referencia || '');
-  const currentImage = activeVar?.imagem || currentVar?.imagem || product.imagens?.[0] || baseProd?.imagens?.[0] || 'img/logo.png';
+  const currentImage = currentVar?.imagem || product.imagens?.[0] || baseProd?.imagens?.[0] || 'img/logo.png';
 
   // Preload das imagens das variações
   React.useEffect(() => {
@@ -293,8 +289,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                         triggerHaptic(10);
                         setSelectedVarIndex(idx);
                       }}
-                      onMouseEnter={() => setHoveredVarIndex(idx)}
-                      onMouseLeave={() => setHoveredVarIndex(null)}
                       className={`px-2 py-0.5 rounded-lg text-[11px] font-extrabold transition-all cursor-pointer border ${
                         isSelected
                           ? 'bg-[#0f4531] text-white border-[#0f4531] dark:bg-[#10b981] dark:border-[#10b981] dark:text-[#0f1f17] shadow-xs scale-102'
