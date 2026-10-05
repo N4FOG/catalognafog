@@ -11,7 +11,7 @@ import { formatCurrency } from '../../utils/formatters';
 import { triggerHaptic } from '../../utils/haptics';
 import { Plus, Check, Share2, AlertTriangle, Wrench, Clock, ArrowRight, Edit3 } from 'lucide-react';
 import { sendTelemetry } from '../../utils/telemetry';
-import { getProductShareText, getProductUrl } from '../../utils/productUrl';
+import { getProductShareDescription, getProductShareText, getProductUrl } from '../../utils/productUrl';
 
 export const ProductDetailModal: React.FC = () => {
   const { selectedProduct, setSelectedProduct, setAdminEditingProduct } = useCatalogStore();
@@ -57,14 +57,15 @@ export const ProductDetailModal: React.FC = () => {
 
   const handleShare = async () => {
     triggerHaptic(15);
-    const shareText = getProductShareText(selectedProduct);
     const productUrl = getProductUrl(selectedProduct);
+    const descText = getProductShareDescription(selectedProduct);
+    const fullText = getProductShareText(selectedProduct);
 
     if (navigator.share) {
       try {
         await navigator.share({
           title: selectedProduct.nome,
-          text: shareText,
+          text: descText,
           url: productUrl
         });
         return;
@@ -73,7 +74,7 @@ export const ProductDetailModal: React.FC = () => {
 
     try {
       if (navigator.clipboard) {
-        await navigator.clipboard.writeText(shareText);
+        await navigator.clipboard.writeText(fullText);
         addToast('📋 Link do produto copiado com sucesso!', 'success');
       }
     } catch {

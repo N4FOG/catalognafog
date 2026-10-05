@@ -10,7 +10,7 @@ import { triggerHaptic } from '../../utils/haptics';
 import { highlightSearch } from '../../utils/searchHighlight';
 import { sendTelemetry } from '../../utils/telemetry';
 import { Share2 } from 'lucide-react';
-import { getProductShareText, getProductUrl } from '../../utils/productUrl';
+import { getProductShareDescription, getProductShareText, getProductUrl } from '../../utils/productUrl';
 
 interface ProductCardProps {
   product: Product;
@@ -83,14 +83,15 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const handleQuickShare = async (e: React.MouseEvent) => {
     e.stopPropagation();
     triggerHaptic(15);
-    const shareText = getProductShareText(product);
     const productUrl = getProductUrl(product);
+    const descText = getProductShareDescription(product);
+    const fullText = getProductShareText(product);
 
     if (navigator.share) {
       try {
         await navigator.share({
           title: product.nome,
-          text: shareText,
+          text: descText,
           url: productUrl
         });
         return;
@@ -99,7 +100,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
     try {
       if (navigator.clipboard) {
-        await navigator.clipboard.writeText(shareText);
+        await navigator.clipboard.writeText(fullText);
         addToast('📋 Link do produto copiado com sucesso!', 'success');
       }
     } catch {

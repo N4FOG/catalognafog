@@ -103,14 +103,18 @@ export function getProductUrl(product: Product): string {
 }
 
 /**
- * Gera o texto direto e limpo para envio no WhatsApp (sem enrolação).
- * Formato:
- * 🌿 Kapina Plus (60ml)
- * Elimina folhas largas e tiriricas em Grama Esmeralda
- * https://catalognafog.onrender.com/?produto=kapina-plus
+ * Gera apenas o texto de descrição do produto sem o link (para uso no navigator.share).
+ */
+export function getProductShareDescription(product: Product): string {
+  const resumo = product.o_que_faz || product.descricao || '';
+  return `🌿 ${product.nome}\n${resumo}`.trim();
+}
+
+/**
+ * Gera o texto direto e limpo com o link para cópia completa na área de transferência.
  */
 export function getProductShareText(product: Product): string {
+  const desc = getProductShareDescription(product);
   const url = getProductUrl(product);
-  const resumo = product.o_que_faz || product.descricao || '';
-  return `🌿 ${product.nome}\n${resumo}\n${url}`.trim();
+  return `${desc}\n${url}`.trim();
 }
