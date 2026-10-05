@@ -1,4 +1,4 @@
-# 🌿 JCV Química — Catálogo Oficial & Sistema de Orçamentos 2026 (Rawell v3.0)
+# 🌿 JCV Jardinagem — Catálogo Oficial & Sistema de Orçamentos 2026 (Rawell v3.0)
 
 > **Versão Moderna — Vite 6 + React 19 + TypeScript + Tailwind CSS v4 + Zustand**  
 > Diretório: `C:\Users\n4fog\Pictures\VALDECIR\rawell-v3`

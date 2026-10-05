@@ -70,7 +70,6 @@ async function run() {
     const canonicalUrl = `https://catalognafog.onrender.com/p/${slug}`;
 
     const metaTags = `
-    <base href="/" />
     <title>${title}</title>
     <meta name="description" content="${description}" />
     <!-- Open Graph Especial para WhatsApp e Redes Sociais -->
@@ -87,14 +86,27 @@ async function run() {
     <meta name="twitter:title" content="${title}" />
     <meta name="twitter:description" content="${description}" />
     <meta name="twitter:image" content="${imgUrl}" />
-    <link rel="canonical" href="${canonicalUrl}" />`;
+    <link rel="canonical" href="${canonicalUrl}" />
+    <script>
+      // Redireciona navegadores humanos instantaneamente para a raiz com o produto aberto
+      if (!/bot|crawler|spider|crawling|facebookexternalhit|whatsapp|slurp/i.test(navigator.userAgent)) {
+        window.location.replace('/?produto=${encodeURIComponent(slug)}');
+      }
+    </script>`;
 
     // Remove tags globais de OpenGraph antigas para não duplicar
     let prodHtml = baseHtml
       .replace(/<title>.*?<\/title>/gi, '')
       .replace(/<meta\s+name=["']description["'].*?>/gi, '')
       .replace(/<meta\s+property=["']og:.*?["'].*?>/gi, '')
-      .replace(/<meta\s+name=["']twitter:.*?["'].*?>/gi, '');
+      .replace(/<meta\s+name=["']twitter:.*?["'].*?>/gi, '')
+      .replace(/\.\/assets\//g, '/assets/')
+      .replace(/\.\/img\//g, '/img/');
+
+    // Garante que <base href="/" /> fica no início do head
+    if (!prodHtml.includes('<base href="/" />')) {
+      prodHtml = prodHtml.replace('<head>', '<head>\n    <base href="/" />');
+    }
 
     prodHtml = prodHtml.replace('</head>', `${metaTags}\n  </head>`);
 

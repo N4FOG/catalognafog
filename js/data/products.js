@@ -43,7 +43,7 @@ const PRODUTOS = [
     ],
     "unidade": "frasco",
     "referencia": "KP-PLUS-60",
-    "rendimento": "Rende até 100 a 150 litros de calda de pulverização.",
+    "rendimento": "Rende até 600 m² de calda de pulverização.",
     "destaque": true,
     "preco_base": 72.87
   },
@@ -85,7 +85,7 @@ const PRODUTOS = [
     ],
     "unidade": "frasco",
     "referencia": "KP-TRAD-60",
-    "rendimento": "Rende até 100 litros de calda (trata áreas médias de gramado).",
+    "rendimento": "Rende até 600 m² de calda de pulverização.",
     "destaque": true,
     "preco_base": 50.66
   },
@@ -125,7 +125,7 @@ const PRODUTOS = [
     ],
     "unidade": "frasco",
     "referencia": "KOR-60",
-    "rendimento": "Trata de 150m² a 300m² dependendo do nível de infestação.",
+    "rendimento": "Rende até 600 m² de calda de pulverização.",
     "destaque": false,
     "preco_base": 50.75
   },
@@ -166,7 +166,7 @@ const PRODUTOS = [
     ],
     "unidade": "frasco",
     "referencia": "KAT-30",
-    "rendimento": "Frasco de 30ml rende até 60 a 100 litros de calda.",
+    "rendimento": "Rende até 300 m² de calda de pulverização.",
     "destaque": true,
     "preco_base": 36.70
   },
@@ -207,7 +207,7 @@ const PRODUTOS = [
     ],
     "unidade": "frasco",
     "referencia": "KCURA-100",
-    "rendimento": "Trata até 300m² de gramado.",
+    "rendimento": "Rende até 300 m² de calda de pulverização.",
     "destaque": false,
     "preco_base": 44.22
   },
@@ -250,7 +250,7 @@ const PRODUTOS = [
     ],
     "unidade": "frasco",
     "referencia": "ROC-100",
-    "rendimento": "Rendimento garantido de 300m² por frasco de 100ml.",
+    "rendimento": "Rende até 300 m² de calda de pulverização.",
     "destaque": true,
     "preco_base": 38.20
   },
@@ -292,7 +292,7 @@ const PRODUTOS = [
     ],
     "unidade": "frasco",
     "referencia": "ARR-EW-100",
-    "rendimento": "Trata até 300m² de área.",
+    "rendimento": "Rende até 300 m² de calda de pulverização.",
     "destaque": true,
     "preco_base": 22.75
   },
@@ -334,7 +334,7 @@ const PRODUTOS = [
     ],
     "unidade": "frasco",
     "referencia": "ARR-PU-1L",
-    "rendimento": "Frasco de 1L cobre até 300m² de calçadas e frestas.",
+    "rendimento": "Trata até 300 m² de calçadas e frestas.",
     "destaque": true,
     "preco_base": 35
   },
@@ -377,7 +377,7 @@ const PRODUTOS = [
     ],
     "unidade": "frasco",
     "referencia": "BRAV-10",
-    "rendimento": "Frasco de 10ml rende até 20 a 30 litros de calda protetora.",
+    "rendimento": "Rende até 30 m² de calda de pulverização.",
     "destaque": true,
     "preco_base": 24
   },
@@ -419,7 +419,7 @@ const PRODUTOS = [
     ],
     "unidade": "frasco",
     "referencia": "BRAV-PU-240",
-    "rendimento": "Trata dezenas de vasos e plantas em recipientes.",
+    "rendimento": "Trata até 10 m² de área foliar ou 25 vasos.",
     "destaque": false,
     "preco_base": 28
   },
@@ -464,7 +464,7 @@ const PRODUTOS = [
     ],
     "unidade": "frasco",
     "referencia": "KABIO-60",
-    "rendimento": "Rende de 30 a 60 litros de calda natural.",
+    "rendimento": "Rende até 150 m² de calda de pulverização.",
     "destaque": false,
     "preco_base": 30.37
   },
@@ -506,7 +506,7 @@ const PRODUTOS = [
     ],
     "unidade": "frasco",
     "referencia": "KABIO-PU-240",
-    "rendimento": "Rende centenas de borrifadas práticas.",
+    "rendimento": "Trata até 10 m² de área foliar ou 50 vasos.",
     "destaque": false,
     "preco_base": 32
   },
@@ -548,7 +548,7 @@ const PRODUTOS = [
     ],
     "unidade": "frasco",
     "referencia": "IMP-250-500",
-    "rendimento": "Frascos de 250ml e 500ml com alto rendimento.",
+    "rendimento": "Trata até 150 m² de área aplicada.",
     "destaque": true,
     "preco_base": 48
   },
@@ -590,7 +590,7 @@ const PRODUTOS = [
     ],
     "unidade": "frasco",
     "referencia": "FIMO-40-120",
-    "rendimento": "Residual ativo por até 6 meses por aplicação.",
+    "rendimento": "Trata até 120 m² de área com proteção residual.",
     "destaque": false,
     "preco_base": 21.20
   },
@@ -634,7 +634,7 @@ const PRODUTOS = [
     ],
     "unidade": "frasco",
     "referencia": "PANK-30-60-250",
-    "rendimento": "Altíssima concentração com diluição super econômica.",
+    "rendimento": "Rende até 600 m² de calda de pulverização.",
     "destaque": true,
     "preco_base": 32.47
   },
@@ -673,7 +673,7 @@ const PRODUTOS = [
     ],
     "unidade": "frasco",
     "referencia": "UNIX-REP-30",
-    "rendimento": "Trata dezenas de metros lineares de barreira ou furos.",
+    "rendimento": "Trata até 100 metros lineares ou 150 m² de área.",
     "destaque": false,
     "preco_base": 13.50
   },
@@ -713,7 +713,7 @@ const PRODUTOS = [
     ],
     "unidade": "envelope",
     "referencia": "ARR-SPM-10",
-    "rendimento": "Envelope com 3 sachês de 10g para até 3 pulverizadores.",
+    "rendimento": "Rende até 100 m² de calda de pulverização.",
     "destaque": false,
     "preco_base": 12.12
   },
@@ -753,7 +753,7 @@ const PRODUTOS = [
     ],
     "unidade": "envelope",
     "referencia": "ARR-PM-10",
-    "rendimento": "Envelope com 2 sachês de 10g.",
+    "rendimento": "Rende até 100 m² de calda de pulverização.",
     "destaque": false,
     "preco_base": 12.12
   },
@@ -793,7 +793,7 @@ const PRODUTOS = [
     ],
     "unidade": "sachê",
     "referencia": "NAMOSCA-20",
-    "rendimento": "Sachê de 20g atrai e elimina milhares de moscas.",
+    "rendimento": "Trata até 10 m² de área aplicada.",
     "destaque": true,
     "preco_base": 11.68
   },
@@ -835,7 +835,7 @@ const PRODUTOS = [
     ],
     "unidade": "un",
     "referencia": "BLEK-90-1KG",
-    "rendimento": "Trata galpões inteiros de granjas e confinamentos.",
+    "rendimento": "Trata até 500 m² de área construída ou galpão.",
     "destaque": true,
     "preco_base": 52.76
   },
@@ -876,7 +876,7 @@ const PRODUTOS = [
     ],
     "unidade": "frasco",
     "referencia": "KORAL-MOSC-60",
-    "rendimento": "Frasco de 60ml rende até 20 a 30 litros de calda.",
+    "rendimento": "Rende até 600 m² de calda de pulverização.",
     "destaque": false,
     "preco_base": 40.84
   },
@@ -917,7 +917,7 @@ const PRODUTOS = [
     ],
     "unidade": "seringa",
     "referencia": "GEL-FORM-10G",
-    "rendimento": "Seringa de 10g trata dezenas de cômodos e ninhos.",
+    "rendimento": "Trata até 50 m² de área ou dezenas de ninhos.",
     "destaque": true,
     "preco_base": 11.68
   },
@@ -957,7 +957,7 @@ const PRODUTOS = [
     ],
     "unidade": "seringa",
     "referencia": "GEL-BAR-10G",
-    "rendimento": "Seringa de 10g trata até 40m² de frestas e cozinhas.",
+    "rendimento": "Trata até 40 m² de frestas e superfícies.",
     "destaque": true,
     "preco_base": 7.9885
   },
@@ -999,7 +999,7 @@ const PRODUTOS = [
     ],
     "unidade": "sachê",
     "referencia": "ISCA-ETIP-50",
-    "rendimento": "Sachê de 50g elimina ninhos médios de formigueiros.",
+    "rendimento": "Trata até 50 m² de área de formigueiro.",
     "destaque": true,
     "preco_base": 9.99
   },
@@ -1042,7 +1042,7 @@ const PRODUTOS = [
     ],
     "unidade": "un",
     "referencia": "KRATO-SOFT-150-2K",
-    "rendimento": "Sachê de 150g ou Balde de 2kg para grandes infestações.",
+    "rendimento": "Trata até 200 m² de área perimetral.",
     "destaque": true,
     "preco_base": 21.93
   },
@@ -1083,7 +1083,7 @@ const PRODUTOS = [
     ],
     "unidade": "frasco",
     "referencia": "KRATO-PO-100-250-1K",
-    "rendimento": "Frascos de 100g, 250g e 1kg com alto rendimento.",
+    "rendimento": "Trata até 25 metros lineares de trilhas ou tocas.",
     "destaque": false,
     "preco_base": 160.11
   },
@@ -1124,7 +1124,7 @@ const PRODUTOS = [
     ],
     "unidade": "sachê",
     "referencia": "KARM-GARD-30",
-    "rendimento": "Sachê de 30g cobre canteiros residenciais.",
+    "rendimento": "Trata até 10 m² de canteiros e jardins.",
     "destaque": true,
     "preco_base": 5.88
   },
@@ -1166,7 +1166,7 @@ const PRODUTOS = [
     ],
     "unidade": "sachê",
     "referencia": "KARM-MET-200-1K",
-    "rendimento": "Sachês de 200g e 1kg para grandes áreas.",
+    "rendimento": "Trata de 40 m² a 200 m² de área perimetral.",
     "destaque": false,
     "preco_base": 38.20
   },
@@ -1208,7 +1208,7 @@ const PRODUTOS = [
     ],
     "unidade": "frasco",
     "referencia": "KOR-CARR-60",
-    "rendimento": "Frasco de 60ml rende 20 litros de calda (limpeza de grandes pátios).",
+    "rendimento": "Rende até 600 m² de calda de pulverização.",
     "destaque": true,
     "preco_base": 37.02
   },
@@ -1248,7 +1248,7 @@ const PRODUTOS = [
     ],
     "unidade": "frasco",
     "referencia": "KOR-PU-240",
-    "rendimento": "Frasco de 240ml com centenas de borrifadas.",
+    "rendimento": "Trata até 30 m² de área aplicada ou 20 casinhas de pet.",
     "destaque": false,
     "preco_base": 37.36
   },
@@ -1289,7 +1289,7 @@ const PRODUTOS = [
     ],
     "unidade": "frasco",
     "referencia": "RED-PH-100",
-    "rendimento": "Frasco de 100ml trata de 50 a 100 litros de água.",
+    "rendimento": "Condiciona até 100 litros de calda de pulverização.",
     "destaque": false,
     "preco_base": 30.37
   },
@@ -1329,7 +1329,7 @@ const PRODUTOS = [
     ],
     "unidade": "frasco",
     "referencia": "OLEO-MIN-100",
-    "rendimento": "Frasco de 100ml prepara até 100 litros de calda.",
+    "rendimento": "Condiciona até 100 litros de calda de pulverização.",
     "destaque": true,
     "preco_base": 26.52
   }
