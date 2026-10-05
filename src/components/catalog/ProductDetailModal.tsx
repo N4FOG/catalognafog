@@ -11,6 +11,7 @@ import { formatCurrency } from '../../utils/formatters';
 import { triggerHaptic } from '../../utils/haptics';
 import { Plus, Check, Share2, AlertTriangle, Wrench, Clock, ArrowRight, Edit3 } from 'lucide-react';
 import { sendTelemetry } from '../../utils/telemetry';
+import { getProductShareText, getProductUrl } from '../../utils/productUrl';
 
 export const ProductDetailModal: React.FC = () => {
   const { selectedProduct, setSelectedProduct, setAdminEditingProduct } = useCatalogStore();
@@ -56,21 +57,28 @@ export const ProductDetailModal: React.FC = () => {
 
   const handleShare = async () => {
     triggerHaptic(15);
-    const text = `🌿 *${selectedProduct.nome}* (${selectedProduct.referencia})\n${selectedProduct.o_que_faz}\n\nConsulte detalhes no catálogo oficial JCV Jardinagem!`;
+    const shareText = getProductShareText(selectedProduct);
+    const productUrl = getProductUrl(selectedProduct);
 
     if (navigator.share) {
       try {
         await navigator.share({
           title: selectedProduct.nome,
-          text: text,
-          url: window.location.href
+          text: shareText,
+          url: productUrl
         });
         return;
       } catch {}
     }
 
-    navigator.clipboard.writeText(`${text}\n${window.location.href}`);
-    addToast('📋 Link e dados copiados para a área de transferência!', 'info');
+    try {
+      if (navigator.clipboard) {
+        await navigator.clipboard.writeText(shareText);
+        addToast('📋 Link do produto copiado com sucesso!', 'success');
+      }
+    } catch {
+      addToast('Não foi possível copiar o link automaticamente', 'error');
+    }
   };
 
   return (

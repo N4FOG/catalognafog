@@ -9,6 +9,8 @@ import { formatCurrency } from '../../utils/formatters';
 import { triggerHaptic } from '../../utils/haptics';
 import { highlightSearch } from '../../utils/searchHighlight';
 import { sendTelemetry } from '../../utils/telemetry';
+import { Share2 } from 'lucide-react';
+import { getProductShareText, getProductUrl } from '../../utils/productUrl';
 
 interface ProductCardProps {
   product: Product;
@@ -78,6 +80,33 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     setQty((prev) => Math.max(1, Math.min(999, prev + delta)));
   };
 
+  const handleQuickShare = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    triggerHaptic(15);
+    const shareText = getProductShareText(product);
+    const productUrl = getProductUrl(product);
+
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: product.nome,
+          text: shareText,
+          url: productUrl
+        });
+        return;
+      } catch {}
+    }
+
+    try {
+      if (navigator.clipboard) {
+        await navigator.clipboard.writeText(shareText);
+        addToast('📋 Link do produto copiado com sucesso!', 'success');
+      }
+    } catch {
+      addToast('Não foi possível copiar o link', 'error');
+    }
+  };
+
   return (
     <article
       onClick={handleCardClick}
@@ -120,8 +149,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             ) : null}
           </div>
 
-          {/* Emojis Representativos / Alvos */}
-          <div className="shrink-0 pointer-events-auto">
+          {/* Emojis Representativos / Alvos & Botão Compartilhar */}
+          <div className="shrink-0 pointer-events-auto flex items-center gap-1">
             {product.icones_representativos && product.icones_representativos.length > 0 ? (
               <div
                 className="px-1.5 py-0.5 rounded-full bg-white/95 dark:bg-[#0f1f17]/95 backdrop-blur-xs border border-slate-200 dark:border-slate-700 flex items-center gap-0.5 text-xs shadow-xs"
@@ -141,6 +170,16 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                 {catObj?.icone || '🌿'}
               </span>
             )}
+
+            <button
+              type="button"
+              onClick={handleQuickShare}
+              className="w-7 h-7 rounded-full bg-white/90 dark:bg-[#0f1f17]/90 hover:bg-emerald-50 dark:hover:bg-emerald-950/60 text-slate-500 hover:text-emerald-700 dark:text-slate-400 dark:hover:text-emerald-400 backdrop-blur-xs border border-slate-200 dark:border-slate-700 flex items-center justify-center text-xs shadow-xs transition-colors cursor-pointer"
+              title="Copiar link direto para WhatsApp"
+              aria-label="Copiar link direto para WhatsApp"
+            >
+              <Share2 className="w-3.5 h-3.5" />
+            </button>
           </div>
         </div>
 

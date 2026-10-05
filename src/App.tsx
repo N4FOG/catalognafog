@@ -21,16 +21,20 @@ import { ToastContainer } from './components/ui/ToastContainer';
 import { useSellerStore } from './store/useSellerStore';
 import { useAdminStore } from './store/useAdminStore';
 import { useCartStore } from './store/useCartStore';
+import { useCatalogStore } from './store/useCatalogStore';
 import { useThemeStore } from './store/useThemeStore';
 import { useToastStore } from './store/useToastStore';
 import { VENDEDORES } from './data/config';
+import { PRODUTOS } from './data/products';
 import { normalizeText } from './utils/formatters';
 import { sendTelemetry } from './utils/telemetry';
+import { findProductBySlug, slugifyProductName } from './utils/productUrl';
 
 export const App: React.FC = () => {
   const { setAttributedSeller, getActiveSeller, initIndexedDb } = useSellerStore();
-  const { loadInitialData } = useAdminStore();
+  const { loadInitialData, products } = useAdminStore();
   const { loadCartFromUrl } = useCartStore();
+  const { selectedProduct, setSelectedProduct } = useCatalogStore();
   const { theme, setTheme } = useThemeStore();
   const { addToast } = useToastStore();
 
@@ -80,7 +84,22 @@ export const App: React.FC = () => {
       addToast('📂 Orçamento carregado com sucesso!', 'success');
     }
 
-    // 4. Register PWA Service Worker in production
+    // 4. Deep Link de Produto (?produto=kapina-plus ou ?p=kapina-plus)
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const prodCode = params.get('produto') || params.get('p') || params.get('id');
+      if (prodCode) {
+        const catalogList = products && products.length > 0 ? products : PRODUTOS;
+        const found = findProductBySlug(prodCode, catalogList);
+        if (found) {
+          setSelectedProduct(found);
+        }
+      }
+    } catch (e) {
+      console.warn('URL product deep link check notice:', e);
+    }
+
+    // 5. Register PWA Service Worker in production
     if ('serviceWorker' in navigator && import.meta.env.PROD) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('/sw.js').catch((err) => {
@@ -89,6 +108,57 @@ export const App: React.FC = () => {
       });
     }
   }, []);
+
+  // Sincronizar URL quando o modal de produto for aberto ou fechado
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    try {
+      const currentUrl = new URL(window.location.href);
+      if (selectedProduct) {
+        const slug = slugifyProductName(selectedProduct.nome);
+        if (currentUrl.searchParams.get('produto') !== slug) {
+          currentUrl.searchParams.set('produto', slug);
+          currentUrl.searchParams.delete('p'); // Normaliza para ?produto=
+          window.history.pushState({ productId: selectedProduct.id, slug }, '', currentUrl.toString());
+        }
+      } else {
+        if (currentUrl.searchParams.has('produto') || currentUrl.searchParams.has('p')) {
+          currentUrl.searchParams.delete('produto');
+          currentUrl.searchParams.delete('p');
+          window.history.replaceState({}, '', currentUrl.toString());
+        }
+      }
+    } catch (e) {
+      console.warn('URL sync notice:', e);
+    }
+  }, [selectedProduct]);
+
+  // Suporte ao botão 'Voltar' do navegador ou celular (Android / iOS)
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const handlePopState = () => {
+      try {
+        const params = new URLSearchParams(window.location.search);
+        const prodCode = params.get('produto') || params.get('p') || params.get('id');
+        if (prodCode) {
+          const catalogList = products && products.length > 0 ? products : PRODUTOS;
+          const found = findProductBySlug(prodCode, catalogList);
+          if (found) {
+            setSelectedProduct(found);
+            return;
+          }
+        }
+        setSelectedProduct(null);
+      } catch (e) {
+        console.warn('Popstate handling notice:', e);
+      }
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, [products, setSelectedProduct]);
 
   return (
     <div id="root-container" className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col font-sans transition-colors duration-200 pb-16 md:pb-0">

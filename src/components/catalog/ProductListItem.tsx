@@ -7,8 +7,9 @@ import { useToastStore } from '../../store/useToastStore';
 import { Stepper } from '../ui/Stepper';
 import { formatCurrency } from '../../utils/formatters';
 import { triggerHaptic } from '../../utils/haptics';
-import { Plus, Check } from 'lucide-react';
+import { Plus, Check, Share2 } from 'lucide-react';
 import { sendTelemetry } from '../../utils/telemetry';
+import { getProductShareText, getProductUrl } from '../../utils/productUrl';
 
 interface ProductListItemProps {
   product: Product;
@@ -43,6 +44,33 @@ export const ProductListItem: React.FC<ProductListItemProps> = ({ product }) => 
   const handleClick = () => {
     triggerHaptic(15);
     setSelectedProduct(product);
+  };
+
+  const handleQuickShare = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    triggerHaptic(15);
+    const shareText = getProductShareText(product);
+    const productUrl = getProductUrl(product);
+
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: product.nome,
+          text: shareText,
+          url: productUrl
+        });
+        return;
+      } catch {}
+    }
+
+    try {
+      if (navigator.clipboard) {
+        await navigator.clipboard.writeText(shareText);
+        addToast('📋 Link do produto copiado com sucesso!', 'success');
+      }
+    } catch {
+      addToast('Não foi possível copiar o link', 'error');
+    }
   };
 
   return (
@@ -142,6 +170,16 @@ export const ProductListItem: React.FC<ProductListItemProps> = ({ product }) => 
         >
           {isInCart ? <Check className="w-3.5 h-3.5" /> : <Plus className="w-3.5 h-3.5" />}
           <span>{isInCart ? `${cartItem.quantidade} no pedido` : 'Adicionar'}</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={handleQuickShare}
+          className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-500 hover:text-emerald-700 dark:text-slate-400 dark:hover:text-emerald-400 transition-colors cursor-pointer"
+          title="Copiar link direto para WhatsApp"
+          aria-label="Copiar link direto para WhatsApp"
+        >
+          <Share2 className="w-4 h-4" />
         </button>
       </div>
     </article>
