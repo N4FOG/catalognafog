@@ -5,6 +5,7 @@ import { useSellerStore } from '../../store/useSellerStore';
 import { useAdminStore } from '../../store/useAdminStore';
 import { useToastStore } from '../../store/useToastStore';
 import { CATEGORIAS, FORMULACOES } from '../../data/categories';
+import { PRODUTOS } from '../../data/products';
 import { Modal } from '../ui/Modal';
 import { Stepper } from '../ui/Stepper';
 import { formatCurrency } from '../../utils/formatters';
@@ -27,11 +28,17 @@ export const ProductDetailModal: React.FC = () => {
 
   if (!selectedProduct) return null;
 
-  const hasVariations = Boolean(selectedProduct.variacoes && selectedProduct.variacoes.length > 0);
-  const currentVar = hasVariations ? selectedProduct.variacoes![selectedVarIndex] : undefined;
-  const currentPrice = currentVar ? currentVar.preco_base : selectedProduct.preco_base;
-  const currentRef = currentVar ? currentVar.referencia : selectedProduct.referencia;
-  const currentUnit = currentVar ? currentVar.unidade : selectedProduct.unidade;
+  // Garante que as variações da base de dados oficial NUNCA sejam perdidas por cache antigo
+  const baseProd = PRODUTOS.find((p) => p.id === selectedProduct.id);
+  const variacoes = (selectedProduct.variacoes && selectedProduct.variacoes.length > 0)
+    ? selectedProduct.variacoes
+    : (baseProd?.variacoes && baseProd.variacoes.length > 0 ? baseProd.variacoes : undefined);
+
+  const hasVariations = Boolean(variacoes && variacoes.length > 0);
+  const currentVar = hasVariations ? variacoes![selectedVarIndex] : undefined;
+  const currentPrice = currentVar ? currentVar.preco_base : (selectedProduct.preco_base || baseProd?.preco_base || 0);
+  const currentRef = currentVar ? currentVar.referencia : (selectedProduct.referencia || baseProd?.referencia || '');
+  const currentUnit = currentVar ? currentVar.unidade : (selectedProduct.unidade || baseProd?.unidade || 'UN');
 
   const cartItem = items.find((i) =>
     currentVar ? (i.id === selectedProduct.id && i.variationId === currentVar.id) : (i.id === selectedProduct.id && !i.variationId)
@@ -247,13 +254,13 @@ export const ProductDetailModal: React.FC = () => {
             </div>
 
             {/* Variations Selector if available */}
-            {hasVariations && selectedProduct.variacoes && (
+            {hasVariations && variacoes && (
               <div className="bg-slate-50 dark:bg-slate-800/80 p-3 rounded-xl border border-slate-200 dark:border-slate-700/80 space-y-1.5">
                 <span className="text-xs font-bold text-slate-600 dark:text-slate-300 block">
                   Escolha o Tamanho da Embalagem:
                 </span>
                 <div className="grid grid-cols-2 gap-2">
-                  {selectedProduct.variacoes.map((v, idx) => {
+                  {variacoes.map((v, idx) => {
                     const isSelected = selectedVarIndex === idx;
                     return (
                       <button

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import type { Product } from '../../types/product';
 import { CATEGORIAS, FORMULACOES } from '../../data/categories';
+import { PRODUTOS } from '../../data/products';
 import { useCartStore } from '../../store/useCartStore';
 import { useSellerStore } from '../../store/useSellerStore';
 import { useCatalogStore } from '../../store/useCatalogStore';
@@ -26,15 +27,21 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const { searchQuery, setSelectedProduct } = useCatalogStore();
   const { addToast } = useToastStore();
 
-  const hasVariations = Boolean(product.variacoes && product.variacoes.length > 0);
-  const currentVar = hasVariations ? product.variacoes![selectedVarIndex] : undefined;
+  // Garante que as variações da base oficial sempre estejam acessíveis
+  const baseProd = PRODUTOS.find((p) => p.id === product.id);
+  const variacoes = (product.variacoes && product.variacoes.length > 0)
+    ? product.variacoes
+    : (baseProd?.variacoes && baseProd.variacoes.length > 0 ? baseProd.variacoes : undefined);
+
+  const hasVariations = Boolean(variacoes && variacoes.length > 0);
+  const currentVar = hasVariations ? variacoes![selectedVarIndex] : undefined;
   const activeVar = hasVariations
-    ? (hoveredVarIndex !== null ? product.variacoes![hoveredVarIndex] : currentVar)
+    ? (hoveredVarIndex !== null ? variacoes![hoveredVarIndex] : currentVar)
     : undefined;
 
-  const currentPrice = currentVar ? currentVar.preco_base : product.preco_base;
-  const currentRef = currentVar ? currentVar.referencia : product.referencia;
-  const currentImage = activeVar?.imagem || currentVar?.imagem || product.imagens?.[0] || 'img/logo.png';
+  const currentPrice = currentVar ? currentVar.preco_base : (product.preco_base || baseProd?.preco_base || 0);
+  const currentRef = currentVar ? currentVar.referencia : (product.referencia || baseProd?.referencia || '');
+  const currentImage = activeVar?.imagem || currentVar?.imagem || product.imagens?.[0] || baseProd?.imagens?.[0] || 'img/logo.png';
 
   const cartItem = items.find((i) =>
     currentVar ? (i.id === product.id && i.variationId === currentVar.id) : (i.id === product.id && !i.variationId)
@@ -244,13 +251,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           </p>
 
           {/* Variation Pill Selector if available */}
-          {hasVariations && product.variacoes && (
+          {hasVariations && variacoes && (
             <div className="mt-2 pt-1.5 border-t border-slate-100 dark:border-slate-800/80">
               <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 block mb-1">
                 Tamanho da embalagem:
               </span>
               <div className="flex flex-wrap gap-1.5" onClick={(e) => e.stopPropagation()}>
-                {product.variacoes.map((v, idx) => {
+                {variacoes.map((v, idx) => {
                   const isSelected = selectedVarIndex === idx;
                   return (
                     <button

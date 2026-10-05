@@ -101,13 +101,22 @@ export const App: React.FC = () => {
       console.warn('URL product deep link check notice:', e);
     }
 
-    // 5. Register PWA Service Worker in production
-    if ('serviceWorker' in navigator && import.meta.env.PROD) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js').catch((err) => {
-          console.log('SW registration note:', err);
+    // 5. Register PWA Service Worker in production / Unregister in dev
+    if ('serviceWorker' in navigator) {
+      if (import.meta.env.PROD) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js').catch((err) => {
+            console.log('SW registration note:', err);
+          });
         });
-      });
+      } else {
+        // Em dev, limpa qualquer Service Worker para garantir que o código novo seja servido na hora
+        navigator.serviceWorker.getRegistrations().then((registrations) => {
+          for (const reg of registrations) {
+            reg.unregister();
+          }
+        });
+      }
     }
   }, []);
 

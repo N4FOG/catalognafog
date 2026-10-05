@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import type { Product } from '../../types/product';
+import { PRODUTOS } from '../../data/products';
 import { useCartStore } from '../../store/useCartStore';
 import { useSellerStore } from '../../store/useSellerStore';
 import { useCatalogStore } from '../../store/useCatalogStore';
@@ -24,11 +25,17 @@ export const ProductListItem: React.FC<ProductListItemProps> = ({ product }) => 
   const { setSelectedProduct } = useCatalogStore();
   const { addToast } = useToastStore();
 
-  const hasVariations = Boolean(product.variacoes && product.variacoes.length > 0);
-  const currentVar = hasVariations ? product.variacoes![selectedVarIndex] : undefined;
-  const currentPrice = currentVar ? currentVar.preco_base : product.preco_base;
-  const currentRef = currentVar ? currentVar.referencia : product.referencia;
-  const currentImage = currentVar?.imagem || product.imagens?.[0] || 'img/logo.png';
+  // Garante que as variações da base oficial sempre estejam acessíveis
+  const baseProd = PRODUTOS.find((p) => p.id === product.id);
+  const variacoes = (product.variacoes && product.variacoes.length > 0)
+    ? product.variacoes
+    : (baseProd?.variacoes && baseProd.variacoes.length > 0 ? baseProd.variacoes : undefined);
+
+  const hasVariations = Boolean(variacoes && variacoes.length > 0);
+  const currentVar = hasVariations ? variacoes![selectedVarIndex] : undefined;
+  const currentPrice = currentVar ? currentVar.preco_base : (product.preco_base || baseProd?.preco_base || 0);
+  const currentRef = currentVar ? currentVar.referencia : (product.referencia || baseProd?.referencia || '');
+  const currentImage = currentVar?.imagem || product.imagens?.[0] || baseProd?.imagens?.[0] || 'img/logo.png';
 
   const cartItem = items.find((i) =>
     currentVar ? (i.id === product.id && i.variationId === currentVar.id) : (i.id === product.id && !i.variationId)
@@ -157,9 +164,9 @@ export const ProductListItem: React.FC<ProductListItemProps> = ({ product }) => 
           </p>
 
           {/* Variations Pills na lista */}
-          {hasVariations && product.variacoes && (
+          {hasVariations && variacoes && (
             <div className="flex flex-wrap gap-1 mt-1.5" onClick={(e) => e.stopPropagation()}>
-              {product.variacoes.map((v, idx) => {
+              {variacoes.map((v, idx) => {
                 const isSelected = selectedVarIndex === idx;
                 return (
                   <button
