@@ -19,8 +19,9 @@ interface ProductListItemProps {
 export const ProductListItem: React.FC<ProductListItemProps> = ({ product }) => {
   const [qty, setQty] = useState(1);
   const [selectedVarIndex, setSelectedVarIndex] = useState(0);
-  const [imageLoaded, setImageLoaded] = useState(false);
-  const [imageError, setImageError] = useState(false);
+  const [displayedImage, setDisplayedImage] = useState<string>('');
+  const [nextImage, setNextImage] = useState<string>('');
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
   const { items, addToCart } = useCartStore();
   const { isSellerLoggedIn, getActiveSeller } = useSellerStore();
@@ -39,6 +40,13 @@ export const ProductListItem: React.FC<ProductListItemProps> = ({ product }) => 
   const currentRef = currentVar ? currentVar.referencia : (product.referencia || baseProd?.referencia || '');
   const currentImage = currentVar?.imagem || product.imagens?.[0] || baseProd?.imagens?.[0] || 'img/logo.png';
 
+  // Inicializar displayedImage na primeira renderização
+  React.useEffect(() => {
+    if (!displayedImage) {
+      setDisplayedImage(currentImage);
+    }
+  }, [currentImage, displayedImage]);
+
   // Preload das imagens das variações
   React.useEffect(() => {
     if (variacoes && variacoes.length > 0) {
@@ -51,11 +59,29 @@ export const ProductListItem: React.FC<ProductListItemProps> = ({ product }) => 
     }
   }, [variacoes]);
 
-  // Reset image loaded state quando a imagem mudar
+  // Gerenciar transição de imagens quando currentImage mudar
   React.useEffect(() => {
-    setImageLoaded(false);
-    setImageError(false);
-  }, [currentImage]);
+    if (currentImage && currentImage !== displayedImage) {
+      // Preload da nova imagem
+      const img = new Image();
+      img.onload = () => {
+        setIsTransitioning(true);
+        setNextImage(currentImage);
+        // Após um pequeno delay para o fade, atualizar a imagem exibida
+        setTimeout(() => {
+          setDisplayedImage(currentImage);
+          setNextImage('');
+          setIsTransitioning(false);
+        }, 200); // Duração do fade (mais rápido na lista)
+      };
+      img.onerror = () => {
+        // Em caso de erro, usar logo como fallback
+        setDisplayedImage('img/logo.png');
+        setIsTransitioning(false);
+      };
+      img.src = currentImage;
+    }
+  }, [currentImage, displayedImage]);
 
   const cartItem = items.find((i) =>
     currentVar ? (i.id === product.id && i.variationId === currentVar.id) : (i.id === product.id && !i.variationId)
@@ -118,23 +144,34 @@ export const ProductListItem: React.FC<ProductListItemProps> = ({ product }) => 
       className="group bg-white dark:bg-slate-900/90 rounded-2xl border border-slate-200/90 dark:border-slate-800 p-3.5 sm:p-4 shadow-sm hover:shadow-md hover:border-emerald-500/40 transition-all flex flex-col sm:flex-row items-center justify-between gap-4 cursor-pointer"
     >
       <div className="flex items-center gap-3.5 w-full sm:w-auto flex-1 min-w-0">
-        <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl bg-slate-50 dark:bg-slate-800/60 p-1.5 flex items-center justify-center shrink-0 border border-slate-100 dark:border-slate-800">
+        <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl bg-slate-50 dark:bg-slate-800/60 p-1.5 flex items-center justify-center shrink-0 border border-slate-100 dark:border-slate-800 relative overflow-hidden">
+          {/* Imagem atual (sempre visível) */}
           <img
-            key={currentImage}
-            src={currentImage}
+            src={displayedImage || 'img/logo.png'}
             alt={product.nome}
-            className={`w-full h-full object-contain group-hover:scale-105 transition-all duration-200 ${
-              imageLoaded && !imageError ? 'opacity-100' : 'opacity-0'
+            className={`absolute inset-0 w-full h-full object-contain group-hover:scale-105 transition-all duration-200 ${
+              isTransitioning ? 'opacity-0' : 'opacity-100'
             }`}
             loading="eager"
-            onLoad={() => setImageLoaded(true)}
             onError={(e) => {
-              console.error(`Erro ao carregar imagem: ${currentImage}`);
-              setImageError(true);
-              setImageLoaded(true);
+              console.error(`Erro ao carregar imagem: ${displayedImage}`);
               (e.target as HTMLImageElement).src = 'img/logo.png';
             }}
           />
+          
+          {/* Imagem da próxima variação (fade in) */}
+          {nextImage && (
+            <img
+              src={nextImage}
+              alt={product.nome}
+              className="absolute inset-0 w-full h-full object-contain transition-opacity duration-200 opacity-100"
+              loading="eager"
+              onError={(e) => {
+                console.error(`Erro ao carregar próxima imagem: ${nextImage}`);
+                (e.target as HTMLImageElement).src = 'img/logo.png';
+              }}
+            />
+          )}
         </div>
 
         <div className="min-w-0 flex-1">
