@@ -89,17 +89,17 @@ export function findProductBySlug(param: string, products: Product[]): Product |
 
 /**
  * Gera a URL canônica direta para um produto no catálogo.
- * Exemplo: "https://catalognafog.onrender.com/?produto=kapina-plus"
+ * Exemplo: "https://catalognafog.onrender.com/p/kapina-plus"
  */
 export function getProductUrl(product: Product): string {
   const slug = slugifyProductName(product.nome);
-  let baseUrl = 'https://catalognafog.onrender.com';
+  let origin = 'https://catalognafog.onrender.com';
 
   if (typeof window !== 'undefined' && window.location.origin) {
-    baseUrl = `${window.location.origin}${window.location.pathname}`.replace(/\/+$/, '');
+    origin = window.location.origin.replace(/\/+$/, '');
   }
 
-  return `${baseUrl}?produto=${encodeURIComponent(slug)}`;
+  return `${origin}/p/${encodeURIComponent(slug)}`;
 }
 
 /**

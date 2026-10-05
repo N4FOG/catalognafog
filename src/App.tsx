@@ -84,10 +84,12 @@ export const App: React.FC = () => {
       addToast('📂 Orçamento carregado com sucesso!', 'success');
     }
 
-    // 4. Deep Link de Produto (?produto=kapina-plus ou ?p=kapina-plus)
+    // 4. Deep Link de Produto (/p/slug ou ?produto=slug)
     try {
       const params = new URLSearchParams(window.location.search);
-      const prodCode = params.get('produto') || params.get('p') || params.get('id');
+      const pathMatch = window.location.pathname.match(/\/(?:p|produto)\/([^/]+)/);
+      const pathCode = pathMatch ? decodeURIComponent(pathMatch[1]) : null;
+      const prodCode = params.get('produto') || params.get('p') || params.get('id') || pathCode;
       if (prodCode) {
         const catalogList = products && products.length > 0 ? products : PRODUTOS;
         const found = findProductBySlug(prodCode, catalogList);
@@ -117,16 +119,21 @@ export const App: React.FC = () => {
       const currentUrl = new URL(window.location.href);
       if (selectedProduct) {
         const slug = slugifyProductName(selectedProduct.nome);
-        if (currentUrl.searchParams.get('produto') !== slug) {
-          currentUrl.searchParams.set('produto', slug);
-          currentUrl.searchParams.delete('p'); // Normaliza para ?produto=
-          window.history.pushState({ productId: selectedProduct.id, slug }, '', currentUrl.toString());
+        const targetPath = `/p/${slug}`;
+        if (!currentUrl.pathname.includes(targetPath) && currentUrl.searchParams.get('produto') !== slug) {
+          window.history.pushState({ productId: selectedProduct.id, slug }, '', targetPath);
         }
       } else {
-        if (currentUrl.searchParams.has('produto') || currentUrl.searchParams.has('p')) {
+        if (
+          currentUrl.pathname.startsWith('/p/') ||
+          currentUrl.pathname.startsWith('/produto/') ||
+          currentUrl.searchParams.has('produto') ||
+          currentUrl.searchParams.has('p')
+        ) {
           currentUrl.searchParams.delete('produto');
           currentUrl.searchParams.delete('p');
-          window.history.replaceState({}, '', currentUrl.toString());
+          const cleanSearch = currentUrl.searchParams.toString() ? `?${currentUrl.searchParams.toString()}` : '';
+          window.history.replaceState({}, '', `/${cleanSearch}`);
         }
       }
     } catch (e) {
@@ -141,7 +148,9 @@ export const App: React.FC = () => {
     const handlePopState = () => {
       try {
         const params = new URLSearchParams(window.location.search);
-        const prodCode = params.get('produto') || params.get('p') || params.get('id');
+        const pathMatch = window.location.pathname.match(/\/(?:p|produto)\/([^/]+)/);
+        const pathCode = pathMatch ? decodeURIComponent(pathMatch[1]) : null;
+        const prodCode = params.get('produto') || params.get('p') || params.get('id') || pathCode;
         if (prodCode) {
           const catalogList = products && products.length > 0 ? products : PRODUTOS;
           const found = findProductBySlug(prodCode, catalogList);
