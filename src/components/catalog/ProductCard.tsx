@@ -21,6 +21,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const [qty, setQty] = useState(1);
   const [selectedVarIndex, setSelectedVarIndex] = useState(0);
   const [hoveredVarIndex, setHoveredVarIndex] = useState<number | null>(null);
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageError, setImageError] = useState(false);
 
   const { items, addToCart } = useCartStore();
   const { isSellerLoggedIn, getActiveSeller } = useSellerStore();
@@ -42,6 +44,24 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const currentPrice = currentVar ? currentVar.preco_base : (product.preco_base || baseProd?.preco_base || 0);
   const currentRef = currentVar ? currentVar.referencia : (product.referencia || baseProd?.referencia || '');
   const currentImage = activeVar?.imagem || currentVar?.imagem || product.imagens?.[0] || baseProd?.imagens?.[0] || 'img/logo.png';
+
+  // Preload das imagens das variações
+  React.useEffect(() => {
+    if (variacoes && variacoes.length > 0) {
+      variacoes.forEach((v) => {
+        if (v.imagem) {
+          const img = new Image();
+          img.src = v.imagem;
+        }
+      });
+    }
+  }, [variacoes]);
+
+  // Reset image loaded state quando a imagem mudar
+  React.useEffect(() => {
+    setImageLoaded(false);
+    setImageError(false);
+  }, [currentImage]);
 
   const cartItem = items.find((i) =>
     currentVar ? (i.id === product.id && i.variationId === currentVar.id) : (i.id === product.id && !i.variationId)
@@ -210,13 +230,18 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
         {/* Product Image */}
         <img
+          key={currentImage}
           src={currentImage}
           alt={product.nome}
           className={`w-4/5 h-4/5 object-contain group-hover:scale-105 transition-all duration-300 ${
             !isInStock ? 'grayscale opacity-60' : ''
-          }`}
-          loading="lazy"
+          } ${imageLoaded && !imageError ? 'opacity-100' : 'opacity-0'}`}
+          loading="eager"
+          onLoad={() => setImageLoaded(true)}
           onError={(e) => {
+            console.error(`Erro ao carregar imagem: ${currentImage}`);
+            setImageError(true);
+            setImageLoaded(true);
             (e.target as HTMLImageElement).src = 'img/logo.png';
           }}
         />

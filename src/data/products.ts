@@ -2727,7 +2727,7 @@ export const PRODUTOS: Product[] = [
       "Sachê 200g e Balde 2kg"
     ],
     "imagens": [
-      "img/produtos/p25-k-rato-soft-bait.webp"
+      "img/produtos/p25-k-rato-soft-bait-200g.webp"
     ],
     "unidade": "un",
     "referencia": "KRATO-SOFT-150-2K",
@@ -2741,7 +2741,7 @@ export const PRODUTOS: Product[] = [
         "referencia": "KRATO-SOFT-200G",
         "preco_base": 15.36,
         "unidade": "pacote",
-        "imagem": "img/produtos/p25-k-rato-soft-bait.webp",
+        "imagem": "img/produtos/p25-k-rato-soft-bait-200g.webp",
         "packTag": "SACHÊ 200G"
       },
       {
