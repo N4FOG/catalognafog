@@ -780,7 +780,9 @@ const PRODUTOS = [
       'Sachês 200g e 1kg'
     ],
     imagens: [
-      'img/produtos/p28-karamujo-metaldeido-pellets.webp'
+      'img/produtos/p28-karamujo-metaldeido-pellets.webp',
+      'img/produtos/p28-karamujo-metaldeido-pellets1.webp',
+      'img/produtos/p28-karamujo-metaldeido-pellets2.webp'
     ],
     unidade: 'sachê',
     referencia: 'KARM-MET-200-1K',

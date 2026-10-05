@@ -467,13 +467,8 @@ function changeSheetMainImg(src, thumbEl) {
   hapticFeedback(12);
   const mainImg = document.getElementById('sheet-main-img');
   if (mainImg) {
-    mainImg.style.opacity = '0.25';
-    mainImg.style.transform = 'scale(0.97)';
-    setTimeout(() => {
-      mainImg.src = src;
-      mainImg.style.opacity = '1';
-      mainImg.style.transform = 'scale(1)';
-    }, 120);
+    // Troca imagem diretamente sem transição
+    mainImg.src = src;
   }
   if (thumbEl) {
     const parent = thumbEl.parentElement;
@@ -509,8 +504,13 @@ function openProductSheet(id) {
       ${p.imagens.length > 1 ? `
         <div class="sheet-thumbs-row">
           ${p.imagens.map((imgSrc, idx) => `
-            <div class="sheet-thumb-item ${idx === 0 ? 'active' : ''}" onclick="changeSheetMainImg('${imgSrc}', this)" title="Foto ${idx + 1}">
-              <img src="${imgSrc}" alt="${p.nome} - Foto ${idx + 1}">
+            <div class="sheet-thumb-item ${idx === 0 ? 'active' : ''}" title="Visualização ${idx + 1} de ${p.imagens.length}">
+              <img 
+                src="${imgSrc}" 
+                alt="${p.nome} - Foto ${idx + 1}"
+                loading="eager"
+                onerror="this.src='img/logo.png'; this.style.opacity='0.3';"
+              >
             </div>
           `).join('')}
         </div>

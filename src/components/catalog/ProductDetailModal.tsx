@@ -148,7 +148,7 @@ export const ProductDetailModal: React.FC = () => {
               )}
               
               <img
-                src={currentVar?.imagem || (selectedProduct.imagens && selectedProduct.imagens[selectedImageIndex]) || (selectedProduct.imagens && selectedProduct.imagens[0]) || 'img/logo.png'}
+                src={(selectedProduct.imagens && selectedProduct.imagens[selectedImageIndex]) || (selectedProduct.imagens && selectedProduct.imagens[0]) || 'img/logo.png'}
                 alt={selectedProduct.nome}
                 className={`max-h-full object-contain ${!isInStock ? 'grayscale opacity-50' : ''}`}
                 onError={(e) => {
@@ -157,28 +157,30 @@ export const ProductDetailModal: React.FC = () => {
               />
             </div>
 
-            {/* Thumbnail dots/selectors if multiple */}
+            {/* Thumbnail dots/selectors if multiple - DESABILITADO */}
             {Array.isArray(selectedProduct.imagens) && selectedProduct.imagens.length > 1 && (
               <div className="flex items-center gap-2 mt-2">
                 {selectedProduct.imagens.map((img, idx) => (
-                  <button
-                    key={idx}
-                    onClick={() => setSelectedImageIndex(idx)}
-                    className={`w-10 h-10 rounded-lg p-0.5 border-2 transition-all ${
-                      selectedImageIndex === idx
+                  <div
+                    key={`thumb-${idx}-${img}`}
+                    className={`w-10 h-10 rounded-lg p-0.5 border-2 bg-slate-50 dark:bg-slate-800 ${
+                      idx === 0
                         ? 'border-emerald-600 scale-105'
                         : 'border-slate-200 opacity-60'
                     }`}
+                    title={`Visualização ${idx + 1} de ${selectedProduct.imagens.length}`}
                   >
                     <img
                       src={img || 'img/logo.png'}
-                      alt=""
+                      alt={`${selectedProduct.nome} - Foto ${idx + 1}`}
                       className="w-full h-full object-contain"
+                      loading="eager"
                       onError={(e) => {
                         (e.target as HTMLImageElement).src = 'img/logo.png';
+                        (e.target as HTMLImageElement).style.opacity = '0.3';
                       }}
                     />
-                  </button>
+                  </div>
                 ))}
               </div>
             )}

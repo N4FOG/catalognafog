@@ -20,9 +20,7 @@ interface ProductCardProps {
 export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const [qty, setQty] = useState(1);
   const [selectedVarIndex, setSelectedVarIndex] = useState(0);
-  const [displayedImage, setDisplayedImage] = useState<string>('');
-  const [nextImage, setNextImage] = useState<string>('');
-  const [isTransitioning, setIsTransitioning] = useState(false);
+  // hoveredVarIndex removido - não queremos trocar imagem no hover
 
   const { items, addToCart } = useCartStore();
   const { isSellerLoggedIn, getActiveSeller } = useSellerStore();
@@ -37,53 +35,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
   const hasVariations = Boolean(variacoes && variacoes.length > 0);
   const currentVar = hasVariations ? variacoes![selectedVarIndex] : undefined;
-
+  // Sempre usa a imagem da primeira variante ou a imagem padrão do produto
+  const currentImage = product.imagens?.[0] || baseProd?.imagens?.[0] || 'img/logo.png';
+  
   const currentPrice = currentVar ? currentVar.preco_base : (product.preco_base || baseProd?.preco_base || 0);
   const currentRef = currentVar ? currentVar.referencia : (product.referencia || baseProd?.referencia || '');
-  const currentImage = currentVar?.imagem || product.imagens?.[0] || baseProd?.imagens?.[0] || 'img/logo.png';
-
-  // Inicializar displayedImage na primeira renderização
-  React.useEffect(() => {
-    if (!displayedImage) {
-      setDisplayedImage(currentImage);
-    }
-  }, [currentImage, displayedImage]);
-
-  // Preload das imagens das variações
-  React.useEffect(() => {
-    if (variacoes && variacoes.length > 0) {
-      variacoes.forEach((v) => {
-        if (v.imagem) {
-          const img = new Image();
-          img.src = v.imagem;
-        }
-      });
-    }
-  }, [variacoes]);
-
-  // Gerenciar transição de imagens quando currentImage mudar
-  React.useEffect(() => {
-    if (currentImage && currentImage !== displayedImage) {
-      // Preload da nova imagem
-      const img = new Image();
-      img.onload = () => {
-        setIsTransitioning(true);
-        setNextImage(currentImage);
-        // Após um pequeno delay para o fade, atualizar a imagem exibida
-        setTimeout(() => {
-          setDisplayedImage(currentImage);
-          setNextImage('');
-          setIsTransitioning(false);
-        }, 300); // Duração do fade
-      };
-      img.onerror = () => {
-        // Em caso de erro, usar logo como fallback
-        setDisplayedImage('img/logo.png');
-        setIsTransitioning(false);
-      };
-      img.src = currentImage;
-    }
-  }, [currentImage, displayedImage]);
 
   const cartItem = items.find((i) =>
     currentVar ? (i.id === product.id && i.variationId === currentVar.id) : (i.id === product.id && !i.variationId)
@@ -250,38 +206,18 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           </div>
         </div>
 
-        {/* Product Image - Sistema de crossfade */}
-        <div className="relative w-4/5 h-4/5">
-          {/* Imagem atual (sempre visível) */}
-          <img
-            src={displayedImage || 'img/logo.png'}
-            alt={product.nome}
-            className={`absolute inset-0 w-full h-full object-contain group-hover:scale-105 transition-all duration-300 ${
-              !isInStock ? 'grayscale opacity-60' : ''
-            } ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}
-            loading="eager"
-            onError={(e) => {
-              console.error(`Erro ao carregar imagem: ${displayedImage}`);
-              (e.target as HTMLImageElement).src = 'img/logo.png';
-            }}
-          />
-          
-          {/* Imagem da próxima variação (fade in) */}
-          {nextImage && (
-            <img
-              src={nextImage}
-              alt={product.nome}
-              className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-300 ${
-                !isInStock ? 'grayscale opacity-60' : 'opacity-100'
-              }`}
-              loading="eager"
-              onError={(e) => {
-                console.error(`Erro ao carregar próxima imagem: ${nextImage}`);
-                (e.target as HTMLImageElement).src = 'img/logo.png';
-              }}
-            />
-          )}
-        </div>
+        {/* Product Image */}
+        <img
+          src={currentImage}
+          alt={product.nome}
+          className={`w-4/5 h-4/5 object-contain ${
+            !isInStock ? 'grayscale opacity-60' : ''
+          }`}
+          loading="lazy"
+          onError={(e) => {
+            (e.target as HTMLImageElement).src = 'img/logo.png';
+          }}
+        />
 
         {/* Formulation Pill Badge */}
         <span className="absolute bottom-2 left-2 z-10 px-2 py-0.5 rounded-full text-[10px] font-bold bg-white/90 dark:bg-[#0f1f17]/90 backdrop-blur-xs border border-slate-200 dark:border-slate-700 text-[#334e40] dark:text-[#9cb8a9] shadow-xs">
