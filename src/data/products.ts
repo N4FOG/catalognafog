@@ -6,7 +6,7 @@ import type { Product } from '../types/product';
 export const PRODUTOS: Product[] = [
   {
     "id": 1,
-    "nome": "Kapina Plus (60ml)",
+    "nome": "Kapina Plus (60ml e 1 Litro)",
     "categoria": "gramados",
     "tipo_formulacao": "concentrado",
     "o_que_faz": "Elimina folhas largas e tiriricas em Grama Esmeralda",
