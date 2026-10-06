@@ -2,10 +2,10 @@
 //  JCV DISTRIBUIDORA v3.0 — Service Worker (Cache Offline & PWA)
 // ═══════════════════════════════════════════════════════════════
 
-const CACHE_NAME = 'jcv-distribuidora-v3-cache-v16';
+const CACHE_NAME = 'jcv-distribuidora-v3-cache-v17';
+
+// Assets estáticos que queremos pré-cachear no install
 const STATIC_ASSETS = [
-  './',
-  './index.html',
   './manifest.json',
   './fonts/inter.woff2',
   './fonts/plus-jakarta-sans.woff2',
@@ -15,35 +15,47 @@ const STATIC_ASSETS = [
   './img/apple-touch-icon.png'
 ];
 
-// Install: cache static assets de forma tolerante a falhas parciais
+// ── Install ──────────────────────────────────────────────────
 self.addEventListener('install', event => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => {
-      return Promise.allSettled(
+    caches.open(CACHE_NAME).then(cache =>
+      Promise.allSettled(
         STATIC_ASSETS.map(url =>
-          cache.add(url).catch(err => console.warn('Cache fetch skipped:', url, err))
+          cache.add(url).catch(err => console.warn('[SW] Cache skip:', url, err))
         )
-      );
-    })
+      )
+    )
   );
+  // Ativa imediatamente — não espera abas fecharem
   self.skipWaiting();
 });
 
-// Activate: delete old caches
+// ── Activate: limpa TODOS os caches antigos ──────────────────
 self.addEventListener('activate', event => {
   event.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)))
-    )
+    caches.keys()
+      .then(keys => Promise.all(
+        keys.filter(k => k !== CACHE_NAME).map(k => {
+          console.log('[SW] Deletando cache antigo:', k);
+          return caches.delete(k);
+        })
+      ))
+      .then(() => self.clients.claim())
+      .then(() => {
+        // Avisa todas as abas abertas que o SW foi atualizado
+        // A aba decide se recarrega (App.tsx escuta essa mensagem)
+        return self.clients.matchAll({ type: 'window' }).then(clients => {
+          clients.forEach(client => client.postMessage({ type: 'SW_UPDATED' }));
+        });
+      })
   );
-  self.clients.claim();
 });
 
-// Fetch: Network-First for HTML/Navigation, Cache-First for static images/fonts
+// ── Fetch ─────────────────────────────────────────────────────
 self.addEventListener('fetch', event => {
   const url = new URL(event.request.url);
 
-  // Ignorar módulos e rotas de desenvolvimento
+  // Ignora: dev HMR, extensões, não-GET
   if (
     url.pathname.startsWith('/@') ||
     url.pathname.startsWith('/src/') ||
@@ -54,26 +66,50 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  // 1. Navegações HTML: NETWORK FIRST com fallback para cache se offline
+  // ── 1. HTML / Navegação: Network First ──────────────────────
+  // Sempre tenta rede; só usa cache se estiver offline
   if (event.request.mode === 'navigate' || event.request.destination === 'document') {
     event.respondWith(
       fetch(event.request)
         .then(response => {
           if (response.ok) {
-            const clone = response.clone();
-            caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
+            caches.open(CACHE_NAME).then(cache => cache.put(event.request, response.clone()));
           }
           return response;
         })
         .catch(async () => {
           const cached = await caches.match(event.request);
-          return cached || caches.match('./index.html') || caches.match('/');
+          return cached || await caches.match('/index.html') || new Response('Offline', { status: 503 });
         })
     );
     return;
   }
 
-  // 2. Assets Estáticos & Imagens/Fontes: Cache First
+  // ── 2. Bundles Vite (assets/*.js, assets/*.css): Network First ──
+  // Hashes no filename garantem unicidade — não há risco de stale.
+  // Cache First seria mais rápido, mas com Stale-While-Revalidate o browser
+  // servia o bundle antigo enquanto o novo chegava, causando o "pisca e volta".
+  if (url.pathname.startsWith('/assets/')) {
+    event.respondWith(
+      caches.open(CACHE_NAME).then(cache =>
+        cache.match(event.request).then(cached => {
+          if (cached) {
+            // Já está no cache com o hash correto — serve instantaneamente
+            return cached;
+          }
+          // Não está no cache (novo hash após deploy) — busca na rede e armazena
+          return fetch(event.request).then(response => {
+            if (response.ok) cache.put(event.request, response.clone());
+            return response;
+          });
+        })
+      )
+    );
+    return;
+  }
+
+  // ── 3. Imagens e Fontes: Cache First ─────────────────────────
+  // Esses arquivos raramente mudam; servir do cache é o comportamento ideal.
   if (
     event.request.destination === 'image' ||
     event.request.destination === 'font' ||
@@ -86,27 +122,22 @@ self.addEventListener('fetch', event => {
           return fetch(event.request).then(response => {
             if (response.ok) cache.put(event.request, response.clone());
             return response;
-          }).catch(() => cached || new Response('', { status: 404 }));
+          }).catch(() => new Response('', { status: 404 }));
         })
       )
     );
     return;
   }
 
-  // 3. Demais requisições (JS, CSS): Stale While Revalidate
+  // ── 4. Todo o resto: Network First com fallback offline ──────
   event.respondWith(
-    caches.match(event.request).then(cached => {
-      const fetchPromise = fetch(event.request)
-        .then(response => {
-          if (response.ok) {
-            const clone = response.clone();
-            caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
-          }
-          return response;
-        })
-        .catch(() => cached);
-
-      return cached || fetchPromise;
-    })
+    fetch(event.request)
+      .then(response => {
+        if (response.ok) {
+          caches.open(CACHE_NAME).then(cache => cache.put(event.request, response.clone()));
+        }
+        return response;
+      })
+      .catch(() => caches.match(event.request))
   );
 });

@@ -107,17 +107,26 @@ export const App: React.FC = () => {
         window.addEventListener('load', () => {
           navigator.serviceWorker.register('/sw.js').then((reg) => {
             console.log('✅ Service Worker registrado');
-            
-            // Detecta quando há uma nova versão aguardando
+
+            // Escuta mensagem SW_UPDATED: disparada quando o SW novo assume
+            // controle de uma aba que já estava aberta (clients.claim no activate).
+            // Recarrega imediatamente para garantir que os bundles corretos sejam usados.
+            navigator.serviceWorker.addEventListener('message', (event) => {
+              if (event.data?.type === 'SW_UPDATED') {
+                console.log('[SW] Novo SW assumiu controle — recarregando para aplicar atualização.');
+                window.location.reload();
+              }
+            });
+
+            // Detecta nova versão disponível (deploy novo no servidor)
             reg.addEventListener('updatefound', () => {
               const newWorker = reg.installing;
               console.log('🔄 Nova versão do site detectada!');
-              
+
               newWorker?.addEventListener('statechange', () => {
                 if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
                   console.log('⚠️ Nova versão disponível! Página será recarregada.');
-                  
-                  // Mostra banner de atualização
+
                   const banner = document.createElement('div');
                   banner.innerHTML = `
                     <div style="position:fixed;top:0;left:0;right:0;background:linear-gradient(135deg,#10b981,#059669);color:white;padding:14px 20px;text-align:center;z-index:999999;box-shadow:0 4px 12px rgba(0,0,0,0.15);font-family:system-ui,sans-serif;animation:slideDown 0.3s ease;">
@@ -133,26 +142,25 @@ export const App: React.FC = () => {
                     </style>
                   `;
                   document.body.appendChild(banner);
-                  
-                  // Recarrega automaticamente após 3 segundos
+
                   setTimeout(() => {
                     window.location.reload();
                   }, 3000);
                 }
               });
             });
-            
+
             // Verifica atualizações a cada 60 segundos
             setInterval(() => {
               reg.update();
             }, 60000);
-            
+
           }).catch((err) => {
             console.log('SW registration note:', err);
           });
         });
       } else {
-        // Em dev, limpa qualquer Service Worker para garantir que o código novo seja servido na hora
+        // Em dev, limpa qualquer Service Worker para garantir código fresco
         navigator.serviceWorker.getRegistrations().then((registrations) => {
           for (const reg of registrations) {
             reg.unregister();

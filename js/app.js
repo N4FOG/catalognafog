@@ -30,6 +30,14 @@ document.addEventListener('DOMContentLoaded', () => {
       // Em produção, registra o Service Worker com detecção de atualização
       navigator.serviceWorker.register('sw.js').then(reg => {
         console.log('✅ Service Worker registrado com sucesso');
+
+        // Escuta SW_UPDATED: novo SW assumiu controle via clients.claim()
+        navigator.serviceWorker.addEventListener('message', (event) => {
+          if (event.data?.type === 'SW_UPDATED') {
+            console.log('[SW] Novo SW assumiu — recarregando.');
+            window.location.reload();
+          }
+        });
         
         // Detecta nova versão
         reg.onupdatefound = () => {
