@@ -919,7 +919,8 @@ export const PRODUTOS: Product[] = [
     "referencia": "BRAV-10",
     "rendimento": "Rende até 30 m² de calda de pulverização.",
     "destaque": true,
-    "preco_base": 24,
+    "preco_base": 0,
+    "emEstoque": false,
     "manual_aplicacao": {
         "resumo_aplicador": "Fungicida concentrado de referência no mercado para prevenção e combate a fungos patogênicos (oídio, ferrugem, podridão, manchas foliares) em orquídeas, rosas e plantas ornamentais.",
         "checklist_previo": [
@@ -1041,7 +1042,8 @@ export const PRODUTOS: Product[] = [
     "referencia": "BRAV-PU-240",
     "rendimento": "Trata até 10 m² de área foliar ou 25 vasos.",
     "destaque": false,
-    "preco_base": 28,
+    "emEstoque": false,
+    "preco_base": 0,
     "manual_aplicacao": {
         "resumo_aplicador": "Versão spray pronta para uso com aplicador em gatilho. Máxima praticidade residencial para proteger orquídeas, samambaias, folhagens e jardins verticais contra fungos patogênicos.",
         "checklist_previo": [
@@ -1407,6 +1409,7 @@ export const PRODUTOS: Product[] = [
     "referencia": "IMP-250-500",
     "rendimento": "Trata até 150 m² de área aplicada.",
     "destaque": true,
+    "emEstoque": false,
     "preco_base": 48,
     "manual_aplicacao": {
         "resumo_aplicador": "Inseticida domissanitário pronto uso de ação deletéria sem choque instantâneo. O inseto não morre na hora: ele caminha, transporta o veneno e contamina todo o ninho em 48h.",
@@ -2094,7 +2097,7 @@ export const PRODUTOS: Product[] = [
   },
   {
     "id": 20,
-    "nome": "BleKalt 25 (Thiamethoxam - 90g e 1kg)",
+    "nome": "BleKalt 25 (90g)",
     "categoria": "mosquicidas",
     "tipo_formulacao": "po",
     "o_que_faz": "Mosquicida profissional para granjas, estábulos e laticínios",
@@ -3114,7 +3117,8 @@ export const PRODUTOS: Product[] = [
     "referencia": "KARM-MET-200-1K",
     "rendimento": "Trata de 40 m² a 200 m² de área perimetral.",
     "destaque": false,
-    "preco_base": 38.20,
+    "emEstoque": false,
+    "preco_base": 0.00,
     "manual_aplicacao": {
         "resumo_aplicador": "Isca granulada em pellets à base de Metaldeído para controle severo em grandes áreas e combate ao Caramujo Africano (Achatina fulica). Pellets com alta durabilidade externa.",
         "checklist_previo": [
