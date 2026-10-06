@@ -141,29 +141,25 @@ export const useAdminStore = create<AdminState>((set, get) => ({
   },
 
   loadInitialData: async () => {
-    try {
-      // 1. Carrega edições locais salvas pelo admin, se houver
-      const cachedProducts = await persistentStorage.getItem<Product[]>(ADMIN_PRODUCTS_STORAGE_KEY, []);
-      const cachedBackups = await persistentStorage.getItem<ProductBackup[]>(ADMIN_BACKUPS_STORAGE_KEY, []);
+    // Produtos vêm EXCLUSIVAMENTE do bundle estático (PRODUTOS de products.ts)
+    // Removido sistema de cache local para eliminar pisca-pisca de renderização
+    const initialProducts = PRODUTOS.map(sanitizeProduct);
+    set({ products: initialProducts, backups: [] });
+    reindexProducts(initialProducts);
 
-      // SEMPRE mescla com PRODUTOS do código e sanitiza!
-      const initialProducts = mergeProducts(PRODUTOS, cachedProducts || []);
-
-      set({ products: initialProducts, backups: cachedBackups || [] });
-      reindexProducts(initialProducts);
-
-      // Atualiza o cache local com a versão mesclada e sanitizada
-      await persistentStorage.setItem(ADMIN_PRODUCTS_STORAGE_KEY, initialProducts);
-    } catch (e) {
-      console.warn('Erro ao carregar dados iniciais de produtos:', e);
-      const safe = PRODUTOS.map(sanitizeProduct);
-      set({ products: safe });
-      reindexProducts(safe);
+    // Limpa qualquer cache antigo que possa existir no localStorage
+    if (typeof window !== 'undefined') {
+      try {
+        localStorage.removeItem(ADMIN_PRODUCTS_STORAGE_KEY);
+        localStorage.removeItem(ADMIN_BACKUPS_STORAGE_KEY);
+      } catch (e) {
+        console.warn('Nota: não foi possível limpar cache antigo de produtos', e);
+      }
     }
   },
 
   syncWithCloud: async (): Promise<boolean> => {
-    // A busca de produtos via Google Sheets foi desativada para impedir que indisponibilidade ou inconsistência na nuvem oculte produtos do catálogo.
+    // Sincronização via Google Sheets removida — produtos vêm do bundle estático
     set({ isSyncingCloud: false, lastCloudSync: new Date().toISOString() });
     return true;
   },
@@ -195,43 +191,22 @@ export const useAdminStore = create<AdminState>((set, get) => ({
       };
     }
 
-    // Atualiza a lista local de produtos
+    // Atualiza a lista de produtos APENAS NA SESSÃO ATUAL (memória)
+    // NÃO persiste no localStorage — edições são temporárias até o próximo deploy
     const nextProducts = oldProduct
       ? products.map((p) => (p.id === updatedProduct.id ? updatedProduct : p))
       : [...products, updatedProduct];
 
     const nextBackups = newBackup ? [newBackup, ...backups].slice(0, 100) : backups;
 
-    // Salva localmente para resposta instantânea
     set({ products: nextProducts, backups: nextBackups });
     reindexProducts(nextProducts);
-    await persistentStorage.setItem(ADMIN_PRODUCTS_STORAGE_KEY, nextProducts);
-    await persistentStorage.setItem(ADMIN_BACKUPS_STORAGE_KEY, nextBackups);
 
-    // Envia para o Google Sheets em nuvem para propagar a todos os usuários
-    try {
-      const url = CONFIG.auditWebhookUrl;
-      if (url && url.startsWith('http')) {
-        const payload = {
-          action: 'saveProducts',
-          user: 'jcvadmin',
-          products: nextProducts,
-          backup: newBackup
-        };
+    // REMOVIDO: persistência em localStorage
+    // REMOVIDO: envio para Google Sheets
+    // Admin deve editar src/data/products.ts e fazer commit/deploy
 
-        const jsonStr = JSON.stringify(payload);
-        fetch(url, {
-          method: 'POST',
-          mode: 'no-cors',
-          cache: 'no-cache',
-          headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
-          body: jsonStr
-        }).catch((e) => console.warn('Erro ao propagar produto na nuvem:', e));
-      }
-    } catch (e) {
-      console.warn('Erro ao salvar produto em nuvem:', e);
-    }
-
+    console.log('✅ Produto atualizado na sessão atual. Para persistir, edite src/data/products.ts e faça deploy.');
     return true;
   },
 
