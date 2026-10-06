@@ -2,8 +2,6 @@ import { create } from 'zustand';
 import type { Product } from '../types/product';
 import type { AdminSession, ProductBackup } from '../types/admin';
 import { PRODUTOS } from '../data/products';
-import { CONFIG } from '../data/config';
-import { persistentStorage } from '../utils/storage';
 import { reindexProducts } from '../utils/searchEngine';
 
 interface AdminState {
