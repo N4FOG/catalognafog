@@ -14,18 +14,25 @@ const STATIC_ASSETS = [
   './img/apple-touch-icon.png'
 ];
 
-// ── Helpers de log ────────────────────────────────────────────
-const tag  = (color, label) => `%c[SW:${label}]`;
-const from = (src) => src === 'cache' ? '📦 CACHE' : '🌐 REDE';
-
+// ── Helpers de log ─────────────────────────────────────────────
 function logFetch(pathname, source, cacheKey) {
   const style = source === 'cache'
     ? 'color:#10b981;font-weight:bold'
     : 'color:#f59e0b;font-weight:bold';
+  const icon = source === 'cache' ? '📦 CACHE' : '🌐 REDE';
   console.log(
-    `%c[SW:FETCH] ${from(source)} → ${pathname}` + (cacheKey ? ` (cache: ${cacheKey})` : ''),
+    `%c[SW:FETCH] ${icon} → ${pathname}` + (cacheKey ? ` (cache: ${cacheKey})` : ''),
     style
   );
+}
+
+// ── Salva no cache de forma segura — clona ANTES de usar ───────
+// Regra de ouro do SW: clone() deve ser chamado ANTES de qualquer
+// leitura do body. Aqui clonamos imediatamente ao receber a response.
+function putInCache(request, response) {
+  if (!response || !response.ok) return;
+  const clone = response.clone(); // clone antes de qualquer uso
+  caches.open(CACHE_NAME).then(cache => cache.put(request, clone));
 }
 
 // ── Install ───────────────────────────────────────────────────
@@ -53,13 +60,15 @@ self.addEventListener('activate', event => {
       if (toDelete.length === 0) {
         console.log('[SW:ACTIVATE] ✅ Nenhum cache antigo para deletar');
       } else {
-        toDelete.forEach(k => console.log(`%c[SW:ACTIVATE] 🗑️ Deletando cache antigo: ${k}`, 'color:#ef4444;font-weight:bold'));
+        toDelete.forEach(k =>
+          console.log(`%c[SW:ACTIVATE] 🗑️ Deletando cache antigo: ${k}`, 'color:#ef4444;font-weight:bold')
+        );
       }
       return Promise.all(toDelete.map(k => caches.delete(k)));
     })
     .then(() => self.clients.claim())
     .then(() => {
-      console.log('%c[SW:ACTIVATE] ✅ clients.claim() executado — este SW agora controla todas as abas', 'color:#8b5cf6;font-weight:bold');
+      console.log('%c[SW:ACTIVATE] ✅ clients.claim() executado — SW controla todas as abas', 'color:#8b5cf6;font-weight:bold');
       return self.clients.matchAll({ type: 'window' }).then(clients => {
         console.log(`[SW:ACTIVATE] 📢 Enviando SW_UPDATED para ${clients.length} aba(s) abertas`);
         clients.forEach(client => client.postMessage({ type: 'SW_UPDATED' }));
@@ -72,8 +81,9 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event => {
   const url = new URL(event.request.url);
 
-  // Ignora: dev HMR, extensões, não-GET
+  // Ignora: dev HMR, extensões, não-GET, outras origens
   if (
+    url.origin !== self.location.origin ||
     url.pathname.startsWith('/@') ||
     url.pathname.startsWith('/src/') ||
     url.pathname.includes('node_modules') ||
@@ -88,45 +98,43 @@ self.addEventListener('fetch', event => {
     event.respondWith(
       fetch(event.request)
         .then(response => {
-          if (response.ok) {
-            logFetch(url.pathname, 'network');
-            console.log(`[SW:HTML] 💾 Salvando no cache: ${url.pathname}`);
-            caches.open(CACHE_NAME).then(cache => cache.put(event.request, response.clone()));
-          }
+          logFetch(url.pathname, 'network');
+          putInCache(event.request, response); // clone interno, retorna response intacta
           return response;
         })
         .catch(async () => {
-          console.warn(`[SW:HTML] ⚠️ Rede falhou para ${url.pathname} — tentando cache offline`);
-          const cached = await caches.match(event.request);
-          logFetch(url.pathname, 'cache', CACHE_NAME);
-          return cached || await caches.match('/index.html') || new Response('Offline', { status: 503 });
+          console.warn(`[SW:HTML] ⚠️ Offline — servindo do cache: ${url.pathname}`);
+          const cached = await caches.match(event.request)
+                      || await caches.match('/index.html');
+          if (cached) logFetch(url.pathname, 'cache', CACHE_NAME);
+          return cached || new Response('Offline', { status: 503 });
         })
     );
     return;
   }
 
   // ── 2. Bundles Vite /assets/*: Cache First ───────────────────
+  // Hash no filename = imutável. Se está no cache, serve direto.
+  // Se não está (novo deploy, hash novo), vai à rede.
   if (url.pathname.startsWith('/assets/')) {
     event.respondWith(
-      caches.open(CACHE_NAME).then(cache =>
-        cache.match(event.request).then(cached => {
-          if (cached) {
-            logFetch(url.pathname, 'cache', CACHE_NAME);
-            return cached;
-          }
-          console.log(`%c[SW:ASSET] 🌐 Novo bundle (hash não está no cache): ${url.pathname}`, 'color:#f59e0b;font-weight:bold');
-          return fetch(event.request).then(response => {
-            if (response.ok) {
-              console.log(`[SW:ASSET] 💾 Bundle salvo no cache: ${url.pathname}`);
-              cache.put(event.request, response.clone());
-            }
-            return response;
-          }).catch(err => {
-            console.error(`[SW:ASSET] ❌ Falha ao buscar bundle: ${url.pathname}`, err);
-            throw err;
-          });
-        })
-      )
+      caches.open(CACHE_NAME).then(async cache => {
+        const cached = await cache.match(event.request);
+        if (cached) {
+          logFetch(url.pathname, 'cache', CACHE_NAME);
+          return cached;
+        }
+        console.log(`%c[SW:ASSET] 🌐 Hash novo — buscando na rede: ${url.pathname}`, 'color:#f59e0b;font-weight:bold');
+        const response = await fetch(event.request);
+        if (response.ok) {
+          console.log(`[SW:ASSET] 💾 Bundle salvo no cache: ${url.pathname}`);
+          cache.put(event.request, response.clone()); // clone antes de retornar
+        }
+        return response;
+      }).catch(err => {
+        console.error(`[SW:ASSET] ❌ Falha ao carregar bundle: ${url.pathname}`, err);
+        throw err;
+      })
     );
     return;
   }
@@ -138,31 +146,23 @@ self.addEventListener('fetch', event => {
     url.pathname.match(/\.(woff2|woff|ttf|webp|png|jpg|jpeg|gif|svg|ico)$/i)
   ) {
     event.respondWith(
-      caches.open(CACHE_NAME).then(cache =>
-        cache.match(event.request).then(cached => {
-          if (cached) {
-            // imagens/fontes são muito frequentes — só loga se quiser debug extremo
-            // logFetch(url.pathname, 'cache', CACHE_NAME);
-            return cached;
-          }
-          console.log(`[SW:IMG] 🌐 Buscando na rede (não estava no cache): ${url.pathname}`);
-          return fetch(event.request).then(response => {
-            if (response.ok) cache.put(event.request, response.clone());
-            return response;
-          }).catch(() => new Response('', { status: 404 }));
-        })
-      )
+      caches.open(CACHE_NAME).then(async cache => {
+        const cached = await cache.match(event.request);
+        if (cached) return cached;
+        console.log(`[SW:IMG] 🌐 Buscando na rede: ${url.pathname}`);
+        const response = await fetch(event.request).catch(() => null);
+        if (response?.ok) cache.put(event.request, response.clone());
+        return response || new Response('', { status: 404 });
+      })
     );
     return;
   }
 
-  // ── 4. Todo o resto: Network First ───────────────────────────
+  // ── 4. Todo o resto: Network First com fallback offline ──────
   event.respondWith(
     fetch(event.request)
       .then(response => {
-        if (response.ok) {
-          caches.open(CACHE_NAME).then(cache => cache.put(event.request, response.clone()));
-        }
+        putInCache(event.request, response);
         return response;
       })
       .catch(() => caches.match(event.request))
