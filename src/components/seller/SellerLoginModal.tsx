@@ -75,6 +75,14 @@ export const SellerLoginModal: React.FC = () => {
     );
 
     if (foundSeller && foundSeller.id) {
+      // Se o vendedor tem PIN configurado, valida a senha
+      if (foundSeller.pin) {
+        if (passTrim !== foundSeller.pin) {
+          addToast('❌ PIN incorreto! Verifique sua senha.', 'error');
+          return;
+        }
+      }
+
       login(foundSeller.nome, foundSeller.id);
       closeSellerModal();
       setUsername('');
