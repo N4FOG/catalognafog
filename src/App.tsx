@@ -105,15 +105,32 @@ export const App: React.FC = () => {
     if ('serviceWorker' in navigator) {
       if (import.meta.env.PROD) {
         window.addEventListener('load', () => {
-          navigator.serviceWorker.register('/sw.js').then((reg) => {
-            console.log('✅ Service Worker registrado');
 
-            // Escuta mensagem SW_UPDATED: disparada quando o SW novo assume
-            // controle de uma aba que já estava aberta (clients.claim no activate).
-            // Recarrega imediatamente para garantir que os bundles corretos sejam usados.
+          // ── Log de diagnóstico: estado inicial do SW ──────────
+          const ctrl = navigator.serviceWorker.controller;
+          if (ctrl) {
+            console.log('%c[APP:SW] 🎮 SW já controla esta aba ao carregar:', 'color:#10b981;font-weight:bold', ctrl.scriptURL, '| state:', ctrl.state);
+          } else {
+            console.log('%c[APP:SW] ⚠️ Nenhum SW controlando esta aba agora (primeira visita ou SW foi limpo)', 'color:#f59e0b;font-weight:bold');
+          }
+
+          // Lista todos os caches existentes no storage
+          caches.keys().then(keys => {
+            console.log('%c[APP:SW] 🗂️ Caches no storage desta origem:', 'color:#6366f1;font-weight:bold', keys);
+          });
+
+          navigator.serviceWorker.register('/sw.js').then((reg) => {
+            console.log('%c[APP:SW] ✅ SW registrado — escopo:', 'color:#10b981;font-weight:bold', reg.scope);
+            console.log('[APP:SW] Estado do SW registrado → installing:', reg.installing?.state, '| waiting:', reg.waiting?.state, '| active:', reg.active?.state);
+
+            if (reg.waiting) {
+              console.warn('%c[APP:SW] ⏳ Há um SW em estado WAITING (versão nova pronta mas não ativada). Isso pode causar o pisca-pisca!', 'color:#ef4444;font-weight:bold');
+            }
+
+            // Escuta SW_UPDATED: disparado quando o SW novo assume via clients.claim()
             navigator.serviceWorker.addEventListener('message', (event) => {
               if (event.data?.type === 'SW_UPDATED') {
-                console.log('[SW] Novo SW assumiu controle — recarregando para aplicar atualização.');
+                console.log('%c[APP:SW] 📢 Mensagem SW_UPDATED recebida — recarregando página agora', 'color:#8b5cf6;font-weight:bold');
                 window.location.reload();
               }
             });
@@ -121,12 +138,24 @@ export const App: React.FC = () => {
             // Detecta nova versão disponível (deploy novo no servidor)
             reg.addEventListener('updatefound', () => {
               const newWorker = reg.installing;
-              console.log('🔄 Nova versão do site detectada!');
+              console.log('%c[APP:SW] 🔄 updatefound: novo SW encontrado!', 'color:#f59e0b;font-weight:bold', '| URL:', newWorker?.scriptURL);
 
               newWorker?.addEventListener('statechange', () => {
-                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                  console.log('⚠️ Nova versão disponível! Página será recarregada.');
+                console.log('[APP:SW] statechange do novo SW → state:', newWorker.state, '| controller atual:', navigator.serviceWorker.controller?.state);
 
+                if (newWorker.state === 'installed') {
+                  if (navigator.serviceWorker.controller) {
+                    console.log('%c[APP:SW] ✅ Novo SW instalado com controller ativo — mostrando banner e recarregando em 3s', 'color:#10b981;font-weight:bold');
+                  } else {
+                    console.log('%c[APP:SW] ℹ️ Novo SW instalado SEM controller (primeira instalação) — sem reload necessário', 'color:#6366f1;font-weight:bold');
+                  }
+                }
+
+                if (newWorker.state === 'activated') {
+                  console.log('%c[APP:SW] ✅ Novo SW ativado', 'color:#10b981;font-weight:bold');
+                }
+
+                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
                   const banner = document.createElement('div');
                   banner.innerHTML = `
                     <div style="position:fixed;top:0;left:0;right:0;background:linear-gradient(135deg,#10b981,#059669);color:white;padding:14px 20px;text-align:center;z-index:999999;box-shadow:0 4px 12px rgba(0,0,0,0.15);font-family:system-ui,sans-serif;animation:slideDown 0.3s ease;">
@@ -152,6 +181,7 @@ export const App: React.FC = () => {
 
             // Verifica atualizações a cada 60 segundos
             setInterval(() => {
+              console.log('[APP:SW] 🔍 Verificando atualizações do SW...');
               reg.update();
             }, 60000);
 
