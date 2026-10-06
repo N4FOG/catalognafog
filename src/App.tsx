@@ -105,7 +105,49 @@ export const App: React.FC = () => {
     if ('serviceWorker' in navigator) {
       if (import.meta.env.PROD) {
         window.addEventListener('load', () => {
-          navigator.serviceWorker.register('/sw.js').catch((err) => {
+          navigator.serviceWorker.register('/sw.js').then((reg) => {
+            console.log('✅ Service Worker registrado');
+            
+            // Detecta quando há uma nova versão aguardando
+            reg.addEventListener('updatefound', () => {
+              const newWorker = reg.installing;
+              console.log('🔄 Nova versão do site detectada!');
+              
+              newWorker?.addEventListener('statechange', () => {
+                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                  console.log('⚠️ Nova versão disponível! Página será recarregada.');
+                  
+                  // Mostra banner de atualização
+                  const banner = document.createElement('div');
+                  banner.innerHTML = `
+                    <div style="position:fixed;top:0;left:0;right:0;background:linear-gradient(135deg,#10b981,#059669);color:white;padding:14px 20px;text-align:center;z-index:999999;box-shadow:0 4px 12px rgba(0,0,0,0.15);font-family:system-ui,sans-serif;animation:slideDown 0.3s ease;">
+                      <strong style="font-size:15px;">🎉 Nova versão do catálogo disponível!</strong>
+                      <span style="margin:0 8px;opacity:0.9;">|</span>
+                      <span style="font-size:14px;">Atualizando em 3 segundos...</span>
+                    </div>
+                    <style>
+                      @keyframes slideDown {
+                        from { transform: translateY(-100%); }
+                        to { transform: translateY(0); }
+                      }
+                    </style>
+                  `;
+                  document.body.appendChild(banner);
+                  
+                  // Recarrega automaticamente após 3 segundos
+                  setTimeout(() => {
+                    window.location.reload();
+                  }, 3000);
+                }
+              });
+            });
+            
+            // Verifica atualizações a cada 60 segundos
+            setInterval(() => {
+              reg.update();
+            }, 60000);
+            
+          }).catch((err) => {
             console.log('SW registration note:', err);
           });
         });

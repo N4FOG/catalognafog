@@ -2,7 +2,7 @@
 //  JCV JARDINAGEM v3.0 — Service Worker (Cache Offline & PWA)
 // ═══════════════════════════════════════════════════════════════
 
-const CACHE_NAME = 'jcv-jardinagem-v3-cache-v14';
+const CACHE_NAME = 'jcv-jardinagem-v3-cache-v15';
 const STATIC_ASSETS = [
   './',
   './index.html',
@@ -17,6 +17,7 @@ const STATIC_ASSETS = [
 
 // Install: cache static assets de forma tolerante a falhas parciais
 self.addEventListener('install', event => {
+  console.log('[SW] Instalando nova versão do Service Worker...');
   event.waitUntil(
     caches.open(CACHE_NAME).then(cache => {
       return Promise.allSettled(
@@ -26,17 +27,27 @@ self.addEventListener('install', event => {
       );
     })
   );
+  // IMPORTANTE: Ativa imediatamente sem esperar
   self.skipWaiting();
 });
 
 // Activate: delete old caches
 self.addEventListener('activate', event => {
+  console.log('[SW] Ativando nova versão e limpando caches antigos...');
   event.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)))
-    )
+    caches.keys().then(keys => {
+      return Promise.all(
+        keys.filter(k => k !== CACHE_NAME).map(k => {
+          console.log('[SW] Deletando cache antigo:', k);
+          return caches.delete(k);
+        })
+      );
+    }).then(() => {
+      console.log('[SW] Nova versão ativada! Cache atual:', CACHE_NAME);
+      // Força todos os clientes a usarem a nova versão IMEDIATAMENTE
+      return self.clients.claim();
+    })
   );
-  self.clients.claim();
 });
 
 // Fetch: Network-First for HTML/Navigation, Cache-First for static images/fonts
@@ -56,6 +67,28 @@ self.addEventListener('fetch', event => {
     event.request.method !== 'GET'
   ) {
     return; // Deixa o browser buscar normalmente
+  }
+
+  // CRÍTICO: Nunca cachear dados de produtos - sempre buscar versão atualizada
+  if (
+    url.pathname.includes('products.ts') ||
+    url.pathname.includes('products.js') ||
+    url.pathname.includes('/data/') ||
+    url.pathname.includes('config.ts') ||
+    url.pathname.includes('config.js')
+  ) {
+    event.respondWith(
+      fetch(event.request)
+        .then(response => {
+          console.log('[SW] Buscando dados atualizados:', url.pathname);
+          return response;
+        })
+        .catch(() => {
+          console.warn('[SW] Erro ao buscar dados atualizados');
+          return caches.match(event.request);
+        })
+    );
+    return;
   }
 
   // 1. Navegações HTML: NETWORK FIRST com fallback para cache se offline

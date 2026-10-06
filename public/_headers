@@ -1,0 +1,32 @@
+# Headers para controle de cache
+# Aplica-se a deploys em Netlify, Vercel, etc.
+
+# HTML: Nunca cachear - sempre buscar versão nova
+/*.html
+  Cache-Control: no-cache, no-store, must-revalidate
+  Pragma: no-cache
+  Expires: 0
+
+# Index.html principal
+/
+  Cache-Control: no-cache, no-store, must-revalidate
+  Pragma: no-cache
+  Expires: 0
+
+# Service Worker: Nunca cachear
+/sw.js
+  Cache-Control: no-cache, no-store, must-revalidate
+  Pragma: no-cache
+  Expires: 0
+
+# Dados de produtos: Curto cache (5 minutos)
+/assets/*.js
+  Cache-Control: public, max-age=300, must-revalidate
+
+# Imagens: Cache longo (1 ano)
+/img/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Fontes: Cache longo (1 ano)
+/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
