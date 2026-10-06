@@ -47,7 +47,7 @@ export function generateProposalPdf(options: GeneratePdfOptions): jsPDF {
   doc.setTextColor(255, 255, 255);
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(14);
-  doc.text('JCV JARDINAGEM & AGRO', 14, 11);
+  doc.text('JCV DISTRIBUIDORA & AGRO', 14, 11);
 
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(8);
@@ -193,7 +193,7 @@ export function generateProposalPdf(options: GeneratePdfOptions): jsPDF {
     doc.text(`• Pagamento: ${paymentTerms}`, 18, finalY + 18);
     doc.text(`• Validade: ${validityDays}`, 18, finalY + 24);
     doc.text('• Despacho / Frete: A combinar com o vendedor', 18, finalY + 30);
-    doc.text('• Garantia: 100% Original JCV Jardinagem', 18, finalY + 36);
+    doc.text('• Garantia: 100% Original JCV Distribuidora', 18, finalY + 36);
 
     // Totals Box (Right Box)
     const totalsX = pageWidth - 90;
@@ -251,7 +251,7 @@ export function generateProposalPdf(options: GeneratePdfOptions): jsPDF {
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(6.5);
   doc.setTextColor(148, 163, 184);
-  doc.text('JCV Jardinagem / Rawell Química Oficial', 55, sigY + 8, { align: 'center' });
+  doc.text('JCV Distribuidora / Rawell Química Oficial', 55, sigY + 8, { align: 'center' });
   doc.text('De Acordo com a Proposta Comercial', pageWidth - 55, sigY + 8, { align: 'center' });
 
   return doc;
@@ -259,7 +259,7 @@ export function generateProposalPdf(options: GeneratePdfOptions): jsPDF {
 
 export function downloadProposalPdf(options: GeneratePdfOptions) {
   const doc = generateProposalPdf(options);
-  const fileName = `Proposta-JCV-Jardinagem-${options.proposalNumber}.pdf`;
+  const fileName = `Proposta-JCV-Distribuidora-${options.proposalNumber}.pdf`;
   doc.save(fileName);
 }
 
@@ -314,7 +314,7 @@ export async function downloadElementAsPdf(element: HTMLElement, proposalNumber:
       }
     }
 
-    const fileName = `Proposta-JCV-Jardinagem-${proposalNumber}.pdf`;
+    const fileName = `Proposta-JCV-Distribuidora-${proposalNumber}.pdf`;
     pdf.save(fileName);
     return true;
   } catch (err) {

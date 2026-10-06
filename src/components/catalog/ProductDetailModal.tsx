@@ -93,7 +93,7 @@ export const ProductDetailModal: React.FC = () => {
     try {
       if (navigator.clipboard) {
         await navigator.clipboard.writeText(fullText);
-        addToast('📋 Link do produto copiado com sucesso!', 'success');
+        addToast('📋 Link do produto JCV Distribuidora copiado!', 'success');
       }
     } catch {
       addToast('Não foi possível copiar o link automaticamente', 'error');

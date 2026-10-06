@@ -3,8 +3,8 @@
 // ═══════════════════════════════════════════════════════════════
 const CONFIG = {
   whatsapp: '554599781407',
-  empresa: 'JCV Jardinagem — Catálogo de Produtos 2026',
-  mensagem_intro: 'Olá! Gostaria de solicitar uma cotação dos seguintes produtos através do catálogo JCV Jardinagem:',
+  empresa: 'JCV Distribuidora — Catálogo de Produtos 2026',
+  mensagem_intro: 'Olá! Gostaria de solicitar uma cotação dos seguintes produtos através do catálogo JCV Distribuidora:',
   mensagem_fim: '✅ Aguardo retorno sobre disponibilidade e condições de fornecimento. Obrigado!',
   auditWebhookUrl: 'https://script.google.com/macros/s/AKfycbxUzA7UwZpAYatk1GgS0twILvztT3XLSlvH6SUdweZYKxPN_wwtCo5xxNY709aDTiQmjg/exec'
 };

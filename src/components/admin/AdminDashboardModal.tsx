@@ -67,7 +67,7 @@ export const AdminDashboardModal: React.FC = () => {
         <div className="flex items-center justify-between w-full pr-4">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-lg overflow-hidden shrink-0 border border-emerald-600/50 bg-black flex items-center justify-center shadow-sm">
-              <img src="img/logo.png" alt="JCV Jardinagem" className="w-full h-full object-cover" />
+              <img src="img/logo.png" alt="JCV Distribuidora" className="w-full h-full object-cover" />
             </div>
             <div>
               <h2 className="font-extrabold text-base text-slate-900 dark:text-white leading-tight">
@@ -112,7 +112,7 @@ export const AdminDashboardModal: React.FC = () => {
               </span>
             </div>
             <h3 className="text-lg font-black tracking-tight">
-              Bem-vindo ao Controle Geral JCV Jardinagem
+              Bem-vindo ao Controle Geral JCV Distribuidora
             </h3>
             <p className="text-xs text-emerald-100 leading-relaxed max-w-xl">
               As alterações salvas no catálogo de produtos são propagadas automaticamente para todos os visitantes e representantes através da sincronização em nuvem.

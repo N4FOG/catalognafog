@@ -96,16 +96,16 @@ export const Header: React.FC = () => {
           className="flex items-center gap-2.5 cursor-pointer select-none shrink-0"
         >
           <div className="w-10 h-10 rounded-xl overflow-hidden shadow-md shadow-[#0f4531]/20 shrink-0 border border-[#10b981]/30 bg-black flex items-center justify-center">
-            <img src="img/logo.png" alt="JCV Jardinagem" className="w-full h-full object-cover" />
+            <img src="img/logo.png" alt="JCV Distribuidora" className="w-full h-full object-cover" />
           </div>
           <div className="leading-tight">
             <div className="flex items-center gap-1.5">
               <span className="font-extrabold text-base sm:text-lg text-[#0f1f17] dark:text-[#edf5f0] tracking-tight font-display">
-                JCV Jardinagem
+                JCV Distribuidora
               </span>
             </div>
             <span className="inline-block px-1.5 py-0.2 rounded text-[10px] font-bold bg-[#eaf7f0] text-[#0f4531] dark:bg-[#14281f] dark:text-[#10b981] border border-[#10b981]/30">
-              Catálogo &amp; Revenda 2026
+              Rawell • Catálogo & Revenda 2026
             </span>
           </div>
         </div>
