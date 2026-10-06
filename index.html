@@ -38,19 +38,13 @@
     <meta name="twitter:description" content="Catálogo Oficial e Sistema de Orçamentos 2026 - JCV Distribuidora / Rawell Química." />
     <meta name="twitter:image" content="https://catalognafog.onrender.com/img/logo.png" />
 
-    <!-- Limpeza de Service Workers e Caches Antigos -->
+    <!-- Limpeza de Caches Antigos (apenas versões específicas obsoletas) -->
     <script>
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.getRegistrations().then(function(regs) {
-          for (var reg of regs) {
-            reg.unregister();
-          }
-        });
-      }
       if ('caches' in window) {
         caches.keys().then(function(names) {
+          var obsoletos = ['v12', 'v13', 'v14', 'v15', 'jcv-jardinagem'];
           for (var name of names) {
-            if (name.includes('jcv-jardinagem-v3-cache-v12') || name.includes('v13')) {
+            if (obsoletos.some(function(v) { return name.includes(v); })) {
               caches.delete(name);
             }
           }
