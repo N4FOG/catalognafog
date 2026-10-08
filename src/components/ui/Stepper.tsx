@@ -39,14 +39,18 @@ export const Stepper: React.FC<StepperProps> = ({
     }
   };
 
-  const handleFocus = () => {
+  const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
     triggerHaptic(8);
     setIsEditing(true);
     setInputValue('');
-    // Select all text after a tiny delay to ensure focus is set
+    // Force clear the field immediately and select on next tick
+    e.target.value = '';
     setTimeout(() => {
-      inputRef.current?.select();
-    }, 0);
+      if (inputRef.current) {
+        inputRef.current.value = '';
+        inputRef.current.select();
+      }
+    }, 10);
   };
 
   const handleBlur = () => {
@@ -113,17 +117,17 @@ export const Stepper: React.FC<StepperProps> = ({
 
       <input
         ref={inputRef}
-        type={isEditing ? 'text' : 'number'}
+        type="text"
+        inputMode="numeric"
+        pattern="[0-9]*"
         value={isEditing ? inputValue : value}
         onChange={handleInputChange}
         onFocus={handleFocus}
         onBlur={handleBlur}
         onKeyDown={handleKeyDown}
-        min={min}
-        max={max}
         disabled={disabled}
         placeholder={isEditing ? '0' : undefined}
-        className={`${sizeClasses.input} text-center bg-transparent border-none focus:outline-none text-slate-800 dark:text-slate-100 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none disabled:cursor-not-allowed`}
+        className={`${sizeClasses.input} text-center bg-transparent border-none focus:outline-none text-slate-800 dark:text-slate-100 disabled:cursor-not-allowed`}
       />
 
       <button
