@@ -205,7 +205,7 @@ export const Stepper: React.FC<StepperProps> = ({
           className={`${sizeClasses.input} text-center bg-transparent border-none focus:outline-none text-slate-800 dark:text-slate-100 disabled:cursor-not-allowed`}
         />
         
-        {showFeedback && (
+        {showFeedback && size === 'md' && (
           <div className="absolute -right-4 top-1/2 -translate-y-1/2">
             {isValid ? (
               <Check className={`${sizeClasses.icon} text-emerald-600 dark:text-emerald-500`} />

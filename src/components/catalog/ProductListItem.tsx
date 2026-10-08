@@ -204,7 +204,9 @@ export const ProductListItem: React.FC<ProductListItemProps> = ({ product }) => 
           </div>
         )}
 
-        <Stepper value={qty} onChange={setQty} size="sm" />
+        <div onClick={(e) => e.stopPropagation()}>
+          <Stepper value={qty} onChange={setQty} size="sm" />
+        </div>
 
         <button
           onClick={handleAddToCart}

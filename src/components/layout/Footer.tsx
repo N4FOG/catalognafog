@@ -56,10 +56,11 @@ export const Footer: React.FC = () => {
         </div>
 
         <div className="pt-6 border-t border-slate-200 dark:border-slate-800/80 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-slate-400">
-          <p>© 2026 JCV Distribuidora / Rawell Química — Todos os direitos reservados.</p>
+          <p className="text-center sm:text-left">© 2026 JCV Distribuidora / Rawell Química — Todos os direitos reservados.</p>
           <div className="flex items-center gap-1">
             <Sparkles className="w-3 h-3 text-emerald-600" />
-            <span>Versão 5.1.0 (React 19 + TypeScript + Tailwind)</span>
+            <span className="font-mono font-semibold text-emerald-700 dark:text-emerald-400">v5.2.0</span>
+            <span className="hidden sm:inline text-slate-400"> • React 19 + TypeScript + Tailwind</span>
           </div>
         </div>
       </div>
