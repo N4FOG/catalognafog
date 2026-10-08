@@ -3,10 +3,10 @@ import { useCatalogStore } from '../../store/useCatalogStore';
 import { useCartStore } from '../../store/useCartStore';
 import { useSellerStore } from '../../store/useSellerStore';
 import { useAdminStore } from '../../store/useAdminStore';
-import { useThemeStore } from '../../store/useThemeStore';
 import { triggerHaptic } from '../../utils/haptics';
 import { logSearchTelemetry } from '../../utils/telemetry';
 import { scrollToProducts } from '../../utils/scrollHelper';
+import { ThemeToggle } from '../ui/ThemeToggle';
 
 export const Header: React.FC = () => {
   const {
@@ -21,7 +21,6 @@ export const Header: React.FC = () => {
   const { setIsCartOpen, getTotals } = useCartStore();
   const { isSellerLoggedIn, session, getActiveSeller } = useSellerStore();
   const { isAdminLoggedIn } = useAdminStore();
-  const { theme, toggleTheme } = useThemeStore();
   const searchInputRef = useRef<HTMLInputElement>(null);
 
   const totals = getTotals();
@@ -59,11 +58,6 @@ export const Header: React.FC = () => {
     } else {
       openSellerModal();
     }
-  };
-
-  const handleThemeClick = () => {
-    triggerHaptic(15);
-    toggleTheme();
   };
 
   const handleSearchSubmit = (e: React.FormEvent) => {
@@ -208,14 +202,7 @@ export const Header: React.FC = () => {
           </a>
 
           {/* Theme Toggle */}
-          <button
-            onClick={handleThemeClick}
-            className="w-9 h-9 rounded-xl flex items-center justify-center bg-slate-100 hover:bg-slate-200 dark:bg-[#14281f] dark:hover:bg-[#1b3529] text-base transition-colors border border-slate-200/80 dark:border-slate-800 active:scale-95"
-            aria-label="Alternar tema"
-            title="Alternar Tema Claro/Escuro"
-          >
-            {theme === 'dark' ? '☀️' : '🌙'}
-          </button>
+          <ThemeToggle />
 
           {/* Cart Trigger */}
           <button
