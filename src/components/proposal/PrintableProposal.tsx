@@ -70,7 +70,7 @@ export const PrintableProposal: React.FC<PrintableProposalProps> = ({
           </h4>
           <p className="font-bold text-slate-900 text-sm">{sellerName}</p>
           <p className="text-slate-600">WhatsApp / Central: {sellerPhone}</p>
-          <p className="text-slate-500 text-[11px]">Canal Oficial JCV Jardinagem 2026</p>
+          <p className="text-slate-500 text-[11px]">Canal Comercial Oficial JCV Distribuidora</p>
         </div>
       </div>
 
