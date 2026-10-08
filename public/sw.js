@@ -1,8 +1,8 @@
 // ═══════════════════════════════════════════════════════════════
-//  JCV DISTRIBUIDORA v6.0.0 — Service Worker (Cache Offline & PWA)
+//  JCV DISTRIBUIDORA v6.0.1 — Service Worker (Cache Offline & PWA)
 // ═══════════════════════════════════════════════════════════════
 
-const CACHE_NAME = 'jcv-distribuidora-v6.0.0-cache';
+const CACHE_NAME = 'jcv-distribuidora-v6.0.1-cache';
 
 const STATIC_ASSETS = [
   './manifest.json',
@@ -93,17 +93,18 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  // ── 1. HTML / Navegação: Network First ───────────────────────
+  // ── 1. HTML / Navegação: SEMPRE da REDE (nunca cacheia) ───────
   if (event.request.mode === 'navigate' || event.request.destination === 'document') {
     event.respondWith(
       fetch(event.request)
         .then(response => {
           logFetch(url.pathname, 'network');
-          putInCache(event.request, response); // clone interno, retorna response intacta
+          // NÃO cacheia HTML para evitar mismatch de hash dos bundles
           return response;
         })
         .catch(async () => {
-          console.warn(`[SW:HTML] ⚠️ Offline — servindo do cache: ${url.pathname}`);
+          console.warn(`[SW:HTML] ⚠️ Offline — servindo fallback`);
+          // Em offline, tenta servir do cache como fallback
           const cached = await caches.match(event.request)
                       || await caches.match('/index.html');
           if (cached) logFetch(url.pathname, 'cache', CACHE_NAME);
