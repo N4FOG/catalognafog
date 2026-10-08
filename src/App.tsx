@@ -119,7 +119,7 @@ export const App: React.FC = () => {
             console.log('%c[APP:SW] 🗂️ Caches no storage desta origem:', 'color:#6366f1;font-weight:bold', keys);
           });
 
-          navigator.serviceWorker.register('/sw.js').then((reg) => {
+          navigator.serviceWorker.register('/sw.js?v=4.2.0').then((reg) => {
             console.log('%c[APP:SW] ✅ SW registrado — escopo:', 'color:#10b981;font-weight:bold', reg.scope);
             console.log('[APP:SW] Estado do SW registrado → installing:', reg.installing?.state, '| waiting:', reg.waiting?.state, '| active:', reg.active?.state);
 
