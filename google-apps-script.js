@@ -119,6 +119,111 @@ function doPost(e) {
       })).setMimeType(ContentService.MimeType.JSON);
     }
 
+    // ── EXPORTAÇÃO COMPLETA DO CATÁLOGO (TABELA LINHA A LINHA) ─────────
+    // Recebe headers[] + rows[][] do front e escreve na aba Produtos_Catalogo
+    // como tabela real (1 produto = 1 linha), substituindo o JSON monobloco.
+    if (data.action === "exportProducts") {
+      const headers = Array.isArray(data.headers) ? data.headers : [];
+      const rows = Array.isArray(data.rows) ? data.rows : [];
+      const lists = data.lists || {};
+      const nowStr = Utilities.formatDate(new Date(), "America/Sao_Paulo", "dd/MM/yyyy HH:mm:ss");
+      const userStr = data.user || "jcvadmin";
+
+      if (!headers.length || !rows.length) {
+        lock.releaseLock();
+        return ContentService.createTextOutput(JSON.stringify({
+          status: "error",
+          action: "exportProducts",
+          message: "Cabeçalhos ou linhas ausentes no payload."
+        })).setMimeType(ContentService.MimeType.JSON);
+      }
+
+      const badRow = rows.findIndex(function (r) { return !Array.isArray(r) || r.length !== headers.length; });
+      if (badRow !== -1) {
+        lock.releaseLock();
+        return ContentService.createTextOutput(JSON.stringify({
+          status: "error",
+          action: "exportProducts",
+          message: "Linha " + (badRow + 1) + " não bate com o cabeçalho (" + headers.length + " colunas)."
+        })).setMimeType(ContentService.MimeType.JSON);
+      }
+
+      const sheet = getOrCreateProductsSheet();
+      sheet.clear();
+
+      // Linha 1: metadados
+      sheet.getRange(1, 1).setValue("ÚLTIMA EXPORTAÇÃO:");
+      sheet.getRange(1, 2).setValue(nowStr);
+      sheet.getRange(1, 3).setValue("AUTOR:");
+      sheet.getRange(1, 4).setValue(userStr);
+      sheet.getRange(1, 5).setValue("PRODUTOS:");
+      sheet.getRange(1, 6).setValue(rows.length);
+
+      const metaHeader = sheet.getRange(1, 1, 1, 6);
+      metaHeader.setBackground("#0f4531").setFontColor("#ffffff").setFontWeight("bold");
+      sheet.setRowHeight(1, 30);
+
+      // Linha 2: cabeçalhos da tabela
+      sheet.getRange(2, 1, 1, headers.length).setValues([headers]);
+      const headerRange = sheet.getRange(2, 1, 1, headers.length);
+      headerRange.setBackground("#10b981").setFontColor("#ffffff").setFontWeight("bold")
+        .setWrap(true).setHorizontalAlignment("center").setVerticalAlignment("middle");
+      sheet.setRowHeight(2, 42);
+
+      // Dados a partir da linha 3
+      sheet.getRange(3, 1, rows.length, headers.length).setValues(rows);
+      const dataRange = sheet.getRange(3, 1, rows.length, headers.length);
+      dataRange.setVerticalAlignment("top").setWrap(true);
+
+      // Zebra striping pra leitura linha a linha
+      for (var i = 0; i < rows.length; i++) {
+        if (i % 2 === 1) {
+          sheet.getRange(3 + i, 1, 1, headers.length).setBackground("#f0fdf9");
+        }
+      }
+
+      sheet.setFrozenRows(2);
+      sheet.setFrozenColumns(2);
+
+      // Larguras: colunas curtas no início, texto longo depois
+      sheet.setColumnWidth(1, 55);   // ID
+      sheet.setColumnWidth(2, 230);  // Nome
+      sheet.setColumnWidth(3, 110);  // Ref
+      for (var c = 4; c <= headers.length; c++) {
+        sheet.setColumnWidth(c, c <= 13 ? 150 : 300);
+      }
+
+      // Preço Base (coluna 6) formatado em moeda
+      sheet.getRange(3, 6, rows.length, 1).setNumberFormat("R$ #,##0.00");
+
+      // Dropdowns auxiliares (não bloqueiam dados já escritos)
+      function addListValidation(col, values, allowInvalid) {
+        if (!values || !values.length) return;
+        var rule = SpreadsheetApp.newDataValidation()
+          .requireValueInList(values, true)
+          .setAllowInvalid(allowInvalid)
+          .setHelpText("Selecione uma opção válida")
+          .build();
+        sheet.getRange(3, col, rows.length, 1).setDataValidation(rule);
+      }
+      addListValidation(4, lists.categorias, false);   // Categoria
+      addListValidation(5, lists.formulacoes, false);  // Formulação
+      addListValidation(9, ["TRUE", "FALSE"], false); // Destaque
+      addListValidation(10, ["TRUE", "FALSE"], false);// Em Estoque
+      addListValidation(12, lists.badgeTipos, true);   // Badge Tipo (opcional)
+
+      lock.releaseLock();
+
+      return ContentService.createTextOutput(JSON.stringify({
+        status: "success",
+        action: "exportProducts",
+        rows: rows.length,
+        cols: headers.length,
+        timestamp: nowStr,
+        message: rows.length + " produtos exportados (" + headers.length + " colunas) para Produtos_Catalogo."
+      })).setMimeType(ContentService.MimeType.JSON);
+    }
+
     // ── GESTÃO DO ROADMAP CLOUD ─────────────────────────────────────────
     if (data.action === "saveRoadmap") {
       const sheet = getOrCreateRoadmapSheet();
@@ -349,6 +454,208 @@ function doGet(e) {
       })).setMimeType(ContentService.MimeType.JSON);
     }
 
+    // ── LEITURA LINHA A LINHA DO CATÁLOGO (para Fase 2 - importação) ──────
+    if (action === "getCatalogRows") {
+      const sheet = getOrCreateProductsSheet();
+      const lastRow = sheet.getLastRow();
+      const lastCol = sheet.getLastColumn();
+
+      if (lastRow < 3 || lastCol < 2) {
+        return ContentService.createTextOutput(JSON.stringify({
+          status: "success",
+          action: "getCatalogRows",
+          headers: [],
+          rows: [],
+          productCount: 0
+        })).setMimeType(ContentService.MimeType.JSON);
+      }
+
+      // Linha 2: cabeçalhos
+      const headers = sheet.getRange(2, 1, 1, lastCol).getValues()[0].map(h => String(h || ''));
+
+      // Dados a partir da linha 3
+      const data = sheet.getRange(3, 1, lastRow - 2, lastCol).getValues();
+      const rows = data.map(row => row.map(cell => cell ?? ''));
+
+      // Conta produtos válidos (linhas que têm ID na coluna 0)
+      const productCount = rows.filter(r => r[0] && String(r[0]).trim() !== '').length;
+
+      return ContentService.createTextOutput(JSON.stringify({
+        status: "success",
+        action: "getCatalogRows",
+        headers,
+        rows,
+        productCount
+      })).setMimeType(ContentService.MimeType.JSON);
+    }
+
+    // ── SALVA O ESTADO ATUAL DA ABA COMO BACKUP DE EMERGÊNCIA ───────────────
+    // Útil antes de capturas ou mudanças que possam apagar dados manuais.
+    if (data.action === "saveEmergencyBackup") {
+      const sheet = getOrCreateProductsSheet();
+      const backupSheet = getOrCreateEmergencyBackupSheet();
+      const nowStr = Utilities.formatDate(new Date(), "America/Sao_Paulo", "dd/MM/yyyy HH:mm:ss");
+      const userStr = data.user || "jcvadmin";
+
+      const lastRow = sheet.getLastRow();
+      const lastCol = sheet.getLastColumn();
+      
+      // Lê metadados + cabeçalhos + todos os dados
+      const metaRange = sheet.getRange(1, 1, 1, Math.max(lastCol, 6));
+      const metaValues = metaRange.getValues()[0].map(v => v ?? '');
+      
+      let headers = [];
+      let dataRows = [];
+      
+      if (lastRow >= 2) {
+        headers = sheet.getRange(2, 1, 1, lastCol).getValues()[0].map(h => String(h || ''));
+      }
+      if (lastRow >= 3) {
+        dataRows = sheet.getRange(3, 1, lastRow - 2, lastCol).getValues();
+      }
+
+      // Salva com timestamp único na primeira coluna, JSON completo nas colunas seguintes
+      const backupId = "EMERG-" + nowStr.replace(/[\/:]/g, "-");
+      
+      backupSheet.appendRow([
+        backupId,
+        nowStr,
+        userStr,
+        JSON.stringify({ meta: metaValues, headers, rows: dataRows })
+      ]);
+      
+      // Formata a última linha
+      const newRow = backupSheet.getLastRow();
+      backupSheet.getRange(newRow, 1).setFontWeight("bold").setFontColor("#0f4531");
+      backupSheet.getRange(newRow, 2).setHorizontalAlignment("center");
+      backupSheet.getRange(newRow, 4).setHorizontalAlignment("left").setWrap(true);
+      backupSheet.setRowHeight(newRow, 80);
+
+      lock.releaseLock();
+
+      return ContentService.createTextOutput(JSON.stringify({
+        status: "success",
+        action: "saveEmergencyBackup",
+        backupId: backupId,
+        timestamp: nowStr,
+        message: "Backup de emergência salvo com " + dataRows.length + " linhas."
+      })).setMimeType(ContentService.MimeType.JSON);
+    }
+
+    // ── RESTAURA O ÚLTIMO BACKUP DE EMERGÊNCIA PARA A ABA CATÁLOGO ───────────
+    if (data.action === "restoreEmergencyBackup") {
+      const sheet = getOrCreateProductsSheet();
+      const backupSheet = getOrCreateEmergencyBackupSheet();
+      const backupId = data.backupId || "";
+      const userStr = data.user || "jcvadmin";
+
+      // Busca o backup específico
+      const lastRow = backupSheet.getLastRow();
+      let foundRow = -1;
+      let backupData = null;
+      
+      if (lastRow > 1) {
+        const allData = backupSheet.getRange(2, 1, lastRow - 1, 4).getValues();
+        for (let i = 0; i < allData.length; i++) {
+          if (allData[i][0] === backupId || (backupId && allData[i][0].indexOf(backupId) === 0)) {
+            foundRow = i + 2;
+            try {
+              backupData = JSON.parse(allData[i][3]);
+            } catch (e) {
+              backupData = null;
+            }
+            break;
+          }
+        }
+      }
+      
+      // Se não encontrou ID específico, tenta o último backup
+      if (!backupData || !foundRow) {
+        if (lastRow > 1) {
+          const lastData = backupSheet.getRange(lastRow, 1, 1, 4).getValues()[0];
+          try {
+            backupData = JSON.parse(lastData[3]);
+            foundRow = lastRow;
+          } catch (e) {
+            backupData = null;
+          }
+        }
+      }
+      
+      if (!backupData) {
+        lock.releaseLock();
+        return ContentService.createTextOutput(JSON.stringify({
+          status: "error",
+          action: "restoreEmergencyBackup",
+          message: "Nenhum backup encontrado para restauração."
+        })).setMimeType(ContentService.MimeType.JSON);
+      }
+      
+      const { meta, headers, rows } = backupData;
+      
+      // Limpa e restaura
+      sheet.clear();
+      
+      // Restaura metadados (linha 1)
+      if (meta && meta.length >= 4) {
+        sheet.getRange(1, 1, 1, Math.min(meta.length, 6)).setValues([meta.slice(0, 6)]);
+        const metaHeader = sheet.getRange(1, 1, 1, Math.min(meta.length, 6));
+        metaHeader.setBackground("#0f4531").setFontColor("#ffffff").setFontWeight("bold");
+        sheet.setRowHeight(1, 30);
+      }
+      
+      // Restaura cabeçalhos (linha 2)
+      if (headers && headers.length > 0) {
+        sheet.getRange(2, 1, 1, headers.length).setValues([headers]);
+        const headerRange = sheet.getRange(2, 1, 1, headers.length);
+        headerRange.setBackground("#10b981").setFontColor("#ffffff").setFontWeight("bold")
+          .setWrap(true).setHorizontalAlignment("center").setVerticalAlignment("middle");
+        sheet.setRowHeight(2, 42);
+      }
+      
+      // Restaura dados (a partir da linha 3)
+      if (rows && rows.length > 0) {
+        sheet.getRange(3, 1, rows.length, Math.max(headers.length, rows[0].length)).setValues(rows);
+        const dataRange = sheet.getRange(3, 1, rows.length, Math.max(headers.length, rows[0].length));
+        dataRange.setVerticalAlignment("top").setWrap(true);
+        
+        // Zebra striping
+        for (let i = 0; i < rows.length; i++) {
+          if (i % 2 === 1) {
+            sheet.getRange(3 + i, 1, 1, Math.max(headers.length, rows[0].length)).setBackground("#f0fdf9");
+          }
+        }
+      }
+      
+      sheet.setFrozenRows(2);
+      sheet.setFrozenColumns(2);
+      
+      // Restaura larguras se tiver headers
+      if (headers && headers.length > 0) {
+        sheet.setColumnWidth(1, 55);
+        sheet.setColumnWidth(2, 230);
+        sheet.setColumnWidth(3, 110);
+        for (let c = 4; c <= headers.length; c++) {
+          sheet.setColumnWidth(c, c <= 13 ? 150 : 300);
+        }
+        if (headers.length >= 6) {
+          sheet.getRange(3, 6, rows.length, 1).setNumberFormat("R$ #,##0.00");
+        }
+      }
+
+      lock.releaseLock();
+
+      return ContentService.createTextOutput(JSON.stringify({
+        status: "success",
+        action: "restoreEmergencyBackup",
+        backupId: backupId || "último_backup",
+        rows: rows.length,
+        cols: headers.length,
+        timestamp: new Date().toLocaleString("pt-BR"),
+        message: "Backup restaurado: " + rows.length + " produtos voltamos à aba Produtos_Catalogo."
+      })).setMimeType(ContentService.MimeType.JSON);
+    }
+
     // ── LEITURA DO ROADMAP NA NUVEM ─────────────────────────────────────
     if (action === "getRoadmap") {
       const sheet = getOrCreateRoadmapSheet();
@@ -412,6 +719,27 @@ function doGet(e) {
   }
 }
 
+// ── LEITURA LINHA A LINHA DO CATÁLOGO (para Fase 2 - importação) ──────
+function getCatalogRows() {
+  const sheet = getOrCreateProductsSheet();
+  const lastRow = sheet.getLastRow();
+  
+  if (lastRow < 3) {
+    return { headers: [], rows: [], productCount: 0 };
+  }
+  
+  // Linha 2: cabeçalhos
+  const headers = sheet.getRange(2, 1, 1, sheet.getLastColumn()).getValues()[0].map(h => String(h || ''));
+  
+  // Dados a partir da linha 3
+  const data = sheet.getRange(3, 1, lastRow - 2, headers.length).getValues();
+  const rows = data.map(row => row.map(cell => cell ?? ''));
+  
+  // Conta produtos válidos (linhas que têm ID)
+  const productCount = rows.filter(r => r[0] && r[0] !== '').length;
+  
+  return { headers, rows, productCount };
+}
 // ── FUNÇÃO DE SUPORTE: CRIA OU OBTÉM A ABA PRODUTOS_CATALOGO ──────────
 function getOrCreateProductsSheet() {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
@@ -474,6 +802,43 @@ function getOrCreateProductBackupsSheet() {
     sheet.setColumnWidth(5, 220); // Nome Produto
     sheet.setColumnWidth(6, 280); // Resumo
     sheet.setColumnWidth(7, 300); // Snapshot
+  }
+
+  return sheet;
+}
+
+// ── FUNÇÃO DE SUPORTE: CRIA OU OBTÉM A ABA EMERGENCY_BACKUP ───────────
+function getOrCreateEmergencyBackupSheet() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  let sheet = ss.getSheetByName("Emergency_Backup");
+
+  if (!sheet) {
+    sheet = ss.insertSheet("Emergency_Backup");
+    sheet.setTabColor("#dc2626");
+
+    const headers = [
+      "ID Backup",
+      "Data / Hora",
+      "Autor",
+      "Dados do Catálogo (JSON)"
+    ];
+
+    sheet.appendRow(headers);
+
+    const headerRange = sheet.getRange(1, 1, 1, headers.length);
+    headerRange.setBackground("#7f1d1d");
+    headerRange.setFontColor("#ffffff");
+    headerRange.setFontWeight("bold");
+    headerRange.setHorizontalAlignment("center");
+    headerRange.setVerticalAlignment("middle");
+
+    sheet.setFrozenRows(1);
+    sheet.setRowHeight(1, 35);
+
+    sheet.setColumnWidth(1, 200);
+    sheet.setColumnWidth(2, 160);
+    sheet.setColumnWidth(3, 130);
+    sheet.setColumnWidth(4, 800);
   }
 
   return sheet;

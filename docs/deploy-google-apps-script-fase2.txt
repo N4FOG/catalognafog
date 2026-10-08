@@ -1,0 +1,158 @@
+╔══════════════════════════════════════════════════════════════════════════╗
+║     RAWELL QUÍMICA — GOOGLE APPS SCRIPT — INSTRUÇÕES DE DEPLOY        ║
+║                         FASE 2 — Sincronização Bidirecional            ║
+╚══════════════════════════════════════════════════════════════════════════╝
+
+📋 VISÃO GERAL
+───────────────────────────────────────────────────────────────────────────
+Esta versão adiciona a Fase 2 do sistema de sincronização:
+  ✅ Leitura do catálogo do Google Sheets para o app (Capturar da Planilha)
+  ✅ Backup de emergência antes de qualquer captura
+  ✅ Botão de restauração de backup de emergência
+  ✅ Exportação continua funcionando (Fase 1)
+
+Novas abas criadas automaticamente:
+  • Emergency_Backup (vermelho) — backups de emergência da planilha
+
+───────────────────────────────────────────────────────────────────────────
+
+🔧 INSTRUÇÕES DE INSTALAÇÃO / ATUALIZAÇÃO
+───────────────────────────────────────────────────────────────────────────
+
+1. Abra a sua planilha no Google Drive:
+   https://docs.google.com/spreadsheets/d/[SUA_PLANILHA_ID]/edit
+
+2. No menu superior, clique em "Extensões" > "Apps Script".
+
+3. Se já existe código, DELETE TUDO e cole este arquivo completo.
+   Se for primeira vez, apenas cole o código.
+
+4. Clique em "Salvar" (Ctrl + S ou ícone de floppy disk).
+
+5. Clique em "Implantar" > "Gerenciar Implantações".
+
+6. Clique no ícone de lápis ✏️ ao lado da implantação ativa.
+
+7. Selecione "Nova versão" no dropdown "Versão da implantação".
+
+8. Adicione um comentário (ex: "Fase 2 - Sincronização Bidirecional").
+
+9. Clique em "Salvar".
+
+10. Aguarde o processamento e confirme se a implantação foi atualizada.
+
+───────────────────────────────────────────────────────────────────────────
+
+🆕 NOVAS FUNÇÕES ADICIONADAS
+───────────────────────────────────────────────────────────────────────────
+
+Ações POST (via webhook do site):
+
+1. action: "getCatalogRows"
+   → Lê linha a linha a aba Produtos_Catalogo
+   → Retorna headers[], rows[], productCount
+   → Usado pelo botão "Capturar da Planilha" do admin
+
+2. action: "saveEmergencyBackup"
+   → Salva snapshot completo da aba Produtos_Catalogo
+   → Cria/ adiciona na aba Emergency_Backup
+   → Gera ID único: "EMERG-YYYY-MM-DD-HH-mm-ss"
+
+3. action: "restoreEmergencyBackup"
+   → Restaura um backup específico ou o último disponível
+   → Substitui o conteúdo da aba Produtos_Catalogo
+   → Requer backupId (opcional — se não informado, restaura o último)
+
+Ações GET existentes (sem mudanças):
+• getProducts → retorna JSON dos produtos (Fase 1)
+• getRoadmap → retorna roadmap
+• getTopSearches → retorna termos de pesquisa
+
+───────────────────────────────────────────────────────────────────────────
+
+🛡️ FUNÇÕES DE SUPORTE NOVAS
+───────────────────────────────────────────────────────────────────────────
+
+• getOrCreateEmergencyBackupSheet()
+  → Cria aba "Emergency_Backup" com tab color vermelho (#dc2626)
+  → Cabeçalhos: ID Backup | Data/Hora | Autor | Dados JSON
+  → Colunas: 200px | 160px | 130px | 800px
+
+───────────────────────────────────────────────────────────────────────────
+
+⚠️ NOTAS IMPORTANTES
+───────────────────────────────────────────────────────────────────────────
+
+1. BACKUP ANTES DE CAPTURAR:
+   O botão "Capturar da Planilha" gera automaticamente um backup
+   de emergência na nuvem antes de ler os dados.
+
+2. MERGE INTELIGENTE:
+   Quando captura da planilha, os produtos existentes mantêm
+   as variações oficiais do código-fonte. Novos produtos são
+   adicionados. Edições na planilha sobrescrevem o local.
+
+3. RESTAURação:
+   O botão "Restaurar Backup" usa o último backup salvo.
+   Você pode especificar um backupId específico se necessário.
+
+4. CONFLITO DE EDIÇÃO:
+   Se você editar direto na planilha e depois clicar em
+   "Exportar p/ Planilha" no admin, as edições manuais serão
+   sobrescritas pelo export. Para evitar isso:
+   → Use "Capturar da Planilha" para trazer alterações da planilha
+   → Use "Exportar p/ Planilha" apenas para enviar alterações do site
+
+───────────────────────────────────────────────────────────────────────────
+
+🔄 FLUXO DE TRABALHO RECOMENDADO
+───────────────────────────────────────────────────────────────────────────
+
+Para editar preços/dados na planilha e ver no site:
+
+1. Edite direto na aba Produtos_Catalogo do Google Sheets
+2. No painel admin do site, clique em "Capturar da Planilha"
+3. O sistema gera backup automático → lê os dados → faz merge
+4. Os visitantes verão as alterações na próxima navegação
+
+Para preservar dados antes de testes arriscados:
+
+1. No painel admin, clique em "Fazer Backup Agora"
+2. Faça suas alterações
+3. Se algo der errado, clique em "Restaurar Backup"
+
+───────────────────────────────────────────────────────────────────────────
+
+📱 TESTES RECOMENDADOS APÓS DEPLOY
+───────────────────────────────────────────────────────────────────────────
+
+1. Verifique se a aba "Emergency_Backup" foi criada (cor vermelha)
+
+2. No painel admin:
+   a. Clique em "Fazer Backup Agora"
+      → Deve aparecer toast "💾 Backup de emergência salvo!"
+      → Verifique a aba Emergency_Backup no Sheets
+
+   b. Clique em "Capturar da Planilha"
+      → Deve aparecer toast "📥 Capturados X produtos..."
+      → O catálogo local deve atualizar
+
+   c. Edite um preço direto na planilha
+   d. Clique em "Capturar da Planilha" novamente
+      → O preço alterado deve aparecer no site
+
+   e. Clique em "Restaurar Backup"
+      → Deve restaurar o estado anterior
+
+3. Verifique se o export ainda funciona (botão "Exportar p/ Planilha")
+
+───────────────────────────────────────────────────────────────────────────
+
+📞 SUPORTE
+───────────────────────────────────────────────────────────────────────────
+
+Script développé pour: JCV Distribuidora — Rawell Química
+Repository: N4FOG/catalognafog
+Branch: main
+
+───────────────────────────────────────────────────────────────────────────

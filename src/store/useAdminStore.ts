@@ -3,6 +3,11 @@ import type { Product } from '../types/product';
 import type { AdminSession, ProductBackup } from '../types/admin';
 import { PRODUTOS } from '../data/products';
 import { reindexProducts } from '../utils/searchEngine';
+import {
+  captureCatalogFromSheet,
+  saveEmergencyBackup,
+  restoreFromEmergencyBackup
+} from '../utils/catalogSheetExport';
 
 interface AdminState {
   isAdminLoggedIn: boolean;
@@ -11,6 +16,8 @@ interface AdminState {
   backups: ProductBackup[];
   isSyncingCloud: boolean;
   lastCloudSync: string | null;
+  lastCaptureBackupId: string | null;
+  lastCaptureTimestamp: string | null;
 
   // Actions
   loginAdmin: (user: string, pass: string) => boolean;
@@ -20,6 +27,10 @@ interface AdminState {
   updateProduct: (updatedProduct: Product, changeSummary?: string) => Promise<boolean>;
   restoreProductBackup: (backupId: string) => Promise<boolean>;
   getProductBackups: (productId: number) => ProductBackup[];
+  // Fase 2: Captura e backup do Google Sheets
+  captureFromSheet: () => Promise<{ ok: boolean; message: string; count?: number }>;
+  makeBackupNow: () => Promise<{ ok: boolean; message: string; backupId?: string }>;
+  restoreEmergencyBackup: (backupId?: string) => Promise<{ ok: boolean; message: string }>;
 }
 
 const ADMIN_SESSION_STORAGE_KEY = 'rawell_admin_session_auth_v3';
@@ -110,6 +121,8 @@ export const useAdminStore = create<AdminState>((set, get) => ({
   backups: [],
   isSyncingCloud: false,
   lastCloudSync: null,
+  lastCaptureBackupId: null,
+  lastCaptureTimestamp: null,
 
   loginAdmin: (user: string, pass: string): boolean => {
     const cleanUser = user.trim().toLowerCase();
@@ -157,9 +170,18 @@ export const useAdminStore = create<AdminState>((set, get) => ({
   },
 
   syncWithCloud: async (): Promise<boolean> => {
-    // Sincronização via Google Sheets removida — produtos vêm do bundle estático
-    set({ isSyncingCloud: false, lastCloudSync: new Date().toISOString() });
-    return true;
+    // Sincronização via Google Sheets (upload do catálogo local)
+    set({ isSyncingCloud: true });
+    try {
+      const { products } = get();
+      const { exportCatalogToSheet } = await import('../utils/catalogSheetExport');
+      const result = await exportCatalogToSheet(products);
+      set({ isSyncingCloud: false, lastCloudSync: new Date().toISOString() });
+      return result.ok;
+    } catch {
+      set({ isSyncingCloud: false, lastCloudSync: new Date().toISOString() });
+      return false;
+    }
   },
 
   updateProduct: async (updatedProduct: Product, changeSummary?: string): Promise<boolean> => {
@@ -222,5 +244,108 @@ export const useAdminStore = create<AdminState>((set, get) => ({
 
   getProductBackups: (productId: number): ProductBackup[] => {
     return get().backups.filter((b) => b.productId === productId);
+  },
+
+  // ═══════════════════════════════════════════════════════════════════════
+  //  FASE 2: CAPTURA DO CATÁLOGO DO GOOGLE SHEETS
+  // ═══════════════════════════════════════════════════════════════════════
+  captureFromSheet: async (): Promise<{ ok: boolean; message: string; count?: number }> => {
+    const { products } = get();
+    
+    // 1. Faz backup do estado atual (local) antes de capturar
+    const localBackup: ProductBackup = {
+      id: `LOCAL-BKP-${Date.now()}`,
+      productId: 0,
+      productName: 'Backup completo antes da captura',
+      timestamp: new Date().toLocaleString('pt-BR'),
+      author: 'jcvadmin',
+      summary: 'Backup automático antes de capturar da planilha',
+      snapshot: JSON.parse(JSON.stringify(products))
+    };
+    
+    // 2. Captura da planilha (isso gera backup na nuvem também)
+    const result = await captureCatalogFromSheet('jcvadmin');
+    
+    if (!result.ok || !result.products) {
+      return { ok: false, message: result.message };
+    }
+    
+    // 3. Merge inteligente: produtos existentes mantêm variações oficiais,
+    //    novos produtos são adicionados, edições na planilha sobrescrevem
+    const currentMap = new Map(products.map(p => [p.id, p]));
+    
+    // Usa os produtos da planilha como base, mas preserva variações locais
+    const merged: Product[] = [];
+    for (const incoming of result.products) {
+      const local = currentMap.get(incoming.id);
+      if (local && local.variacoes && local.variacoes.length > 0) {
+        // Mantém as variações oficiais do código-fonte
+        merged.push({
+          ...incoming,
+          variacoes: local.variacoes
+        });
+      } else {
+        merged.push(incoming);
+      }
+    }
+    
+    // 4. Adiciona produtos novos que só existem na planilha
+    for (const incoming of result.products) {
+      if (!currentMap.has(incoming.id)) {
+        merged.push(incoming);
+      }
+    }
+    
+    // 5. Salva no estado
+    set({
+      products: merged,
+      backups: [localBackup, ...get().backups].slice(0, 100),
+      lastCaptureBackupId: result.backupId || null,
+      lastCaptureTimestamp: new Date().toISOString()
+    });
+    reindexProducts(merged);
+    
+    return {
+      ok: true,
+      message: result.message,
+      count: merged.length
+    };
+  },
+
+  // ═══════════════════════════════════════════════════════════════════════
+  //  FASE 2: BACKUP MANUAL DE EMERGÊNCIA
+  // ═══════════════════════════════════════════════════════════════════════
+  makeBackupNow: async (): Promise<{ ok: boolean; message: string; backupId?: string }> => {
+    const result = await saveEmergencyBackup('jcvadmin');
+    if (result.ok) {
+      return {
+        ok: true,
+        message: result.message,
+        backupId: result.backupId
+      };
+    }
+    return { ok: false, message: result.message };
+  },
+
+  // ═══════════════════════════════════════════════════════════════════════
+  //  FASE 2: RESTAURAR BACKUP DE EMERGÊNCIA
+  // ═══════════════════════════════════════════════════════════════════════
+  restoreEmergencyBackup: async (
+    backupId?: string
+  ): Promise<{ ok: boolean; message: string }> => {
+    const result = await restoreFromEmergencyBackup(backupId, 'jcvadmin');
+    if (result.ok) {
+      // Recarrega os produtos após restauração
+      const captureResult = await captureCatalogFromSheet('jcvadmin');
+      if (captureResult.ok && captureResult.products) {
+        set({
+          products: captureResult.products,
+          lastCaptureBackupId: backupId || null,
+          lastCaptureTimestamp: new Date().toISOString()
+        });
+        reindexProducts(captureResult.products);
+      }
+    }
+    return result;
   }
 }));
