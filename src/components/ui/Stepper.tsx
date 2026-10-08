@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import { Minus, Plus } from 'lucide-react';
 import { triggerHaptic } from '../../utils/haptics';
 
@@ -19,6 +19,10 @@ export const Stepper: React.FC<StepperProps> = ({
   size = 'md',
   disabled = false
 }) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [inputValue, setInputValue] = useState(String(value));
+  const inputRef = useRef<HTMLInputElement>(null);
+
   const handleDecrement = (e: React.MouseEvent) => {
     e.stopPropagation();
     triggerHaptic(10);
@@ -35,10 +39,40 @@ export const Stepper: React.FC<StepperProps> = ({
     }
   };
 
+  const handleFocus = () => {
+    triggerHaptic(8);
+    setIsEditing(true);
+    setInputValue('');
+    // Select all text after a tiny delay to ensure focus is set
+    setTimeout(() => {
+      inputRef.current?.select();
+    }, 0);
+  };
+
+  const handleBlur = () => {
+    setIsEditing(false);
+    const val = parseInt(inputValue, 10);
+    if (!isNaN(val) && val >= min && val <= max) {
+      onChange(val);
+    }
+    // Restaura o valor anterior se inválido
+    setInputValue(String(value));
+  };
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const val = parseInt(e.target.value, 10);
-    if (!isNaN(val)) {
-      onChange(Math.max(min, Math.min(max, val)));
+    const val = e.target.value;
+    // Permite apenas dígitos ou string vazia
+    if (/^\d*$/.test(val)) {
+      setInputValue(val);
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.currentTarget.blur();
+    } else if (e.key === 'Escape') {
+      setIsEditing(false);
+      setInputValue(String(value));
     }
   };
 
@@ -78,12 +112,17 @@ export const Stepper: React.FC<StepperProps> = ({
       </button>
 
       <input
-        type="number"
-        value={value}
+        ref={inputRef}
+        type={isEditing ? 'text' : 'number'}
+        value={isEditing ? inputValue : value}
         onChange={handleInputChange}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
+        onKeyDown={handleKeyDown}
         min={min}
         max={max}
         disabled={disabled}
+        placeholder={isEditing ? '0' : undefined}
         className={`${sizeClasses.input} text-center bg-transparent border-none focus:outline-none text-slate-800 dark:text-slate-100 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none disabled:cursor-not-allowed`}
       />
 
