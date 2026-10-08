@@ -11,7 +11,5 @@ export const CONFIG = {
 export const VENDEDORES: Seller[] = [
   { id: '', nome: 'Atendimento Geral / Central', whatsapp: '554599781407' },
   { id: 'valdecir', nome: 'Valdecir', whatsapp: '554599781407', pin: '1234' },
-  { id: 'carlos', nome: 'Carlos Silva', whatsapp: '554599781407' },
-  { id: 'vendedor-1', nome: 'Vendedor 1', whatsapp: '554599781407' },
-  { id: 'vendedor-2', nome: 'Vendedor 2', whatsapp: '554599781407' }
+  { id: 'leandro', nome: 'Leandro', whatsapp: '554599781407', pin: '4321' }
 ];
