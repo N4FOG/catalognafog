@@ -86,12 +86,10 @@ export const AdminDashboardModal: React.FC = () => {
     }
   };
 
-  const { captureFromSheet, makeBackupNow, restoreEmergencyBackup } = useAdminStore();
-
   const handleCaptureFromSheet = async () => {
     triggerHaptic(15);
     try {
-      const result = await captureFromSheet();
+      const result = await useAdminStore.getState().captureFromSheet();
       if (result.ok) {
         addToast(
           `📥 Capturados ${result.count} produtos da planilha! ${result.message}`,
@@ -109,7 +107,7 @@ export const AdminDashboardModal: React.FC = () => {
   const handleMakeBackupNow = async () => {
     triggerHaptic(15);
     try {
-      const result = await makeBackupNow();
+      const result = await useAdminStore.getState().makeBackupNow();
       if (result.ok) {
         addToast(
           `💾 Backup de emergência salvo! ${result.message}`,
@@ -127,7 +125,7 @@ export const AdminDashboardModal: React.FC = () => {
   const handleRestoreEmergencyBackup = async (backupId?: string) => {
     triggerHaptic(15);
     try {
-      const result = await restoreEmergencyBackup(backupId);
+      const result = await useAdminStore.getState().restoreEmergencyBackup(backupId);
       if (result.ok) {
         addToast(
           `🔄 Backup restaurado com sucesso! ${result.message}`,
@@ -379,9 +377,9 @@ export const AdminDashboardModal: React.FC = () => {
 
           {/* Estado da última captura */}
           {(() => {
-            const { lastCaptureTimestamp, lastCaptureBackupId } = useAdminStore();
-            const lastSync = lastCaptureTimestamp;
-            const lastBackupId = lastCaptureBackupId;
+            const state = useAdminStore.getState();
+            const lastSync = state.lastCaptureTimestamp;
+            const lastBackupId = state.lastCaptureBackupId;
             if (!lastSync) return null;
             return (
               <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-xs text-slate-600 dark:text-slate-400">
