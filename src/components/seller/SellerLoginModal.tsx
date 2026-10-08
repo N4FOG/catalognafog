@@ -6,8 +6,7 @@ import { useCatalogStore } from '../../store/useCatalogStore';
 import { useToastStore } from '../../store/useToastStore';
 import { Modal } from '../ui/Modal';
 import { triggerHaptic } from '../../utils/haptics';
-import { User, ShieldCheck } from 'lucide-motion';
-import { KeyRound } from 'lucide-react';
+import { User, ShieldCheck, KeyRound } from 'lucide-react';
 import { sendTelemetry } from '../../utils/telemetry';
 
 export const SellerLoginModal: React.FC = () => {
@@ -135,10 +134,8 @@ export const SellerLoginModal: React.FC = () => {
             Usuário / Identificação:
           </label>
           <div className="relative">
-            <User 
+            <User
               className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
-              trigger="mount"
-              mode="draw"
             />
             <input
               type="text"
@@ -173,10 +170,8 @@ export const SellerLoginModal: React.FC = () => {
           type="submit"
           className="w-full mt-2 py-3 px-4 rounded-xl bg-gradient-to-r from-emerald-800 to-emerald-700 hover:from-emerald-900 hover:to-emerald-800 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-md shadow-emerald-900/20 active:scale-98 transition-all cursor-pointer group"
         >
-          <ShieldCheck 
-            className="w-4 h-4" 
-            trigger="parent-hover"
-            mode="signature"
+          <ShieldCheck
+            className="w-4 h-4"
           />
           <span>Autenticar e Entrar</span>
         </button>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Sun, Moon } from 'lucide-motion';
+import { Sun, Moon } from 'lucide-react';
 import { useThemeStore } from '../../store/useThemeStore';
 import { triggerHaptic } from '../../utils/haptics';
 
@@ -19,20 +19,16 @@ export const ThemeToggle: React.FC = () => {
       title="Alternar Tema Claro/Escuro"
     >
       {theme === 'dark' ? (
-        <Sun 
+        <Sun
           size={18}
           strokeWidth={2.5}
-          trigger="hover"
-          mode="signature"
-          className="text-amber-400 group-hover:text-amber-300 transition-colors"
+          className="text-amber-400 group-hover:text-amber-300 transition-colors group-hover:rotate-45"
         />
       ) : (
-        <Moon 
+        <Moon
           size={18}
           strokeWidth={2.5}
-          trigger="hover"
-          mode="signature"
-          className="text-indigo-600 group-hover:text-indigo-700 transition-colors"
+          className="text-indigo-600 group-hover:text-indigo-700 transition-colors group-hover:-rotate-12"
         />
       )}
     </button>
