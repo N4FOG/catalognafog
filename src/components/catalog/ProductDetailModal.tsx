@@ -8,6 +8,7 @@ import { CATEGORIAS, FORMULACOES } from '../../data/categories';
 import { PRODUTOS } from '../../data/products';
 import { Modal } from '../ui/Modal';
 import { Stepper } from '../ui/Stepper';
+import { AccessibleImageZoom } from '../ui/AccessibleImageZoom';
 import { formatCurrency } from '../../utils/formatters';
 import { triggerHaptic } from '../../utils/haptics';
 import { Plus, Check, Share2, AlertTriangle, Wrench, Clock, ArrowRight, Edit3 } from 'lucide-react';
@@ -140,33 +141,39 @@ export const ProductDetailModal: React.FC = () => {
           {/* Gallery Media */}
           <div className="sm:col-span-5 flex flex-col items-center">
             <div className="w-full aspect-square bg-slate-50 dark:bg-slate-800/80 rounded-2xl p-4 flex items-center justify-center border border-slate-100 dark:border-slate-800 shadow-inner relative">
-              {/* Badge Sem Estoque */}
+              {/* Badge Sem Estoque (sobreposta, sem bloquear clique de zoom) */}
               {!isInStock && (
-                <div className="absolute top-3 left-3 z-10 px-3 py-1.5 rounded-full text-xs font-black uppercase tracking-wider bg-gradient-to-r from-red-500 to-red-600 text-white shadow-lg">
+                <div className="absolute top-3 left-3 z-20 px-3 py-1.5 rounded-full text-xs font-black uppercase tracking-wider bg-gradient-to-r from-red-500 to-red-600 text-white shadow-lg pointer-events-none">
                   🚫 Sem Estoque
                 </div>
               )}
-              
-              <img
+
+              {/* Zoom Acessível: lente desktop (2x no cursor) + lightbox em tela cheia via Portal */}
+              <AccessibleImageZoom
                 src={(selectedProduct.imagens && selectedProduct.imagens[selectedImageIndex]) || (selectedProduct.imagens && selectedProduct.imagens[0]) || 'img/logo.png'}
                 alt={selectedProduct.nome}
-                className={`max-h-full object-contain ${!isInStock ? 'grayscale opacity-50' : ''}`}
-                onError={(e) => {
-                  (e.target as HTMLImageElement).src = 'img/logo.png';
-                }}
+                className="w-full h-full rounded-xl"
+                imgClassName={!isInStock ? 'grayscale opacity-50' : ''}
               />
             </div>
 
-            {/* Thumbnail dots/selectors if multiple - DESABILITADO */}
+            {/* Thumbnail selectors if multiple — clicáveis para trocar a foto ampliada */}
             {Array.isArray(selectedProduct.imagens) && selectedProduct.imagens.length > 1 && (
               <div className="flex items-center gap-2 mt-2">
                 {selectedProduct.imagens.map((img, idx) => (
-                  <div
+                  <button
                     key={`thumb-${idx}-${img}`}
-                    className={`w-10 h-10 rounded-lg p-0.5 border-2 bg-slate-50 dark:bg-slate-800 ${
-                      idx === 0
+                    type="button"
+                    onClick={() => {
+                      triggerHaptic(10);
+                      setSelectedImageIndex(idx);
+                    }}
+                    aria-pressed={selectedImageIndex === idx}
+                    aria-label={`Ver foto ${idx + 1} de ${selectedProduct.imagens.length}`}
+                    className={`w-10 h-10 rounded-lg p-0.5 border-2 bg-slate-50 dark:bg-slate-800 overflow-hidden cursor-pointer transition-all ${
+                      selectedImageIndex === idx
                         ? 'border-emerald-600 scale-105'
-                        : 'border-slate-200 opacity-60'
+                        : 'border-slate-200 opacity-60 hover:opacity-100'
                     }`}
                     title={`Visualização ${idx + 1} de ${selectedProduct.imagens.length}`}
                   >
@@ -180,7 +187,7 @@ export const ProductDetailModal: React.FC = () => {
                         (e.target as HTMLImageElement).style.opacity = '0.3';
                       }}
                     />
-                  </div>
+                  </button>
                 ))}
               </div>
             )}

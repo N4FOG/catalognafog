@@ -4,24 +4,8 @@ import { triggerHaptic } from '../../utils/haptics';
 import { scrollToProducts } from '../../utils/scrollHelper';
 
 export const SearchMobileSection: React.FC = () => {
-  const { searchQuery, setSearchQuery, quickSearch } = useCatalogStore();
+  const { searchQuery, setSearchQuery } = useCatalogStore();
   const inputRef = useRef<HTMLInputElement>(null);
-
-  const tags = [
-    { label: '🌱 Tiririca', query: 'Tiririca' },
-    { label: '🌾 Roseta', query: 'Roseta' },
-    { label: '🪳 Baratas', query: 'Baratas' },
-    { label: '🪰 Moscas', query: 'Moscas' },
-    { label: '🪵 Cupins', query: 'Cupim' },
-    { label: '🌸 Fungos', query: 'Orquídeas' },
-    { label: '🐜 Formigas', query: 'Formigas' }
-  ];
-
-  const handleTagClick = (query: string) => {
-    triggerHaptic(12);
-    quickSearch(query);
-    scrollToProducts();
-  };
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -74,22 +58,6 @@ export const SearchMobileSection: React.FC = () => {
           </button>
         )}
       </form>
-
-      {/* Quick Tags Horizontal Scroll */}
-      <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar pt-2.5 pb-1 -mx-4 px-4">
-        <span className="text-[11px] font-extrabold text-slate-400 dark:text-[#638573] whitespace-nowrap shrink-0">
-          🔥 Mais Buscados:
-        </span>
-        {tags.map((tag) => (
-          <button
-            key={tag.query}
-            onClick={() => handleTagClick(tag.query)}
-            className="h-8 px-3 rounded-full text-xs font-bold whitespace-nowrap shrink-0 bg-white dark:bg-[#14281f] text-[#334e40] dark:text-[#9cb8a9] border border-[rgba(15,69,49,0.12)] dark:border-[rgba(16,185,129,0.2)] shadow-xs hover:bg-[#eaf7f0] dark:hover:bg-[#1b3529] transition-colors active:scale-95"
-          >
-            {tag.label}
-          </button>
-        ))}
-      </div>
     </section>
   );
 };
