@@ -28,7 +28,15 @@ export const Footer: React.FC = () => {
             </h5>
             <p className="flex items-center gap-1.5">
               <Phone className="w-3.5 h-3.5 text-emerald-600" />
-              <span>WhatsApp Oficial: (45) 99781-407</span>
+              <span>WhatsApp Oficial: </span>
+              <a
+                href="https://api.whatsapp.com/send?phone=5545999781407"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-bold text-emerald-700 dark:text-emerald-400 hover:text-emerald-600 dark:hover:text-emerald-300 underline underline-offset-2 transition-colors"
+              >
+                (45) 9 9978-1407
+              </a>
             </p>
             <p className="flex items-center gap-1.5">
               <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
