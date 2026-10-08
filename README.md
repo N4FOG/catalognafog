@@ -1,131 +1,213 @@
-# 🌿 JCV Jardinagem — Catálogo Oficial & Sistema de Orçamentos 2026 (Rawell v3.0)
+# 🌿 JCV Distribuidora — Catálogo Digital & Sistema de Orçamentos 2026
 
-> **Versão Moderna — Vite 6 + React 19 + TypeScript + Tailwind CSS v4 + Zustand**  
-> Diretório: `C:\Users\n4fog\Pictures\VALDECIR\rawell-v3`
+> **PWA Profissional de E-commerce B2B para Defensivos Agrícolas**  
+> React 19 • TypeScript • Tailwind v4 • Zustand • Vite 6
 
----
-
-## 🚀 1. Tecnologias Utilizadas
-
-- ⚡ **Vite 6** + **React 19** + **TypeScript**: Ambiente ultraveloz com tipagem estrita e segurança nas regras financeiras.
-- 🎨 **Tailwind CSS v4**: Design system responsivo, consistente, tema Dark/Light nativo e estilos otimizados para impressão (@media print).
-- 🧩 **Lucide React**: Ícones SVG modernos, consistentes e ultraleves.
-- 🐻 **Zustand**: Gerenciamento de estado global reativo (Carrinho, Vendedor, Tema, Filtros).
-- 📱 **PWA (Progressive Web App)**: Cache offline inteligente (`sw.js`) e instalabilidade mobile.
-- 📊 **Auditoria & Telemetria**: Integração assíncrona com Google Sheets via Google Apps Script.
+[![Deploy](https://img.shields.io/badge/deploy-render-success?style=flat-square)](https://jcvdistribuidora.onrender.com)
+[![Version](https://img.shields.io/badge/version-6.1.0-blue?style=flat-square)]()
+[![PWA](https://img.shields.io/badge/PWA-ready-purple?style=flat-square)]()
 
 ---
 
-## 🏗️ 2. Estrutura do Projeto
+## 🎯 Sobre o Projeto
 
-```
-rawell-v3/
-├── index.html                  # HTML semântico com tags PWA
-├── package.json                # Dependências e scripts
-├── tsconfig.json               # Configurações TypeScript
-├── vite.config.ts              # Configuração Vite com Tailwind v4 plugin
-├── public/
-│   ├── manifest.json           # Manifesto PWA
-│   ├── sw.js                   # Service Worker com cache offline
-│   └── img/                    # Imagens WebP oficiais dos 32 produtos
-│
-└── src/
-    ├── main.tsx                # Ponto de entrada React
-    ├── App.tsx                 # Aplicação raiz, bootstrapping e rotas de comissão (?v=)
-    ├── index.css               # Diretivas Tailwind v4 e estilos de impressão timbrada
-    │
-    ├── types/                  # Tipos TypeScript estritos
-    │   ├── product.ts          # Produto, categoria, formulação, segurança e EPIs
-    │   ├── cart.ts             # Item do carrinho, dados do cliente e totalizadores
-    │   ├── seller.ts           # Sessão, histórico de propostas e status
-    │   └── telemetry.ts        # Payloads de telemetria
-    │
-    ├── data/                   # Camada de Dados
-    │   ├── config.ts           # Contatos, webhook e vendedores oficiais
-    │   ├── categories.ts       # 10 categorias e 5 formulações
-    │   └── products.ts         # 32 produtos oficiais e fichas técnicas completas
-    │
-    ├── store/                  # Estado Global Reativo (Zustand)
-    │   ├── useCartStore.ts     # Carrinho, regras de desconto e cálculo de economia
-    │   ├── useSellerStore.ts   # Sessão do vendedor, PIN e histórico de cotações
-    │   ├── useCatalogStore.ts  # Busca, filtros de categoria e controle de modais
-    │   ├── useThemeStore.ts    # Tema Dark / Light com persistência
-    │   └── useToastStore.ts    # Notificações flutuantes animadas
-    │
-    ├── utils/                  # Funções Utilitárias
-    │   ├── formatters.ts       # Moeda R$, datas e máscaras
-    │   ├── calculations.ts     # Motor financeiro (desconto item + desconto global)
-    │   ├── haptics.ts          # Feedback tátil mobile
-    │   └── telemetry.ts        # Disparo para o webhook do Google Apps Script
-    │
-    └── components/             # Componentes Modulares
-        ├── ui/
-        │   ├── Modal.tsx
-        │   ├── Stepper.tsx
-        │   └── ToastContainer.tsx
-        ├── layout/
-        │   ├── Header.tsx
-        │   ├── StoriesBar.tsx
-        │   ├── FilterBar.tsx
-        │   └── Footer.tsx
-        ├── catalog/
-        │   ├── ProductCard.tsx
-        │   ├── ProductListItem.tsx
-        │   ├── ProductGrid.tsx
-        │   └── ProductDetailModal.tsx
-        ├── cart/
-        │   ├── CartDrawer.tsx
-        │   ├── CartItemRow.tsx
-        │   └── CartSummary.tsx
-        ├── seller/
-        │   ├── SellerLoginModal.tsx
-        │   ├── SellerDashboardModal.tsx
-        │   └── CommissionModal.tsx
-        └── proposal/
-            ├── ProposalModal.tsx
-            ├── PrintableProposal.tsx
-            └── WhatsAppModal.tsx
-```
+Sistema completo de catálogo digital e geração de propostas comerciais para distribuidora de defensivos agrícolas. Desenvolvido para ser uma **ferramenta profissional de vendas** com foco em experiência mobile-first, gestão de comissões e rastreabilidade de negócios.
+
+**Deploy:** [jcvdistribuidora.onrender.com](https://jcvdistribuidora.onrender.com)
 
 ---
 
-## 🛠️ 3. Como Executar
+## ⚡ Stack Tecnológica
 
-### 1. Iniciar Ambiente de Desenvolvimento Local:
+- **Frontend:** React 19 + TypeScript + Vite 6
+- **Estilização:** Tailwind CSS v4 + Design System custom
+- **Estado:** Zustand (gerenciamento reativo)
+- **Ícones:** Lucide React + Lucide Motion (animações)
+- **PWA:** Service Worker com cache offline inteligente
+- **Telemetria:** Google Apps Script + Google Sheets (auditoria)
+- **Deploy:** Render (CI/CD automático via GitHub)
+
+---
+
+## 🚀 Funcionalidades Principais
+
+### 📦 **Catálogo de Produtos**
+- ✅ 36+ produtos com fichas técnicas completas
+- ✅ Imagens otimizadas em WebP
+- ✅ Busca em tempo real com scroll automático
+- ✅ Filtros por categoria (10 categorias) e formulação (5 tipos)
+- ✅ Visualização em grade/lista responsiva
+- ✅ Informações detalhadas: alvos, modo de uso, EPIs, dosagem
+
+### 🛒 **Sistema de Orçamento Inteligente**
+- ✅ Motor financeiro com descontos individuais e globais
+- ✅ Cálculo automático de economia do cliente (R$ + %)
+- ✅ Stepper otimizado para mobile (auto-select em inputs)
+- ✅ Edição direta no carrinho (botões +/- inline)
+- ✅ Compartilhamento via link (com ou sem preços)
+- ✅ Geração de proposta em PDF timbrada
+
+### 👔 **Área do Representante Comercial**
+- ✅ Login seguro com PIN individual
+- ✅ Histórico de até 50 propostas com status (aguardando/negociando/fechado/perdido)
+- ✅ Reabertura rápida de cotações no carrinho
+- ✅ Link de comissão com rastreamento automático (`?vendedor=nome`)
+- ✅ Dashboard com métricas de conversão
+
+### 📱 **PWA Mobile-First**
+- ✅ Instalável em iOS/Android (add to home screen)
+- ✅ Cache offline inteligente (funciona sem internet)
+- ✅ Service Worker com invalidação automática de versão
+- ✅ Haptic feedback em ações críticas
+- ✅ Otimizado para telas touch (sem lag de 300ms)
+- ✅ Navegação bottom bar mobile
+
+### 🎨 **UX Premium**
+- ✅ Dark mode profissional (paleta OLED-friendly)
+- ✅ Theme toggle animado (Sun/Moon com Lucide Motion)
+- ✅ Ícones animados no login e ações principais
+- ✅ Toasts com feedback visual
+- ✅ Transições suaves e micro-interações
+- ✅ Design system consistente em todo projeto
+
+### 📊 **Telemetria & Auditoria**
+- ✅ Integração com Google Sheets (webhook assíncrono)
+- ✅ Rastreamento de eventos: buscas, adições ao carrinho, conversões
+- ✅ Identificação automática de vendedor por link ou sessão
+- ✅ Logs estruturados para análise de funil de vendas
+
+### 💬 **WhatsApp Business Integration**
+- ✅ Geração de mensagem formatada com produtos
+- ✅ Link direto para WhatsApp oficial da empresa
+- ✅ Compartilhamento de proposta via texto estruturado
+- ✅ Preview de produtos com link para páginas individuais
+
+---
+
+## 📅 Roadmap de Desenvolvimento
+
+### **v1.0 - v3.0** • *Fundação (Início do projeto)*
+- 🔨 Setup inicial React + TypeScript + Vite
+- 🎨 Design system base com Tailwind v4
+- 📦 Catálogo de 32 produtos (depois expandido para 36+)
+- 🛒 Sistema básico de carrinho
+- 💰 Motor financeiro com descontos
+
+### **v4.0 - v4.2** • *Melhorias Core*
+- 📱 PWA implementation + Service Worker
+- 👔 Área do representante comercial
+- 📊 Integração com Google Sheets
+- 🔍 Sistema de busca melhorado
+- 📄 Geração de PDF timbrado
+
+### **v5.0 - v5.5** • *UX E-commerce*
+- 🎯 Stepper otimizado mobile (fix concatenação de valores)
+- ✏️ Edição inline do carrinho (UX profissional)
+- 📱 Auto-select em inputs (baseado em análise Google Aistidium)
+- 🔎 Busca intuitiva com scroll automático
+- 🎨 Badges e indicadores visuais melhorados
+
+### **v6.0** • *Cache & Deploy*
+- 🔄 Service Worker com invalidação automática (fix blank screen)
+- 🚀 Deploy production no Render
+- 🐛 Hotfix v6.0.1: HTML nunca em cache (fix bundle hash mismatch)
+
+### **v6.0.2 - v6.0.4** • *UX Minimalista*
+- 🛒 Botão carrinho compacto (`🛒5` em vez de texto longo)
+- 🎯 Remoção de alvos na vitrine (menos poluição visual)
+- 🔒 Login modal minimalista (sem exposição de usuários)
+- 👤 Novo vendedor Leandro adicionado
+- ❌ Botões de estoque compactos
+
+### **v6.1.0** • *Animações Premium* ⭐ **ATUAL**
+- ✨ Instalação Lucide Motion + Motion
+- 🌙 Theme toggle animado (Sun/Moon)
+- 🔐 Login modal com ícones animados
+- 🎨 Dark mode reformulado (paleta profissional OLED-friendly)
+- ⚡ Micro-interações em ações principais
+
+---
+
+## 🛠️ Desenvolvimento
+
 ```bash
-cd C:\Users\n4fog\Pictures\VALDECIR\rawell-v3
+# Instalar dependências
+npm install
+
+# Desenvolvimento local
 npm run dev
-```
 
-### 2. Gerar Versão de Produção Otimizada:
-```bash
+# Build de produção
 npm run build
-```
 
-### 3. Testar a Versão de Produção Localmente:
-```bash
+# Preview da build
 npm run preview
 ```
 
 ---
 
-## 🛡️ 4. Funcionalidades Mantidas e Aprimoradas
+## 📂 Estrutura Simplificada
 
-1. **Catálogo Consultivo com Ficha Técnica Completa**:
-   - 32 produtos oficiais, imagens em WebP, pragas-alvo, dosagem e EPIs.
-   - Busca em tempo real com filtros por categoria e formulação.
-   - Alternância entre visualização em Grade responsiva e Lista.
-2. **Motor Financeiro Inteligente**:
-   - Ajuste de preço de tabela e desconto individual por produto.
-   - Desconto global do pedido (incidindo apenas sobre itens sem desconto individual).
-   - Cálculo automático da **Economia Total do Cliente** em R$ e %.
-3. **Área do Representante Comercial**:
-   - Autenticação por PIN comercial.
-   - Histórico de até 50 propostas salvas no navegador com controle de status (*Aguardando, Negociando, Fechado, Perdido*).
-   - Botão de **reabrir/recarregar cotação no carrinho** para rápida negociação.
-   - Gerador de link de comissão com rastreamento (`?vendedor=carlos`).
-4. **Proposta Timbrada em PDF**:
-   - Geração de proposta comercial oficial timbrada pronta para impressão ou salvar em PDF (com e sem preços).
-5. **WhatsApp & Telemetria em Nuvem**:
-   - Disparo formatado para o WhatsApp do cliente ou central de atendimento.
-   - Auditoria em tempo real na planilha Google Sheets via Google Apps Script.
+```
+src/
+├── components/      # Componentes React modulares
+│   ├── catalog/     # Cards, grid, modais de produto
+│   ├── cart/        # Drawer, itens, resumo
+│   ├── seller/      # Login, dashboard, comissões
+│   ├── proposal/    # PDF, WhatsApp, impressão
+│   ├── layout/      # Header, footer, navegação
+│   └── ui/          # Modal, stepper, toasts, theme toggle
+├── store/           # Zustand stores (carrinho, vendedor, tema, catálogo)
+├── utils/           # Formatadores, cálculos, telemetria, haptics
+├── data/            # Produtos, categorias, config
+└── types/           # TypeScript interfaces
+```
+
+---
+
+## 🎯 Próximos Passos (Backlog)
+
+- [ ] Animações no botão de adicionar ao carrinho
+- [ ] Animações nos toasts (ícones animados por tipo)
+- [ ] Dashboard admin com gráficos de conversão
+- [ ] Filtros avançados (faixa de preço, embalagem)
+- [ ] Modo comparação de produtos
+- [ ] Histórico de buscas recentes
+- [ ] Sugestões de produtos relacionados
+- [ ] Sistema de favoritos persistente
+
+---
+
+## 📝 Notas Técnicas
+
+### **Service Worker**
+- Cache invalidado automaticamente via query string `?v=X.X.X`
+- HTML **nunca** é cacheado (evita blank screen com bundle hash desatualizado)
+- Assets estáticos (fonts, ícones) cacheados permanentemente
+
+### **Mobile Optimization**
+- Input `type="text"` + `inputMode="numeric"` (iOS compatibility)
+- Auto-select com `setTimeout(50ms)` + `setSelectionRange()`
+- Haptic feedback em ações críticas (iOS/Android)
+- Font-size mínimo 16px em inputs (evita zoom iOS)
+
+### **Performance**
+- Bundle splitting automático (Vite)
+- Lazy loading de modais
+- Imagens WebP otimizadas
+- CSS purge em produção (Tailwind v4)
+
+---
+
+## 📄 Licença
+
+Projeto proprietário - JCV Distribuidora & Rawell Química © 2026
+
+---
+
+## 👨‍💻 Desenvolvimento
+
+Desenvolvido com foco em **experiência profissional B2B**, **mobile-first** e **performance**.
+
+**Versão atual:** v6.1.0  
+**Última atualização:** Janeiro 2025
