@@ -23,7 +23,7 @@ export const ProductGrid: React.FC = () => {
   }, [searchQuery, selectedCategory, selectedFormulation, products]);
 
   return (
-    <div className="min-h-[60vh] pb-16">
+    <div id="products-section" className="min-h-[60vh] pb-16">
       <FilterBar totalResults={filteredProducts.length} />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6">

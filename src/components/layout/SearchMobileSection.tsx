@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { useCatalogStore } from '../../store/useCatalogStore';
 import { triggerHaptic } from '../../utils/haptics';
+import { scrollToProducts } from '../../utils/scrollHelper';
 
 export const SearchMobileSection: React.FC = () => {
   const { searchQuery, setSearchQuery, quickSearch } = useCatalogStore();
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const tags = [
     { label: '🌱 Tiririca', query: 'Tiririca' },
@@ -18,12 +20,28 @@ export const SearchMobileSection: React.FC = () => {
   const handleTagClick = (query: string) => {
     triggerHaptic(12);
     quickSearch(query);
+    scrollToProducts();
+  };
+
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    triggerHaptic(12);
+    inputRef.current?.blur();
+    scrollToProducts();
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      triggerHaptic(12);
+      inputRef.current?.blur();
+      scrollToProducts();
+    }
   };
 
   return (
     <section className="md:hidden max-w-7xl mx-auto px-4 pt-3 pb-2">
       {/* Mobile Search Bar */}
-      <div className="relative">
+      <form onSubmit={handleSearchSubmit} action="/" role="search" className="relative">
         <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400">
           <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" strokeWidth="2.5" fill="none">
             <circle cx="11" cy="11" r="8" />
@@ -32,9 +50,12 @@ export const SearchMobileSection: React.FC = () => {
         </span>
 
         <input
+          ref={inputRef}
           type="search"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
+          onKeyDown={handleKeyDown}
+          enterKeyHint="search"
           placeholder="Buscar praga, produto ou princípio..."
           className="w-full h-12 pl-10 pr-10 bg-white dark:bg-[#0f1f17] border border-[rgba(15,69,49,0.12)] dark:border-[rgba(16,185,129,0.2)] rounded-full text-sm font-medium text-[#0f1f17] dark:text-[#edf5f0] placeholder-slate-400 dark:placeholder-[#638573] shadow-sm focus:outline-none focus:ring-2 focus:ring-[#10b981]/50"
           autoComplete="off"
@@ -52,7 +73,7 @@ export const SearchMobileSection: React.FC = () => {
             ✕
           </button>
         )}
-      </div>
+      </form>
 
       {/* Quick Tags Horizontal Scroll */}
       <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar pt-2.5 pb-1 -mx-4 px-4">

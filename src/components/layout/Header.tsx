@@ -6,6 +6,7 @@ import { useAdminStore } from '../../store/useAdminStore';
 import { useThemeStore } from '../../store/useThemeStore';
 import { triggerHaptic } from '../../utils/haptics';
 import { logSearchTelemetry } from '../../utils/telemetry';
+import { scrollToProducts } from '../../utils/scrollHelper';
 
 export const Header: React.FC = () => {
   const {
@@ -68,6 +69,8 @@ export const Header: React.FC = () => {
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     triggerHaptic(15);
+    searchInputRef.current?.blur();
+    scrollToProducts();
     if (searchQuery.trim().length >= 2) {
       logSearchTelemetry(searchQuery, totals.totalQtd, seller.nome, isSellerLoggedIn ? '👔 Vendedor' : '🔵 Base', true);
     }
@@ -132,6 +135,7 @@ export const Header: React.FC = () => {
             type="search"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
+            enterKeyHint="search"
             placeholder="Buscar por produto, praga ou princípio ativo..."
             className="w-full pl-10 pr-16 py-2 bg-slate-100/90 dark:bg-[#14281f] border border-[rgba(15,69,49,0.12)] dark:border-[rgba(16,185,129,0.2)] rounded-full text-xs sm:text-sm text-[#0f1f17] dark:text-[#edf5f0] placeholder-slate-400 dark:placeholder-[#638573] focus:outline-none focus:ring-2 focus:ring-[#10b981]/50 focus:bg-white dark:focus:bg-[#0f1f17] transition-all"
             autoComplete="off"
