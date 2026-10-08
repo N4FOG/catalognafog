@@ -9,7 +9,7 @@ import { formatDateTime, formatCurrency } from '../../utils/formatters';
 import { triggerHaptic } from '../../utils/haptics';
 import { DollarSign, FileText, Download } from 'lucide-react';
 import { sendTelemetry } from '../../utils/telemetry';
-import { downloadElementAsPdf } from '../../utils/pdfGenerator';
+import { downloadProposalPdf } from '../../utils/pdfGenerator';
 import type { QuoteHistoryItem } from '../../types/seller';
 
 export const ProposalModal: React.FC = () => {
@@ -82,22 +82,26 @@ export const ProposalModal: React.FC = () => {
 
   const handleDownloadDirectPdf = async () => {
     triggerHaptic(20);
-    const element = document.getElementById('printable-proposal-area');
-    if (!element) {
-      addToast('⚠️ Não foi possível localizar a área de proposta.', 'warning');
-      return;
-    }
-
     setIsDownloading(true);
-    addToast('⚡ Baixando arquivo PDF...', 'info');
+    addToast('⚡ Gerando PDF...', 'info');
 
-    const ok = await downloadElementAsPdf(element, proposalNumber);
-    setIsDownloading(false);
-
-    if (ok) {
-      addToast('✅ PDF baixado com sucesso!', 'success');
-    } else {
-      addToast('⚠️ Ocorreu um erro ao gerar o arquivo.', 'error');
+    try {
+      downloadProposalPdf({
+        proposalNumber,
+        dateTime: currentDateTime,
+        clientInfo,
+        sellerName: seller.nome,
+        sellerPhone: seller.whatsapp,
+        items,
+        totals,
+        showPrices
+      });
+      addToast('✅ PDF gerado e baixado com sucesso!', 'success');
+    } catch (err) {
+      console.error('Erro ao gerar PDF:', err);
+      addToast('⚠️ Erro ao gerar o arquivo PDF.', 'error');
+    } finally {
+      setIsDownloading(false);
     }
   };
 

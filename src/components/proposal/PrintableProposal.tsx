@@ -36,10 +36,10 @@ export const PrintableProposal: React.FC<PrintableProposalProps> = ({
           </div>
           <div>
             <h1 className="font-extrabold text-lg sm:text-xl text-emerald-950 tracking-tight leading-tight">
-              JCV JARDINAGEM & AGRO
+              JCV DISTRIBUIDORA
             </h1>
             <p className="text-[11px] text-slate-500 font-medium">
-              Rawell Química • Indústria e Comércio de Defensivos & Adjuvantes
+              Distribuidora Oficial • Defensivos, Herbicidas Seletivos e Adjuvantes
             </p>
           </div>
         </div>
