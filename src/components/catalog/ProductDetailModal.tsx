@@ -331,7 +331,7 @@ export const ProductDetailModal: React.FC = () => {
                 {!isInStock ? (
                   <>
                     <AlertTriangle className="w-4 h-4" />
-                    <span>Produto Indisponível</span>
+                    <span>Sem Estoque</span>
                   </>
                 ) : isInCart ? (
                   <>
