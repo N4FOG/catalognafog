@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Minus, Plus } from 'lucide-react';
 import { triggerHaptic } from '../../utils/haptics';
 
@@ -19,9 +19,13 @@ export const Stepper: React.FC<StepperProps> = ({
   size = 'md',
   disabled = false
 }) => {
-  const [isEditing, setIsEditing] = useState(false);
-  const [inputValue, setInputValue] = useState(String(value));
+  const [localValue, setLocalValue] = useState(String(value));
   const inputRef = useRef<HTMLInputElement>(null);
+
+  // Sync local state when external value changes (from +/- buttons)
+  useEffect(() => {
+    setLocalValue(String(value));
+  }, [value]);
 
   const handleDecrement = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -39,35 +43,35 @@ export const Stepper: React.FC<StepperProps> = ({
     }
   };
 
-  const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+  const handleFocus = () => {
     triggerHaptic(8);
-    setIsEditing(true);
-    setInputValue('');
-    // Force clear the field immediately and select on next tick
-    e.target.value = '';
+    // Select all text on focus (e-commerce standard)
     setTimeout(() => {
-      if (inputRef.current) {
-        inputRef.current.value = '';
-        inputRef.current.select();
-      }
-    }, 10);
+      inputRef.current?.select();
+    }, 0);
   };
 
   const handleBlur = () => {
-    setIsEditing(false);
-    const val = parseInt(inputValue, 10);
-    if (!isNaN(val) && val >= min && val <= max) {
+    const val = parseInt(localValue, 10);
+    if (isNaN(val) || val < min) {
+      // Invalid or too small: restore to min
+      onChange(min);
+      setLocalValue(String(min));
+    } else if (val > max) {
+      // Too large: cap to max
+      onChange(max);
+      setLocalValue(String(max));
+    } else {
+      // Valid: apply
       onChange(val);
     }
-    // Restaura o valor anterior se inválido
-    setInputValue(String(value));
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
-    // Permite apenas dígitos ou string vazia
+    // Allow only digits or empty string
     if (/^\d*$/.test(val)) {
-      setInputValue(val);
+      setLocalValue(val);
     }
   };
 
@@ -75,8 +79,8 @@ export const Stepper: React.FC<StepperProps> = ({
     if (e.key === 'Enter') {
       e.currentTarget.blur();
     } else if (e.key === 'Escape') {
-      setIsEditing(false);
-      setInputValue(String(value));
+      setLocalValue(String(value));
+      e.currentTarget.blur();
     }
   };
 
@@ -120,13 +124,12 @@ export const Stepper: React.FC<StepperProps> = ({
         type="text"
         inputMode="numeric"
         pattern="[0-9]*"
-        value={isEditing ? inputValue : value}
-        onChange={handleInputChange}
+        value={localValue}
+        onChange={handleChange}
         onFocus={handleFocus}
         onBlur={handleBlur}
         onKeyDown={handleKeyDown}
         disabled={disabled}
-        placeholder={isEditing ? '0' : undefined}
         className={`${sizeClasses.input} text-center bg-transparent border-none focus:outline-none text-slate-800 dark:text-slate-100 disabled:cursor-not-allowed`}
       />
 
