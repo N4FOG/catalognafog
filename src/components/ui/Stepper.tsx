@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+﻿import React from 'react';
 import { Minus, Plus } from 'lucide-react';
 import { triggerHaptic } from '../../utils/haptics';
 
@@ -19,8 +19,6 @@ export const Stepper: React.FC<StepperProps> = ({
   size = 'md',
   disabled = false
 }) => {
-  const inputRef = useRef<HTMLInputElement>(null);
-
   const handleDecrement = (e: React.MouseEvent) => {
     e.stopPropagation();
     triggerHaptic(10);
@@ -37,38 +35,10 @@ export const Stepper: React.FC<StepperProps> = ({
     }
   };
 
-  const handleFocus = () => {
-    triggerHaptic(8);
-    setTimeout(() => {
-      inputRef.current?.select();
-    }, 0);
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const val = e.target.value;
-    
-    // Allow only digits
-    if (!/^\d*$/.test(val)) return;
-    
-    // Empty input: don't update yet, wait for blur
-    if (val === '') return;
-    
-    const num = parseInt(val, 10);
-    if (!isNaN(num) && num >= min && num <= max) {
-      onChange(num);
-    }
-  };
-
-  const handleBlur = () => {
-    // If input is empty or invalid on blur, restore to current value
-    if (!inputRef.current?.value || parseInt(inputRef.current.value, 10) < min) {
-      inputRef.current!.value = String(value);
-    }
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      e.currentTarget.blur();
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = parseInt(e.target.value, 10);
+    if (!isNaN(val)) {
+      onChange(Math.max(min, Math.min(max, val)));
     }
   };
 
@@ -101,31 +71,27 @@ export const Stepper: React.FC<StepperProps> = ({
         type="button"
         onClick={handleDecrement}
         disabled={value <= min || disabled}
-        className={`${sizeClasses.btn} flex items-center justify-center rounded-lg bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-200 shadow-sm disabled:opacity-40 disabled:cursor-not-allowed hover:bg-slate-50 dark:hover:bg-slate-600 transition-all active:scale-95`}
+        className={`${sizeClasses.btn} flex items-center justify-center rounded-lg bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-200 shadow-sm disabled:opacity-40 disabled:cursor-not-allowed hover:bg-slate-50 dark:hover:bg-slate-600 transition-colors active:scale-95`}
         aria-label="Diminuir"
       >
         <Minus className="w-3.5 h-3.5" />
       </button>
 
       <input
-        ref={inputRef}
-        type="text"
-        inputMode="numeric"
-        pattern="[0-9]*"
+        type="number"
         value={value}
-        onChange={handleChange}
-        onFocus={handleFocus}
-        onBlur={handleBlur}
-        onKeyDown={handleKeyDown}
+        onChange={handleInputChange}
+        min={min}
+        max={max}
         disabled={disabled}
-        className={`${sizeClasses.input} text-center bg-transparent border-none focus:outline-none text-slate-800 dark:text-slate-100 disabled:cursor-not-allowed`}
+        className={`${sizeClasses.input} text-center bg-transparent border-none focus:outline-none text-slate-800 dark:text-slate-100 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none disabled:cursor-not-allowed`}
       />
 
       <button
         type="button"
         onClick={handleIncrement}
         disabled={value >= max || disabled}
-        className={`${sizeClasses.btn} flex items-center justify-center rounded-lg bg-emerald-600 dark:bg-emerald-600 text-white shadow-sm disabled:opacity-40 disabled:cursor-not-allowed hover:bg-emerald-500 transition-all active:scale-95`}
+        className={`${sizeClasses.btn} flex items-center justify-center rounded-lg bg-emerald-600 dark:bg-emerald-600 text-white shadow-sm disabled:opacity-40 disabled:cursor-not-allowed hover:bg-emerald-500 transition-colors active:scale-95`}
         aria-label="Aumentar"
       >
         <Plus className="w-3.5 h-3.5" />
