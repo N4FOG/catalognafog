@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import type { Product } from '../../types/product';
 import { CATEGORIAS, FORMULACOES } from '../../data/categories';
 import { PRODUTOS } from '../../data/products';
@@ -20,6 +20,7 @@ interface ProductCardProps {
 export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const [qty, setQty] = useState(1);
   const [selectedVarIndex, setSelectedVarIndex] = useState(0);
+  const [inputVal, setInputVal] = useState('1');
   // hoveredVarIndex removido - não queremos trocar imagem no hover
 
   const { items, addToCart, updateQuantity, removeFromCart, setIsCartOpen } = useCartStore();
@@ -47,6 +48,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     currentVar ? (i.id === product.id && i.variationId === currentVar.id) : (i.id === product.id && !i.variationId)
   );
   const inCart = !!cartItem;
+
+  // Sincroniza inputVal com quantidade atual
+  useEffect(() => {
+    const currentQty = inCart && cartItem ? cartItem.quantidade : qty;
+    setInputVal(String(currentQty));
+  }, [inCart, cartItem, qty]);
 
   const catObj = CATEGORIAS.find((c) => c.id === product.categoria);
   const formObj = FORMULACOES.find((f) => f.id === product.tipo_formulacao);
@@ -127,16 +134,44 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     }
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const val = parseInt(e.target.value, 10);
-    if (isNaN(val) || val < 1) return;
+  const handleInputFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+    const target = e.target;
+    setTimeout(() => {
+      try {
+        target.select();
+        target.setSelectionRange?.(0, target.value.length);
+      } catch {}
+    }, 50);
+  };
+
+  const handleInputClick = (e: React.MouseEvent<HTMLInputElement>) => {
+    e.stopPropagation();
+    try {
+      e.currentTarget.select();
+      e.currentTarget.setSelectionRange?.(0, e.currentTarget.value.length);
+    } catch {}
+  };
+
+  const handleInputChangeInline = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const filtered = e.target.value.replace(/\D/g, '');
+    setInputVal(filtered);
     
-    if (inCart && cartItem) {
-      // Atualiza direto no carrinho
-      updateQuantity(itemKey, Math.min(999, val));
-    } else {
-      // Atualiza qty local
-      setQty(Math.min(999, val));
+    if (filtered !== '') {
+      const val = parseInt(filtered, 10);
+      if (!isNaN(val) && val >= 1) {
+        if (inCart && cartItem) {
+          updateQuantity(itemKey, Math.min(999, val));
+        } else {
+          setQty(Math.min(999, val));
+        }
+      }
+    }
+  };
+
+  const handleInputBlur = () => {
+    if (inputVal === '' || parseInt(inputVal, 10) < 1) {
+      const fallback = inCart && cartItem ? cartItem.quantidade : qty;
+      setInputVal(String(fallback));
     }
   };
 
@@ -371,9 +406,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                 −
               </button>
               <input
-                type="number"
-                value={inCart && cartItem ? cartItem.quantidade : qty}
-                onChange={handleInputChange}
+                type="text"
+                inputMode="numeric"
+                pattern="[0-9]*"
+                value={inputVal}
+                onChange={handleInputChangeInline}
+                onFocus={handleInputFocus}
+                onClick={handleInputClick}
+                onBlur={handleInputBlur}
                 disabled={!isInStock}
                 className="w-8 text-center text-xs font-bold bg-transparent border-none focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none disabled:cursor-not-allowed"
               />

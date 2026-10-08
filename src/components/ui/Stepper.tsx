@@ -1,4 +1,4 @@
-﻿import React from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { Minus, Plus } from 'lucide-react';
 import { triggerHaptic } from '../../utils/haptics';
 
@@ -19,6 +19,20 @@ export const Stepper: React.FC<StepperProps> = ({
   size = 'md',
   disabled = false
 }) => {
+  const [inputValue, setInputValue] = useState(String(value));
+
+  // Sincroniza estado local com prop externa
+  useEffect(() => {
+    setInputValue(String(value));
+  }, [value]);
+
+  const selectAll = (target: HTMLInputElement) => {
+    try {
+      target.select();
+      target.setSelectionRange?.(0, target.value.length);
+    } catch {}
+  };
+
   const handleDecrement = (e: React.MouseEvent) => {
     e.stopPropagation();
     triggerHaptic(10);
@@ -35,10 +49,37 @@ export const Stepper: React.FC<StepperProps> = ({
     }
   };
 
+  const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+    triggerHaptic(8);
+    const target = e.target;
+    setTimeout(() => {
+      selectAll(target);
+    }, 50);
+  };
+
+  const handleClick = (e: React.MouseEvent<HTMLInputElement>) => {
+    e.stopPropagation();
+    selectAll(e.currentTarget);
+  };
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const val = parseInt(e.target.value, 10);
-    if (!isNaN(val)) {
-      onChange(Math.max(min, Math.min(max, val)));
+    // Filtra apenas dígitos
+    const filtered = e.target.value.replace(/\D/g, '');
+    setInputValue(filtered);
+    
+    if (filtered !== '') {
+      const val = parseInt(filtered, 10);
+      if (!isNaN(val)) {
+        onChange(Math.max(min, Math.min(max, val)));
+      }
+    }
+  };
+
+  const handleBlur = () => {
+    // Garante valor mínimo ao perder foco
+    if (inputValue === '' || parseInt(inputValue, 10) < min) {
+      setInputValue(String(min));
+      onChange(min);
     }
   };
 
@@ -78,9 +119,14 @@ export const Stepper: React.FC<StepperProps> = ({
       </button>
 
       <input
-        type="number"
-        value={value}
+        type="text"
+        inputMode="numeric"
+        pattern="[0-9]*"
+        value={inputValue}
         onChange={handleInputChange}
+        onFocus={handleFocus}
+        onClick={handleClick}
+        onBlur={handleBlur}
         min={min}
         max={max}
         disabled={disabled}
