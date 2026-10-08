@@ -32,6 +32,15 @@ export const Stepper: React.FC<StepperProps> = ({
     setShowFeedback(false);
   }, [value]);
 
+  // Cleanup debounce timer on unmount
+  useEffect(() => {
+    return () => {
+      if (debounceTimerRef.current) {
+        clearTimeout(debounceTimerRef.current);
+      }
+    };
+  }, []);
+
   const validateValue = (val: string): boolean => {
     if (val === '') return false;
     const num = parseInt(val, 10);
@@ -41,6 +50,13 @@ export const Stepper: React.FC<StepperProps> = ({
   const handleDecrement = (e: React.MouseEvent) => {
     e.stopPropagation();
     triggerHaptic(10);
+    
+    // Clear any pending debounce from typing
+    if (debounceTimerRef.current) {
+      clearTimeout(debounceTimerRef.current);
+      debounceTimerRef.current = null;
+    }
+    
     if (value > min) {
       onChange(value - 1);
     }
@@ -49,6 +65,13 @@ export const Stepper: React.FC<StepperProps> = ({
   const handleIncrement = (e: React.MouseEvent) => {
     e.stopPropagation();
     triggerHaptic(10);
+    
+    // Clear any pending debounce from typing
+    if (debounceTimerRef.current) {
+      clearTimeout(debounceTimerRef.current);
+      debounceTimerRef.current = null;
+    }
+    
     if (value < max) {
       onChange(value + 1);
     }
@@ -94,6 +117,7 @@ export const Stepper: React.FC<StepperProps> = ({
     // Clear pending debounce
     if (debounceTimerRef.current) {
       clearTimeout(debounceTimerRef.current);
+      debounceTimerRef.current = null;
     }
 
     const val = parseInt(localValue, 10);
@@ -111,6 +135,7 @@ export const Stepper: React.FC<StepperProps> = ({
     if (e.key === 'Enter') {
       if (debounceTimerRef.current) {
         clearTimeout(debounceTimerRef.current);
+        debounceTimerRef.current = null;
       }
       const val = parseInt(localValue, 10);
       if (!isNaN(val) && val >= min && val <= max) {
