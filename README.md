@@ -4,7 +4,7 @@
 > React 19 • TypeScript • Tailwind v4 • Zustand • Vite 6
 
 [![Deploy](https://img.shields.io/badge/deploy-render-success?style=flat-square)](https://jcvdistribuidora.onrender.com)
-[![Version](https://img.shields.io/badge/version-6.1.0-blue?style=flat-square)]()
+[![Version](https://img.shields.io/badge/version-6.1.1-blue?style=flat-square)]()
 [![PWA](https://img.shields.io/badge/PWA-ready-purple?style=flat-square)]()
 
 ---
@@ -209,5 +209,5 @@ Projeto proprietário - JCV Distribuidora & Rawell Química © 2026
 
 Desenvolvido com foco em **experiência profissional B2B**, **mobile-first** e **performance**.
 
-**Versão atual:** v6.1.0  
+**Versão atual:** v6.1.1  
 **Última atualização:** Janeiro 2025
