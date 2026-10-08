@@ -22,7 +22,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const [selectedVarIndex, setSelectedVarIndex] = useState(0);
   // hoveredVarIndex removido - não queremos trocar imagem no hover
 
-  const { items, addToCart } = useCartStore();
+  const { items, addToCart, updateQuantity, removeFromCart, setIsCartOpen } = useCartStore();
   const { isSellerLoggedIn, getActiveSeller } = useSellerStore();
   const { searchQuery, setSelectedProduct } = useCatalogStore();
   const { addToast } = useToastStore();
@@ -41,6 +41,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const currentPrice = currentVar ? currentVar.preco_base : (product.preco_base || baseProd?.preco_base || 0);
   const currentRef = currentVar ? currentVar.referencia : (product.referencia || baseProd?.referencia || '');
 
+  // Identificar item no carrinho
+  const itemKey = currentVar ? `${product.id}_${currentVar.id}` : product.id;
   const cartItem = items.find((i) =>
     currentVar ? (i.id === product.id && i.variationId === currentVar.id) : (i.id === product.id && !i.variationId)
   );
@@ -81,25 +83,61 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const handleAddToCart = (e: React.MouseEvent) => {
     e.stopPropagation();
     triggerHaptic(20);
-    addToCart(product, qty, currentVar);
-    const itemName = currentVar ? `${product.nome} (${currentVar.nome})` : product.nome;
-    addToast(`✅ ${itemName} adicionado ao orçamento!`, 'success');
+    
+    if (inCart) {
+      // Se já está no carrinho, abre o drawer
+      setIsCartOpen(true);
+    } else {
+      // Se não está, adiciona com a quantidade selecionada
+      addToCart(product, qty, currentVar);
+      const itemName = currentVar ? `${product.nome} (${currentVar.nome})` : product.nome;
+      addToast(`✅ ${itemName} adicionado ao orçamento!`, 'success');
 
-    const seller = getActiveSeller();
-    sendTelemetry({
-      evento: 'Adicionou ao Orçamento',
-      vendedor: seller.nome,
-      vendedor_nome: seller.nome,
-      total_itens: qty,
-      resumo_itens: `${qty}x ${itemName} (Ref: ${currentRef})`,
-      detalhes_extras: `Produto: ${itemName} | Qtd: ${qty} | Preço: R$ ${currentPrice}`
-    });
+      const seller = getActiveSeller();
+      sendTelemetry({
+        evento: 'Adicionou ao Orçamento',
+        vendedor: seller.nome,
+        vendedor_nome: seller.nome,
+        total_itens: qty,
+        resumo_itens: `${qty}x ${itemName} (Ref: ${currentRef})`,
+        detalhes_extras: `Produto: ${itemName} | Qtd: ${qty} | Preço: R$ ${currentPrice}`
+      });
+    }
   };
 
   const handleAdjustQty = (e: React.MouseEvent, delta: number) => {
     e.stopPropagation();
     triggerHaptic(10);
-    setQty((prev) => Math.max(1, Math.min(999, prev + delta)));
+    
+    if (inCart && cartItem) {
+      // Item está no carrinho: atualiza direto no carrinho
+      const newQty = cartItem.quantidade + delta;
+      
+      if (newQty < 1) {
+        // Remove do carrinho e volta qty local para 1
+        removeFromCart(itemKey);
+        setQty(1);
+        addToast('🗑️ Produto removido do orçamento', 'info');
+      } else {
+        updateQuantity(itemKey, newQty);
+      }
+    } else {
+      // Item não está no carrinho: atualiza qty local
+      setQty((prev) => Math.max(1, Math.min(999, prev + delta)));
+    }
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = parseInt(e.target.value, 10);
+    if (isNaN(val) || val < 1) return;
+    
+    if (inCart && cartItem) {
+      // Atualiza direto no carrinho
+      updateQuantity(itemKey, Math.min(999, val));
+    } else {
+      // Atualiza qty local
+      setQty(Math.min(999, val));
+    }
   };
 
   const handleQuickShare = async (e: React.MouseEvent) => {
@@ -265,6 +303,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                         e.stopPropagation();
                         triggerHaptic(10);
                         setSelectedVarIndex(idx);
+                        setQty(1); // Reset qty ao trocar variação
                       }}
                       className={`px-2 py-0.5 rounded-lg text-[11px] font-extrabold transition-all cursor-pointer border ${
                         isSelected
@@ -334,10 +373,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               <input
                 type="number"
                 value={inCart && cartItem ? cartItem.quantidade : qty}
-                onChange={(e) => {
-                  const val = parseInt(e.target.value, 10);
-                  if (!isNaN(val) && val >= 1) setQty(val);
-                }}
+                onChange={handleInputChange}
                 disabled={!isInStock}
                 className="w-8 text-center text-xs font-bold bg-transparent border-none focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none disabled:cursor-not-allowed"
               />
@@ -363,7 +399,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                   : 'bg-[#0f4531] hover:bg-[#176043] dark:bg-[#10b981] dark:hover:bg-[#059669] text-white'
               }`}
             >
-              <span>{!isInStock ? '❌ Indisponível' : inCart ? `Cotar (${cartItem.quantidade})` : '+ Cotar'}</span>
+              <span>{!isInStock ? '❌ Indisponível' : inCart ? `✓ No Orçamento (${cartItem?.quantidade})` : '+ Cotar'}</span>
             </button>
           </div>
         </div>
