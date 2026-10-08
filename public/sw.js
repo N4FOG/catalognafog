@@ -1,8 +1,8 @@
 // ═══════════════════════════════════════════════════════════════
-//  JCV DISTRIBUIDORA v6.0.1 — Service Worker (Cache Offline & PWA)
+//  JCV DISTRIBUIDORA v6.0.2 — Service Worker (Cache Offline & PWA)
 // ═══════════════════════════════════════════════════════════════
 
-const CACHE_NAME = 'jcv-distribuidora-v6.0.1-cache';
+const CACHE_NAME = 'jcv-distribuidora-v6.0.2-cache';
 
 const STATIC_ASSETS = [
   './manifest.json',

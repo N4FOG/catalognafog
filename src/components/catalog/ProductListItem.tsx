@@ -239,7 +239,7 @@ export const ProductListItem: React.FC<ProductListItemProps> = ({ product }) => 
           }`}
         >
           {isInCart ? <Check className="w-3.5 h-3.5" /> : <Plus className="w-3.5 h-3.5" />}
-          <span>{isInCart ? `✓ No Orçamento (${cartItem?.quantidade})` : 'Adicionar'}</span>
+          <span>{isInCart ? `🛒${cartItem?.quantidade}` : 'Adicionar'}</span>
         </button>
 
         <button

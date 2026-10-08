@@ -76,9 +76,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const basePackTag = packFeature ? packFeature.split('(')[0].trim() : (product.unidade ? product.unidade.toUpperCase() : 'UN');
   const currentPackTag = currentVar?.packTag || basePackTag;
 
-  const targetsGrid = (product.alvos || []).slice(0, 2);
-  const moreGridCount = (product.alvos || []).length - targetsGrid.length;
-
   // Controle de estoque - padrão é true se não especificado
   const isInStock = product.emEstoque !== false;
 
@@ -375,23 +372,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         </div>
 
         <div>
-          {/* Target Pest Chips */}
-          <div className="flex flex-wrap gap-1 mb-2.5">
-            {targetsGrid.map((alvo, idx) => (
-              <span
-                key={idx}
-                className="px-1.5 py-0.5 rounded-md text-[10px] font-semibold bg-slate-100 dark:bg-[#14281f] text-[#334e40] dark:text-[#9cb8a9] border border-slate-200/60 dark:border-slate-700/60 truncate max-w-[110px]"
-              >
-                🎯 {alvo}
-              </span>
-            ))}
-            {moreGridCount > 0 && (
-              <span className="px-1.5 py-0.5 rounded-md text-[10px] font-bold bg-slate-100 dark:bg-[#14281f] text-slate-500">
-                +{moreGridCount}
-              </span>
-            )}
-          </div>
-
           {/* Action Row: Stepper + Add Button */}
           <div className="flex items-center gap-2 pt-2 border-t border-slate-100 dark:border-slate-800" onClick={(e) => e.stopPropagation()}>
             <div className={`inline-flex items-center bg-slate-100 dark:bg-[#14281f] rounded-xl p-0.5 border border-slate-200 dark:border-slate-700 ${
