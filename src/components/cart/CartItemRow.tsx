@@ -1,30 +1,91 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import type { CartItem } from '../../types/cart';
 import { useCartStore } from '../../store/useCartStore';
 import { useSellerStore } from '../../store/useSellerStore';
+import { useToastStore } from '../../store/useToastStore';
 import { Stepper } from '../ui/Stepper';
-import { formatCurrency } from '../../utils/formatters';
+import { formatCurrency, parseCurrencyInput } from '../../utils/formatters';
 import { triggerHaptic } from '../../utils/haptics';
-import { Trash2, Tag, RotateCcw } from 'lucide-react';
+import { sendTelemetry } from '../../utils/telemetry';
+import { Trash2, Tag, RotateCcw, PencilLine } from 'lucide-react';
+
+/** Formata número como "12,50" (sem R$) para exibição no input */
+const toBrl = (v: number): string => (v || 0).toFixed(2).replace('.', ',');
 
 interface CartItemRowProps {
   item: CartItem;
 }
 
 export const CartItemRow: React.FC<CartItemRowProps> = ({ item }) => {
-  const {
-    removeFromCart,
-    updateQuantity,
-    updateUnitPrice,
-    updateItemDiscount
-  } = useCartStore();
+  const { removeFromCart, updateQuantity, updateUnitPrice, updateItemDiscount } = useCartStore();
 
-  const { isSellerLoggedIn } = useSellerStore();
+  const { isSellerLoggedIn, getActiveSeller } = useSellerStore();
+  const addToast = useToastStore((s) => s.addToast);
 
   const itemTotalBruto = item.quantidade * (item.preco_unitario || item.preco_base || 0);
   const itemTotalLiquido = itemTotalBruto * (1 - (item.desconto_percent || 0) / 100);
 
   const itemKey = item.cartItemId || (item.variationId ? `${item.id}_${item.variationId}` : item.id);
+
+  // ── Preço unitário personalizado (momentâneo, só nesta cotação) ──
+  const [priceVal, setPriceVal] = useState('');
+  const [editingPrice, setEditingPrice] = useState(false);
+  const priceInputRef = useRef<HTMLInputElement>(null);
+
+  const isCustomPrice = item.preco_unitario !== item.preco_base;
+
+  // Valor exibido: enquanto edita usa o estado local, senão deriva do store
+  // (evita useEffect de sincronização e re-renders em cascata)
+  const displayPrice = editingPrice ? priceVal : toBrl(item.preco_unitario);
+
+  const handlePriceFocus = () => {
+    setPriceVal(toBrl(item.preco_unitario));
+    setEditingPrice(true);
+    const el = priceInputRef.current;
+    if (el) {
+      setTimeout(() => {
+        try {
+          el.select();
+          el.setSelectionRange?.(0, el.value.length);
+        } catch {}
+      }, 10);
+    }
+  };
+
+  const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // Aceita apenas dígitos, vírgula e ponto (teclado numérico pt-BR gera vírgula)
+    setPriceVal(e.target.value.replace(/[^\d.,]/g, ''));
+  };
+
+  const commitPrice = () => {
+    const parsed = Math.max(0, parseCurrencyInput(priceVal));
+    setEditingPrice(false);
+    setPriceVal(''); // volta a derivar do store
+
+    if (parsed === item.preco_unitario) return; // só estava formatando
+
+    updateUnitPrice(itemKey, parsed);
+    triggerHaptic(15);
+
+    if (parsed === 0) {
+      addToast(
+        '⚠️ Preço zerado: o item aparecerá sem valor no WhatsApp/PDF da proposta.',
+        'warning',
+        4500
+      );
+    }
+
+    const seller = getActiveSeller();
+    sendTelemetry({
+      evento: 'Preço Personalizado no Orçamento',
+      vendedor: seller.nome,
+      vendedor_nome: seller.nome,
+      detalhes_extras:
+        `${item.nome} (Ref: ${item.referencia}): ` +
+        `${formatCurrency(item.preco_unitario)} -> ${formatCurrency(parsed)} — ` +
+        'alteração momentânea nesta cotação'
+    });
+  };
 
   const handleRemove = () => {
     triggerHaptic(20);
@@ -72,19 +133,54 @@ export const CartItemRow: React.FC<CartItemRowProps> = ({ item }) => {
           </h4>
 
           {isSellerLoggedIn && (
-            <div className="flex items-center gap-2 mt-0.5">
-              <span className="font-mono text-xs font-semibold text-slate-600 dark:text-slate-300">
-                {formatCurrency(item.preco_unitario)}
-              </span>
-              {item.preco_unitario !== item.preco_base && (
-                <button
-                  onClick={handleResetPrice}
-                  className="text-[10px] text-amber-600 dark:text-amber-400 flex items-center gap-0.5 underline"
-                  title="Restaurar preço base"
-                >
-                  <RotateCcw className="w-2.5 h-2.5" />
-                  Tab: {formatCurrency(item.preco_base)}
-                </button>
+            <div className="flex flex-wrap items-center gap-2 mt-1">
+              {/* Preço unitário editável — só nesta cotação */}
+              <div
+                className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus-within:ring-2 focus-within:ring-emerald-500/60"
+                title="Preço personalizado (somente nesta cotação)"
+              >
+                <span className="text-[10px] font-bold text-slate-400">R$</span>
+                <input
+                  ref={priceInputRef}
+                  type="text"
+                  inputMode="decimal"
+                  value={displayPrice}
+                  onChange={handlePriceChange}
+                  onFocus={handlePriceFocus}
+                  onBlur={commitPrice}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      priceInputRef.current?.blur();
+                    } else if (e.key === 'Escape') {
+                      setEditingPrice(false);
+                      setPriceVal('');
+                      priceInputRef.current?.blur();
+                    }
+                  }}
+                  aria-label={`Preço unitário personalizado de ${item.nome}`}
+                  className="w-16 bg-transparent border-none text-xs font-mono font-bold text-slate-700 dark:text-slate-200 focus:outline-none p-0"
+                />
+                <PencilLine className="w-3 h-3 text-slate-400 shrink-0" />
+              </div>
+
+              {isCustomPrice && (
+                <>
+                  <span
+                    className="text-[9px] font-black uppercase tracking-wide px-1.5 py-0.5 rounded bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-400 border border-amber-300 dark:border-amber-800"
+                    title="Preço alterado apenas nesta cotação"
+                  >
+                    ✏️ Personalizado
+                  </span>
+                  <button
+                    onClick={handleResetPrice}
+                    className="text-[10px] text-amber-600 dark:text-amber-400 flex items-center gap-0.5 underline"
+                    title="Restaurar preço de tabela"
+                  >
+                    <RotateCcw className="w-2.5 h-2.5" />
+                    Tab: {formatCurrency(item.preco_base)}
+                  </button>
+                </>
               )}
             </div>
           )}
