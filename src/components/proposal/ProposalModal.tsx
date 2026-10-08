@@ -86,11 +86,14 @@ export const ProposalModal: React.FC = () => {
     addToast('⚡ Gerando PDF...', 'info');
 
     try {
+      // If seller is "Geral" (id empty), show "JCV Distribuidora" in PDF
+      const displayName = seller.id === '' ? 'JCV Distribuidora' : seller.nome;
+
       downloadProposalPdf({
         proposalNumber,
         dateTime: currentDateTime,
         clientInfo,
-        sellerName: seller.nome,
+        sellerName: displayName,
         sellerPhone: seller.whatsapp,
         items,
         totals,
@@ -175,7 +178,7 @@ export const ProposalModal: React.FC = () => {
             proposalNumber={proposalNumber}
             dateTime={currentDateTime}
             clientInfo={clientInfo}
-            sellerName={seller.nome}
+            sellerName={seller.id === '' ? 'JCV Distribuidora' : seller.nome}
             sellerPhone={seller.whatsapp}
             items={items}
             totals={totals}

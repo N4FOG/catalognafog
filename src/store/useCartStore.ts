@@ -102,12 +102,17 @@ function loadGlobalDiscount(): number {
 }
 
 function loadClientInfo(): ClientInfo {
-  if (typeof window === 'undefined') return { nome: '', doc: '', telefone: '' };
+  if (typeof window === 'undefined') return { nome: '', doc: '', telefone: '', vendedor: '' };
   try {
     const raw = localStorage.getItem(CLIENT_STORAGE_KEY);
-    return raw ? JSON.parse(raw) : { nome: '', doc: '', telefone: '' };
+    const parsed = raw ? JSON.parse(raw) : { nome: '', doc: '', telefone: '' };
+    // Default to 'geral' (empty string) if vendedor is not set
+    if (!parsed.vendedor) {
+      parsed.vendedor = '';
+    }
+    return parsed;
   } catch {
-    return { nome: '', doc: '', telefone: '' };
+    return { nome: '', doc: '', telefone: '', vendedor: '' };
   }
 }
 
