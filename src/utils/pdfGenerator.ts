@@ -104,7 +104,7 @@ export function generateProposalPdf(options: GeneratePdfOptions): jsPDF {
   doc.setFontSize(8);
   // Format phone: 554599781407 -> (45) 9 9978-1407
   const formattedPhone = sellerPhone.replace(/^55(\d{2})(\d)(\d{4})(\d{4})$/, '($1) $2 $3-$4');
-  doc.text(`📱 WhatsApp: ${formattedPhone}`, rightColX, 49);
+  doc.text(`WhatsApp: ${formattedPhone}`, rightColX, 49);
   doc.text('Canal Comercial Oficial JCV Distribuidora', rightColX, 54);
 
   // 3. Products Table

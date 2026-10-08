@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useRef } from 'react';
 import { Minus, Plus } from 'lucide-react';
 import { triggerHaptic } from '../../utils/haptics';
 
@@ -19,13 +19,7 @@ export const Stepper: React.FC<StepperProps> = ({
   size = 'md',
   disabled = false
 }) => {
-  const [localValue, setLocalValue] = useState(String(value));
   const inputRef = useRef<HTMLInputElement>(null);
-
-  // Sync local state when external value changes (from +/- buttons)
-  useEffect(() => {
-    setLocalValue(String(value));
-  }, [value]);
 
   const handleDecrement = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -45,41 +39,32 @@ export const Stepper: React.FC<StepperProps> = ({
 
   const handleFocus = () => {
     triggerHaptic(8);
-    // Select all text on focus (e-commerce standard)
     setTimeout(() => {
       inputRef.current?.select();
     }, 0);
   };
 
-  const handleBlur = () => {
-    const val = parseInt(localValue, 10);
-    if (isNaN(val) || val < min) {
-      // Invalid or too small: restore to min
-      onChange(min);
-      setLocalValue(String(min));
-    } else if (val > max) {
-      // Too large: cap to max
-      onChange(max);
-      setLocalValue(String(max));
-    } else {
-      // Valid: apply
-      onChange(val);
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value;
+    // Allow only digits
+    if (/^\d*$/.test(val) && val !== '') {
+      const num = parseInt(val, 10);
+      if (!isNaN(num) && num >= min && num <= max) {
+        onChange(num);
+      }
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
     const val = e.target.value;
-    // Allow only digits or empty string
-    if (/^\d*$/.test(val)) {
-      setLocalValue(val);
+    if (val === '' || isNaN(parseInt(val, 10))) {
+      // Empty or invalid: restore current value
+      e.target.value = String(value);
     }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
-      e.currentTarget.blur();
-    } else if (e.key === 'Escape') {
-      setLocalValue(String(value));
       e.currentTarget.blur();
     }
   };
@@ -124,7 +109,7 @@ export const Stepper: React.FC<StepperProps> = ({
         type="text"
         inputMode="numeric"
         pattern="[0-9]*"
-        value={localValue}
+        value={value}
         onChange={handleChange}
         onFocus={handleFocus}
         onBlur={handleBlur}
