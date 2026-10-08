@@ -16,7 +16,7 @@ export const WhatsAppModal: React.FC = () => {
     whatsAppMode
   } = useCatalogStore();
 
-  const { items, clientInfo, getTotals } = useCartStore();
+  const { items, clientInfo, getTotals, generateCartShareUrl } = useCartStore();
   const { isSellerLoggedIn, getActiveSeller } = useSellerStore();
   const { addToast } = useToastStore();
 
@@ -91,6 +91,10 @@ export const WhatsAppModal: React.FC = () => {
     } else {
       msg += `\n📊 *TOTAL:* ${totals.totalQtd} itens selecionados.\n`;
     }
+
+    // Adicionar link compartilhável do pedido
+    const shareUrl = generateCartShareUrl(showPrices);
+    msg += `\n🔗 *Link do Pedido (clique para abrir no catálogo):*\n${shareUrl}\n`;
 
     msg += `\n✅ Aguardo confirmação para envio e faturamento. Obrigado!`;
     return msg;
