@@ -419,7 +419,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                   : 'bg-[#0f4531] hover:bg-[#176043] dark:bg-[#10b981] dark:hover:bg-[#059669] text-white'
               }`}
             >
-              <span>{!isInStock ? '❌ Indisponível' : inCart ? `✓ No Orçamento (${cartItem?.quantidade})` : '+ Cotar'}</span>
+              <span>{!isInStock ? '❌ Indisponível' : inCart ? `🛒${cartItem?.quantidade}` : '+ Cotar'}</span>
             </button>
           </div>
         </div>
