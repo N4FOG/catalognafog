@@ -457,28 +457,34 @@ function doGet(e) {
     // ── LEITURA LINHA A LINHA DO CATÁLOGO (para Fase 2 - importação) ──────
     if (action === "getCatalogRows") {
       const sheet = getOrCreateProductsSheet();
+      console.log("[GETCATALOG] getCatalogRows chamado");
       const lastRow = sheet.getLastRow();
       const lastCol = sheet.getLastColumn();
 
       if (lastRow < 3 || lastCol < 2) {
         return ContentService.createTextOutput(JSON.stringify({
           status: "success",
+      console.log("[GETCATALOG] sheet.getName():", sheet.getName());
           action: "getCatalogRows",
           headers: [],
           rows: [],
+      console.log("[GETCATALOG] lastRow:", lastRow, "lastCol:", lastCol);
           productCount: 0
         })).setMimeType(ContentService.MimeType.JSON);
       }
 
       // Linha 2: cabeçalhos
       const headers = sheet.getRange(2, 1, 1, lastCol).getValues()[0].map(h => String(h || ''));
+      console.log("[GETCATALOG] headers (primeiras 5):", headers.slice(0, 5));
 
       // Dados a partir da linha 3
       const data = sheet.getRange(3, 1, lastRow - 2, lastCol).getValues();
+      console.log("[GETCATALOG] rawData (primeira linha):", rawData[0]);
       const rows = data.map(row => row.map(cell => cell ?? ''));
 
       // Conta produtos válidos (linhas que têm ID na coluna 0)
       const productCount = rows.filter(r => r[0] && String(r[0]).trim() !== '').length;
+      console.log("[GETCATALOG] productCount:", productCount);
 
       return ContentService.createTextOutput(JSON.stringify({
         status: "success",
@@ -487,9 +493,12 @@ function doGet(e) {
         rows,
         productCount
       })).setMimeType(ContentService.MimeType.JSON);
+      console.log("[BACKUP] saveEmergencyBackup chamado");
     }
+      console.log("[BACKUP] sheet.getName():", sheet.getName());
 
     // ── SALVA O ESTADO ATUAL DA ABA COMO BACKUP DE EMERGÊNCIA ───────────────
+      console.log("[BACKUP] backupSheet.getName():", backupSheet.getName());
     // Útil antes de capturas ou mudanças que possam apagar dados manuais.
     if (data.action === "saveEmergencyBackup") {
       const sheet = getOrCreateProductsSheet();
