@@ -94,7 +94,11 @@ export const CartItemRow: React.FC<CartItemRowProps> = ({ item }) => {
 
   const handleDiscountTag = (percent: number) => {
     triggerHaptic(10);
-    updateItemDiscount(itemKey, percent);
+    if (item.desconto_percent === percent) {
+      updateItemDiscount(itemKey, 0);
+    } else {
+      updateItemDiscount(itemKey, percent);
+    }
   };
 
   const handleResetPrice = () => {
@@ -234,18 +238,18 @@ export const CartItemRow: React.FC<CartItemRowProps> = ({ item }) => {
           </div>
 
           <div className="flex items-center gap-1">
-            {[0, 5, 10, 15].map((pct) => (
+            {[3, 5].map((pct) => (
               <button
                 key={pct}
                 type="button"
                 onClick={() => handleDiscountTag(pct)}
-                className={`flex-1 py-1 text-[10px] font-bold rounded-lg border transition-colors ${
+                className={`flex-1 py-1 text-[10px] font-bold rounded-lg border transition-colors cursor-pointer ${
                   item.desconto_percent === pct
                     ? 'bg-emerald-700 text-white border-emerald-800 dark:bg-emerald-600'
                     : 'bg-slate-100 text-slate-600 border-slate-200 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700'
                 }`}
               >
-                {pct === 0 ? 'Sem desc.' : `${pct}%`}
+                {`${pct}%`}
               </button>
             ))}
           </div>

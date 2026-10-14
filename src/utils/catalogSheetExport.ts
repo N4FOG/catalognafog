@@ -198,6 +198,12 @@ export async function exportCatalogToSheet(
     };
   }
 
+  console.groupCollapsed('%c[GOOGLE SHEETS] 📤 Exportando Catálogo para a Planilha...', 'color: #10b981; font-weight: bold; font-size: 11px;');
+  console.log('📍 Webhook URL:', url);
+  console.log('📦 Total de produtos:', products.length);
+  console.log('📋 Colunas (' + CATALOG_HEADERS.length + '):', CATALOG_HEADERS);
+  console.log('⏳ Enviando POST (action: exportProducts)...');
+
   try {
     const response = await fetch(url, {
       method: 'POST',
@@ -205,12 +211,20 @@ export async function exportCatalogToSheet(
       body: JSON.stringify(payload)
     });
 
+    console.log('📡 Resposta HTTP recebida. Status:', response.status);
+
     if (!response.ok) {
+      console.warn('⚠️ Erro na resposta HTTP:', response.status, response.statusText);
+      console.groupEnd();
       return { ok: false, message: `Falha na requisição (${response.status})` };
     }
 
     const data = await response.json();
+    console.log('📥 Payload de resposta do Google Apps Script:', data);
+
     if (data && data.status === 'success') {
+      console.log('✅ Catálogo exportado com sucesso no Google Sheets!');
+      console.groupEnd();
       return {
         ok: true,
         rows: data.rows ?? products.length,
@@ -218,8 +232,13 @@ export async function exportCatalogToSheet(
         message: data.message || 'Catálogo exportado com sucesso!'
       };
     }
+
+    console.warn('⚠️ Google Apps Script retornou erro:', data);
+    console.groupEnd();
     return { ok: false, message: (data && data.message) || 'Resposta inesperada do servidor.' };
   } catch (err) {
+    console.error('❌ Exceção de rede ao exportar para o Google Sheets:', err);
+    console.groupEnd();
     return {
       ok: false,
       message: `Sem conexão com o Google Sheets (${err instanceof Error ? err.message : 'erro de rede'})`
@@ -498,8 +517,12 @@ export async function captureCatalogFromSheet(
     return { ok: false, message: 'Webhook do Google não configurado em config.ts' };
   }
 
+  console.groupCollapsed('%c[GOOGLE SHEETS] 📥 Capturando Catálogo da Planilha...', 'color: #6366f1; font-weight: bold; font-size: 11px;');
+  console.log('📍 Webhook URL:', url);
+
   try {
     // 1. Primeiro: solicita backup de emergência no Google Sheets
+    console.log('1️⃣ Solicitando Backup de Segurança pré-captura...');
     const backupPayload = {
       action: 'saveEmergencyBackup',
       user
@@ -516,10 +539,12 @@ export async function captureCatalogFromSheet(
       const backupData = await backupResponse.json();
       if (backupData && backupData.status === 'success') {
         backupId = backupData.backupId;
+        console.log('🛡️ Backup pré-captura criado com sucesso:', backupId);
       }
     }
 
     // 2. Segunda: captura os dados da planilha
+    console.log('2️⃣ Solicitando linhas da aba Produtos_Catalogo (action: getCatalogRows)...');
     const capturePayload = {
       action: 'getCatalogRows'
     };
@@ -530,16 +555,27 @@ export async function captureCatalogFromSheet(
       body: JSON.stringify(capturePayload)
     });
 
+    console.log('📡 Resposta HTTP recebida. Status:', captureResponse.status);
+
     if (!captureResponse.ok) {
+      console.warn('⚠️ Falha na resposta HTTP:', captureResponse.status);
+      console.groupEnd();
       return { ok: false, message: `Falha na requisição (${captureResponse.status})` };
     }
 
     const data = await captureResponse.json();
+    console.log('📥 Dados brutos retornados da planilha:', data);
+
     if (data && data.status === 'success') {
       const { headers, rows } = data;
       if (!headers || !rows || !rows.length) {
+        console.warn('⚠️ Planilha retornou 0 linhas de produtos.');
+        console.groupEnd();
         return { ok: false, message: 'Nenhum dado encontrado na planilha.' };
       }
+
+      console.log(`📋 ${headers.length} colunas e ${rows.length} linhas recebidas.`);
+      console.log('3️⃣ Convertendo linhas para objetos de produto...');
 
       // 3. Converte cada linha em produto
       const products: Product[] = [];
@@ -549,8 +585,13 @@ export async function captureCatalogFromSheet(
       }
 
       if (products.length === 0) {
+        console.warn('⚠️ Nenhuma linha pôde ser convertida em produto válido.');
+        console.groupEnd();
         return { ok: false, message: 'Nenhum produto válido encontrado nas linhas.' };
       }
+
+      console.log(`✅ ${products.length} produtos processados e validados!`, products);
+      console.groupEnd();
 
       return {
         ok: true,
@@ -560,8 +601,12 @@ export async function captureCatalogFromSheet(
       };
     }
 
+    console.warn('⚠️ Google Apps Script retornou status diferente de success:', data);
+    console.groupEnd();
     return { ok: false, message: (data && data.message) || 'Resposta inesperada do servidor.' };
   } catch (err) {
+    console.error('❌ Exceção de rede ao capturar da planilha:', err);
+    console.groupEnd();
     return {
       ok: false,
       message: `Sem conexão com o Google Sheets (${err instanceof Error ? err.message : 'erro de rede'})`
@@ -580,6 +625,10 @@ export async function saveEmergencyBackup(
     return { ok: false, message: 'Webhook do Google não configurado em config.ts' };
   }
 
+  console.groupCollapsed('%c[GOOGLE SHEETS] 💾 Criando Backup de Emergência na Planilha...', 'color: #f59e0b; font-weight: bold; font-size: 11px;');
+  console.log('📍 Webhook URL:', url);
+  console.log('⏳ Enviando POST (action: saveEmergencyBackup)...');
+
   try {
     const payload = {
       action: 'saveEmergencyBackup',
@@ -592,12 +641,20 @@ export async function saveEmergencyBackup(
       body: JSON.stringify(payload)
     });
 
+    console.log('📡 Resposta HTTP recebida. Status:', response.status);
+
     if (!response.ok) {
+      console.warn('⚠️ Erro na resposta HTTP:', response.status);
+      console.groupEnd();
       return { ok: false, message: `Falha na requisição (${response.status})` };
     }
 
     const data = await response.json();
+    console.log('📥 Resposta do Google Apps Script:', data);
+
     if (data && data.status === 'success') {
+      console.log('✅ Backup de emergência salvo! ID:', data.backupId);
+      console.groupEnd();
       return {
         ok: true,
         backupId: data.backupId,
@@ -605,8 +662,12 @@ export async function saveEmergencyBackup(
       };
     }
 
+    console.warn('⚠️ Google Apps Script retornou erro no backup:', data);
+    console.groupEnd();
     return { ok: false, message: (data && data.message) || 'Resposta inesperada.' };
   } catch (err) {
+    console.error('❌ Exceção ao criar backup de emergência:', err);
+    console.groupEnd();
     return {
       ok: false,
       message: `Sem conexão com o Google Sheets (${err instanceof Error ? err.message : 'erro de rede'})`
@@ -627,6 +688,11 @@ export async function restoreFromEmergencyBackup(
     return { ok: false, message: 'Webhook do Google não configurado em config.ts' };
   }
 
+  console.groupCollapsed('%c[GOOGLE SHEETS] 🔄 Restaurando Backup na Planilha...', 'color: #ef4444; font-weight: bold; font-size: 11px;');
+  console.log('📍 Webhook URL:', url);
+  console.log('🎯 Backup ID:', backupId || '(último disponível)');
+  console.log('⏳ Enviando POST (action: restoreEmergencyBackup)...');
+
   try {
     const payload = {
       action: 'restoreEmergencyBackup',
@@ -640,20 +706,32 @@ export async function restoreFromEmergencyBackup(
       body: JSON.stringify(payload)
     });
 
+    console.log('📡 Resposta HTTP recebida. Status:', response.status);
+
     if (!response.ok) {
+      console.warn('⚠️ Erro na resposta HTTP:', response.status);
+      console.groupEnd();
       return { ok: false, message: `Falha na requisição (${response.status})` };
     }
 
     const data = await response.json();
+    console.log('📥 Resposta do Google Apps Script:', data);
+
     if (data && data.status === 'success') {
+      console.log('✅ Backup restaurado na planilha com sucesso!');
+      console.groupEnd();
       return {
         ok: true,
         message: data.message || 'Backup restaurado com sucesso!'
       };
     }
 
+    console.warn('⚠️ Google Apps Script retornou erro na restauração:', data);
+    console.groupEnd();
     return { ok: false, message: (data && data.message) || 'Resposta inesperada.' };
   } catch (err) {
+    console.error('❌ Exceção ao restaurar backup:', err);
+    console.groupEnd();
     return {
       ok: false,
       message: `Sem conexão com o Google Sheets (${err instanceof Error ? err.message : 'erro de rede'})`

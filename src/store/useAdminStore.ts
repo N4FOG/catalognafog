@@ -267,9 +267,14 @@ export const useAdminStore = create<AdminState>((set, get) => ({
     const result = await captureCatalogFromSheet('jcvadmin');
     
     if (!result.ok || !result.products) {
+      console.warn('⚠️ [ADMIN STORE] Falha na captura do catálogo:', result.message);
       return { ok: false, message: result.message };
     }
     
+    console.groupCollapsed('%c[ADMIN STORE] 🧩 Merge de Produtos (Planilha ➔ App Store)...', 'color: #8b5cf6; font-weight: bold;');
+    console.log('📦 Produtos locais antes do merge:', products.length);
+    console.log('📥 Produtos recebidos da planilha:', result.products.length);
+
     // 3. Merge inteligente: produtos existentes mantêm variações oficiais,
     //    novos produtos são adicionados, edições na planilha sobrescrevem
     const currentMap = new Map(products.map(p => [p.id, p]));
@@ -296,6 +301,9 @@ export const useAdminStore = create<AdminState>((set, get) => ({
       }
     }
     
+    console.log('✅ Merge finalizado. Total de produtos ativos no app:', merged.length);
+    console.log('🔍 Reindexando motor de busca local (MiniSearch)...');
+
     // 5. Salva no estado
     set({
       products: merged,
@@ -304,6 +312,7 @@ export const useAdminStore = create<AdminState>((set, get) => ({
       lastCaptureTimestamp: new Date().toISOString()
     });
     reindexProducts(merged);
+    console.groupEnd();
     
     return {
       ok: true,

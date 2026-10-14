@@ -33,7 +33,11 @@ export const CartSummary: React.FC = () => {
 
   const handleGlobalDiscountPill = (val: number) => {
     triggerHaptic(10);
-    setGlobalDiscount(val);
+    if (globalDiscountPercent === val) {
+      setGlobalDiscount(0);
+    } else {
+      setGlobalDiscount(val);
+    }
   };
 
   const handleClearPayment = (e: React.MouseEvent) => {
@@ -78,18 +82,18 @@ export const CartSummary: React.FC = () => {
               </span>
 
               <div className="flex items-center gap-1">
-                {[0, 5, 10, 15].map((pct) => (
+                {[3, 5].map((pct) => (
                   <button
                     key={pct}
                     type="button"
                     onClick={() => handleGlobalDiscountPill(pct)}
-                    className={`px-1.5 py-0.5 text-[11px] font-bold rounded border transition-colors cursor-pointer ${
+                    className={`px-2 py-0.5 text-[11px] font-bold rounded border transition-colors cursor-pointer ${
                       globalDiscountPercent === pct
                         ? 'bg-emerald-700 text-white border-emerald-800 dark:bg-emerald-600'
                         : 'bg-white text-slate-600 border-slate-200 hover:border-emerald-600 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700'
                     }`}
                   >
-                    {pct === 0 ? '0%' : `-${pct}%`}
+                    {`-${pct}%`}
                   </button>
                 ))}
 
