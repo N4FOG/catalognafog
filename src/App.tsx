@@ -101,13 +101,102 @@ export const App: React.FC = () => {
       console.warn('URL product deep link check notice:', e);
     }
 
-    // 5. Register PWA Service Worker in production
-    if ('serviceWorker' in navigator && import.meta.env.PROD) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js').catch((err) => {
-          console.log('SW registration note:', err);
+    // 5. Register PWA Service Worker in production / Unregister in dev
+    if ('serviceWorker' in navigator) {
+      if (import.meta.env.PROD) {
+        window.addEventListener('load', () => {
+
+          // ── Log de diagnóstico: estado inicial do SW ──────────
+          const ctrl = navigator.serviceWorker.controller;
+          if (ctrl) {
+            console.log('%c[APP:SW] 🎮 SW já controla esta aba ao carregar:', 'color:#10b981;font-weight:bold', ctrl.scriptURL, '| state:', ctrl.state);
+          } else {
+            console.log('%c[APP:SW] ⚠️ Nenhum SW controlando esta aba agora (primeira visita ou SW foi limpo)', 'color:#f59e0b;font-weight:bold');
+          }
+
+          // Lista todos os caches existentes no storage
+          caches.keys().then(keys => {
+            console.log('%c[APP:SW] 🗂️ Caches no storage desta origem:', 'color:#6366f1;font-weight:bold', keys);
+          });
+
+          navigator.serviceWorker.register('/sw.js?v=6.1.1').then((reg) => {
+            console.log('%c[APP:SW] ✅ SW registrado — escopo:', 'color:#10b981;font-weight:bold', reg.scope);
+            console.log('[APP:SW] Estado do SW registrado → installing:', reg.installing?.state, '| waiting:', reg.waiting?.state, '| active:', reg.active?.state);
+
+            if (reg.waiting) {
+              console.warn('%c[APP:SW] ⏳ Há um SW em estado WAITING (versão nova pronta mas não ativada). Isso pode causar o pisca-pisca!', 'color:#ef4444;font-weight:bold');
+            }
+
+            // Escuta SW_UPDATED: disparado quando o SW novo assume via clients.claim()
+            navigator.serviceWorker.addEventListener('message', (event) => {
+              if (event.data?.type === 'SW_UPDATED') {
+                console.log('%c[APP:SW] 📢 Mensagem SW_UPDATED recebida — recarregando página agora', 'color:#8b5cf6;font-weight:bold');
+                window.location.reload();
+              }
+            });
+
+            // Detecta nova versão disponível (deploy novo no servidor)
+            reg.addEventListener('updatefound', () => {
+              const newWorker = reg.installing;
+              console.log('%c[APP:SW] 🔄 updatefound: novo SW encontrado!', 'color:#f59e0b;font-weight:bold', '| URL:', newWorker?.scriptURL);
+
+              newWorker?.addEventListener('statechange', () => {
+                console.log('[APP:SW] statechange do novo SW → state:', newWorker.state, '| controller atual:', navigator.serviceWorker.controller?.state);
+
+                if (newWorker.state === 'installed') {
+                  if (navigator.serviceWorker.controller) {
+                    console.log('%c[APP:SW] ✅ Novo SW instalado com controller ativo — mostrando banner e recarregando em 3s', 'color:#10b981;font-weight:bold');
+                  } else {
+                    console.log('%c[APP:SW] ℹ️ Novo SW instalado SEM controller (primeira instalação) — sem reload necessário', 'color:#6366f1;font-weight:bold');
+                  }
+                }
+
+                if (newWorker.state === 'activated') {
+                  console.log('%c[APP:SW] ✅ Novo SW ativado', 'color:#10b981;font-weight:bold');
+                }
+
+                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                  const banner = document.createElement('div');
+                  banner.innerHTML = `
+                    <div style="position:fixed;top:0;left:0;right:0;background:linear-gradient(135deg,#10b981,#059669);color:white;padding:14px 20px;text-align:center;z-index:999999;box-shadow:0 4px 12px rgba(0,0,0,0.15);font-family:system-ui,sans-serif;animation:slideDown 0.3s ease;">
+                      <strong style="font-size:15px;">🎉 Nova versão do catálogo disponível!</strong>
+                      <span style="margin:0 8px;opacity:0.9;">|</span>
+                      <span style="font-size:14px;">Atualizando em 3 segundos...</span>
+                    </div>
+                    <style>
+                      @keyframes slideDown {
+                        from { transform: translateY(-100%); }
+                        to { transform: translateY(0); }
+                      }
+                    </style>
+                  `;
+                  document.body.appendChild(banner);
+
+                  setTimeout(() => {
+                    window.location.reload();
+                  }, 3000);
+                }
+              });
+            });
+
+            // Verifica atualizações a cada 60 segundos
+            setInterval(() => {
+              console.log('[APP:SW] 🔍 Verificando atualizações do SW...');
+              reg.update();
+            }, 60000);
+
+          }).catch((err) => {
+            console.log('SW registration note:', err);
+          });
         });
-      });
+      } else {
+        // Em dev, limpa qualquer Service Worker para garantir código fresco
+        navigator.serviceWorker.getRegistrations().then((registrations) => {
+          for (const reg of registrations) {
+            reg.unregister();
+          }
+        });
+      }
     }
   }, []);
 

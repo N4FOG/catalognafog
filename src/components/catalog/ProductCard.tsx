@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import type { Product } from '../../types/product';
 import { CATEGORIAS, FORMULACOES } from '../../data/categories';
+import { PRODUTOS } from '../../data/products';
 import { useCartStore } from '../../store/useCartStore';
 import { useSellerStore } from '../../store/useSellerStore';
 import { useCatalogStore } from '../../store/useCatalogStore';
@@ -19,27 +20,40 @@ interface ProductCardProps {
 export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const [qty, setQty] = useState(1);
   const [selectedVarIndex, setSelectedVarIndex] = useState(0);
-  const [hoveredVarIndex, setHoveredVarIndex] = useState<number | null>(null);
+  const [inputVal, setInputVal] = useState('1');
+  // hoveredVarIndex removido - não queremos trocar imagem no hover
 
-  const { items, addToCart } = useCartStore();
+  const { items, addToCart, updateQuantity, removeFromCart, setIsCartOpen } = useCartStore();
   const { isSellerLoggedIn, getActiveSeller } = useSellerStore();
   const { searchQuery, setSelectedProduct } = useCatalogStore();
   const { addToast } = useToastStore();
 
-  const hasVariations = Boolean(product.variacoes && product.variacoes.length > 0);
-  const currentVar = hasVariations ? product.variacoes![selectedVarIndex] : undefined;
-  const activeVar = hasVariations
-    ? (hoveredVarIndex !== null ? product.variacoes![hoveredVarIndex] : currentVar)
-    : undefined;
+  // Garante que as variações da base oficial sempre estejam acessíveis
+  const baseProd = PRODUTOS.find((p) => p.id === product.id);
+  const variacoes = (product.variacoes && product.variacoes.length > 0)
+    ? product.variacoes
+    : (baseProd?.variacoes && baseProd.variacoes.length > 0 ? baseProd.variacoes : undefined);
 
-  const currentPrice = currentVar ? currentVar.preco_base : product.preco_base;
-  const currentRef = currentVar ? currentVar.referencia : product.referencia;
-  const currentImage = activeVar?.imagem || currentVar?.imagem || product.imagens?.[0] || 'img/logo.png';
+  const hasVariations = Boolean(variacoes && variacoes.length > 0);
+  const currentVar = hasVariations ? variacoes![selectedVarIndex] : undefined;
+  // Sempre usa a imagem da primeira variante ou a imagem padrão do produto
+  const currentImage = product.imagens?.[0] || baseProd?.imagens?.[0] || 'img/logo.png';
+  
+  const currentPrice = currentVar ? currentVar.preco_base : (product.preco_base || baseProd?.preco_base || 0);
+  const currentRef = currentVar ? currentVar.referencia : (product.referencia || baseProd?.referencia || '');
 
+  // Identificar item no carrinho
+  const itemKey = currentVar ? `${product.id}_${currentVar.id}` : product.id;
   const cartItem = items.find((i) =>
     currentVar ? (i.id === product.id && i.variationId === currentVar.id) : (i.id === product.id && !i.variationId)
   );
   const inCart = !!cartItem;
+
+  // Sincroniza inputVal com quantidade atual
+  useEffect(() => {
+    const currentQty = inCart && cartItem ? cartItem.quantidade : qty;
+    setInputVal(String(currentQty));
+  }, [inCart, cartItem, qty]);
 
   const catObj = CATEGORIAS.find((c) => c.id === product.categoria);
   const formObj = FORMULACOES.find((f) => f.id === product.tipo_formulacao);
@@ -62,9 +76,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const basePackTag = packFeature ? packFeature.split('(')[0].trim() : (product.unidade ? product.unidade.toUpperCase() : 'UN');
   const currentPackTag = currentVar?.packTag || basePackTag;
 
-  const targetsGrid = (product.alvos || []).slice(0, 2);
-  const moreGridCount = (product.alvos || []).length - targetsGrid.length;
-
   // Controle de estoque - padrão é true se não especificado
   const isInStock = product.emEstoque !== false;
 
@@ -76,25 +87,89 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const handleAddToCart = (e: React.MouseEvent) => {
     e.stopPropagation();
     triggerHaptic(20);
-    addToCart(product, qty, currentVar);
-    const itemName = currentVar ? `${product.nome} (${currentVar.nome})` : product.nome;
-    addToast(`✅ ${itemName} adicionado ao orçamento!`, 'success');
+    
+    if (inCart) {
+      // Se já está no carrinho, abre o drawer
+      setIsCartOpen(true);
+    } else {
+      // Se não está, adiciona com a quantidade selecionada
+      addToCart(product, qty, currentVar);
+      const itemName = currentVar ? `${product.nome} (${currentVar.nome})` : product.nome;
+      addToast(`✅ ${itemName} adicionado ao orçamento!`, 'success');
 
-    const seller = getActiveSeller();
-    sendTelemetry({
-      evento: 'Adicionou ao Orçamento',
-      vendedor: seller.nome,
-      vendedor_nome: seller.nome,
-      total_itens: qty,
-      resumo_itens: `${qty}x ${itemName} (Ref: ${currentRef})`,
-      detalhes_extras: `Produto: ${itemName} | Qtd: ${qty} | Preço: R$ ${currentPrice}`
-    });
+      const seller = getActiveSeller();
+      sendTelemetry({
+        evento: 'Adicionou ao Orçamento',
+        vendedor: seller.nome,
+        vendedor_nome: seller.nome,
+        total_itens: qty,
+        resumo_itens: `${qty}x ${itemName} (Ref: ${currentRef})`,
+        detalhes_extras: `Produto: ${itemName} | Qtd: ${qty} | Preço: R$ ${currentPrice}`
+      });
+    }
   };
 
   const handleAdjustQty = (e: React.MouseEvent, delta: number) => {
     e.stopPropagation();
     triggerHaptic(10);
-    setQty((prev) => Math.max(1, Math.min(999, prev + delta)));
+    
+    if (inCart && cartItem) {
+      // Item está no carrinho: atualiza direto no carrinho
+      const newQty = cartItem.quantidade + delta;
+      
+      if (newQty < 1) {
+        // Remove do carrinho e volta qty local para 1
+        removeFromCart(itemKey);
+        setQty(1);
+        addToast('🗑️ Produto removido do orçamento', 'info');
+      } else {
+        updateQuantity(itemKey, newQty);
+      }
+    } else {
+      // Item não está no carrinho: atualiza qty local
+      setQty((prev) => Math.max(1, Math.min(999, prev + delta)));
+    }
+  };
+
+  const handleInputFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+    const target = e.target;
+    setTimeout(() => {
+      try {
+        target.select();
+        target.setSelectionRange?.(0, target.value.length);
+      } catch {}
+    }, 50);
+  };
+
+  const handleInputClick = (e: React.MouseEvent<HTMLInputElement>) => {
+    e.stopPropagation();
+    try {
+      e.currentTarget.select();
+      e.currentTarget.setSelectionRange?.(0, e.currentTarget.value.length);
+    } catch {}
+  };
+
+  const handleInputChangeInline = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const filtered = e.target.value.replace(/\D/g, '');
+    setInputVal(filtered);
+    
+    if (filtered !== '') {
+      const val = parseInt(filtered, 10);
+      if (!isNaN(val) && val >= 1) {
+        if (inCart && cartItem) {
+          updateQuantity(itemKey, Math.min(999, val));
+        } else {
+          setQty(Math.min(999, val));
+        }
+      }
+    }
+  };
+
+  const handleInputBlur = () => {
+    if (inputVal === '' || parseInt(inputVal, 10) < 1) {
+      const fallback = inCart && cartItem ? cartItem.quantidade : qty;
+      setInputVal(String(fallback));
+    }
   };
 
   const handleQuickShare = async (e: React.MouseEvent) => {
@@ -205,7 +280,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         <img
           src={currentImage}
           alt={product.nome}
-          className={`w-4/5 h-4/5 object-contain group-hover:scale-105 transition-all duration-300 ${
+          className={`w-4/5 h-4/5 object-contain ${
             !isInStock ? 'grayscale opacity-60' : ''
           }`}
           loading="lazy"
@@ -244,13 +319,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           </p>
 
           {/* Variation Pill Selector if available */}
-          {hasVariations && product.variacoes && (
+          {hasVariations && variacoes && (
             <div className="mt-2 pt-1.5 border-t border-slate-100 dark:border-slate-800/80">
               <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 block mb-1">
                 Tamanho da embalagem:
               </span>
               <div className="flex flex-wrap gap-1.5" onClick={(e) => e.stopPropagation()}>
-                {product.variacoes.map((v, idx) => {
+                {variacoes.map((v, idx) => {
                   const isSelected = selectedVarIndex === idx;
                   return (
                     <button
@@ -260,9 +335,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                         e.stopPropagation();
                         triggerHaptic(10);
                         setSelectedVarIndex(idx);
+                        setQty(1); // Reset qty ao trocar variação
                       }}
-                      onMouseEnter={() => setHoveredVarIndex(idx)}
-                      onMouseLeave={() => setHoveredVarIndex(null)}
                       className={`px-2 py-0.5 rounded-lg text-[11px] font-extrabold transition-all cursor-pointer border ${
                         isSelected
                           ? 'bg-[#0f4531] text-white border-[#0f4531] dark:bg-[#10b981] dark:border-[#10b981] dark:text-[#0f1f17] shadow-xs scale-102'
@@ -298,23 +372,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         </div>
 
         <div>
-          {/* Target Pest Chips */}
-          <div className="flex flex-wrap gap-1 mb-2.5">
-            {targetsGrid.map((alvo, idx) => (
-              <span
-                key={idx}
-                className="px-1.5 py-0.5 rounded-md text-[10px] font-semibold bg-slate-100 dark:bg-[#14281f] text-[#334e40] dark:text-[#9cb8a9] border border-slate-200/60 dark:border-slate-700/60 truncate max-w-[110px]"
-              >
-                🎯 {alvo}
-              </span>
-            ))}
-            {moreGridCount > 0 && (
-              <span className="px-1.5 py-0.5 rounded-md text-[10px] font-bold bg-slate-100 dark:bg-[#14281f] text-slate-500">
-                +{moreGridCount}
-              </span>
-            )}
-          </div>
-
           {/* Action Row: Stepper + Add Button */}
           <div className="flex items-center gap-2 pt-2 border-t border-slate-100 dark:border-slate-800" onClick={(e) => e.stopPropagation()}>
             <div className={`inline-flex items-center bg-slate-100 dark:bg-[#14281f] rounded-xl p-0.5 border border-slate-200 dark:border-slate-700 ${
@@ -329,12 +386,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                 −
               </button>
               <input
-                type="number"
-                value={inCart && cartItem ? cartItem.quantidade : qty}
-                onChange={(e) => {
-                  const val = parseInt(e.target.value, 10);
-                  if (!isNaN(val) && val >= 1) setQty(val);
-                }}
+                type="text"
+                inputMode="numeric"
+                pattern="[0-9]*"
+                value={inputVal}
+                onChange={handleInputChangeInline}
+                onFocus={handleInputFocus}
+                onClick={handleInputClick}
+                onBlur={handleInputBlur}
                 disabled={!isInStock}
                 className="w-8 text-center text-xs font-bold bg-transparent border-none focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none disabled:cursor-not-allowed"
               />
@@ -360,7 +419,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                   : 'bg-[#0f4531] hover:bg-[#176043] dark:bg-[#10b981] dark:hover:bg-[#059669] text-white'
               }`}
             >
-              <span>{!isInStock ? '❌ Indisponível' : inCart ? `Cotar (${cartItem.quantidade})` : '+ Cotar'}</span>
+              <span>{!isInStock ? '❌' : inCart ? `🛒${cartItem?.quantidade}` : '+ Cotar'}</span>
             </button>
           </div>
         </div>

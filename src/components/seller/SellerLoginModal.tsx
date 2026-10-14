@@ -6,7 +6,7 @@ import { useCatalogStore } from '../../store/useCatalogStore';
 import { useToastStore } from '../../store/useToastStore';
 import { Modal } from '../ui/Modal';
 import { triggerHaptic } from '../../utils/haptics';
-import { KeyRound, ShieldAlert, User, ShieldCheck } from 'lucide-react';
+import { User, ShieldCheck, KeyRound } from 'lucide-react';
 import { sendTelemetry } from '../../utils/telemetry';
 
 export const SellerLoginModal: React.FC = () => {
@@ -75,6 +75,14 @@ export const SellerLoginModal: React.FC = () => {
     );
 
     if (foundSeller && foundSeller.id) {
+      // Se o vendedor tem PIN configurado, valida a senha
+      if (foundSeller.pin) {
+        if (passTrim !== foundSeller.pin) {
+          addToast('❌ PIN incorreto! Verifique sua senha.', 'error');
+          return;
+        }
+      }
+
       login(foundSeller.nome, foundSeller.id);
       closeSellerModal();
       setUsername('');
@@ -100,10 +108,6 @@ export const SellerLoginModal: React.FC = () => {
     addToast('⚠️ Usuário ou credencial não reconhecida. Verifique os dados.', 'warning');
   };
 
-  const handleSelectQuickSeller = (sellerId: string) => {
-    setUsername(sellerId);
-  };
-
   return (
     <Modal
       isOpen={isSellerModalOpen}
@@ -124,27 +128,20 @@ export const SellerLoginModal: React.FC = () => {
       }
     >
       <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="p-3 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-200 dark:border-slate-700 flex items-start gap-2.5">
-          <ShieldAlert className="w-4 h-4 text-emerald-700 dark:text-emerald-400 shrink-0 mt-0.5" />
-          <p className="text-xs text-slate-600 dark:text-slate-300 leading-snug">
-            Informe suas credenciais. O sistema reconhece automaticamente o nível de acesso (
-            <strong className="text-emerald-700 dark:text-emerald-400">Administrador Master</strong> ou{' '}
-            <strong className="text-slate-700 dark:text-slate-200">Representante Comercial</strong>).
-          </p>
-        </div>
-
         {/* Input Usuário */}
         <div>
           <label className="text-xs font-bold text-slate-700 dark:text-slate-300 block mb-1.5">
             Usuário / Identificação:
           </label>
           <div className="relative">
-            <User className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+            <User
+              className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+            />
             <input
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              placeholder="Ex: jcvadmin ou carlos"
+              placeholder="Login"
               className="w-full pl-9 pr-3 py-2.5 text-sm font-medium bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 text-slate-900 dark:text-white"
               autoFocus
             />
@@ -168,35 +165,14 @@ export const SellerLoginModal: React.FC = () => {
           </div>
         </div>
 
-        {/* Atalhos Rápidos para Representantes */}
-        <div className="pt-1 border-t border-slate-100 dark:border-slate-800">
-          <span className="text-[11px] font-semibold text-slate-400 block mb-1.5">
-            Atalho rápido para representantes:
-          </span>
-          <div className="flex flex-wrap gap-1.5">
-            {VENDEDORES.filter((v) => v.id).map((v) => (
-              <button
-                type="button"
-                key={v.id}
-                onClick={() => handleSelectQuickSeller(v.id)}
-                className={`text-[11px] px-2.5 py-1 rounded-lg border transition-all ${
-                  username === v.id
-                    ? 'bg-emerald-50 dark:bg-emerald-950/60 border-emerald-500 text-emerald-800 dark:text-emerald-300 font-bold'
-                    : 'bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300'
-                }`}
-              >
-                {v.nome}
-              </button>
-            ))}
-          </div>
-        </div>
-
         {/* Botão de Entrar */}
         <button
           type="submit"
-          className="w-full mt-2 py-3 px-4 rounded-xl bg-gradient-to-r from-emerald-800 to-emerald-700 hover:from-emerald-900 hover:to-emerald-800 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-md shadow-emerald-900/20 active:scale-98 transition-all cursor-pointer"
+          className="w-full mt-2 py-3 px-4 rounded-xl bg-gradient-to-r from-emerald-800 to-emerald-700 hover:from-emerald-900 hover:to-emerald-800 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-md shadow-emerald-900/20 active:scale-98 transition-all cursor-pointer group"
         >
-          <ShieldCheck className="w-4 h-4" />
+          <ShieldCheck
+            className="w-4 h-4"
+          />
           <span>Autenticar e Entrar</span>
         </button>
       </form>

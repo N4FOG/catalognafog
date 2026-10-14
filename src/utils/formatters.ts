@@ -8,6 +8,30 @@ export function formatCurrency(value: number): string {
   }).format(value);
 }
 
+/**
+ * Converte string digitada pelo usuário em número (formato pt-BR).
+ * Aceita "12,50", "12.50", "1.234,56" e "12".
+ * Importante: o teclado numérico do celular em pt-BR gera vírgula,
+ * e parseFloat("12,50") retornaria 12 — por isso o tratamento.
+ */
+export function parseCurrencyInput(raw: string): number {
+  if (!raw) return 0;
+  let s = String(raw).replace(/[^\d.,]/g, '');
+  if (!s) return 0;
+
+  if (s.includes(',') && s.includes('.')) {
+    // pt-BR: ponto = milhar, vírgula = decimal -> "1.234,56" => 1234.56
+    s = s.replace(/\./g, '').replace(',', '.');
+  } else if (s.includes(',')) {
+    // só vírgula -> decimal
+    s = s.replace(',', '.');
+  }
+  // só ponto -> trata como decimal ("12.50" => 12.50)
+
+  const n = parseFloat(s);
+  return isNaN(n) ? 0 : n;
+}
+
 export function formatNumber(value: number): string {
   if (isNaN(value)) return '0';
   return new Intl.NumberFormat('pt-BR').format(value);

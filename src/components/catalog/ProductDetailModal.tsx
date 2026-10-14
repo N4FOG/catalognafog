@@ -5,8 +5,10 @@ import { useSellerStore } from '../../store/useSellerStore';
 import { useAdminStore } from '../../store/useAdminStore';
 import { useToastStore } from '../../store/useToastStore';
 import { CATEGORIAS, FORMULACOES } from '../../data/categories';
+import { PRODUTOS } from '../../data/products';
 import { Modal } from '../ui/Modal';
 import { Stepper } from '../ui/Stepper';
+import { AccessibleImageZoom } from '../ui/AccessibleImageZoom';
 import { formatCurrency } from '../../utils/formatters';
 import { triggerHaptic } from '../../utils/haptics';
 import { Plus, Check, Share2, AlertTriangle, Wrench, Clock, ArrowRight, Edit3 } from 'lucide-react';
@@ -27,11 +29,17 @@ export const ProductDetailModal: React.FC = () => {
 
   if (!selectedProduct) return null;
 
-  const hasVariations = Boolean(selectedProduct.variacoes && selectedProduct.variacoes.length > 0);
-  const currentVar = hasVariations ? selectedProduct.variacoes![selectedVarIndex] : undefined;
-  const currentPrice = currentVar ? currentVar.preco_base : selectedProduct.preco_base;
-  const currentRef = currentVar ? currentVar.referencia : selectedProduct.referencia;
-  const currentUnit = currentVar ? currentVar.unidade : selectedProduct.unidade;
+  // Garante que as variações da base de dados oficial NUNCA sejam perdidas por cache antigo
+  const baseProd = PRODUTOS.find((p) => p.id === selectedProduct.id);
+  const variacoes = (selectedProduct.variacoes && selectedProduct.variacoes.length > 0)
+    ? selectedProduct.variacoes
+    : (baseProd?.variacoes && baseProd.variacoes.length > 0 ? baseProd.variacoes : undefined);
+
+  const hasVariations = Boolean(variacoes && variacoes.length > 0);
+  const currentVar = hasVariations ? variacoes![selectedVarIndex] : undefined;
+  const currentPrice = currentVar ? currentVar.preco_base : (selectedProduct.preco_base || baseProd?.preco_base || 0);
+  const currentRef = currentVar ? currentVar.referencia : (selectedProduct.referencia || baseProd?.referencia || '');
+  const currentUnit = currentVar ? currentVar.unidade : (selectedProduct.unidade || baseProd?.unidade || 'UN');
 
   const cartItem = items.find((i) =>
     currentVar ? (i.id === selectedProduct.id && i.variationId === currentVar.id) : (i.id === selectedProduct.id && !i.variationId)
@@ -86,7 +94,7 @@ export const ProductDetailModal: React.FC = () => {
     try {
       if (navigator.clipboard) {
         await navigator.clipboard.writeText(fullText);
-        addToast('📋 Link do produto copiado com sucesso!', 'success');
+        addToast('📋 Link do produto JCV Distribuidora copiado!', 'success');
       }
     } catch {
       addToast('Não foi possível copiar o link automaticamente', 'error');
@@ -133,42 +141,50 @@ export const ProductDetailModal: React.FC = () => {
           {/* Gallery Media */}
           <div className="sm:col-span-5 flex flex-col items-center">
             <div className="w-full aspect-square bg-slate-50 dark:bg-slate-800/80 rounded-2xl p-4 flex items-center justify-center border border-slate-100 dark:border-slate-800 shadow-inner relative">
-              {/* Badge Sem Estoque */}
+              {/* Badge Sem Estoque (sobreposta, sem bloquear clique de zoom) */}
               {!isInStock && (
-                <div className="absolute top-3 left-3 z-10 px-3 py-1.5 rounded-full text-xs font-black uppercase tracking-wider bg-gradient-to-r from-red-500 to-red-600 text-white shadow-lg">
+                <div className="absolute top-3 left-3 z-20 px-3 py-1.5 rounded-full text-xs font-black uppercase tracking-wider bg-gradient-to-r from-red-500 to-red-600 text-white shadow-lg pointer-events-none">
                   🚫 Sem Estoque
                 </div>
               )}
-              
-              <img
-                src={currentVar?.imagem || (selectedProduct.imagens && selectedProduct.imagens[selectedImageIndex]) || (selectedProduct.imagens && selectedProduct.imagens[0]) || 'img/logo.png'}
+
+              {/* Zoom Acessível: lente desktop (2x no cursor) + lightbox em tela cheia via Portal */}
+              <AccessibleImageZoom
+                src={(selectedProduct.imagens && selectedProduct.imagens[selectedImageIndex]) || (selectedProduct.imagens && selectedProduct.imagens[0]) || 'img/logo.png'}
                 alt={selectedProduct.nome}
-                className={`max-h-full object-contain ${!isInStock ? 'grayscale opacity-50' : ''}`}
-                onError={(e) => {
-                  (e.target as HTMLImageElement).src = 'img/logo.png';
-                }}
+                className="w-full h-full rounded-xl"
+                imgClassName={!isInStock ? 'grayscale opacity-50' : ''}
               />
             </div>
 
-            {/* Thumbnail dots/selectors if multiple */}
+            {/* Thumbnail selectors if multiple — clicáveis para trocar a foto ampliada */}
             {Array.isArray(selectedProduct.imagens) && selectedProduct.imagens.length > 1 && (
               <div className="flex items-center gap-2 mt-2">
                 {selectedProduct.imagens.map((img, idx) => (
                   <button
-                    key={idx}
-                    onClick={() => setSelectedImageIndex(idx)}
-                    className={`w-10 h-10 rounded-lg p-0.5 border-2 transition-all ${
+                    key={`thumb-${idx}-${img}`}
+                    type="button"
+                    onClick={() => {
+                      triggerHaptic(10);
+                      setSelectedImageIndex(idx);
+                    }}
+                    aria-pressed={selectedImageIndex === idx}
+                    aria-label={`Ver foto ${idx + 1} de ${selectedProduct.imagens.length}`}
+                    className={`w-10 h-10 rounded-lg p-0.5 border-2 bg-slate-50 dark:bg-slate-800 overflow-hidden cursor-pointer transition-all ${
                       selectedImageIndex === idx
                         ? 'border-emerald-600 scale-105'
-                        : 'border-slate-200 opacity-60'
+                        : 'border-slate-200 opacity-60 hover:opacity-100'
                     }`}
+                    title={`Visualização ${idx + 1} de ${selectedProduct.imagens.length}`}
                   >
                     <img
                       src={img || 'img/logo.png'}
-                      alt=""
+                      alt={`${selectedProduct.nome} - Foto ${idx + 1}`}
                       className="w-full h-full object-contain"
+                      loading="eager"
                       onError={(e) => {
                         (e.target as HTMLImageElement).src = 'img/logo.png';
+                        (e.target as HTMLImageElement).style.opacity = '0.3';
                       }}
                     />
                   </button>
@@ -247,13 +263,13 @@ export const ProductDetailModal: React.FC = () => {
             </div>
 
             {/* Variations Selector if available */}
-            {hasVariations && selectedProduct.variacoes && (
+            {hasVariations && variacoes && (
               <div className="bg-slate-50 dark:bg-slate-800/80 p-3 rounded-xl border border-slate-200 dark:border-slate-700/80 space-y-1.5">
                 <span className="text-xs font-bold text-slate-600 dark:text-slate-300 block">
                   Escolha o Tamanho da Embalagem:
                 </span>
                 <div className="grid grid-cols-2 gap-2">
-                  {selectedProduct.variacoes.map((v, idx) => {
+                  {variacoes.map((v, idx) => {
                     const isSelected = selectedVarIndex === idx;
                     return (
                       <button
@@ -322,7 +338,7 @@ export const ProductDetailModal: React.FC = () => {
                 {!isInStock ? (
                   <>
                     <AlertTriangle className="w-4 h-4" />
-                    <span>Produto Indisponível</span>
+                    <span>Sem Estoque</span>
                   </>
                 ) : isInCart ? (
                   <>

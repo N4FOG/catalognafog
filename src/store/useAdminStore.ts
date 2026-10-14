@@ -2,9 +2,12 @@ import { create } from 'zustand';
 import type { Product } from '../types/product';
 import type { AdminSession, ProductBackup } from '../types/admin';
 import { PRODUTOS } from '../data/products';
-import { CONFIG } from '../data/config';
-import { persistentStorage } from '../utils/storage';
 import { reindexProducts } from '../utils/searchEngine';
+import {
+  captureCatalogFromSheet,
+  saveEmergencyBackup,
+  restoreFromEmergencyBackup
+} from '../utils/catalogSheetExport';
 
 interface AdminState {
   isAdminLoggedIn: boolean;
@@ -13,6 +16,8 @@ interface AdminState {
   backups: ProductBackup[];
   isSyncingCloud: boolean;
   lastCloudSync: string | null;
+  lastCaptureBackupId: string | null;
+  lastCaptureTimestamp: string | null;
 
   // Actions
   loginAdmin: (user: string, pass: string) => boolean;
@@ -22,6 +27,10 @@ interface AdminState {
   updateProduct: (updatedProduct: Product, changeSummary?: string) => Promise<boolean>;
   restoreProductBackup: (backupId: string) => Promise<boolean>;
   getProductBackups: (productId: number) => ProductBackup[];
+  // Fase 2: Captura e backup do Google Sheets
+  captureFromSheet: () => Promise<{ ok: boolean; message: string; count?: number }>;
+  makeBackupNow: () => Promise<{ ok: boolean; message: string; backupId?: string }>;
+  restoreEmergencyBackup: (backupId?: string) => Promise<{ ok: boolean; message: string }>;
 }
 
 const ADMIN_SESSION_STORAGE_KEY = 'rawell_admin_session_auth_v3';
@@ -112,6 +121,8 @@ export const useAdminStore = create<AdminState>((set, get) => ({
   backups: [],
   isSyncingCloud: false,
   lastCloudSync: null,
+  lastCaptureBackupId: null,
+  lastCaptureTimestamp: null,
 
   loginAdmin: (user: string, pass: string): boolean => {
     const cleanUser = user.trim().toLowerCase();
@@ -141,31 +152,36 @@ export const useAdminStore = create<AdminState>((set, get) => ({
   },
 
   loadInitialData: async () => {
-    try {
-      // 1. Carrega edições locais salvas pelo admin, se houver
-      const cachedProducts = await persistentStorage.getItem<Product[]>(ADMIN_PRODUCTS_STORAGE_KEY, []);
-      const cachedBackups = await persistentStorage.getItem<ProductBackup[]>(ADMIN_BACKUPS_STORAGE_KEY, []);
+    // Produtos vêm EXCLUSIVAMENTE do bundle estático (PRODUTOS de products.ts)
+    // Removido sistema de cache local para eliminar pisca-pisca de renderização
+    const initialProducts = PRODUTOS.map(sanitizeProduct);
+    set({ products: initialProducts, backups: [] });
+    reindexProducts(initialProducts);
 
-      // SEMPRE mescla com PRODUTOS do código e sanitiza!
-      const initialProducts = mergeProducts(PRODUTOS, cachedProducts || []);
-
-      set({ products: initialProducts, backups: cachedBackups || [] });
-      reindexProducts(initialProducts);
-
-      // Atualiza o cache local com a versão mesclada e sanitizada
-      await persistentStorage.setItem(ADMIN_PRODUCTS_STORAGE_KEY, initialProducts);
-    } catch (e) {
-      console.warn('Erro ao carregar dados iniciais de produtos:', e);
-      const safe = PRODUTOS.map(sanitizeProduct);
-      set({ products: safe });
-      reindexProducts(safe);
+    // Limpa qualquer cache antigo que possa existir no localStorage
+    if (typeof window !== 'undefined') {
+      try {
+        localStorage.removeItem(ADMIN_PRODUCTS_STORAGE_KEY);
+        localStorage.removeItem(ADMIN_BACKUPS_STORAGE_KEY);
+      } catch (e) {
+        console.warn('Nota: não foi possível limpar cache antigo de produtos', e);
+      }
     }
   },
 
   syncWithCloud: async (): Promise<boolean> => {
-    // A busca de produtos via Google Sheets foi desativada para impedir que indisponibilidade ou inconsistência na nuvem oculte produtos do catálogo.
-    set({ isSyncingCloud: false, lastCloudSync: new Date().toISOString() });
-    return true;
+    // Sincronização via Google Sheets (upload do catálogo local)
+    set({ isSyncingCloud: true });
+    try {
+      const { products } = get();
+      const { exportCatalogToSheet } = await import('../utils/catalogSheetExport');
+      const result = await exportCatalogToSheet(products);
+      set({ isSyncingCloud: false, lastCloudSync: new Date().toISOString() });
+      return result.ok;
+    } catch {
+      set({ isSyncingCloud: false, lastCloudSync: new Date().toISOString() });
+      return false;
+    }
   },
 
   updateProduct: async (updatedProduct: Product, changeSummary?: string): Promise<boolean> => {
@@ -195,43 +211,22 @@ export const useAdminStore = create<AdminState>((set, get) => ({
       };
     }
 
-    // Atualiza a lista local de produtos
+    // Atualiza a lista de produtos APENAS NA SESSÃO ATUAL (memória)
+    // NÃO persiste no localStorage — edições são temporárias até o próximo deploy
     const nextProducts = oldProduct
       ? products.map((p) => (p.id === updatedProduct.id ? updatedProduct : p))
       : [...products, updatedProduct];
 
     const nextBackups = newBackup ? [newBackup, ...backups].slice(0, 100) : backups;
 
-    // Salva localmente para resposta instantânea
     set({ products: nextProducts, backups: nextBackups });
     reindexProducts(nextProducts);
-    await persistentStorage.setItem(ADMIN_PRODUCTS_STORAGE_KEY, nextProducts);
-    await persistentStorage.setItem(ADMIN_BACKUPS_STORAGE_KEY, nextBackups);
 
-    // Envia para o Google Sheets em nuvem para propagar a todos os usuários
-    try {
-      const url = CONFIG.auditWebhookUrl;
-      if (url && url.startsWith('http')) {
-        const payload = {
-          action: 'saveProducts',
-          user: 'jcvadmin',
-          products: nextProducts,
-          backup: newBackup
-        };
+    // REMOVIDO: persistência em localStorage
+    // REMOVIDO: envio para Google Sheets
+    // Admin deve editar src/data/products.ts e fazer commit/deploy
 
-        const jsonStr = JSON.stringify(payload);
-        fetch(url, {
-          method: 'POST',
-          mode: 'no-cors',
-          cache: 'no-cache',
-          headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
-          body: jsonStr
-        }).catch((e) => console.warn('Erro ao propagar produto na nuvem:', e));
-      }
-    } catch (e) {
-      console.warn('Erro ao salvar produto em nuvem:', e);
-    }
-
+    console.log('✅ Produto atualizado na sessão atual. Para persistir, edite src/data/products.ts e faça deploy.');
     return true;
   },
 
@@ -249,5 +244,117 @@ export const useAdminStore = create<AdminState>((set, get) => ({
 
   getProductBackups: (productId: number): ProductBackup[] => {
     return get().backups.filter((b) => b.productId === productId);
+  },
+
+  // ═══════════════════════════════════════════════════════════════════════
+  //  FASE 2: CAPTURA DO CATÁLOGO DO GOOGLE SHEETS
+  // ═══════════════════════════════════════════════════════════════════════
+  captureFromSheet: async (): Promise<{ ok: boolean; message: string; count?: number }> => {
+    const { products } = get();
+    
+    // 1. Faz backup do estado atual (local) antes de capturar
+    const localBackup: ProductBackup = {
+      id: `LOCAL-BKP-${Date.now()}`,
+      productId: 0,
+      productName: 'Backup completo antes da captura',
+      timestamp: new Date().toLocaleString('pt-BR'),
+      author: 'jcvadmin',
+      summary: 'Backup automático antes de capturar da planilha',
+      snapshot: JSON.parse(JSON.stringify(products))
+    };
+    
+    // 2. Captura da planilha (isso gera backup na nuvem também)
+    const result = await captureCatalogFromSheet('jcvadmin');
+    
+    if (!result.ok || !result.products) {
+      console.warn('⚠️ [ADMIN STORE] Falha na captura do catálogo:', result.message);
+      return { ok: false, message: result.message };
+    }
+    
+    console.groupCollapsed('%c[ADMIN STORE] 🧩 Merge de Produtos (Planilha ➔ App Store)...', 'color: #8b5cf6; font-weight: bold;');
+    console.log('📦 Produtos locais antes do merge:', products.length);
+    console.log('📥 Produtos recebidos da planilha:', result.products.length);
+
+    // 3. Merge inteligente: produtos existentes mantêm variações oficiais,
+    //    novos produtos são adicionados, edições na planilha sobrescrevem
+    const currentMap = new Map(products.map(p => [p.id, p]));
+    
+    // Usa os produtos da planilha como base, mas preserva variações locais
+    const merged: Product[] = [];
+    for (const incoming of result.products) {
+      const local = currentMap.get(incoming.id);
+      if (local && local.variacoes && local.variacoes.length > 0) {
+        // Mantém as variações oficiais do código-fonte
+        merged.push({
+          ...incoming,
+          variacoes: local.variacoes
+        });
+      } else {
+        merged.push(incoming);
+      }
+    }
+    
+    // 4. Adiciona produtos novos que só existem na planilha
+    for (const incoming of result.products) {
+      if (!currentMap.has(incoming.id)) {
+        merged.push(incoming);
+      }
+    }
+    
+    console.log('✅ Merge finalizado. Total de produtos ativos no app:', merged.length);
+    console.log('🔍 Reindexando motor de busca local (MiniSearch)...');
+
+    // 5. Salva no estado
+    set({
+      products: merged,
+      backups: [localBackup, ...get().backups].slice(0, 100),
+      lastCaptureBackupId: result.backupId || null,
+      lastCaptureTimestamp: new Date().toISOString()
+    });
+    reindexProducts(merged);
+    console.groupEnd();
+    
+    return {
+      ok: true,
+      message: result.message,
+      count: merged.length
+    };
+  },
+
+  // ═══════════════════════════════════════════════════════════════════════
+  //  FASE 2: BACKUP MANUAL DE EMERGÊNCIA
+  // ═══════════════════════════════════════════════════════════════════════
+  makeBackupNow: async (): Promise<{ ok: boolean; message: string; backupId?: string }> => {
+    const result = await saveEmergencyBackup('jcvadmin');
+    if (result.ok) {
+      return {
+        ok: true,
+        message: result.message,
+        backupId: result.backupId
+      };
+    }
+    return { ok: false, message: result.message };
+  },
+
+  // ═══════════════════════════════════════════════════════════════════════
+  //  FASE 2: RESTAURAR BACKUP DE EMERGÊNCIA
+  // ═══════════════════════════════════════════════════════════════════════
+  restoreEmergencyBackup: async (
+    backupId?: string
+  ): Promise<{ ok: boolean; message: string }> => {
+    const result = await restoreFromEmergencyBackup(backupId, 'jcvadmin');
+    if (result.ok) {
+      // Recarrega os produtos após restauração
+      const captureResult = await captureCatalogFromSheet('jcvadmin');
+      if (captureResult.ok && captureResult.products) {
+        set({
+          products: captureResult.products,
+          lastCaptureBackupId: backupId || null,
+          lastCaptureTimestamp: new Date().toISOString()
+        });
+        reindexProducts(captureResult.products);
+      }
+    }
+    return result;
   }
 }));

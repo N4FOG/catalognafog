@@ -3,9 +3,10 @@ import { useCatalogStore } from '../../store/useCatalogStore';
 import { useCartStore } from '../../store/useCartStore';
 import { useSellerStore } from '../../store/useSellerStore';
 import { useAdminStore } from '../../store/useAdminStore';
-import { useThemeStore } from '../../store/useThemeStore';
 import { triggerHaptic } from '../../utils/haptics';
 import { logSearchTelemetry } from '../../utils/telemetry';
+import { scrollToProducts } from '../../utils/scrollHelper';
+import { ThemeToggle } from '../ui/ThemeToggle';
 
 export const Header: React.FC = () => {
   const {
@@ -20,7 +21,6 @@ export const Header: React.FC = () => {
   const { setIsCartOpen, getTotals } = useCartStore();
   const { isSellerLoggedIn, session, getActiveSeller } = useSellerStore();
   const { isAdminLoggedIn } = useAdminStore();
-  const { theme, toggleTheme } = useThemeStore();
   const searchInputRef = useRef<HTMLInputElement>(null);
 
   const totals = getTotals();
@@ -60,14 +60,11 @@ export const Header: React.FC = () => {
     }
   };
 
-  const handleThemeClick = () => {
-    triggerHaptic(15);
-    toggleTheme();
-  };
-
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     triggerHaptic(15);
+    searchInputRef.current?.blur();
+    scrollToProducts();
     if (searchQuery.trim().length >= 2) {
       logSearchTelemetry(searchQuery, totals.totalQtd, seller.nome, isSellerLoggedIn ? '👔 Vendedor' : '🔵 Base', true);
     }
@@ -96,16 +93,16 @@ export const Header: React.FC = () => {
           className="flex items-center gap-2.5 cursor-pointer select-none shrink-0"
         >
           <div className="w-10 h-10 rounded-xl overflow-hidden shadow-md shadow-[#0f4531]/20 shrink-0 border border-[#10b981]/30 bg-black flex items-center justify-center">
-            <img src="img/logo.png" alt="JCV Jardinagem" className="w-full h-full object-cover" />
+            <img src="img/logo.png" alt="JCV Distribuidora" className="w-full h-full object-cover" />
           </div>
           <div className="leading-tight">
             <div className="flex items-center gap-1.5">
               <span className="font-extrabold text-base sm:text-lg text-[#0f1f17] dark:text-[#edf5f0] tracking-tight font-display">
-                JCV Jardinagem
+                JCV Distribuidora
               </span>
             </div>
             <span className="inline-block px-1.5 py-0.2 rounded text-[10px] font-bold bg-[#eaf7f0] text-[#0f4531] dark:bg-[#14281f] dark:text-[#10b981] border border-[#10b981]/30">
-              Catálogo &amp; Revenda 2026
+              Rawell • Catálogo & Revenda 2026
             </span>
           </div>
         </div>
@@ -132,6 +129,7 @@ export const Header: React.FC = () => {
             type="search"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
+            enterKeyHint="search"
             placeholder="Buscar por produto, praga ou princípio ativo..."
             className="w-full pl-10 pr-16 py-2 bg-slate-100/90 dark:bg-[#14281f] border border-[rgba(15,69,49,0.12)] dark:border-[rgba(16,185,129,0.2)] rounded-full text-xs sm:text-sm text-[#0f1f17] dark:text-[#edf5f0] placeholder-slate-400 dark:placeholder-[#638573] focus:outline-none focus:ring-2 focus:ring-[#10b981]/50 focus:bg-white dark:focus:bg-[#0f1f17] transition-all"
             autoComplete="off"
@@ -204,24 +202,17 @@ export const Header: React.FC = () => {
           </a>
 
           {/* Theme Toggle */}
-          <button
-            onClick={handleThemeClick}
-            className="w-9 h-9 rounded-xl flex items-center justify-center bg-slate-100 hover:bg-slate-200 dark:bg-[#14281f] dark:hover:bg-[#1b3529] text-base transition-colors border border-slate-200/80 dark:border-slate-800 active:scale-95"
-            aria-label="Alternar tema"
-            title="Alternar Tema Claro/Escuro"
-          >
-            {theme === 'dark' ? '☀️' : '🌙'}
-          </button>
+          <ThemeToggle />
 
           {/* Cart Trigger */}
           <button
             onClick={handleCartClick}
-            className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#0f4531] hover:bg-[#176043] dark:bg-[#10b981] dark:hover:bg-[#059669] text-white font-extrabold text-xs sm:text-sm shadow-md shadow-[#0f4531]/20 transition-all active:scale-95 border border-[#10b981]/40"
+            className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-[#0f4531] hover:bg-[#176043] dark:bg-[#10b981] dark:hover:bg-[#059669] text-white font-extrabold text-xs sm:text-sm shadow-md shadow-[#0f4531]/20 transition-all active:scale-95 border border-[#10b981]/40 sm:gap-1.5 sm:px-3.5 sm:py-2 sm:rounded-xl"
             aria-label="Abrir Orçamento"
           >
             <span>🛒</span>
             <span className="hidden sm:inline font-display">Orçamento</span>
-            <span className="inline-flex items-center justify-center min-w-[20px] h-5 px-1.5 text-[11px] font-black bg-[#10b981] text-white dark:bg-[#09261b] dark:text-[#10b981] rounded-full leading-none shadow-sm">
+            <span className="inline-flex items-center justify-center min-w-[18px] h-4 px-1 text-[10px] font-black bg-[#10b981] text-white dark:bg-[#09261b] dark:text-[#10b981] rounded-full leading-none shadow-sm sm:min-w-[20px] sm:h-5 sm:px-1.5 sm:text-[11px]">
               {totals.totalQtd}
             </span>
           </button>

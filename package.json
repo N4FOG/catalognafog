@@ -1,7 +1,7 @@
 {
   "name": "rawell-v3",
   "private": true,
-  "version": "4.2.0",
+  "version": "4.3.0",
   "type": "module",
   "scripts": {
     "dev": "vite --host",
@@ -19,7 +19,7 @@
     "jspdf-autotable": "^5.0.8",
     "lucide-react": "^1.41.0",
     "minisearch": "^7.2.0",
-    "motion": "^13.2.0",
+    "motion": "^13.5.1",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "tailwind-merge": "^3.6.0",
@@ -34,6 +34,7 @@
     "autoprefixer": "^10.5.5",
     "oxlint": "^1.79.0",
     "postcss": "^8.5.28",
+    "sharp": "^0.35.5",
     "tailwindcss": "^4.3.3",
     "typescript": "~6.0.2",
     "vite": "^8.2.2"

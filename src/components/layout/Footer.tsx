@@ -10,10 +10,10 @@ export const Footer: React.FC = () => {
           <div className="space-y-2">
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 rounded-lg overflow-hidden shrink-0 border border-emerald-700/30 bg-black flex items-center justify-center">
-                <img src="img/logo.png" alt="JCV Jardinagem" className="w-full h-full object-cover" />
+                <img src="img/logo.png" alt="JCV Distribuidora" className="w-full h-full object-cover" />
               </div>
               <span className="font-extrabold text-base text-slate-900 dark:text-white">
-                JCV Jardinagem & Agro
+                JCV Distribuidora & Agro
               </span>
             </div>
             <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
@@ -28,7 +28,15 @@ export const Footer: React.FC = () => {
             </h5>
             <p className="flex items-center gap-1.5">
               <Phone className="w-3.5 h-3.5 text-emerald-600" />
-              <span>WhatsApp Oficial: (45) 99781-407</span>
+              <span>WhatsApp Oficial: </span>
+              <a
+                href="https://api.whatsapp.com/send?phone=5545999781407"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-bold text-emerald-700 dark:text-emerald-400 hover:text-emerald-600 dark:hover:text-emerald-300 underline underline-offset-2 transition-colors"
+              >
+                (45) 9 9978-1407
+              </a>
             </p>
             <p className="flex items-center gap-1.5">
               <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
@@ -48,10 +56,11 @@ export const Footer: React.FC = () => {
         </div>
 
         <div className="pt-6 border-t border-slate-200 dark:border-slate-800/80 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-slate-400">
-          <p>© 2026 JCV Jardinagem / Rawell Química — Todos os direitos reservados.</p>
+          <p className="text-center sm:text-left">© 2026 JCV Distribuidora / Rawell Química — Todos os direitos reservados.</p>
           <div className="flex items-center gap-1">
             <Sparkles className="w-3 h-3 text-emerald-600" />
-            <span>Versão 3.0 (React 19 + TypeScript + Tailwind)</span>
+            <span className="font-mono font-semibold text-emerald-700 dark:text-emerald-400">v6.1.1</span>
+            <span className="hidden sm:inline text-slate-400"> • React 19 + TypeScript + Tailwind</span>
           </div>
         </div>
       </div>
