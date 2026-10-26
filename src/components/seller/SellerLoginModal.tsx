@@ -24,6 +24,15 @@ export const SellerLoginModal: React.FC = () => {
 
   if (!isSellerModalOpen) return null;
 
+  const scrollToTop = () => {
+    if (typeof window !== 'undefined') {
+      (document.activeElement as HTMLElement)?.blur();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 50);
+      setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 250);
+    }
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     triggerHaptic(25);
@@ -48,6 +57,7 @@ export const SellerLoginModal: React.FC = () => {
         closeSellerModal();
         setUsername('');
         setPassword('');
+        scrollToTop();
         addToast('👑 Modo Administrador Master ativado com sucesso!', 'success');
 
         sendTelemetry({
@@ -84,6 +94,7 @@ export const SellerLoginModal: React.FC = () => {
       closeSellerModal();
       setUsername('');
       setPassword('');
+      scrollToTop();
 
       addToast(
         `🎉 Olá, ${foundSeller.nome}! Modo Representante ativado. Preços de revenda liberados.`,
