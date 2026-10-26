@@ -14,8 +14,7 @@ export const Header: React.FC = () => {
     setSearchQuery,
     openSellerModal,
     openSellerAppModal,
-    openAdminDashboard,
-    openIosInstallModal
+    openAdminDashboard
   } = useCatalogStore();
 
   const { setIsCartOpen, getTotals } = useCartStore();
@@ -67,17 +66,6 @@ export const Header: React.FC = () => {
     scrollToProducts();
     if (searchQuery.trim().length >= 2) {
       logSearchTelemetry(searchQuery, totals.totalQtd, seller.nome, isSellerLoggedIn ? '👔 Vendedor' : '🔵 Base', true);
-    }
-  };
-
-  const handleInstallClick = () => {
-    triggerHaptic(20);
-    const isIos = /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
-    if (isIos) {
-      openIosInstallModal();
-    } else {
-      // Trigger prompt if available
-      window.dispatchEvent(new Event('pwa-install-trigger'));
     }
   };
 
@@ -178,16 +166,6 @@ export const Header: React.FC = () => {
                 ? (session?.vendedorNome?.split(' ')[0] || 'Vendedor')
                 : 'Área Restrita'}
             </span>
-          </button>
-
-          {/* Install App (PWA) Button */}
-          <button
-            onClick={handleInstallClick}
-            className="hidden sm:inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl text-xs font-bold bg-slate-100 hover:bg-slate-200 dark:bg-[#14281f] dark:hover:bg-[#1b3529] text-[#334e40] dark:text-[#9cb8a9] border border-slate-200 dark:border-slate-800 transition-colors"
-            title="Instalar aplicativo na tela inicial"
-          >
-            <span>📲</span>
-            <span>App</span>
           </button>
 
           {/* Download PDF Button */}
