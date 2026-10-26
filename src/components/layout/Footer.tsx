@@ -7,56 +7,11 @@ export const Footer: React.FC = () => {
 
   return (
     <footer className="no-print bg-slate-100 dark:bg-slate-950 border-t border-slate-200/80 dark:border-slate-800/80 py-10 mt-12 transition-colors">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 space-y-8">
-        
-        {/* Banner Baixar Aplicativo (PWA) — Visível tanto em Mobile quanto PC */}
-        <div className="bg-gradient-to-r from-[#0f4531] via-[#13533b] to-[#0f4531] dark:from-[#09261b] dark:via-[#103827] dark:to-[#09261b] rounded-2xl p-5 sm:p-6 text-white border border-[#10b981]/30 shadow-lg shadow-[#0f4531]/10 flex flex-col sm:flex-row items-center justify-between gap-5 transition-all">
-          <div className="flex items-center gap-4 text-center sm:text-left">
-            <div className="w-12 h-12 rounded-xl bg-white/10 dark:bg-[#10b981]/20 border border-white/20 dark:border-[#10b981]/30 flex items-center justify-center text-2xl shrink-0 shadow-inner">
-              📲
-            </div>
-            <div>
-              <div className="flex items-center justify-center sm:justify-start gap-2 flex-wrap">
-                <h4 className="font-extrabold text-sm sm:text-base tracking-tight font-display text-white">
-                  Instale o Aplicativo JCV Distribuidora
-                </h4>
-                {isInstalled && (
-                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#10b981] text-[#09261b]">
-                    <CheckCircle2 className="w-3 h-3" /> Instalado
-                  </span>
-                )}
-              </div>
-              <p className="text-xs text-emerald-100/85 leading-relaxed max-w-xl mt-1">
-                Acesse o catálogo direto da tela inicial do seu celular ou computador. Rápido, leve e com consulta técnica garantida mesmo sem sinal de internet.
-              </p>
-            </div>
-          </div>
-
-          <div className="w-full sm:w-auto shrink-0 flex items-center justify-center">
-            <button
-              type="button"
-              onClick={installApp}
-              className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-[#10b981] hover:bg-[#0da572] active:scale-95 text-[#09261b] font-black text-xs sm:text-sm shadow-md shadow-emerald-950/20 transition-all flex items-center justify-center gap-2 cursor-pointer select-none"
-            >
-              {isInstalled ? (
-                <>
-                  <CheckCircle2 className="w-4 h-4 text-[#09261b]" />
-                  <span>Aplicativo Instalado</span>
-                </>
-              ) : (
-                <>
-                  <Download className="w-4 h-4 text-[#09261b]" />
-                  <span>Baixar Aplicativo</span>
-                </>
-              )}
-            </button>
-          </div>
-        </div>
-
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 space-y-6">
         {/* Informações Institucionais e Suporte */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Brand Col */}
-          <div className="space-y-2">
+          <div className="space-y-3">
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 rounded-lg overflow-hidden shrink-0 border border-emerald-700/30 bg-black flex items-center justify-center">
                 <img src="img/logo.png" alt="JCV Distribuidora" className="w-full h-full object-cover" />
@@ -68,6 +23,27 @@ export const Footer: React.FC = () => {
             <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
               Linha oficial de defensivos, herbicidas seletivos e adjuvantes de alta performance. Catálogo técnico & sistema de orçamentos 2026.
             </p>
+
+            {/* Botão Baixar Aplicativo — Limpo, Discreto e Objetivo */}
+            <div className="pt-1">
+              <button
+                type="button"
+                onClick={installApp}
+                className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold bg-white dark:bg-[#14281f] text-[#0f4531] dark:text-[#10b981] border border-[#10b981]/30 hover:border-[#10b981] hover:bg-[#eaf7f0] dark:hover:bg-[#1b3529] shadow-sm transition-all active:scale-95 cursor-pointer select-none"
+              >
+                {isInstalled ? (
+                  <>
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                    <span>Aplicativo Instalado</span>
+                  </>
+                ) : (
+                  <>
+                    <Download className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                    <span>Baixar Aplicativo</span>
+                  </>
+                )}
+              </button>
+            </div>
           </div>
 
           {/* Direct Support Col */}
@@ -109,7 +85,7 @@ export const Footer: React.FC = () => {
           <p className="text-center sm:text-left">© 2026 JCV Distribuidora / Rawell Química — Todos os direitos reservados.</p>
           <div className="flex items-center gap-1">
             <Sparkles className="w-3 h-3 text-emerald-600" />
-            <span className="font-mono font-semibold text-emerald-700 dark:text-emerald-400">v7.0.1</span>
+            <span className="font-mono font-semibold text-emerald-700 dark:text-emerald-400">v7.0.2</span>
           </div>
         </div>
       </div>

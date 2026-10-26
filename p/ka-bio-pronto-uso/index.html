@@ -39,13 +39,12 @@
     
     
 
-    <!-- Limpeza de Caches Antigos (apenas versões específicas obsoletas) -->
+    <!-- Limpeza de Caches Antigos e Invalidação de Versões Anteriores -->
     <script>
       if ('caches' in window) {
         caches.keys().then(function(names) {
-          var obsoletos = ['v12', 'v13', 'v14', 'v15', 'jcv-jardinagem'];
           for (var name of names) {
-            if (obsoletos.some(function(v) { return name.includes(v); })) {
+            if (name !== 'jcv-distribuidora-v7.0.2-cache') {
               caches.delete(name);
             }
           }
@@ -56,11 +55,7 @@
       document.documentElement.setAttribute('data-theme', 'light');
       document.documentElement.classList.remove('dark');
     </script>
-
-
-    
-    
-    <script type="module" crossorigin src="/assets/index-DRJ7DAnC.js"></script>
+    <script type="module" crossorigin src="/assets/index-BOzxTWHe.js"></script>
     <link rel="stylesheet" crossorigin href="/assets/index-CDNlg8O0.css">
   
     <title>Ka-Bio Pronto Uso (240ml Spray) — JCV Jardinagem</title>
@@ -88,6 +83,6 @@
     </script>
   </head>
   <body class="bg-slate-50 text-slate-900 antialiased selection:bg-emerald-500 selection:text-white">
-    <div id="root"></div>
+    <div id="root"></div>
   </body>
 </html>
