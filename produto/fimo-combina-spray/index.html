@@ -4,7 +4,7 @@
     <base href="/" />
     <meta charset="UTF-8" />
     
-    <!-- Cache Control: Sempre buscar versão nova do HTML -->
+    <!-- Cache Control: Sempre buscar versÃ£o nova do HTML -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
@@ -39,13 +39,12 @@
     
     
 
-    <!-- Limpeza de Caches Antigos (apenas versões específicas obsoletas) -->
+    <!-- Limpeza de Caches Antigos e Invalidação de Versões Anteriores -->
     <script>
       if ('caches' in window) {
         caches.keys().then(function(names) {
-          var obsoletos = ['v12', 'v13', 'v14', 'v15', 'jcv-jardinagem'];
           for (var name of names) {
-            if (obsoletos.some(function(v) { return name.includes(v); })) {
+            if (name !== 'jcv-distribuidora-v7.0.1-cache') {
               caches.delete(name);
             }
           }
@@ -60,8 +59,8 @@
 
     
     
-    <script type="module" crossorigin src="/assets/index-DRJ7DAnC.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-CDNlg8O0.css">
+    <script type="module" crossorigin src="/assets/index-GbgzLLaS.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-DxqsTVSN.css">
   
     <title>Fimo Combina Spray (40ml) — JCV Jardinagem</title>
     <meta name="description" content="Spray com atrativo especial e residual de até 6 meses" />

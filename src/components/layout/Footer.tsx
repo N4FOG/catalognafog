@@ -109,7 +109,7 @@ export const Footer: React.FC = () => {
           <p className="text-center sm:text-left">© 2026 JCV Distribuidora / Rawell Química — Todos os direitos reservados.</p>
           <div className="flex items-center gap-1">
             <Sparkles className="w-3 h-3 text-emerald-600" />
-            <span className="font-mono font-semibold text-emerald-700 dark:text-emerald-400">v7.0.0</span>
+            <span className="font-mono font-semibold text-emerald-700 dark:text-emerald-400">v7.0.1</span>
           </div>
         </div>
       </div>
