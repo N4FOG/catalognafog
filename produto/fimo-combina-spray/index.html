@@ -3,6 +3,12 @@
   <head>
     <base href="/" />
     <meta charset="UTF-8" />
+    
+    <!-- Cache Control: Sempre buscar versão nova do HTML -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    
     <link rel="icon" type="image/png" href="/img/icon-192.png" />
     <link rel="apple-touch-icon" href="/img/apple-touch-icon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover" />
@@ -10,7 +16,7 @@
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <meta name="apple-mobile-web-app-title" content="JCV Jardinagem" />
+    <meta name="apple-mobile-web-app-title" content="JCV Distribuidora" />
     
     <link rel="manifest" href="/manifest.json" />
     
@@ -33,19 +39,13 @@
     
     
 
-    <!-- Limpeza de Service Workers e Caches Antigos -->
+    <!-- Limpeza de Caches Antigos (apenas versões específicas obsoletas) -->
     <script>
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.getRegistrations().then(function(regs) {
-          for (var reg of regs) {
-            reg.unregister();
-          }
-        });
-      }
       if ('caches' in window) {
         caches.keys().then(function(names) {
+          var obsoletos = ['v12', 'v13', 'v14', 'v15', 'jcv-jardinagem'];
           for (var name of names) {
-            if (name.includes('jcv-jardinagem-v3-cache-v12') || name.includes('v13')) {
+            if (obsoletos.some(function(v) { return name.includes(v); })) {
               caches.delete(name);
             }
           }
@@ -55,9 +55,13 @@
     <script>
       document.documentElement.setAttribute('data-theme', 'light');
       document.documentElement.classList.remove('dark');
-    </script>
-    <script type="module" crossorigin src="/assets/index-DcQUtxEn.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-mJivGaQX.css">
+    </script>
+
+
+    
+    
+    <script type="module" crossorigin src="/assets/index-DRJ7DAnC.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-CDNlg8O0.css">
   
     <title>Fimo Combina Spray (40ml) — JCV Jardinagem</title>
     <meta name="description" content="Spray com atrativo especial e residual de até 6 meses" />
@@ -84,6 +88,6 @@
     </script>
   </head>
   <body class="bg-slate-50 text-slate-900 antialiased selection:bg-emerald-500 selection:text-white">
-    <div id="root"></div>
+    <div id="root"></div>
   </body>
 </html>

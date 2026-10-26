@@ -12,9 +12,7 @@ import { sendTelemetry } from '../../utils/telemetry';
 export const SellerLoginModal: React.FC = () => {
   const {
     isSellerModalOpen,
-    closeSellerModal,
-    openAdminDashboard,
-    openSellerAppModal
+    closeSellerModal
   } = useCatalogStore();
 
   const { login } = useSellerStore();
@@ -50,8 +48,7 @@ export const SellerLoginModal: React.FC = () => {
         closeSellerModal();
         setUsername('');
         setPassword('');
-        addToast('👑 Acesso concedido! Bem-vindo ao Painel Administrativo Master.', 'success');
-        openAdminDashboard();
+        addToast('👑 Modo Administrador Master ativado com sucesso!', 'success');
 
         sendTelemetry({
           evento: 'Login no Painel Administrativo',
@@ -89,10 +86,9 @@ export const SellerLoginModal: React.FC = () => {
       setPassword('');
 
       addToast(
-        `🎉 Bem-vindo(a), ${foundSeller.nome}! Modo Representante ativado.`,
+        `🎉 Olá, ${foundSeller.nome}! Modo Representante ativado. Preços de revenda liberados.`,
         'success'
       );
-      openSellerAppModal('quotes');
 
       sendTelemetry({
         evento: 'Login no Modo Vendedor',
