@@ -101,9 +101,11 @@ export const App: React.FC = () => {
       console.warn('URL product deep link check notice:', e);
     }
 
-    // 5. Register PWA Service Worker in production / Unregister in dev
+    // 5. Register PWA Service Worker in production / Unregister in dev & localhost
     if ('serviceWorker' in navigator) {
-      if (import.meta.env.PROD) {
+      const isLocal = typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+
+      if (import.meta.env.PROD && !isLocal) {
         window.addEventListener('load', () => {
 
           // ── Log de diagnóstico: estado inicial do SW ──────────
@@ -119,7 +121,7 @@ export const App: React.FC = () => {
             console.log('%c[APP:SW] 🗂️ Caches no storage desta origem:', 'color:#6366f1;font-weight:bold', keys);
           });
 
-          navigator.serviceWorker.register('/sw.js?v=7.0.0').then((reg) => {
+          navigator.serviceWorker.register('/sw.js?v=7.0.1').then((reg) => {
             console.log('%c[APP:SW] ✅ SW registrado — escopo:', 'color:#10b981;font-weight:bold', reg.scope);
             console.log('[APP:SW] Estado do SW registrado → installing:', reg.installing?.state, '| waiting:', reg.waiting?.state, '| active:', reg.active?.state);
 
@@ -190,12 +192,19 @@ export const App: React.FC = () => {
           });
         });
       } else {
-        // Em dev, limpa qualquer Service Worker para garantir código fresco
+        // Em dev ou localhost, desregistra qualquer Service Worker e limpa caches para garantir código fresco
         navigator.serviceWorker.getRegistrations().then((registrations) => {
           for (const reg of registrations) {
             reg.unregister();
           }
         });
+        if ('caches' in window) {
+          caches.keys().then((names) => {
+            for (const name of names) {
+              caches.delete(name);
+            }
+          });
+        }
       }
     }
   }, []);
